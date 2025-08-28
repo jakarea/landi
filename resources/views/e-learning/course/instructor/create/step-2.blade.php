@@ -143,13 +143,13 @@
                         <div class="step-box current">
                             <span class="circle"></span>
                             <p><a
-                                    href="{{ url('instructor/courses/create', optional(request())->route('id')) . '/objects' }}">Objects</a>
+                                    href="{{ url('instructor/courses/create', optional(request())->route('id')) . '/objectives' }}">Objects</a>
                             </p>
                         </div>
                         <div class="step-box">
                             <span class="circle"></span>
                             <p><a
-                                    href="{{ url('instructor/courses/create', optional(request())->route('id')) . '/price' }}">Price</a>
+                                    href="{{ url('instructor/courses/create', optional(request())->route('id')) . '/pricing' }}">Price</a>
                             </p>
                         </div>
                          <div class="step-box">
@@ -303,7 +303,7 @@
                     <div class="back-next-bttns">
                         <a href="{{ url('instructor/courses/create/' . $course->id . '/facts') }}"
                             class="btn-cancel">Back</a>
-                        <a href="{{ url('instructor/courses/create/' . $course->id . '/price') }}"
+                        <a href="{{ url('instructor/courses/create/' . $course->id . '/pricing') }}"
                             class="btn-submit">Next</a>
                     </div>
                     {{-- step next bttns --}}
@@ -331,8 +331,8 @@
                     let dataIndex = item.getAttribute('data-index');
 
                     if (courseId) {
-                        fetch(`${baseUrl}/instructor/courses/create/${courseId}/delete-objects/${dataIndex}`, {
-                                method: 'POST',
+                        fetch(`${baseUrl}/instructor/courses/create/${courseId}/objectives/${dataIndex}`, {
+                                method: 'DELETE',
                                 headers: {
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                                     'Content-Type': 'application/json',
@@ -415,7 +415,7 @@
                     });
 
 
-                    fetch(`${baseUrl}/instructor/courses/create/${courseId}/objects`, {
+                    fetch(`${baseUrl}/instructor/courses/create/${courseId}/objectives`, {
                             method: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -513,8 +513,8 @@
                     let dataIndex = item.getAttribute('data-index');
 
                     if (courseId) {
-                        fetch(`${baseUrl}/instructor/courses/create/${courseId}/delete-who-should-join/${dataIndex}`, {
-                                method: 'POST',
+                        fetch(`${baseUrl}/instructor/courses/create/${courseId}/audience/${dataIndex}`, {
+                                method: 'DELETE',
                                 headers: {
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                                     'Content-Type': 'application/json',
@@ -579,7 +579,7 @@
                         who_should_join: whoShouldJoinTextArea.value,
                     });
 
-                    fetch(`${baseUrl}/instructor/courses/create/${courseId}/who-should-join`, {
+                    fetch(`${baseUrl}/instructor/courses/create/${courseId}/audience`, {
                             method: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',

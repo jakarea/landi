@@ -277,23 +277,24 @@
                                 </td>
                                 <td style="padding: 1rem;">
                                     @php
-                                        $methodClass = match($student->payment_method) {
+                                        $paymentMethod = $student->payment_method ?? 'unknown';
+                                        $methodClass = match($paymentMethod) {
                                             'bkash' => 'method-bkash',
                                             'nogod' => 'method-nogod', 
                                             'rocket' => 'method-rocket',
                                             default => 'method-other'
                                         };
-                                        $methodName = match($student->payment_method) {
+                                        $methodName = match($paymentMethod) {
                                             'bkash' => 'বিকাশ',
                                             'nogod' => 'নগদ',
                                             'rocket' => 'রকেট', 
-                                            default => $student->payment_method
+                                            default => $paymentMethod ?? 'অজানা'
                                         };
                                     @endphp
                                     <span class="payment-method {{ $methodClass }}">{{ $methodName }}</span>
                                 </td>
                                 <td style="padding: 1rem;">
-                                    <span class="amount-badge">৳{{ number_format($student->amount) }}</span>
+                                    <span class="amount-badge">৳{{ number_format($student->amount ?? 0) }}</span>
                                 </td>
                                 <td style="padding: 1rem;">
                                     <div>{{ $student->created_at->format('d M Y') }}</div>
@@ -301,18 +302,9 @@
                                 </td>
                                 <td style="padding: 1rem;">
                                     @php
-                                        $sourceClass = match($student->source) {
-                                            'checkout' => 'source-checkout',
-                                            'manual' => 'source-manual',
-                                            'both' => 'source-both',
-                                            default => 'source-checkout'
-                                        };
-                                        $sourceName = match($student->source) {
-                                            'checkout' => 'স্বয়ংক্রিয়',
-                                            'manual' => 'ম্যানুয়াল',
-                                            'both' => 'উভয়',
-                                            default => 'স্বয়ংক্রিয়'
-                                        };
+                                        $isManual = $student->is_manual ?? false;
+                                        $sourceClass = $isManual ? 'source-manual' : 'source-checkout';
+                                        $sourceName = $isManual ? 'ম্যানুয়াল' : 'স্বয়ংক্রিয়';
                                     @endphp
                                     <span class="source-badge {{ $sourceClass }}">{{ $sourceName }}</span>
                                 </td>

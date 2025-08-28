@@ -59,7 +59,7 @@
                         {{-- profile tab start --}}
                         <div class="tab-pane tab-con active-bg fade show active" id="pills-home" role="tabpanel"
                             aria-labelledby="pills-home-tab" tabindex="0">
-                            <form action="{{ route('instructor.profile.update', config('app.subdomain') ) }}"
+                            <form action="{{ route('instructor.profile.update') }}"
                                 method="POST" class="profile-form create-form-box profile-frm"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -215,7 +215,7 @@
                                 <div class="col-12">
                                     <div class="add-experience-form" id="experience-form">
                                         <form
-                                            action="{{ route('instructor.profile.experience') }}"
+                                            action="{{ route('instructor.profile.experience.store') }}"
                                             method="POST">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $editExp ? $editExp->id:''}}" />
@@ -334,12 +334,12 @@
                                                     <h5>{!! $experience->profession !!}</h5>
                                                     <div>
                                                         <a
-                                                            href="{{ route('instructor.edit.experience', ['experienceId' => $experience->id ]) }}?tab=experience">
+                                                            href="{{ route('instructor.profile.experience.edit', ['experienceId' => $experience->id ]) }}?tab=experience">
                                                             <img src=" {{ asset('assets/images/icons/pen.svg') }}"
                                                                 alt="img" class="img-fluid">
                                                         </a>
 
-                                                        <form method="POST" action="{{ route('instructor.delete.experience', ['experienceId' => $experience->id]) }}" 
+                                                        <form method="POST" action="{{ route('instructor.profile.experience.delete', ['experienceId' => $experience->id]) }}" 
                                                               class="d-inline" onsubmit="return confirm('Are you sure you want to delete this experience?')">
                                                             @csrf
                                                             @method('DELETE')
@@ -399,7 +399,7 @@
                                                     <div class="col-12">
                                                         <div class="create-certificate-form">
                                                             <form
-                                                                action="{{ route('certificate.update') }}"
+                                                                action="{{ route('instructor.certificates.settings') }}"
                                                                 method="POST" enctype="multipart/form-data">
                                                                 @csrf
                                                                 @if(isset($editCertificate))
@@ -652,12 +652,12 @@
                                                                         <h5>{!! optional($certificate->course)->title !!}
                                                                         </h5>
                                                                         <div>
-                                                                            <a href="{{ route('certificate.edit', $certificate->id) }}"><img
+                                                                            <a href="{{ route('instructor.certificates.edit', $certificate->id) }}"><img
                                                                                     src="{{ asset('assets/images/icons/pen.svg') }}"
                                                                                     alt="img" class="img-fluid"></a>
 
                                                                             <form class="d-inline"
-                                                                                action="{{route('certificate.delete', ['id' => $certificate->id])}}"
+                                                                                action="{{route('instructor.certificates.delete', ['id' => $certificate->id])}}"
                                                                                 method="post">
                                                                                 @csrf
 
@@ -701,7 +701,7 @@
                                                     <div class="col-12">
                                                         <div class="create-certificate-form create-certificate-form-2">
                                                             <form
-                                                                action="{{ route('certificate.generate') }}"
+                                                                action="{{ route('instructor.certificates.generate') }}"
                                                                 method="POST" enctype="multipart/form-data">
                                                                 @csrf
                                                                 <div class="row">
@@ -1151,7 +1151,7 @@
                             <div class="row user-add-form-wrap user-add-form-wrap-2 mt-0">
                                 <div class="col-12">
                                     <form
-                                        action="{{ route('instructor.password.update', ['id' => $user->id]) }}"
+                                        action="{{ route('instructor.profile.password.update') }}"
                                         method="POST">
                                         @csrf
                                         <div class="row">
@@ -1225,7 +1225,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="connect-modal-wrap">
-                            <form action="{{ route('instructor.vimeo.update') }}"
+                            <form action="{{ route('instructor.settings.vimeo') }}"
                                 method="POST">
                                 @csrf
                                 <div class="stripe-settings-form-wrap">
@@ -1323,7 +1323,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="connect-modal-wrap">
-                        <form action="{{ route('instructor.payment.update') }}" method="post">
+                        <form action="{{ route('instructor.profile.payment') }}" method="post">
                             @csrf
                             <input type="hidden" name="payment_type" value="bkash">
                             <div class="stripe-settings-form-wrap">
@@ -1357,7 +1357,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="connect-modal-wrap">
-                        <form action="{{ route('instructor.payment.update') }}" method="post">
+                        <form action="{{ route('instructor.profile.payment') }}" method="post">
                             @csrf
                             <input type="hidden" name="payment_type" value="nogod">
                             <div class="stripe-settings-form-wrap">
@@ -1391,7 +1391,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="connect-modal-wrap">
-                        <form action="{{ route('instructor.payment.update') }}" method="post">
+                        <form action="{{ route('instructor.profile.payment') }}" method="post">
                             @csrf
                             <input type="hidden" name="payment_type" value="rocket">
                             <div class="stripe-settings-form-wrap">

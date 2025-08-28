@@ -10,10 +10,24 @@ use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use File;
 use App\Models\User;
+use App\Models\Experience;
 use Auth;
 
 class CertificateController extends Controller
 {
+    // list all certificates for instructor
+    public function index()
+    {
+        $userId = Auth::user()->id;
+        $user = User::find($userId);
+        $experiences = Experience::where('user_id', Auth::user()->id)->orderBy('id','desc')->get();
+        $editExp = null; // Not editing any experience
+        $courses = Course::where('instructor_id', $userId)->get();
+        $certificates = Certificate::where('instructor_id', $userId)->with('course')->orderBy('id','desc')->get();
+
+        return view('profile/instructor/edit', compact('user','experiences','editExp','courses','certificates'))->with('tab', 'certificate');
+    }
+
     // update or create certificate
     public function certificateUpdate(Request $request)
     {
@@ -289,11 +303,12 @@ class CertificateController extends Controller
         $userId = Auth::user()->id;
         $user = User::find($userId);
         $experiences = Experience::where('user_id', Auth::user()->id)->orderBy('id','desc')->get();
+        $editExp = null; // Not editing any experience
         $courses = Course::where('instructor_id', $userId)->get();
         $certificates = Certificate::where('instructor_id', $userId)->with('course')->orderBy('id','desc')->get();
         $editCertificate = $certificate;
 
-        return view('profile/instructor/edit', compact('user','experiences','courses','certificates','editCertificate'))->with('tab', 'certificate');
+        return view('profile/instructor/edit', compact('user','experiences','editExp','courses','certificates','editCertificate'))->with('tab', 'certificate');
     }
 
     // delete certficate

@@ -69,7 +69,7 @@
         
         <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8 col-xl-7">
-                    <form action="{{ route('course.visibility.store', ['id' => $course->id]) }}" method="POST">
+                    <form action="{{ route('instructor.courses.create.visibility.store', ['id' => $course->id]) }}" method="POST">
                         @csrf
                         {{-- error message --}}
                         @if ($errors->any())

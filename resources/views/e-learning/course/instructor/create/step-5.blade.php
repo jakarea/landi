@@ -79,7 +79,7 @@ Course Create - Video Upload
             @if(!$vimeoConnected)
                 <div class="alert alert-warning mt-2">
                     <small>Vimeo account not connected. 
-                        <a href="{{ route('account.settings', ['tab' => 'app']) }}" target="_blank">Connect Vimeo Account</a> 
+                        <a href="{{ route('instructor.profile.settings') }}" target="_blank">Connect Vimeo Account</a> 
                         or use YouTube option.
                     </small>
                 </div>
@@ -127,7 +127,7 @@ Course Create - Video Upload
                     <div class="alert alert-danger mt-2">
                         <small>
                             <i class="fas fa-exclamation-triangle"></i> Vimeo upload is disabled. 
-                            Please <a href="{{ route('account.settings', ['tab' => 'app']) }}" target="_blank">
+                            Please <a href="{{ route('instructor.profile.settings') }}" target="_blank">
                                 connect your Vimeo account
                             </a> to enable video uploads.
                         </small>

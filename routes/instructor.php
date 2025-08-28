@@ -88,12 +88,17 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
     Route::prefix('instructor/courses')->group(function () {
         // Course listing and management
         Route::get('/', [CourseController::class, 'index'])->name('instructor.courses');
+        
+        // Specific routes MUST come before {slug} route
+        Route::get('/create/', [CourseCreateStepController::class, 'facts'])->name('instructor.courses.create');
+        Route::get('/logs/', [CourseController::class, 'showCourseLogs'])->name('instructor.courses.logs');
+        Route::get('/files/{course_id}/{extension}/', [CourseController::class, 'fileDownload'])->name('instructor.courses.files');
+        
+        // Dynamic slug routes come LAST
         Route::get('/{slug}/', [CourseController::class, 'courseOverview'])->name('instructor.courses.overview');
         Route::get('/{slug}/edit/', [CourseController::class, 'courseEdit'])->name('instructor.courses.edit');
         Route::get('/{slug}/preview/', [CourseController::class, 'preview'])->name('instructor.courses.preview');
-        Route::delete('/{id}/', [CourseController::class, 'destroy'])->name('instructor.courses.delete');
-        Route::get('/logs/', [CourseController::class, 'showCourseLogs'])->name('instructor.courses.logs');
-        Route::get('/files/{course_id}/{extension}/', [CourseController::class, 'fileDownload'])->name('instructor.courses.files');
+        Route::delete('/{id}/', [CourseController::class, 'destroy'])->name('instructor.courses.destroy');
     });
 
     // ========================================
@@ -101,8 +106,7 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
     // ========================================
     
     Route::prefix('instructor/courses/create')->group(function () {
-        // Main wizard entry point
-        Route::get('/', [CourseCreateStepController::class, 'facts'])->name('instructor.courses.create');
+        // Course creation form submission
         Route::post('/', [CourseCreateStepController::class, 'storeFacts'])->name('instructor.courses.create.start');
         
         // Wizard steps for specific course
@@ -142,7 +146,17 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
             
             // Step 8: Publish & Share
             Route::get('/publish/', [CourseCreateStepController::class, 'courseShare'])->name('instructor.courses.create.publish');
+            Route::get('/share/', [CourseCreateStepController::class, 'courseShare'])->name('instructor.courses.create.share');
             Route::get('/finish/', [CourseCreateStepController::class, 'finish'])->name('instructor.courses.create.finish');
+            
+            // Lesson content routes (for redirects after lesson creation)
+            Route::get('/video/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonVideo'])->name('instructor.courses.create.lesson.video.content');
+            Route::post('/video/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonVideoSet'])->name('instructor.courses.create.lesson.video.store');
+            Route::get('/audio/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonAudio'])->name('instructor.courses.create.lesson.audio.content');
+            Route::post('/audio/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonAudioSet'])->name('instructor.courses.create.lesson.audio.store');
+            Route::get('/text/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonText'])->name('instructor.courses.create.lesson.text.content');
+            Route::post('/text/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonContent'])->name('instructor.courses.create.lesson.text.store');
+            Route::get('/lesson/{module_id}/institute/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonInstitue'])->name('instructor.courses.create.lesson.institute');
         });
     });
 
