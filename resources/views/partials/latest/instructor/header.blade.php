@@ -1,7 +1,7 @@
 @php use Illuminate\Support\Facades\Request; @endphp
 <nav class="navbar navbar-expand-xl header-area">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url('/instructor/dashboard') }}">
+        <a class="navbar-brand" href="{{ route('instructor.dashboard') }}">
             <i class="fas fa-chalkboard-teacher me-2"></i>
             <span style="font-weight: 700; color: #667eea;">শিখুন</span>
             <small class="text-muted ms-2" style="font-size: 0.75rem;">প্রশিক্ষক</small>
@@ -14,34 +14,75 @@
             @can('instructor')
                 <ul class="navbar-nav m-auto">
                     <li class="nav-item">
-                        <a href="{{ url('instructor/dashboard') }}" class="{{ Request::is('instructor/dashboard*') ? ' active' : '' }} nav-link">
+                        <a href="{{ route('instructor.dashboard') }}" class="{{ Request::is('instructor') || Request::is('instructor/') ? ' active' : '' }} nav-link">
                             <i class="fas fa-tachometer-alt me-1"></i>
                             ড্যাশবোর্ড
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ url('instructor/courses') }}" class="{{ Request::is('instructor/courses') || Request::is('instructor/courses/*') && !Request::is('instructor/courses/create*') ? ' active' : '' }} nav-link">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle {{ Request::is('instructor/courses*') ? ' active' : '' }}" data-bs-toggle="dropdown">
                             <i class="fas fa-graduation-cap me-1"></i>
-                            আমার কোর্স
+                            কোর্স পরিচালনা
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item {{ Request::is('instructor/courses') || Request::is('instructor/courses/') ? ' active' : '' }}" 
+                                   href="{{ route('instructor.courses') }}">
+                                   <i class="fas fa-list me-2"></i>
+                                   আমার কোর্স
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ Request::is('instructor/courses/create*') ? ' active' : '' }}" 
+                                   href="{{ route('instructor.courses.create') }}">
+                                   <i class="fas fa-plus-circle me-2"></i>
+                                   নতুন কোর্স
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" 
+                                   href="{{ route('instructor.courses.logs') }}">
+                                   <i class="fas fa-chart-line me-2"></i>
+                                   কোর্স লগ
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('instructor/courses/create') }}" class="{{ Request::is('instructor/courses/create*') ? ' active' : '' }} nav-link">
-                            <i class="fas fa-plus-circle me-1"></i>
-                            কোর্স তৈরি
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('instructor/students') }}" class="{{ Request::is('instructor/students*') ? ' active' : '' }} nav-link">
+                        <a href="{{ route('instructor.students') }}" class="{{ Request::is('instructor/students*') ? ' active' : '' }} nav-link">
                             <i class="fas fa-users me-1"></i>
-                            আমার শিক্ষার্থী
+                            শিক্ষার্থী
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ url('instructor/earnings') }}" class="{{ Request::is('instructor/earnings*') ? ' active' : '' }} nav-link">
-                            <i class="fas fa-wallet me-1"></i>
-                            আয়
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle {{ Request::is('instructor/earnings*') || Request::is('instructor/coupons*') ? ' active' : '' }}" data-bs-toggle="dropdown">
+                            <i class="fas fa-chart-bar me-1"></i>
+                            বিজনেস
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item {{ Request::is('instructor/earnings*') ? ' active' : '' }}" 
+                                   href="{{ route('instructor.earnings') }}">
+                                   <i class="fas fa-wallet me-2"></i>
+                                   আয়
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ Request::is('instructor/coupons*') ? ' active' : '' }}" 
+                                   href="{{ route('instructor.coupons') }}">
+                                   <i class="fas fa-tags me-2"></i>
+                                   কুপন
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ Request::is('instructor/certificates*') ? ' active' : '' }}" 
+                                   href="{{ route('instructor.certificates') }}">
+                                   <i class="fas fa-certificate me-2"></i>
+                                   সার্টিফিকেট
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle {{ Request::is('instructor/enrollments*') ? ' active' : '' }}" data-bs-toggle="dropdown">
@@ -74,8 +115,8 @@
                                </a>
                             </li>
                             <li>
-                                <a class="dropdown-item {{ Request::is('instructor/enrollments/all*') ? ' active' : '' }}" 
-                                   href="{{ route('instructor.enrollments.all') }}">
+                                <a class="dropdown-item {{ Request::is('instructor/enrollments') || Request::is('instructor/enrollments/') ? ' active' : '' }}" 
+                                   href="{{ route('instructor.enrollments') }}">
                                    <i class="fas fa-list me-2"></i>
                                    সব আবেদন
                                </a>
@@ -88,18 +129,18 @@
                             প্রোফাইল
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item {{ Request::is('instructor/profile/myprofile*') ? ' active' : '' }}" 
-                                   href="{{ url('instructor/profile/myprofile') }}">
+                            <li><a class="dropdown-item {{ Request::is('instructor/profile') || Request::is('instructor/profile/') ? ' active' : '' }}" 
+                                   href="{{ route('instructor.profile') }}">
                                    <i class="fas fa-user-circle me-2"></i>
                                    আমার প্রোফাইল
                                </a></li>
-                            <li><a class="dropdown-item {{ Request::is('instructor/profile/account-settings*') ? ' active' : '' }}" 
-                                   href="{{ url('instructor/profile/account-settings') }}">
+                            <li><a class="dropdown-item {{ Request::is('instructor/profile/settings*') ? ' active' : '' }}" 
+                                   href="{{ route('instructor.profile.settings') }}">
                                    <i class="fas fa-cog me-2"></i>
                                    একাউন্ট সেটিং
                                </a></li>
                             <li><a class="dropdown-item {{ Request::is('instructor/courses*') ? ' active' : '' }}" 
-                                   href="{{ url('instructor/courses') }}">
+                                   href="{{ route('instructor.courses') }}">
                                    <i class="fas fa-book-open me-2"></i>
                                    সকল কোর্স
                                </a></li>
@@ -119,10 +160,10 @@
                 </ul>
             @endcan
             <div class="d-flex">
-                <a href="{{ url('instructor/courses') }}" class="bttn" title="কোর্স খুঁজুন">
-                    <i class="fas fa-search"></i>
+                <a href="{{ route('instructor.builder') }}" class="bttn" title="ল্যান্ডিং পেজ বিল্ডার">
+                    <i class="fas fa-paint-brush"></i>
                 </a>
-                <a href="{{ url('instructor/notifications') }}" 
+                <a href="{{ route('instructor.notifications') }}" 
                    class="bttn {{ Request::is('instructor/notifications') ? ' active' : '' }}" 
                    title="নোটিফিকেশন">
                     <i class="fas fa-bell"></i>
@@ -142,21 +183,29 @@
                             <small class="text-muted">প্রশিক্ষক</small>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url('instructor/dashboard') }}">
+                        <li><a class="dropdown-item" href="{{ route('instructor.dashboard') }}">
                             <i class="fas fa-tachometer-alt me-2"></i>
                             ড্যাশবোর্ড
                         </a></li>
-                        <li><a class="dropdown-item" href="{{ url('instructor/profile/myprofile') }}">
+                        <li><a class="dropdown-item" href="{{ route('instructor.profile') }}">
                             <i class="fas fa-user-circle me-2"></i>
                             আমার প্রোফাইল
                         </a></li>
-                        <li><a class="dropdown-item" href="{{ url('instructor/courses') }}">
+                        <li><a class="dropdown-item" href="{{ route('instructor.courses') }}">
                             <i class="fas fa-book-open me-2"></i>
-                            সকল কোর্স
+                            আমার কোর্স
                         </a></li>
-                        <li><a class="dropdown-item" href="{{ url('instructor/earnings') }}">
+                        <li><a class="dropdown-item" href="{{ route('instructor.students') }}">
+                            <i class="fas fa-users me-2"></i>
+                            শিক্ষার্থী
+                        </a></li>
+                        <li><a class="dropdown-item" href="{{ route('instructor.earnings') }}">
                             <i class="fas fa-wallet me-2"></i>
                             আয় ও পেমেন্ট
+                        </a></li>
+                        <li><a class="dropdown-item" href="{{ route('instructor.builder') }}">
+                            <i class="fas fa-paint-brush me-2"></i>
+                            ল্যান্ডিং পেজ
                         </a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>

@@ -23,6 +23,7 @@ use App\Models\CourseReview;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\CourseActivity;
+use App\Models\CourseEnrollment;
 
 
 class CourseController extends Controller
@@ -483,6 +484,31 @@ class CourseController extends Controller
     {
         $title = 'Course Overview';
         
+        // Check if user is authenticated and is a student
+        if (Auth::check() && Auth::user()->user_role === 'student') {
+            // First get the course ID for checking enrollment
+            $courseId = Course::where('slug', $slug)->value('id');
+            
+            if ($courseId) {
+                // Check if the student has already purchased this course via checkout (paid courses)
+                $hasPurchasedViaCheckout = Checkout::where('user_id', Auth::id())
+                                                  ->where('course_id', $courseId)
+                                                  ->where('payment_status', 'success')
+                                                  ->exists();
+                
+                // Check if the student is enrolled and approved via CourseEnrollment model
+                $hasApprovedEnrollment = CourseEnrollment::where('user_id', Auth::id())
+                                                        ->where('course_id', $courseId)
+                                                        ->where('status', CourseEnrollment::STATUS_APPROVED)
+                                                        ->exists();
+                
+                if ($hasPurchasedViaCheckout || $hasApprovedEnrollment) {
+                    // Redirect to student course overview
+                    return redirect()->route('student.courses.overview', ['slug' => $slug]);
+                }
+            }
+        }
+        
         // Optimized eager loading
         $course = Course::where('slug', $slug)
             ->where('status', 'published')
@@ -843,5 +869,83 @@ class CourseController extends Controller
             return redirect('instructor/courses')->with('error', 'Failed to delete course. Please try again.');
         }
     }
+
+    // ========================================
+    // NEW CLEAN URL STRUCTURE METHODS
+    // ========================================
+
+    /**
+     * Course overview for instructor - /instructor/courses/{slug}/
+     */
+    public function courseOverview($slug)
+    {
+        $course = Course::where('slug', $slug)
+                       ->where('user_id', Auth::id())
+                       ->with(['modules.lessons', 'reviews'])
+                       ->firstOrFail();
+
+        // Calculate course statistics
+        $totalLessons = 0;
+        $totalDuration = 0;
+        
+        foreach ($course->modules as $module) {
+            $totalLessons += $module->lessons->count();
+            foreach ($module->lessons as $lesson) {
+                if (isset($lesson->duration) && is_numeric($lesson->duration)) {
+                    $totalDuration += $lesson->duration;
+                }
+            }
+        }
+
+        $course->total_lessons = $totalLessons;
+        $course->total_duration_minutes = floor($totalDuration / 60);
+        
+        // Get enrollment statistics
+        $course->enrolled_count = Checkout::where('course_id', $course->id)->count();
+        $course->average_rating = $course->reviews->avg('star') ?? 0;
+        $course->review_count = $course->reviews->count();
+
+        return view('instructor.courses.overview', compact('course'));
+    }
+
+    /**
+     * Course edit page for instructor - /instructor/courses/{slug}/edit/
+     */
+    public function courseEdit($slug)
+    {
+        $course = Course::where('slug', $slug)
+                       ->where('user_id', Auth::id())
+                       ->with('modules.lessons')
+                       ->firstOrFail();
+
+        return view('instructor.courses.edit', compact('course'));
+    }
+
+    /**
+     * Course preview for instructor - /instructor/courses/{slug}/preview/
+     */
+    public function coursePreview($slug)
+    {
+        $course = Course::where('slug', $slug)
+                       ->where('user_id', Auth::id())
+                       ->with('modules.lessons')
+                       ->firstOrFail();
+
+        return view('instructor.courses.preview', compact('course'));
+    }
+
+    /**
+     * Show course logs - /instructor/courses/logs/
+     */
+    public function showCourseLogs()
+    {
+        $logs = CourseLog::where('instructor_id', Auth::id())
+                        ->with('course')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(15);
+
+        return view('instructor.courses.logs', compact('logs'));
+    }
+
 
 }

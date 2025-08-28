@@ -125,96 +125,98 @@
                             }
                         @endphp
                         <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xxl-3 mb-4">
-                            <div class="course-single-item">
-                                <div>
+                            <div class="course-single-item modern-course-card">
+                                <div class="course-card-content">
                                     <div class="course-thumb-box">
                                         <img src="{{ asset($enrolment->course->thumbnail) }}"
                                             alt="{{ $enrolment->course->slug }}" class="img-fluid">
-                                    </div>
-                                    <div class="course-txt-box">
-                                        <a href="{{ url('student/courses/' . $enrolment->course->slug) }}">
-                                            {{ Str::limit($enrolment->course->title, 45) }}</a>
                                         
                                         {{-- Status Badge --}}
-                                        <div class="mb-2">
+                                        <div class="status-badge-overlay">
                                             @if($enrolment->status == 'pending')
-                                                <span class="badge bg-warning text-dark">
-                                                    <i class="fas fa-clock me-1"></i> অনুমোদনের অপেক্ষায়
+                                                <span class="modern-badge pending-badge">
+                                                    <i class="fas fa-clock"></i> অনুমোদনের অপেক্ষায়
                                                 </span>
                                             @elseif($enrolment->status == 'approved')
-                                                <span class="badge bg-success">
-                                                    <i class="fas fa-check-circle me-1"></i> অনুমোদিত
+                                                <span class="modern-badge approved-badge">
+                                                    <i class="fas fa-check-circle"></i> অনুমোদিত
                                                 </span>
                                             @elseif($enrolment->status == 'payment_pending')
-                                                <span class="badge bg-danger">
-                                                    <i class="fas fa-credit-card me-1"></i> পেমেন্ট অপেক্ষায়
+                                                <span class="modern-badge payment-badge">
+                                                    <i class="fas fa-credit-card"></i> পেমেন্ট প্রয়োজন
                                                 </span>
                                             @endif
                                         </div>
+                                    </div>
+                                    
+                                    <div class="course-txt-box">
+                                        <div class="course-meta-info mb-2">
+                                            <div class="rating-info">
+                                                <div class="star-rating">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($i <= $review_avg)
+                                                            <i class="fas fa-star filled"></i>
+                                                        @else
+                                                            <i class="fas fa-star"></i>
+                                                        @endif
+                                                    @endfor
+                                                </div>
+                                                <span class="rating-score">{{ number_format($review_avg, 1) }}</span>
+                                                <span class="review-count">({{ $total }})</span>
+                                            </div>
+                                        </div>
                                         
-                                        {!! Str::limit($enrolment->course->short_description, $limit = 260, $end = '...') !!}
+                                        <h3 class="course-title">
+                                            <a href="{{ url('student/courses/' . $enrolment->course->slug) }}">
+                                                {{ Str::limit($enrolment->course->title, 50) }}
+                                            </a>
+                                        </h3>
                                         
-                                        <ul>
-                                            <li><span>{{ $review_avg }}</span></li>
-
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                @if ($i <= $review_avg)
-                                                    <li><i class="fas fa-star"></i></li>
-                                                @else
-                                                    <li><i class="fas fa-star not-rev"></i></li>
-                                                @endif
-                                            @endfor
-
-                                            <li><span>({{ $total }})</span></li>
-                                        </ul>
-
-
+                                        <p class="course-description">
+                                            {{ Str::limit(strip_tags($enrolment->course->short_description), 80, '...') }}
+                                        </p>
                                     </div>
                                 </div>
-                                <div class="course-txt-box pt-0">
+                                <div class="modern-course-footer">
                                     @if($enrolment->status == 'approved')
                                         {{-- Show progress for approved courses --}}
-                                        <div class="course-progress-bar">
-                                            <div class="progress" role="progressbar" aria-label="Basic example"
-                                                aria-valuenow="{{ $enrolment->course->progress ?? 0 }}"
-                                                aria-valuemin="0" aria-valuemax="100">
-                                                @if (($enrolment->course->progress ?? 0) == 100)
-                                                    <div class="progress-bar course-gren-bg"
-                                                        style="width: {{ $enrolment->course->progress ?? 0 }}%;">
-                                                    </div>
-                                                @else
-                                                    <div class="progress-bar"
-                                                        style="width: {{ $enrolment->course->progress ?? 0 }}%">
-                                                    </div>
-                                                @endif
+                                        <div class="modern-progress-section">
+                                            <div class="progress-header">
+                                                <span class="progress-label">অগ্রগতি</span>
+                                                <span class="progress-percentage">{{ $enrolment->course->progress ?? 0 }}%</span>
                                             </div>
-                                            <div class="d-flex">
-                                                @if (($enrolment->course->progress ?? 0) == 100)
-                                                    <h6 class="course-gren-colr">Completed</h6>
-                                                    <h6 class="course-gren-colr">
-                                                        {{ $enrolment->course->progress ?? 0 }}%</h6>
-                                                @else
-                                                    <h6>Incomplete</h6>
-                                                    <h6>{{ $enrolment->course->progress ?? 0 }}%</h6>
-                                                @endif
+                                            <div class="modern-progress-bar">
+                                                <div class="progress-track">
+                                                    <div class="progress-fill {{ ($enrolment->course->progress ?? 0) == 100 ? 'completed' : '' }}"
+                                                        style="width: {{ $enrolment->course->progress ?? 0 }}%"></div>
+                                                </div>
                                             </div>
+                                            @if (($enrolment->course->progress ?? 0) == 100)
+                                                <div class="completion-badge">
+                                                    <i class="fas fa-check-circle"></i> সম্পন্ন
+                                                </div>
+                                            @endif
                                         </div>
                                     @elseif($enrolment->status == 'pending')
                                         {{-- Show pending status for pending courses --}}
-                                        <div class="course-progress-bar">
-                                            <div class="text-center py-3">
-                                                <i class="fas fa-clock text-warning fa-2x mb-2"></i>
-                                                <p class="text-warning mb-0"><strong>অনুমোদনের অপেক্ষায়</strong></p>
-                                                <small class="text-muted">ইনস্ট্রাক্টর শীঘ্রই আপনার এনরোলমেন্ট অনুমোদন করবেন</small>
+                                        <div class="modern-status-section pending">
+                                            <div class="status-content">
+                                                <i class="fas fa-hourglass-half"></i>
+                                                <div class="status-text">
+                                                    <strong>অনুমোদনের অপেক্ষায়</strong>
+                                                    <small>ইনস্ট্রাক্টর শীঘ্রই অনুমোদন করবেন</small>
+                                                </div>
                                             </div>
                                         </div>
                                     @elseif($enrolment->status == 'payment_pending')
                                         {{-- Show payment pending status --}}
-                                        <div class="course-progress-bar">
-                                            <div class="text-center py-3">
-                                                <i class="fas fa-credit-card text-danger fa-2x mb-2"></i>
-                                                <p class="text-danger mb-0"><strong>পেমেন্ট অপেক্ষায়</strong></p>
-                                                <small class="text-muted">কোর্স শুরু করতে পেমেন্ট সম্পন্ন করুন</small>
+                                        <div class="modern-status-section payment">
+                                            <div class="status-content">
+                                                <i class="fas fa-credit-card"></i>
+                                                <div class="status-text">
+                                                    <strong>পেমেন্ট প্রয়োজন</strong>
+                                                    <small>কোর্স শুরু করতে পেমেন্ট সম্পন্ন করুন</small>
+                                                </div>
                                             </div>
                                         </div>
                                     @endif

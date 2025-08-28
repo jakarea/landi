@@ -14,216 +14,235 @@ use App\Http\Controllers\Builder\LandingPageBuilderController;
 
 /*
 |--------------------------------------------------------------------------
-| Instructor Routes
+| Instructor Routes - Clean Folder Structure
 |--------------------------------------------------------------------------
 |
-| All routes for instructors including dashboard, profile management,
-| course creation, course management, students management, and earnings.
+| Professional URL structure for instructors:
+| /instructor/ -> Dashboard
+| /instructor/profile/ -> Profile management
+| /instructor/courses/ -> Course management
+| /instructor/courses/create/ -> Course creation wizard
+| /instructor/students/ -> Student management
+| /instructor/earnings/ -> Earnings & analytics
+| /instructor/enrollments/ -> Enrollment management
+| /instructor/certificates/ -> Certificate management
+| /instructor/coupons/ -> Coupon management
+| /instructor/builder/ -> Landing page builder
 |
 */
 
 Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
     
     // ========================================
-    // DASHBOARD & PROFILE MANAGEMENT
+    // MAIN DASHBOARD
     // ========================================
     
-    Route::get('/instructor/dashboard', [DashboardController::class, 'index'])->name('instructor.dashboard');
-    
-    // Profile & Settings
-    Route::get('/instructor/profile/myprofile', [ProfileManagementController::class, 'show'])->name('instructor.profile');
-    Route::post('/instructor/profile/cover/upload', [ProfileManagementController::class, 'coverUpload']);
-    Route::post('/instructor/profile/update', [ProfileManagementController::class, 'update'])->name('instructor.profile.update');
-    Route::get('/instructor/profile/change-password', [ProfileManagementController::class, 'passwordUpdate']);
-    Route::post('/instructor/profile/change-password', [ProfileManagementController::class, 'postChangePassword'])->name('instructor.password.update');
-    Route::get('/instructor/profile/account-settings', [ProfileManagementController::class, 'edit'])->name('account.settings');
-    
-    // Experience Management
-    Route::post('/instructor/profile/experience/add', [ExperienceController::class, 'store'])->name('instructor.profile.experience');
-    Route::get('/instructor/profile/experience/{experienceId}/edit', [ExperienceController::class, 'edit'])->name('instructor.edit.experience');
-    Route::put('/instructor/profile/experience/{experienceId}', [ExperienceController::class, 'update'])->name('instructor.profile.experience.update');
-    Route::delete('/instructor/profile/experience/{experienceId}', [ExperienceController::class, 'destroy'])->name('instructor.delete.experience');
-    
-    // Payment Settings
-    Route::post('/instructor/payment/update', [ProfileManagementController::class, 'updatePaymentSettings'])->name('instructor.payment.update');
+    Route::get('/instructor/', [DashboardController::class, 'index'])->name('instructor.dashboard');
+    Route::get('/instructor/notifications/', [DashboardController::class, 'notifications'])->name('instructor.notifications');
     
     // ========================================
-    // STUDENTS MANAGEMENT
+    // PROFILE SECTION
     // ========================================
     
-    Route::get('/instructor/students', [DashboardController::class, 'students'])->name('instructor.students');
-    Route::get('/instructor/students/{student}', [DashboardController::class, 'showStudentProfile'])->name('instructor.students.profile');
+    Route::prefix('instructor/profile')->group(function () {
+        Route::get('/', [ProfileManagementController::class, 'show'])->name('instructor.profile');
+        Route::get('/edit/', [ProfileManagementController::class, 'edit'])->name('instructor.profile.edit');
+        Route::post('/update/', [ProfileManagementController::class, 'update'])->name('instructor.profile.update');
+        Route::post('/cover/', [ProfileManagementController::class, 'coverUpload'])->name('instructor.profile.cover');
+        Route::get('/password/', [ProfileManagementController::class, 'passwordUpdate'])->name('instructor.profile.password');
+        Route::post('/password/', [ProfileManagementController::class, 'postChangePassword'])->name('instructor.profile.password.update');
+        Route::get('/settings/', [ProfileManagementController::class, 'edit'])->name('instructor.profile.settings');
+        Route::post('/payment/', [ProfileManagementController::class, 'updatePaymentSettings'])->name('instructor.profile.payment');
+        
+        // Experience Management
+        Route::prefix('experience')->group(function () {
+            Route::post('/', [ExperienceController::class, 'store'])->name('instructor.profile.experience.store');
+            Route::get('/{experienceId}/edit/', [ExperienceController::class, 'edit'])->name('instructor.profile.experience.edit');
+            Route::put('/{experienceId}/', [ExperienceController::class, 'update'])->name('instructor.profile.experience.update');
+            Route::delete('/{experienceId}/', [ExperienceController::class, 'destroy'])->name('instructor.profile.experience.delete');
+        });
+    });
     
     // ========================================
-    // EARNINGS MANAGEMENT
+    // STUDENTS SECTION
     // ========================================
     
-    Route::get('/instructor/earnings', [DashboardController::class, 'earnings'])->name('instructor.earnings');
-    Route::post('/instructor/earnings/add', [DashboardController::class, 'addEarning'])->name('instructor.earnings.add');
+    Route::prefix('instructor/students')->group(function () {
+        Route::get('/', [DashboardController::class, 'students'])->name('instructor.students');
+        Route::get('/{student}/', [DashboardController::class, 'showStudentProfile'])->name('instructor.students.profile');
+    });
     
     // ========================================
-    // NOTIFICATIONS
+    // EARNINGS SECTION
     // ========================================
     
-    Route::get('/instructor/notifications', [DashboardController::class, 'notifications'])->name('instructor.notifications');
+    Route::prefix('instructor/earnings')->group(function () {
+        Route::get('/', [DashboardController::class, 'earnings'])->name('instructor.earnings');
+        Route::post('/add/', [DashboardController::class, 'addEarning'])->name('instructor.earnings.add');
+    });
     
     // ========================================
-    // COURSE MANAGEMENT ROUTES
+    // COURSES SECTION
     // ========================================
     
-    // Course Management
-    Route::get('/instructor/courses', [CourseController::class, 'index'])->name('instructor.courses.index');
-    Route::get('/instructor/courses/{id}', [CourseController::class, 'show'])->whereNumber('id')->name('instructor.courses.show');
-    Route::get('/instructor/courses/overview/{slug}', [CourseController::class, 'overview'])->name('instructor.courses.overview');
-    Route::get('/instructor/courses/overview/{slug}/preview', [CourseController::class, 'preview'])->name('instructor.courses.overview.preview');
-    Route::get('/instructor/courses/file-download/{course_id}/{extension}', [CourseController::class, 'fileDownload'])->name('instructor.courses.file.download');
-    Route::delete('/instructor/courses/{id}', [CourseController::class, 'destroy'])->name('instructor.courses.destroy');
-    Route::get('/instructor/courses-log', [CourseController::class, 'storeCourseLog'])->name('instructor.log.courses');
-    
-    // Alternative route names for backward compatibility
-    Route::get('/instructor/courses', [CourseController::class, 'index'])->name('instructor.courses');
-    Route::delete('/instructor/courses/{id}/destroy', [CourseController::class, 'destroy'])->name('course.destroy');
-    Route::get('/instructor/courses/overview/{slug}', [CourseController::class,'overview'])->name('instructor.course.overview');
-    Route::get('/instructor/courses/overview/{slug}/preview', [CourseController::class,'preview'])->name('instructor.course.overview.preview');
-    Route::get('/instructor/courses/file-download/{course_id}/{extension}', [CourseController::class,'fileDownload'])->name('instructor.file.download');
-    Route::get('/instructor/courses/{id}', [CourseController::class,'show'])->name('course.show')->where('id', '[0-9]+');
+    Route::prefix('instructor/courses')->group(function () {
+        // Course listing and management
+        Route::get('/', [CourseController::class, 'index'])->name('instructor.courses');
+        Route::get('/{slug}/', [CourseController::class, 'courseOverview'])->name('instructor.courses.overview');
+        Route::get('/{slug}/edit/', [CourseController::class, 'courseEdit'])->name('instructor.courses.edit');
+        Route::get('/{slug}/preview/', [CourseController::class, 'preview'])->name('instructor.courses.preview');
+        Route::delete('/{id}/', [CourseController::class, 'destroy'])->name('instructor.courses.delete');
+        Route::get('/logs/', [CourseController::class, 'showCourseLogs'])->name('instructor.courses.logs');
+        Route::get('/files/{course_id}/{extension}/', [CourseController::class, 'fileDownload'])->name('instructor.courses.files');
+    });
 
     // ========================================
-    // COURSE CREATION ROUTES
+    // COURSE CREATION WIZARD
     // ========================================
     
-    // Main course creation flow
-    Route::get('/instructor/courses/create', [CourseCreateStepController::class, 'facts'])->name('course.create.step-1');
-    Route::post('/instructor/courses/create', [CourseCreateStepController::class, 'storeFacts'])->name('course.create.step-1save');
-    
-    // Course Facts (Step 1)
-    Route::get('/instructor/courses/create/{id}/facts', [CourseCreateStepController::class, 'facts'])->name('course.create.facts');
-    Route::post('/instructor/courses/create/{id?}/facts', [CourseCreateStepController::class, 'storeFacts'])->name('course.store.facts');
-    
-    // Course Objects (Step 2)
-    Route::get('/instructor/courses/create/{id}/objects', [CourseCreateStepController::class, 'courseObjects'])->name('course.create.object');
-    Route::post('/instructor/courses/create/{id}/objects', [CourseCreateStepController::class, 'courseObjectsSet'])->name('course.objects.store');
-    Route::post('/instructor/courses/create/{courseId}/delete-objects/{dataIndex}', [CourseCreateStepController::class, 'deleteObjective'])->name('course.objects.delete');
-    Route::post('/instructor/courses/create/updateObjectives/{id}', [CourseCreateStepController::class, 'updateObjectives'])->name('course.objectives.update');
-    Route::post('/instructor/courses/create/{id}/who-should-join', [CourseCreateStepController::class, 'whoShouldJoin'])->name('course.who-should-join.store');
-    Route::post('/instructor/courses/create/{courseId}/delete-who-should-join/{dataIndex}', [CourseCreateStepController::class, 'deleteWhoShouldJoin'])->name('course.who-should-join.delete');
-    
-    // Course Price (Step 3)
-    Route::get('/instructor/courses/create/{id}/price', [CourseCreateStepController::class, 'coursePrice'])->name('course.create.price');
-    Route::post('/instructor/courses/create/{id}/price', [CourseCreateStepController::class, 'coursePriceSet'])->name('course.price.store');
-    
-    // Course Design (Step 4)
-    Route::get('/instructor/courses/create/{id}/design', [CourseCreateStepController::class, 'courseDesign'])->name('course.create.design');
-    Route::post('/instructor/courses/create/{id}/design', [CourseCreateStepController::class, 'courseDesignSet'])->name('course.design.store');
-    
-    // Course Content (Step 5)
-    Route::get('/instructor/courses/create/{id}/content', [CourseCreateStepController::class, 'step1a'])->name('course.content.step');
-    Route::post('/instructor/courses/create/{id}/content', [CourseCreateStepController::class, 'step1a'])->name('course.content.step.post');
-    
-    // Course Certificate (Step 6)
-    Route::get('/instructor/courses/create/{id}/certificate', [CourseCreateStepController::class, 'courseCertificate'])->name('course.create.certificate');
-    Route::post('/instructor/courses/create/{id}/certificate', [CourseCreateStepController::class, 'courseCertificateSet'])->name('course.certificate.store');
-    Route::delete('/instructor/courses/create/{id}/certificate/remove', [CourseCreateStepController::class, 'courseCertificateRemove'])->name('course.certificate.remove');
-    
-    // Course Visibility (Step 7)
-    Route::get('/instructor/courses/create/{id}/visibility', [CourseCreateStepController::class, 'visibility'])->name('course.create.visibility');
-    Route::post('/instructor/courses/create/{id}/visibility', [CourseCreateStepController::class, 'visibilitySet'])->name('course.visibility.store');
-    
-    // Course Share (Step 8)
-    Route::get('/instructor/courses/create/{id}/share', [CourseCreateStepController::class, 'courseShare'])->name('course.create.share');
-    Route::get('/instructor/courses/create/{id}/finish', [CourseCreateStepController::class, 'finish'])->name('course.create.finish');
-    Route::get('/instructor/finish/edit', [CourseCreateStepController::class, 'finishEdit'])->name('course.finish.edit');
+    Route::prefix('instructor/courses/create')->group(function () {
+        // Main wizard entry point
+        Route::get('/', [CourseCreateStepController::class, 'facts'])->name('instructor.courses.create');
+        Route::post('/', [CourseCreateStepController::class, 'storeFacts'])->name('instructor.courses.create.start');
+        
+        // Wizard steps for specific course
+        Route::prefix('{id}')->group(function () {
+            // Step 1: Course Facts
+            Route::get('/facts/', [CourseCreateStepController::class, 'facts'])->name('instructor.courses.create.facts');
+            Route::post('/facts/', [CourseCreateStepController::class, 'storeFacts'])->name('instructor.courses.create.facts.store');
+            
+            // Step 2: Course Objectives
+            Route::get('/objectives/', [CourseCreateStepController::class, 'courseObjects'])->name('instructor.courses.create.objectives');
+            Route::post('/objectives/', [CourseCreateStepController::class, 'courseObjectsSet'])->name('instructor.courses.create.objectives.store');
+            Route::post('/objectives/update/', [CourseCreateStepController::class, 'updateObjectives'])->name('instructor.courses.create.objectives.update');
+            Route::delete('/objectives/{dataIndex}/', [CourseCreateStepController::class, 'deleteObjective'])->name('instructor.courses.create.objectives.delete');
+            Route::post('/audience/', [CourseCreateStepController::class, 'whoShouldJoin'])->name('instructor.courses.create.audience.store');
+            Route::delete('/audience/{dataIndex}/', [CourseCreateStepController::class, 'deleteWhoShouldJoin'])->name('instructor.courses.create.audience.delete');
+            
+            // Step 3: Pricing
+            Route::get('/pricing/', [CourseCreateStepController::class, 'coursePrice'])->name('instructor.courses.create.pricing');
+            Route::post('/pricing/', [CourseCreateStepController::class, 'coursePriceSet'])->name('instructor.courses.create.pricing.store');
+            
+            // Step 4: Design & Media
+            Route::get('/design/', [CourseCreateStepController::class, 'courseDesign'])->name('instructor.courses.create.design');
+            Route::post('/design/', [CourseCreateStepController::class, 'courseDesignSet'])->name('instructor.courses.create.design.store');
+            
+            // Step 5: Content Structure
+            Route::get('/content/', [CourseCreateStepController::class, 'step1a'])->name('instructor.courses.create.content');
+            Route::post('/content/', [CourseCreateStepController::class, 'step1a'])->name('instructor.courses.create.content.store');
+            
+            // Step 6: Certificate Setup
+            Route::get('/certificate/', [CourseCreateStepController::class, 'courseCertificate'])->name('instructor.courses.create.certificate');
+            Route::post('/certificate/', [CourseCreateStepController::class, 'courseCertificateSet'])->name('instructor.courses.create.certificate.store');
+            Route::delete('/certificate/', [CourseCreateStepController::class, 'courseCertificateRemove'])->name('instructor.courses.create.certificate.delete');
+            
+            // Step 7: Visibility Settings
+            Route::get('/visibility/', [CourseCreateStepController::class, 'visibility'])->name('instructor.courses.create.visibility');
+            Route::post('/visibility/', [CourseCreateStepController::class, 'visibilitySet'])->name('instructor.courses.create.visibility.store');
+            
+            // Step 8: Publish & Share
+            Route::get('/publish/', [CourseCreateStepController::class, 'courseShare'])->name('instructor.courses.create.publish');
+            Route::get('/finish/', [CourseCreateStepController::class, 'finish'])->name('instructor.courses.create.finish');
+        });
+    });
 
     // ========================================
-    // MODULE MANAGEMENT ROUTES
+    // COURSE CONTENT MANAGEMENT (Modules & Lessons)
     // ========================================
     
-    // Module creation and management
-    Route::post('/instructor/courses/create/{id}/module', [CourseCreateStepController::class, 'module'])->name('course.module.step.create');
-    Route::post('/instructor/courses/create/{id}/facts-update', [CourseCreateStepController::class, 'step3cu'])->name('course.module.step.update');
-    Route::post('/instructor/module/sortable', [CourseCreateStepController::class, 'moduleResorting'])->name('instructor.module.sortable');
-    Route::delete('/instructor/module/{id}/delete', [CourseCreateStepController::class, 'destroyModule'])->name('instructor.module.delete');
+    // Module management
+    Route::prefix('instructor/modules')->group(function () {
+        Route::post('/create/{course_id}/', [CourseCreateStepController::class, 'module'])->name('instructor.modules.create');
+        Route::put('/{id}/', [CourseCreateStepController::class, 'step3cu'])->name('instructor.modules.update');
+        Route::post('/sort/', [CourseCreateStepController::class, 'moduleResorting'])->name('instructor.modules.sort');
+        Route::delete('/{id}/', [CourseCreateStepController::class, 'destroyModule'])->name('instructor.modules.delete');
+    });
+
+    // Lesson management
+    Route::prefix('instructor/lessons')->group(function () {
+        Route::post('/create/{course_id}/{module_id}/', [CourseCreateStepController::class, 'addLesson'])->name('instructor.lessons.create');
+        Route::put('/{id}/', [CourseCreateStepController::class, 'step3d'])->name('instructor.lessons.update');
+        Route::post('/sort/', [CourseCreateStepController::class, 'moduleLessonResorting'])->name('instructor.lessons.sort');
+        Route::delete('/{id}/', [CourseCreateStepController::class, 'destroyLesson'])->name('instructor.lessons.delete');
+        
+        // Lesson content editing
+        Route::prefix('{lesson_id}/content')->group(function () {
+            Route::get('/text/', [CourseCreateStepController::class, 'stepLessonText'])->name('instructor.lessons.content.text');
+            Route::post('/text/', [CourseCreateStepController::class, 'stepLessonContent'])->name('instructor.lessons.content.text.store');
+            
+            Route::get('/audio/', [CourseCreateStepController::class, 'stepLessonAudio'])->name('instructor.lessons.content.audio');
+            Route::post('/audio/', [CourseCreateStepController::class, 'stepLessonAudioSet'])->name('instructor.lessons.content.audio.store');
+            Route::delete('/audio/', [CourseCreateStepController::class, 'stepLessonAudioRemove'])->name('instructor.lessons.content.audio.delete');
+            
+            Route::get('/video/', [CourseCreateStepController::class, 'stepLessonVideo'])->name('instructor.lessons.content.video');
+            Route::post('/video/', [CourseCreateStepController::class, 'stepLessonVideoSet'])->name('instructor.lessons.content.video.store');
+            Route::delete('/video/', [CourseCreateStepController::class, 'stepLessonVideoRemove'])->name('instructor.lessons.content.video.delete');
+            
+            Route::delete('/files/', [CourseCreateStepController::class, 'stepLessonFileRemove'])->name('instructor.lessons.content.files.delete');
+        });
+        
+        Route::get('/{lesson_id}/institute/', [CourseCreateStepController::class, 'stepLessonInstitue'])->name('instructor.lessons.institute');
+    });
 
     // ========================================
-    // LESSON MANAGEMENT ROUTES
+    // CERTIFICATES SECTION
     // ========================================
     
-    // Lesson creation and management
-    Route::post('/instructor/courses/create/{course_id}/module/{module_id}', [CourseCreateStepController::class, 'addLesson'])->name('course.lesson.step.create');
-    Route::post('/instructor/courses/create/{id}/facts-update', [CourseCreateStepController::class, 'step3d'])->name('course.lesson.step.update');
-    Route::post('/instructor/module/lesson/sortable', [CourseCreateStepController::class, 'moduleLessonResorting'])->name('instructor.module.lesson.sortable');
-    Route::delete('/instructor/lesson/{id}/delete', [CourseCreateStepController::class, 'destroyLesson'])->name('instructor.lesson.delete');
-    
-    // Lesson content management - Text
-    Route::get('/instructor/courses/create/{id}/text/{module_id}/content/{lesson_id}', [CourseCreateStepController::class, 'stepLessonText'])->name('course.lesson.text');
-    Route::post('/instructor/courses/create/{lesson_id}/step-lesson-content', [CourseCreateStepController::class, 'stepLessonContent'])->name('course.lesson.text.update');
-    
-    // Lesson content management - Audio
-    Route::get('/instructor/courses/create/{id}/audio/{module_id}/content/{lesson_id}', [CourseCreateStepController::class, 'stepLessonAudio'])->name('course.lesson.audio');
-    Route::post('/instructor/courses/create/{id}/audio/{module_id}/content/{lesson_id}', [CourseCreateStepController::class, 'stepLessonAudioSet'])->name('course.lesson.audio.create');
-    Route::get('/instructor/courses/create/{id}/audio/{module_id}/content/{lesson_id}/remove', [CourseCreateStepController::class, 'stepLessonAudioRemove'])->name('course.lesson.audio.remove');
-    
-    // Lesson content management - Video
-    Route::get('/instructor/courses/create/{id}/video/{module_id}/content/{lesson_id}', [CourseCreateStepController::class, 'stepLessonVideo'])->name('course.lesson.video');
-    Route::post('/instructor/courses/create/{id}/video/{module_id}/content/{lesson_id}', [CourseCreateStepController::class, 'stepLessonVideoSet'])->name('course.lesson.video.create');
-    Route::get('/instructor/courses/create/{id}/video/{module_id}/content/{lesson_id}/remove', [CourseCreateStepController::class, 'stepLessonVideoRemove'])->name('course.lesson.video.remove');
-    
-    // Lesson file management
-    Route::get('/instructor/courses/create/{id}/file/{module_id}/content/{lesson_id}/remove', [CourseCreateStepController::class, 'stepLessonFileRemove'])->name('course.lesson.file.remove');
-    
-    // Lesson institute
-    Route::get('/instructor/courses/create/{id}/lesson/{module_id}/institute/{lesson_id}', [CourseCreateStepController::class, 'stepLessonInstitue'])->name('course.lesson.institute');
-
-    // ========================================
-    // CERTIFICATE MANAGEMENT ROUTES
-    // ========================================
-    
-    // Certificate management
-    Route::post('/instructor/profile/certificate-settings', [CertificateController::class, 'certificateUpdate'])->name('certificate.update');
-    Route::get('/instructor/profile/certificate-edit/{id}', [CertificateController::class, 'certificateEdit'])->name('certificate.edit');
-    Route::post('/instructor/profile/certificate-generate', [CertificateController::class,'customCertificate'])->name('certificate.generate');
-    Route::post('/instructor/profile/certificate-delete/{id}', [CertificateController::class,'certificateDelete'])->name('certificate.delete');
+    Route::prefix('instructor/certificates')->group(function () {
+        Route::get('/', [CertificateController::class, 'index'])->name('instructor.certificates');
+        Route::post('/settings/', [CertificateController::class, 'certificateUpdate'])->name('instructor.certificates.settings');
+        Route::get('/{id}/edit/', [CertificateController::class, 'certificateEdit'])->name('instructor.certificates.edit');
+        Route::post('/generate/', [CertificateController::class, 'customCertificate'])->name('instructor.certificates.generate');
+        Route::delete('/{id}/', [CertificateController::class, 'certificateDelete'])->name('instructor.certificates.delete');
+    });
     
     // ========================================
-    // SETTINGS
+    // ENROLLMENTS SECTION
     // ========================================
     
-    Route::post('/instructor/settings/vimeo/request', [SettingsController::class,'vimeoUpdate'])->name('instructor.vimeo.update');
+    Route::prefix('instructor/enrollments')->group(function () {
+        Route::get('/', [CourseEnrollmentController::class, 'allEnrollments'])->name('instructor.enrollments');
+        Route::get('/pending/', [CourseEnrollmentController::class, 'pendingEnrollments'])->name('instructor.enrollments.pending');
+        Route::get('/payment-pending/', [CourseEnrollmentController::class, 'paymentPendingEnrollments'])->name('instructor.enrollments.payment-pending');
+        Route::patch('/{enrollment}/approve/', [CourseEnrollmentController::class, 'approve'])->name('instructor.enrollments.approve');
+        Route::patch('/{enrollment}/approve-without-payment/', [CourseEnrollmentController::class, 'approveWithoutPayment'])->name('instructor.enrollments.approve-free');
+        Route::patch('/{enrollment}/reject/', [CourseEnrollmentController::class, 'reject'])->name('instructor.enrollments.reject');
+        Route::patch('/{enrollment}/reapprove/', [CourseEnrollmentController::class, 'reapprove'])->name('instructor.enrollments.reapprove');
+        Route::post('/grant-free-access/', [CourseEnrollmentController::class, 'grantFreeAccess'])->name('instructor.enrollments.grant-free');
+    });
     
     // ========================================
-    // ENROLLMENT MANAGEMENT
+    // COUPONS SECTION
     // ========================================
     
-    Route::get('/instructor/enrollments/pending', [CourseEnrollmentController::class, 'pendingEnrollments'])->name('instructor.enrollments.pending');
-    Route::get('/instructor/enrollments/payment-pending', [CourseEnrollmentController::class, 'paymentPendingEnrollments'])->name('instructor.enrollments.payment-pending');
-    Route::get('/instructor/enrollments/all', [CourseEnrollmentController::class, 'allEnrollments'])->name('instructor.enrollments.all');
-    Route::patch('/instructor/enrollments/{enrollment}/approve', [CourseEnrollmentController::class, 'approve'])->name('instructor.enrollments.approve');
-    Route::patch('/instructor/enrollments/{enrollment}/approve-without-payment', [CourseEnrollmentController::class, 'approveWithoutPayment'])->name('instructor.enrollments.approve-without-payment');
-    Route::patch('/instructor/enrollments/{enrollment}/reject', [CourseEnrollmentController::class, 'reject'])->name('instructor.enrollments.reject');
-    Route::patch('/instructor/enrollments/{enrollment}/reapprove', [CourseEnrollmentController::class, 'reapprove'])->name('instructor.enrollments.reapprove');
-    Route::post('/instructor/grant-free-access', [CourseEnrollmentController::class, 'grantFreeAccess'])->name('instructor.grant-free-access');
+    Route::prefix('instructor/coupons')->group(function () {
+        Route::get('/', [CouponController::class, 'index'])->name('instructor.coupons');
+        Route::get('/create/', [CouponController::class, 'create'])->name('instructor.coupons.create');
+        Route::post('/', [CouponController::class, 'store'])->name('instructor.coupons.store');
+        Route::get('/{coupon}/', [CouponController::class, 'show'])->name('instructor.coupons.show');
+        Route::get('/{coupon}/edit/', [CouponController::class, 'edit'])->name('instructor.coupons.edit');
+        Route::put('/{coupon}/', [CouponController::class, 'update'])->name('instructor.coupons.update');
+        Route::delete('/{coupon}/', [CouponController::class, 'destroy'])->name('instructor.coupons.delete');
+        Route::patch('/{coupon}/toggle/', [CouponController::class, 'toggleStatus'])->name('instructor.coupons.toggle');
+    });
     
     // ========================================
-    // COUPON MANAGEMENT
+    // BUILDER SECTION (Landing Page Builder)
     // ========================================
     
-    Route::get('/instructor/coupons', [CouponController::class, 'index'])->name('instructor.coupons.index');
-    Route::get('/instructor/coupons/create', [CouponController::class, 'create'])->name('instructor.coupons.create');
-    Route::post('/instructor/coupons', [CouponController::class, 'store'])->name('instructor.coupons.store');
-    Route::get('/instructor/coupons/{coupon}', [CouponController::class, 'show'])->name('instructor.coupons.show');
-    Route::get('/instructor/coupons/{coupon}/edit', [CouponController::class, 'edit'])->name('instructor.coupons.edit');
-    Route::put('/instructor/coupons/{coupon}', [CouponController::class, 'update'])->name('instructor.coupons.update');
-    Route::delete('/instructor/coupons/{coupon}', [CouponController::class, 'destroy'])->name('instructor.coupons.destroy');
-    Route::patch('/instructor/coupons/{coupon}/toggle-status', [CouponController::class, 'toggleStatus'])->name('instructor.coupons.toggle-status');
+    Route::prefix('instructor/builder')->group(function () {
+        Route::get('/', [LandingPageBuilderController::class, 'index'])->name('instructor.builder');
+        Route::get('/{course_id}/', [LandingPageBuilderController::class, 'editor'])->name('instructor.builder.editor');
+        Route::post('/save/', [LandingPageBuilderController::class, 'save'])->name('instructor.builder.save');
+        Route::get('/preview/{id}/', [LandingPageBuilderController::class, 'preview'])->name('instructor.builder.preview');
+        Route::post('/publish/{id}/', [LandingPageBuilderController::class, 'publish'])->name('instructor.builder.publish');
+    });
     
     // ========================================
-    // LANDING PAGE BUILDER
+    // SETTINGS SECTION
     // ========================================
     
-    Route::prefix('builder')->group(function () {
-        Route::get('/editor/{course_id}', [LandingPageBuilderController::class, 'editor'])->name('builder.editor');
-        Route::post('/save', [LandingPageBuilderController::class, 'save'])->name('builder.save');
-        Route::get('/preview/{id}', [LandingPageBuilderController::class, 'preview'])->name('builder.preview');
-        Route::post('/publish/{id}', [LandingPageBuilderController::class, 'publish'])->name('builder.publish');
+    Route::prefix('instructor/settings')->group(function () {
+        Route::post('/vimeo/', [SettingsController::class, 'vimeoUpdate'])->name('instructor.settings.vimeo');
     });
 });

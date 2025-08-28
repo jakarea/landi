@@ -359,4 +359,21 @@ class LandingPageBuilderController extends Controller
         </section>
         ";
     }
+
+    // ========================================
+    // NEW CLEAN URL STRUCTURE METHODS
+    // ========================================
+
+    /**
+     * Landing pages directory - /landing/
+     */
+    public function index()
+    {
+        $landingPages = LandingPage::where('status', 'published')
+                                  ->with('course')
+                                  ->orderBy('updated_at', 'desc')
+                                  ->paginate(12);
+
+        return view('landing.index', compact('landingPages'));
+    }
 }

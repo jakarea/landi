@@ -1,6 +1,9 @@
 @extends('layouts/latest/students')
 @section('title', 'Course Overview ')
 
+@php
+    use Illuminate\Support\Str;
+@endphp
 
 {{-- style section @S --}}
 @section('style')

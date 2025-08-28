@@ -1345,6 +1345,59 @@ class StudentHomeController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->route('students.dashboard');
+        return redirect()->route('student.dashboard');
     }
+
+    // ========================================
+    // NEW CLEAN URL STRUCTURE METHODS
+    // ========================================
+
+    /**
+     * Courses catalog - /student/courses/
+     */
+    public function courses(Request $request)
+    {
+        return $this->catalog($request);
+    }
+
+    /**
+     * Course overview for enrolled students - /student/courses/{slug}/
+     */
+    public function courseOverview($slug)
+    {
+        return $this->courseDetails($slug);
+    }
+
+    /**
+     * Course learning interface - /student/courses/{slug}/learn/
+     */
+    public function courseLearn($slug)
+    {
+        return $this->courseDetails($slug);
+    }
+
+    /**
+     * Student certificates - /student/certificates/
+     */
+    public function certificates()
+    {
+        return $this->certificate();
+    }
+
+    /**
+     * Course activities - /student/activities/
+     */
+    public function activities()
+    {
+        return $this->activitiesList();
+    }
+
+    /**
+     * Complete activity - /student/activities/complete/
+     */
+    public function completeActivity()
+    {
+        return $this->storeActivities();
+    }
+
 }

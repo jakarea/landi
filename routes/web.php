@@ -15,39 +15,94 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Guest Routes
+| Guest Routes - Clean Folder Structure
 |--------------------------------------------------------------------------
 |
-| These routes are accessible to all users (both authenticated and guest).
-| This includes homepage, authentication, public course listings, and
-| developer utilities.
+| Clean URL structure for guest users:
+| / -> Homepage
+| /courses/ -> Course catalog
+| /courses/{slug}/ -> Course overview
+| /auth/login/ -> Authentication
+| /landing/ -> Landing pages
+| /about/ -> About page
+| /contact/ -> Contact page
+| /help/ -> Help & support
 |
 */
 
 // ========================================
-// PUBLIC ROUTES
+// MAIN HOMEPAGE
 // ========================================
 
-Route::get('/', [HomepageController::class, 'homepage'])->name('homepage');
-Route::view('/error-design', 'errors.404')->name('error.design');
+Route::get('/', [HomepageController::class, 'homepage'])->name('home');
 
-// Public course routes (accessible to all users)
-Route::get('/courses', [CourseController::class, 'publicIndex'])->name('courses.public.index');
-Route::get('/courses/{slug}', [CourseController::class, 'publicOverview'])->name('courses.public.overview');
+// ========================================
+// COURSES SECTION
+// ========================================
 
-// Public landing pages
-Route::get('/landing/{slug}', [LandingPageBuilderController::class, 'show'])->name('landing.show');
+Route::get('/courses/', [CourseController::class, 'publicIndex'])->name('courses');
+Route::get('/courses/{slug}/', [CourseController::class, 'publicOverview'])->name('courses.overview');
 
-// AI Bootcamp Landing Page
-Route::get('/ai-for-advertising-bootcamp-25', function () {
-    return view('landing.ai-bootcamp');
-})->name('ai.bootcamp.landing');
+// ========================================
+// LANDING PAGES SECTION
+// ========================================
+
+Route::get('/landing/', [LandingPageBuilderController::class, 'index'])->name('landing');
+Route::get('/landing/{slug}/', [LandingPageBuilderController::class, 'show'])->name('landing.show');
+
+// ========================================
+// ABOUT & INFORMATION PAGES
+// ========================================
+
+Route::get('/about/', [HomepageController::class, 'about'])->name('about');
+Route::get('/contact/', [HomepageController::class, 'contact'])->name('contact');
+Route::get('/help/', [HomepageController::class, 'help'])->name('help');
+
+// ========================================
+// AUTHENTICATION SECTION
+// ========================================
+
+Route::prefix('auth')->group(function () {
+    
+    Route::middleware('guest')->group(function () {
+        // Login Routes
+        Route::get('/login/', function () {
+            if (request()->has('signature')) {
+                $user = User::where('session_id', request()->signature)->first();
+                if ($user) {
+                    Auth::login($user);
+                    $user->update(['session_id' => null]);
+                    return redirect()->intended($user->user_role . '/dashboard');
+                }
+            }
+            return view('auth.login');
+        })->name('login');
+
+        // Registration Routes
+        Route::get('/register/', [RegisterController::class, 'showRegistrationForm'])->name('register');
+        Route::post('/register/', [RegisterController::class, 'register'])->name('register.store');
+
+        // Social Login Routes
+        Route::get('/login/{provider}/', [LoginController::class, 'socialLogin'])->whereIn('provider', ['facebook', 'google', 'apple'])->name('social.login');
+        Route::get('/login/{provider}/callback/', [LoginController::class, 'handleProviderCallback'])->whereIn('provider', ['facebook', 'google', 'apple'])->name('social.callback');
+    });
+
+    // Email verification routes (authenticated users)
+    Route::middleware('auth')->group(function () {
+        Route::get('/verify/', [VerificationController::class, 'show'])->name('verification.notice');
+        Route::get('/verify/{id}/{hash}/', [VerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
+        Route::post('/verify/resend/', [VerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.resend');
+    });
+});
+
+// Logout Route (Authenticated users only)
+Route::get('/auth/logout/', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 // ========================================
 // ROLE-BASED DASHBOARD REDIRECT
 // ========================================
 
-Route::get('/home', function () {
+Route::get('/dashboard/', function () {
     if (!Auth::check()) {
         return redirect()->route('login');
     }
@@ -60,87 +115,55 @@ Route::get('/home', function () {
         case 'instructor':
             return redirect()->route('instructor.dashboard');
         case 'student':
-            return redirect()->route('students.dashboard');
+            return redirect()->route('student.dashboard');
         default:
-            return redirect()->route('homepage');
+            return redirect()->route('home');
     }
-})->name('home')->middleware('auth');
+})->name('dashboard')->middleware('auth');
 
 // ========================================
-// AUTHENTICATION ROUTES (GUEST ONLY)
+// ADMIN SECTION
 // ========================================
 
-Route::middleware('guest')->group(function () {
-    // Login Routes
-    Route::get('/login', function () {
-        if (request()->has('signature')) {
-            $user = User::where('session_id', request()->signature)->first();
-            if ($user) {
-                Auth::login($user);
-                $user->update(['session_id' => null]);
-                return redirect()->intended($user->user_role . '/dashboard');
-            }
-        }
-        return view('auth.login');
-    })->name('login');
-
-    // Registration Routes
-    Route::post('/register', [RegisterController::class, 'register'])->name('register');
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form');
-
-    // Social Login Routes
-    Route::get('/login/{provider}', [LoginController::class, 'socialLogin'])->whereIn('provider', ['facebook', 'google', 'apple'])->name('social.login');
-    Route::get('/login/{provider}/callback', [LoginController::class, 'handleProviderCallback'])->whereIn('provider', ['facebook', 'google', 'apple'])->name('social.callback');
-});
-
-// Logout Route (Authenticated users only)
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
-
-// ========================================
-// EMAIL VERIFICATION ROUTES
-// ========================================
-
-Route::middleware('auth')->group(function () {
-    Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
-    Route::post('/email/verification-notification', [VerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.resend');
-});
-
-// ========================================
-// IMPERSONATION ROUTES
-// ========================================
-
-Route::get('/switch/login-as-instructor/{session}/{user}/{instructor}', [HomepageController::class, 'loginAsInstructor'])->name('switch.login.instructor');
-Route::get('/switch/login-as-student/{session}/{user}/{student}', [HomepageController::class, 'loginAsStudent'])->name('switch.login.student');
-Route::get('/switch/instructor-login-as-student/{session}/{user}/{student}', [DashboardController::class, 'loginAsStudent'])->name('switch.instructor.login.student');
-Route::get('/switch/back-to-pavilion/{user}', [StudentHomeController::class, 'backToPavilion'])->name('switch.back.pavilion');
-
-// ========================================
-// ADMIN ROUTES
-// ========================================
-
-Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
+Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    Route::get('/dashboard/', function () {
         return view('e-learning/course/admin/dashboard');
     })->name('admin.dashboard');
 });
 
 // ========================================
-// DEVELOPER UTILITY ROUTES
+// SYSTEM UTILITIES (Hidden from guests)
+// ========================================
+
+Route::prefix('system')->middleware('auth')->group(function () {
+    Route::get('/switch/login-as-instructor/{session}/{user}/{instructor}/', [HomepageController::class, 'loginAsInstructor'])->name('system.login.instructor');
+    Route::get('/switch/login-as-student/{session}/{user}/{student}/', [HomepageController::class, 'loginAsStudent'])->name('system.login.student');
+    Route::get('/switch/instructor-login-as-student/{session}/{user}/{student}/', [DashboardController::class, 'loginAsStudent'])->name('system.instructor.login.student');
+    Route::get('/switch/back-to-pavilion/{user}/', [StudentHomeController::class, 'backToPavilion'])->name('system.back.pavilion');
+});
+
+// ========================================
+// DEVELOPER UTILITY ROUTES (Local/Staging Only)
 // ========================================
 
 if (app()->environment(['local', 'staging'])) {
-    Route::get('/clear-cache', function () {
-        Artisan::call('cache:clear');
-        Artisan::call('config:clear');
-        Artisan::call('route:clear');
-        Artisan::call('view:clear');
-        Artisan::call('clear-compiled');
-        return redirect()->route('home');
-    })->name('dev.clear.cache');
+    Route::prefix('dev')->group(function () {
+        Route::get('/clear-cache/', function () {
+            Artisan::call('cache:clear');
+            Artisan::call('config:clear');
+            Artisan::call('route:clear');
+            Artisan::call('view:clear');
+            Artisan::call('clear-compiled');
+            return redirect()->route('home');
+        })->name('dev.clear.cache');
 
-    Route::get('/storage-link', function () {
-        Artisan::call('storage:link');
-        return redirect()->route('home');
-    })->name('dev.storage.link');
+        Route::get('/storage-link/', function () {
+            Artisan::call('storage:link');
+            return redirect()->route('home');
+        })->name('dev.storage.link');
+        
+        Route::get('/error-design/', function () {
+            return view('errors.404');
+        })->name('dev.error.design');
+    });
 }

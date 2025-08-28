@@ -279,10 +279,38 @@ class HomepageController extends Controller
             if ($studentUser) {
                 Auth::login($studentUser);
 
-                return redirect('student/dashboard')->with('success', 'You have successfully logged into the profile of ' . $studentUser->name);
+                return redirect('student/')->with('success', 'You have successfully logged into the profile of ' . $studentUser->name);
             }
         }
 
         return redirect('/login')->with('error', 'Failed to Login as Student');
+    }
+
+    // ========================================
+    // NEW CLEAN URL STRUCTURE METHODS
+    // ========================================
+
+    /**
+     * About page - /about/
+     */
+    public function about()
+    {
+        return view('pages.about');
+    }
+
+    /**
+     * Contact page - /contact/
+     */
+    public function contact()
+    {
+        return view('pages.contact');
+    }
+
+    /**
+     * Help & Support page - /help/
+     */
+    public function help()
+    {
+        return view('pages.help');
     }
 }
