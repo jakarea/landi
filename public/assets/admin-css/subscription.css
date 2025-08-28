@@ -1,0 +1,347 @@
+.package-list-header {
+  padding: 1rem 1.5rem;
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: 10% 50% 20% 20%;
+  grid-gap: 1.6rem;
+  align-items: center;
+}
+.package-list-header h5 {
+  color: var(--text-light-primary, #212B36);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.75rem;
+  /* 155.556% */
+}
+.package-list-header .form-group {
+  position: relative;
+}
+.package-list-header .form-group .form-control {
+  border-radius: 0.5rem;
+  border: 1px solid var(--components-input-outlined, rgba(145, 158, 171, 0.32));
+  background: #FFF;
+  overflow: hidden;
+  color: var(--text-light-disabled, #919EAB);
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+  height: 3rem;
+  padding: 1rem 0.875rem;
+  padding-left: 2.5rem;
+}
+.package-list-header .form-group i {
+  color: #919EAB;
+  font-size: 1rem;
+  position: absolute;
+  left: 12px;
+  top: 15px;
+}
+.package-list-header .form-filter {
+  position: relative;
+}
+.package-list-header .form-filter .form-control {
+  border-radius: 0.5rem;
+  border: 1px solid var(--components-input-outlined, rgba(145, 158, 171, 0.32));
+  background: #FFF;
+  overflow: hidden;
+  color: #212B36;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+  height: 3rem;
+}
+.package-list-header .form-filter i {
+  color: #212B36;
+  font-size: 1rem;
+  position: absolute;
+  right: 12px;
+  top: 15px;
+}
+
+.package-header-2 {
+  grid-template-columns: 50% 50%;
+  grid-gap: 0;
+  border: 1px solid #E4E7EC;
+  background: var(--neutral-color-white, #FFF);
+  margin-bottom: 2.5rem;
+}
+
+.subscription-table-wrap table {
+  width: 100%;
+}
+.subscription-table-wrap table tr th {
+  color: var(--text-light-secondary, #637381);
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: #F4F6F8;
+}
+.subscription-table-wrap table tr th:last-child {
+  text-align: right;
+  padding-right: 2rem;
+}
+.subscription-table-wrap table tr td {
+  border-bottom: 1px solid #E4E7EC;
+  background: #FFF;
+  padding: 0.75rem 1rem;
+}
+.subscription-table-wrap table tr td:last-child {
+  text-align: right;
+}
+.subscription-table-wrap table tr td h5 {
+  color: var(--text-light-primary, #212B36);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.375rem;
+}
+.subscription-table-wrap table tr td p {
+  overflow: hidden;
+  color: var(--black, #212B36);
+  text-overflow: ellipsis;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.375rem;
+}
+.subscription-table-wrap table tr td span {
+  display: inline-block;
+  border-radius: 0.125rem;
+  background: #E6F7EE;
+  color: #00AB55;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.375rem;
+  padding: 0.2rem 0.6rem;
+}
+.subscription-table-wrap table tr td span.danger {
+  background: rgba(240, 120, 60, 0.1);
+  color: #F0783C !important;
+}
+.subscription-table-wrap table tr td a {
+  display: inline-block;
+}
+.subscription-table-wrap table tr td .me-r {
+  margin-right: 1.75rem;
+}
+
+.subscription-package-form {
+  border-radius: 0.5rem;
+  border: 1px solid #E5ECF6;
+  background: #FFF;
+  padding: 1.5rem;
+  box-shadow: 0px 1px 2px 0px rgba(145, 158, 171, 0.16);
+}
+.subscription-package-form form .form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.subscription-package-form form .form-group label {
+  color: #919EAB;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+.subscription-package-form form .form-group .form-control {
+  height: 3.125rem;
+  border-radius: 0.5rem;
+  border: 1px solid #E4E7EC;
+  background: var(--white, #FFF);
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  color: var(--gray-900, #101828);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+.subscription-package-form form .form-group #feature_increment {
+  border-radius: 0.25rem;
+  background: #F3F5FF;
+  color: var(--primary-color-blue, #294CFF);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5rem;
+  padding: 0.2rem 0.5rem;
+  display: inline-block;
+  transition: all linear 0.3s;
+}
+.subscription-package-form form .form-group #feature_increment:hover {
+  background-color: #66768E;
+  color: #fff;
+}
+.subscription-package-form form .form-group .feature-extra-field div {
+  position: relative;
+  margin-top: 0.5rem;
+}
+.subscription-package-form form .form-group .feature-extra-field div a {
+  position: absolute;
+  right: 0.75rem;
+  top: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid #66768E;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  color: #66768E;
+  display: inline-flex;
+  align-items: center;
+  transition: all linear 0.3s;
+  cursor: pointer;
+  justify-content: center;
+}
+.subscription-package-form form .form-group .feature-extra-field div a:hover {
+  background-color: #66768E;
+  color: #fff;
+}
+
+.btn-view {
+  border-radius: 0.375rem;
+  background: rgba(61, 92, 255, 0.2);
+  color: var(--primary-color-blue, #294CFF);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.375rem;
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+}
+
+.top-card-box {
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--neutral-color-neutral-30, #E5ECF6);
+  background: #FFF;
+  box-shadow: 0px 1px 2px 0px rgba(145, 158, 171, 0.16);
+  position: relative;
+}
+.top-card-box h5 {
+  color: var(--neutral-color-neutral-80, #1C2636);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  margin-top: 1rem;
+}
+.top-card-box h4 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  margin-top: 0.2rem;
+}
+.top-card-box span {
+  color: var(--success-green, #43B324);
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+.top-card-box span.red {
+  color: #ED5763 !important;
+}
+
+.earning-table {
+  border-radius: 0.5rem;
+  border: 1px solid var(--neutral-color-neutral-30, #E5ECF6);
+  background: #FFF;
+  box-shadow: 0px 4px 8px 0px rgba(145, 158, 171, 0.16);
+}
+
+.package-new-header {
+  grid-template-columns: 70% 15% 15%;
+}
+
+.form-selecting {
+  position: relative;
+}
+.form-selecting i.fa-angle-down {
+  position: absolute;
+  right: 1rem;
+  top: 3rem;
+}
+
+.btn-export {
+  border-radius: 0.375rem;
+  background: rgba(50, 188, 163, 0.2);
+  color: #03876F;
+}
+
+@media (min-width: 320px) and (max-width: 574px) {
+  .package-list-header {
+    padding: 1rem;
+    grid-template-columns: 100%;
+    grid-gap: 0.5rem;
+  }
+  .subscription-table-wrap table {
+    width: 100%;
+    overflow-x: scroll;
+    display: block;
+  }
+  .subscription-table-wrap table tr th,
+  .subscription-table-wrap table tr td {
+    white-space: nowrap;
+  }
+  .top-card-box {
+    margin-bottom: 1rem;
+  }
+  .top-card-box h5 {
+    font-size: 0.8rem;
+  }
+  .top-card-box h4 {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 574px) and (max-width: 767px) {
+  .package-list-header {
+    padding: 1rem;
+    grid-template-columns: 100%;
+    grid-gap: 0.5rem;
+  }
+  .subscription-table-wrap.subs-table table {
+    display: block;
+  }
+  .subscription-table-wrap table {
+    width: 100%;
+    overflow-x: scroll;
+  }
+  .subscription-table-wrap table tr th,
+  .subscription-table-wrap table tr td {
+    white-space: nowrap;
+  }
+  .top-card-box {
+    margin-bottom: 1rem;
+  }
+  .payment-table-admin.subscription-table-wrap table {
+    display: block;
+  }
+}
+@media (min-width: 767px) and (max-width: 992px) {
+  .package-list-header {
+    grid-template-columns: 100%;
+    grid-gap: 1rem;
+  }
+  .top-card-box {
+    margin-bottom: 1rem;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .package-list-header {
+    grid-template-columns: 100%;
+    grid-gap: 1rem;
+  }
+}

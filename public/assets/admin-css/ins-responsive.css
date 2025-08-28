@@ -1,0 +1,103 @@
+/* Instructor Responsive Styles */
+/* Mobile first responsive design for instructor pages */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 575.98px) {
+    .user-search-box-wrap {
+        margin-bottom: 1rem;
+    }
+    
+    .filter-dropdown-box {
+        margin-bottom: 1rem;
+    }
+    
+    .user-add-box {
+        text-align: center !important;
+    }
+    
+    .course-single-item {
+        margin-bottom: 1.5rem;
+    }
+    
+    .course-txt-box h5 {
+        font-size: 1rem;
+    }
+    
+    .header-action .dropdown-menu {
+        position: absolute !important;
+        right: 0 !important;
+        left: auto !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 767.98px) {
+    .instructor-dashboard .row {
+        margin: 0;
+    }
+    
+    .instructor-dashboard .col-md-3,
+    .instructor-dashboard .col-md-9 {
+        padding: 0.5rem;
+    }
+    
+    .course-creation-steps {
+        padding: 1rem;
+    }
+    
+    .save-finish-buttons {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        padding: 1rem;
+        border-top: 1px solid #eee;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (max-width: 991.98px) {
+    .instructor-sidebar {
+        display: none;
+    }
+    
+    .instructor-main-content {
+        margin-left: 0;
+    }
+    
+    .course-form-container {
+        padding: 1rem;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .course-creation-container {
+        max-width: 1140px;
+        margin: 0 auto;
+    }
+}
+
+/* Dark mode adjustments */
+.dark-mode .save-finish-buttons {
+    background: #1a1a1a;
+    border-top-color: #333;
+}
+
+/* Utility classes for instructor pages */
+.instructor-hide-mobile {
+    display: block;
+}
+
+.instructor-show-mobile {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .instructor-hide-mobile {
+        display: none;
+    }
+    
+    .instructor-show-mobile {
+        display: block;
+    }
+}

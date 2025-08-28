@@ -1,0 +1,208 @@
+.pricing-plan-sec {
+  background-color: #F9FAFB;
+  min-height: 100vh;
+  padding-top: 6rem;
+  padding-bottom: 2rem;
+}
+
+.pricing-plan-sec .pricing-heading {
+  text-align: center;
+}
+
+.pricing-plan-sec .pricing-heading h6 {
+  color: #294CFF;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.pricing-plan-sec .pricing-heading h2 {
+  color: #101828;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 38px;
+  margin-top: 0.5rem;
+}
+
+
+.pricing-plan-sec .pricing-heading p {
+  color: #667085;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  margin-top: 1rem;
+}
+
+.pricing-tab-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.pricing-tab-head .nav {
+  justify-content: center;
+  display: inline-flex;
+  margin-top: 2rem;
+  border-radius: 8px;
+  background: var(--primary-color-blue-lightest, #E7EBFF);
+  padding: 8px 9px;
+}
+
+.pricing-tab-head .nav .nav-item .nav-link {
+  color: var(--primary-color-blue, #294CFF);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  /* 150% */
+}
+
+.pricing-tab-head .nav .nav-item .active.nav-link {
+  border-radius: 6px;
+  background: var(--white, #FFF);
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.1);
+}
+
+.pricing-box {
+  border-radius: 16px;
+  border: 1px solid var(--gray-200, #E4E7EC);
+  background: var(--white, #FFF);
+  box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.05), 0px 12px 16px -4px rgba(16, 24, 40, 0.1);
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.pricing-box .pricing-icon {
+  text-align: center;
+  padding: 1.5rem 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.pricing-box .txt {
+  padding: 0 2rem;
+}
+
+.pricing-box .txt h5 {
+  color: var(--primary-color-blue-dark, #0824B4);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.pricing-box .txt h3 {
+  color: var(--gray-900, #101828);
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 48px;
+  letter-spacing: -0.8px;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-box .txt h6 {
+  color: var(--gray-500, #667085);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.pricing-box .txt ul {
+  padding-top: 1.5rem;
+  text-align: left !important;
+}
+
+.pricing-box .txt ul li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 0.8rem;
+}
+
+.pricing-box .txt ul li img {
+  margin-right: 0.6rem;
+}
+
+.pricing-box .txt ul li span {
+  color: var(--gray-500, #667085);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  display: inline-block;
+}
+
+.pricing-box .bttn {
+  background: var(--gray-50, #F9FAFB);
+  padding: 1.5rem 2rem;
+  border-radius: 0 0 1rem 1rem;
+  margin-top: 1rem;
+}
+
+.pricing-box .bttn a {
+  border-radius: 8px;
+  background-color: #294CFF;
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  color: var(--white, #FFF);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  /* 150% */
+}
+
+.current-plan {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 1rem 0rem 1rem 0rem;
+  background: var(--primary-color-blue-light, #3D5CFF);
+  color: var(--gray-white, #FFF); 
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  z-index: 99;
+  line-height: 1.5rem; 
+  padding: 0.7rem 1rem;
+}
+
+.current-plan-bttn{
+  background-color: #ED5763!important;
+}
+
+
+@media (min-width: 320px) and (max-width: 575px) {
+  .pricing-box {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (min-width: 575px) and (max-width: 767px) {
+  .pricing-box {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (min-width: 767px) and (max-width: 991px) {
+  .pricing-box {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (min-width: 991px) and (max-width: 1199px) {
+  .pricing-box {
+    margin-bottom: 1.5rem;
+  }
+}

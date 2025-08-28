@@ -1,0 +1,1350 @@
+<?php
+
+namespace App\Http\Controllers\Student;
+use Auth;
+use File;
+use ZipArchive;
+use Carbon\Carbon;
+use App\Models\Cart;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Lesson;
+use App\Models\Module;
+use App\Models\Checkout;
+use App\Models\CourseLog;
+use Carbon\CarbonInterval;
+use App\Models\Certificate;
+use App\Models\course_like;
+use App\Models\BundleCourse;
+use App\Models\CourseReview;
+use Illuminate\Http\Request;
+use App\Models\CourseActivity;
+use App\Models\CourseEnrollment;
+use RecursiveIteratorIterator;
+use App\Models\Notification;
+use Barryvdh\DomPDF\Facade\Pdf;
+use RecursiveDirectoryIterator;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
+
+class StudentHomeController extends Controller
+{
+    // dashboard
+    public function dashboard(){
+
+        $user = User::where('id', Auth::id())->first();
+        $user->session_id = null;
+        $user->save();
+
+        if (isset($_COOKIE['userIdentifier'])) {
+            $userIdentifier = $_COOKIE['userIdentifier'];
+        } else {
+            $userIdentifier = '';
+        }
+
+
+        Cart::where('user_identifier', $userIdentifier)
+        ->update(['user_id' => Auth::id()]);
+
+        // Optimized eager loading to prevent N+1 queries
+        // Show approved courses (can access) and pending courses (paid but waiting approval)
+        $enrolments = CourseEnrollment::with([
+            'course' => function($query) {
+                $query->select('id', 'title', 'slug', 'thumbnail', 'instructor_id', 'user_id')
+                      ->with([
+                          'modules' => function($moduleQuery) {
+                              $moduleQuery->select('id', 'course_id', 'status')
+                                         ->where('status', 'published')
+                                         ->with(['lessons' => function($lessonQuery) {
+                                             $lessonQuery->select('id', 'module_id', 'status')
+                                                        ->where('status', 'published');
+                                         }]);
+                          }
+                      ]);
+            }
+        ])
+        ->where('user_id', Auth::user()->id)
+        ->whereIn('status', [CourseEnrollment::STATUS_APPROVED, CourseEnrollment::STATUS_PENDING])
+        ->orderBy('id', 'desc')
+        ->paginate(12);
+
+        $cartCount = Cart::where('user_id', auth()->id())->count();
+        
+        // Optimize liked courses with proper eager loading
+        $likeCourses = course_like::with([
+            'course' => function($query) {
+                $query->select('id', 'title', 'slug', 'thumbnail', 'user_id', 'instructor_id');
+            }
+        ])
+        ->where('user_id', Auth::user()->id)
+        ->get();
+        $totalTimeSpend = CourseActivity::where('user_id', Auth::user()->id)->where('is_completed',1)->sum('duration');
+
+        $totalHours = floor($totalTimeSpend / 3600);
+        $totalMinutes = floor(($totalTimeSpend % 3600) / 60);
+
+        $timeSpentData = CourseActivity::select(
+            'user_id',
+            DB::raw('DATE_FORMAT(created_at, "%b") as month'),
+            DB::raw('MONTH(created_at) as month_number'),
+            DB::raw('SUM(duration) as time_spent')
+        )
+        ->groupBy('user_id', 'month', 'month_number')
+        ->orderBy('user_id', 'asc')
+        ->orderBy('month_number', 'asc')
+        ->get();
+
+        $currentMonthData = CourseActivity::selectRaw('SUM(duration) as total_duration')
+        ->whereMonth('created_at', now()->month)
+        ->first();
+
+        $previousMonthData = CourseActivity::selectRaw('SUM(duration) as total_duration')
+            ->whereMonth('created_at', now()->subMonth()->month)
+            ->first();
+
+        if ($currentMonthData && $previousMonthData) {
+            $currentMonthDuration = $currentMonthData->total_duration;
+            $previousMonthDuration = $previousMonthData->total_duration;
+
+            if ($previousMonthDuration != 0) {
+                $percentageChange = (($currentMonthDuration - $previousMonthDuration) / $previousMonthDuration) * 100;
+            } else {
+                $percentageChange = 0;
+            }
+        } else {
+            $percentageChange = 0;
+        }
+
+        // Get all user's completed lessons in one query for progress calculation
+        $completedLessonsData = CourseActivity::where('user_id', Auth::id())
+            ->where('is_completed', true)
+            ->pluck('lesson_id', 'course_id')
+            ->groupBy('course_id')
+            ->map(function($lessons) {
+                return $lessons->count();
+            });
+
+        //  count course statics using optimized progress calculation
+        $notStartedCount = 0;
+        $inProgressCount = 0;
+        $completedCount = 0;
+
+        if ($enrolments) {
+            foreach ($enrolments as $enrolment) {
+                if ($enrolment->course) {
+                    // Calculate progress using already loaded data
+                    $totalLessons = $enrolment->course->modules->sum(function($module) {
+                        return $module->lessons->count();
+                    });
+                    
+                    $completedLessonsCount = $completedLessonsData->get($enrolment->course->id, 0);
+                    
+                    $progress = 0;
+                    if ($totalLessons > 0) {
+                        $progress = ($completedLessonsCount / $totalLessons) * 100;
+                    }
+
+                    if ($progress == 0) {
+                        $notStartedCount++;
+                    } elseif ($progress > 0 && $progress < 99) {
+                        $inProgressCount++;
+                    } elseif ($progress >= 99) {
+                        $completedCount++;
+                    }
+                }
+            }
+        }
+
+        // Avr hr
+        // $sum_of_duration = CourseActivity::selectRaw('SUM(duration) as total_duration')
+        //                                     ->where(['user_id' => auth()->user()->id, 'is_completed' => 1])
+        //                                     ->get();
+
+
+        $sum_of_duration = CourseActivity::where('user_id', Auth::user()->id)->where('is_completed',1)->avg('duration');
+
+        $total_hr = 0;
+        $total_min = 0;
+        $total_hr = floor($sum_of_duration / 3600);
+        $total_min = floor(($sum_of_duration % 3600) / 60);
+        // Enrolled
+         $total_enrolled = DB::table('course_user')
+                    ->where('user_id', auth()->user()->id)
+                    ->where('status', CourseEnrollment::STATUS_APPROVED)
+                    ->selectRaw('COUNT(DISTINCT course_id) as enrolled')
+                    ->first();
+        $enrolled = $total_enrolled->enrolled;
+
+        // Optimize certificate courses - use already loaded enrollments
+        $certificateCourses = $enrolments->getCollection()->pluck('course')->filter()->sortByDesc('id')->values();
+
+        return view('e-learning/course/students/dashboard', compact('enrolments','total_hr','total_min','enrolled','likeCourses','totalTimeSpend','totalHours','totalMinutes','timeSpentData','percentageChange','notStartedCount','inProgressCount','completedCount','certificateCourses'));
+    }
+
+    // dashboard
+    public function enrolled(Request $request){
+        // Enhanced filtering with new request parameters
+        $title = $request->get('title', '');
+        $status = $request->get('status', '');
+        $category = $request->get('category', '');
+        $instructor = $request->get('instructor', '');
+        $progress = $request->get('progress', '');
+
+        // Optimized eager loading to prevent N+1 queries
+        $enrolments = CourseEnrollment::with([
+            'course' => function($query) {
+                $query->select('id', 'title', 'slug', 'short_description', 'thumbnail', 'instructor_id', 'categories')
+                      ->with([
+                          'user:id,name,avatar',
+                          'reviews:id,course_id,star,comment',
+                          'modules' => function($moduleQuery) {
+                              $moduleQuery->select('id', 'course_id', 'status')
+                                         ->where('status', 'published')
+                                         ->with(['lessons' => function($lessonQuery) {
+                                             $lessonQuery->select('id', 'module_id', 'status')
+                                                        ->where('status', 'published');
+                                         }]);
+                          }
+                      ]);
+            }
+        ])
+        ->where('user_id', Auth::id())
+        ->whereIn('status', [CourseEnrollment::STATUS_APPROVED, CourseEnrollment::STATUS_PENDING]);
+
+        $cartCount = Cart::where('user_id', auth()->id())->count();
+
+        // Title search - search in both course title and description
+        if (!empty($title)) {
+            $enrolments->whereHas('course', function ($query) use ($title) {
+                $query->where('title', 'LIKE', '%' . $title . '%')
+                      ->orWhere('short_description', 'LIKE', '%' . $title . '%');
+            });
+        }
+
+        // Category filter
+        if (!empty($category)) {
+            $enrolments->whereHas('course', function ($query) use ($category) {
+                $query->where('categories', 'LIKE', '%' . $category . '%');
+            });
+        }
+
+        // Instructor filter
+        if (!empty($instructor)) {
+            $enrolments->whereHas('course.user', function ($query) use ($instructor) {
+                $query->where('name', 'LIKE', '%' . $instructor . '%');
+            });
+        }
+
+        // Progress filter (based on CourseLog completion)
+        if (!empty($progress)) {
+            if ($progress == 'not_started') {
+                $enrolments->whereDoesntHave('course.courseLogs', function ($query) {
+                    $query->where('user_id', Auth::id());
+                });
+            } elseif ($progress == 'in_progress') {
+                $enrolments->whereHas('course.courseLogs', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })->whereHas('course', function ($query) {
+                    // Has logs but not completed all lessons
+                    $query->whereRaw('(SELECT COUNT(DISTINCT lesson_id) FROM course_logs WHERE course_logs.course_id = courses.id AND course_logs.user_id = ?) < (SELECT COUNT(*) FROM lessons WHERE lessons.course_id = courses.id)', [Auth::id()]);
+                });
+            } elseif ($progress == 'completed') {
+                $enrolments->whereHas('course', function ($query) {
+                    // All lessons completed
+                    $query->whereRaw('(SELECT COUNT(DISTINCT lesson_id) FROM course_logs WHERE course_logs.course_id = courses.id AND course_logs.user_id = ?) = (SELECT COUNT(*) FROM lessons WHERE lessons.course_id = courses.id)', [Auth::id()]);
+                });
+            }
+        }
+
+        // Enhanced sorting with fixed table references
+        if ($status) {
+            if ($status == 'oldest') {
+                $enrolments->orderBy('created_at', 'asc');
+            } elseif ($status == 'best_rated') {
+                $enrolments->join('courses', 'course_enrollments.course_id', '=', 'courses.id')
+                    ->leftJoin('course_reviews', 'course_reviews.course_id', '=', 'courses.id')
+                    ->select('course_enrollments.*')
+                    ->selectRaw('AVG(course_reviews.star) as avg_rating')
+                    ->groupBy('course_enrollments.id')
+                    ->orderBy('avg_rating', 'desc');
+            } elseif ($status == 'most_purchased') {
+                $enrolments->join('courses', 'course_enrollments.course_id', '=', 'courses.id')
+                    ->leftJoin('course_enrollments as ce2', 'ce2.course_id', '=', 'courses.id')
+                    ->select('course_enrollments.*')
+                    ->selectRaw('COUNT(ce2.course_id) as enrollment_count')
+                    ->where('ce2.status', CourseEnrollment::STATUS_APPROVED)
+                    ->groupBy('course_enrollments.course_id')
+                    ->orderBy('enrollment_count', 'desc');
+            } elseif ($status == 'newest') {
+                $enrolments->orderBy('created_at', 'desc');
+            } elseif ($status == 'recently_accessed') {
+                $enrolments->leftJoin('course_logs', function ($join) {
+                    $join->on('course_logs.course_id', '=', 'course_enrollments.course_id')
+                         ->where('course_logs.user_id', Auth::id());
+                })
+                ->select('course_enrollments.*')
+                ->selectRaw('MAX(course_logs.updated_at) as last_accessed')
+                ->groupBy('course_enrollments.id')
+                ->orderBy('last_accessed', 'desc');
+            }
+        } else {
+            $enrolments->orderBy('created_at', 'desc');
+        }
+
+        $enrolments = $enrolments->paginate(12)->withQueryString();
+
+        // Get all user's completed lessons for progress calculation
+        $completedLessons = CourseActivity::where('user_id', Auth::id())
+            ->where('is_completed', true)
+            ->pluck('lesson_id', 'course_id')
+            ->groupBy('course_id')
+            ->map(function($lessons) {
+                return $lessons->count();
+            });
+
+        // Calculate progress for each enrollment using already loaded data
+        foreach ($enrolments as $enrolment) {
+            if ($enrolment->course) {
+                $totalLessons = $enrolment->course->modules->sum(function($module) {
+                    return $module->lessons->count();
+                });
+                
+                $completedCount = $completedLessons->get($enrolment->course->id, 0);
+                
+                $progress = 0;
+                if ($totalLessons > 0) {
+                    $progress = ($completedCount / $totalLessons) * 100;
+                }
+                
+                $enrolment->course->progress = number_format($progress, 0);
+            }
+        }
+
+        // Extract categories and instructors from already loaded data
+        $availableCategories = $enrolments->getCollection()
+            ->pluck('course.categories')
+            ->filter()
+            ->flatMap(function ($categories) {
+                return explode(',', $categories);
+            })
+            ->map('trim')
+            ->unique()
+            ->sort()
+            ->values();
+
+        $availableInstructors = $enrolments->getCollection()
+            ->pluck('course.user.name')
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values();
+
+        return view('e-learning/course/students/enrolled', compact(
+            'enrolments', 
+            'cartCount', 
+            'availableCategories', 
+            'availableInstructors'
+        ));
+    }
+
+    // all course list
+    public function index(){
+
+        $title = isset($_GET['title']) ? $_GET['title'] : '';
+        $cat = isset($_GET['cat']) ? $_GET['cat'] : '';
+        $courses = Course::orderBy('id','desc');
+        if(!empty($title)){
+            $titles = explode( ' ', $title);
+            $courses->where('title','like','%'.trim($titles[0]).'%');
+            if(isset($titles[1])){
+                $courses->where('title','like','%'.trim($titles[1]).'%');
+            }
+        }
+        $courses = $courses->paginate(12);
+
+        return view('e-learning/course/students/home',compact('courses'));
+    }
+
+    // catalog course list
+    public function catalog(Request $request){
+        // Show all published courses from all instructors
+        $courses = Course::where('status','published')->with('user','reviews');
+
+        $bundleCourse = BundleCourse::orderBy('id','desc')->get();
+        $mainCategories = $courses->pluck('categories');
+
+        $cat = isset($_GET['cat']) ? $_GET['cat'] : '';
+        $title = isset($_GET['title']) ? $_GET['title'] : '';
+        $status = isset($_GET['status']) ? $_GET['status'] : '';
+
+        if(!empty($title)){
+            $titles = explode( ' ', $title);
+            $courses->where('title','like','%'.trim($titles[0]).'%');
+            $bundleCourse->where('title','like','%'.trim($titles[0]).'%');
+            if(isset($titles[1])){
+                $courses->where('title','like','%'.trim($titles[1]).'%');
+                $bundleCourse->where('title','like','%'.trim($titles[1]).'%');
+            }
+        }
+
+        if ($status == 'best_rated') {
+            $courses = Course::leftJoin('course_reviews', 'courses.id', '=', 'course_reviews.course_id')
+                ->select('courses.*', DB::raw('COALESCE(AVG(course_reviews.star), 0) as avg_star'))
+                ->groupBy('courses.id')
+                ->where('courses.user_id', $instructor->id)
+                ->where('status','published')
+                ->orderBy('avg_star', 'desc');
+
+        }
+
+        if ($status == 'most_purchased') {
+            $courses = Course::leftJoin('checkouts', 'courses.id', '=', 'checkouts.course_id')
+                ->select('courses.*')
+                ->groupBy('courses.id')
+                ->where('courses.user_id', $instructor->id)
+                ->where('courses.status','published')
+                ->orderBy(DB::raw('COUNT(checkouts.course_id)'), 'desc');
+
+        }
+
+        if ($status) {
+            if ($status == 'oldest') {
+                $courses->orderBy('id', 'asc');
+            }
+
+            if ($status == 'newest') {
+                $courses->orderBy('id', 'desc');
+            }
+        }else{
+            $courses->orderBy('id', 'desc');
+        }
+
+        if(!empty($cat)){
+            $cats = explode( ' ', $cat);
+            $courses->where('categories','like','%'.trim($cats[0]).'%');
+            if(isset($cats[1])){
+                $courses->where('cat','like','%'.trim($cats[1]).'%');
+            }
+        }
+        $unique_array = [];
+        foreach($mainCategories as $category){
+            $cats = explode(",", $category);
+            foreach($cats as $cat){
+                $unique_array[] = strtolower($cat);
+            }
+        }
+        $categories = array_unique($unique_array);
+        $courses = $courses->paginate(12);
+
+        $cartCourses = Cart::where('user_id', auth()->id())->get();
+
+        return view('e-learning/course/students/catalog',compact('cartCourses','courses','categories', 'bundleCourse'));
+    }
+
+    // account Management
+    public function accountManagement(){
+
+        $userId = Auth()->user()->id;
+        $user = User::find($userId);
+        $checkout = Checkout::where('user_id', $userId)->with('course')->get();
+        return view('settings/students/account-management',compact('user', 'checkout'));
+    }
+
+    // course show
+    public function show($slug)
+    {
+        $course = Course::where('slug', $slug)->with('modules.lessons','user')->where('status','published')->first();
+        if (!$course) {
+            return redirect()->back()->with('error','No course found!');
+        }
+
+        // Check if user is enrolled in this course
+        $enrollment = CourseEnrollment::where('user_id', Auth::id())
+            ->where('course_id', $course->id)
+            ->where('status', CourseEnrollment::STATUS_APPROVED)
+            ->first();
+
+        if (!$enrollment) {
+            return redirect()->route('students.catalog.courses')->with('error', 'You are not enrolled in this course or your enrollment is not approved yet.');
+        }
+
+        $lesson_files = Lesson::where('course_id',$course->id)
+        ->where('status','published')
+        ->select('lesson_file as file')->get();
+        $group_files = [];
+
+        foreach($lesson_files as $lesson_file){
+            if(!empty($lesson_file->file)){
+                $file_name = $lesson_file->file;
+                $file_arr = explode('.', $lesson_file->file);
+                $extention = $file_arr[1];
+                if (!in_array($extention, $group_files)) {
+                    $group_files[] = $extention;
+                }
+            }
+        }
+
+        //end group file
+        if ($course && $course->categories) {
+            $categoryArray = explode(',', $course->categories);
+            $relatedCourses = Course::where('instructor_id', $course->instructor_id)
+            ->where('status','published')
+            ->where('id', '!=', $course->id)
+            ->where(function ($query) use ($categoryArray) {
+                foreach ($categoryArray as $category) {
+                    $query->orWhere('categories', 'like', '%' . trim($category) . '%');
+                }
+            })
+            ->take(3)
+            ->get();
+        }
+
+        $course_reviews = CourseReview::where('course_id', $course->id)->with('user')->get();
+        $course_like = course_like::where('course_id', $course->id)->where('user_id', Auth::user()->id)->first();
+        $liked = '';
+        if ($course_like ) {
+            $liked = 'active';
+        }
+
+        // Set enrollment status for view
+        $isUserEnrolled = true; // User is enrolled since we checked this earlier
+        
+        // Get user's completed lessons for this course
+        $userCompletedLessons = [];
+        if (Auth::check()) {
+            $completedLessons = CourseActivity::where('user_id', Auth::id())
+                ->where('course_id', $course->id)
+                ->where('is_completed', true)
+                ->pluck('lesson_id')
+                ->toArray();
+            $userCompletedLessons = array_flip($completedLessons);
+        }
+        
+        // Get user's enrolled courses for related courses check
+        $userEnrolledCourses = [];
+        if (Auth::check()) {
+            $enrolledCourseIds = CourseEnrollment::where('user_id', Auth::id())
+                ->where('status', CourseEnrollment::STATUS_APPROVED)
+                ->pluck('course_id')
+                ->toArray();
+            $userEnrolledCourses = array_flip($enrolledCourseIds);
+        }
+        
+        // Get first lesson for the course
+        $firstLesson = null;
+        foreach ($course->modules->where('status', 'published') as $module) {
+            $firstLessonInModule = $module->lessons->where('status', 'published')->first();
+            if ($firstLessonInModule) {
+                $firstLesson = $firstLessonInModule;
+                break;
+            }
+        }
+        
+        // Calculate course metrics
+        $totalModules = $course->modules->where('status', 'published')->count();
+        $totalLessons = $course->modules->filter(function ($module) {
+            return $module->status === 'published';
+        })->map(function ($module) {
+            return $module->lessons()->where('status', 'published')->count();
+        })->sum();
+
+        $totalCompleteLessons = CourseActivity::where('course_id', $course->id)
+            ->where('user_id', Auth::id())
+            ->whereNotNull('is_completed')
+            ->count();
+            
+        $progress = 0;
+        if($totalLessons && $totalCompleteLessons) {
+            $progress = ($totalCompleteLessons / $totalLessons) * 100;
+        }
+        $progress = number_format($progress, 0);
+
+
+        // last playing video - get the most recent lesson from course log
+         $courseLog = CourseLog::where('course_id', $course->id)
+                                ->where('user_id', auth()->user()->id)
+                                ->orderBy('updated_at', 'desc')
+                                ->first();
+         $defaultVideoId = '899148078';
+         $currentLesson = NULL;
+         $playUrl = NULL;
+
+         if ($courseLog) {
+             $currentLesson = Lesson::find($courseLog->lesson_id);
+
+            if ($currentLesson && $currentLesson->type == 'video') {
+                 $playUrl = $currentLesson->video_link;
+            }elseif($currentLesson && $currentLesson->type == 'audio'){
+                $playUrl = $currentLesson->audio;
+            }elseif($currentLesson && $currentLesson->type == 'text'){
+                $playUrl = $currentLesson->text;
+            }
+         }
+
+
+        if ($course) {
+            return view('e-learning/course/students/show', compact('course','group_files','course_reviews','liked','course_like','totalLessons','totalModules','relatedCourses','defaultVideoId','currentLesson','playUrl','isUserEnrolled','userCompletedLessons','userEnrolledCourses','firstLesson','progress'));
+        } else {
+            return redirect('students/dashboard')->with('error', 'Course not found!');
+        }
+    }
+
+    public function fileDownload($course_id,$file_extension){
+
+          $lesson_files = Lesson::where('course_id',$course_id)->select('lesson_file as file')->get();
+            foreach($lesson_files as $lesson_file){
+                if(!empty($lesson_file->file)){
+                    $file_name = $lesson_file->file;
+                    $file_arr = explode('.', $file_name);
+                    $extension = $file_arr['1'];
+                    if($file_extension == $extension){
+                        $files[] = public_path($file_name);
+                }
+                }
+            }
+        $zip = new ZipArchive;
+        $zipFileName = $file_extension.'_'.time().'.zip';
+        $is_have_file = '';
+        if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
+            foreach ($files as $file) {
+
+                if(file_exists($file)){
+                    $zip->addFile($file, basename($file));
+                }else{
+                   $is_have_file = 'There are no files in your storage!!!!';
+                   break;
+                }
+            }
+            if(!empty($is_have_file)){
+                return redirect('students/courses')->with('error', $is_have_file);
+            }
+            $zip->close();
+
+            // Set appropriate headers for the download
+            header('Content-Type: application/zip');
+            header("Content-Disposition: attachment; filename=" . $zipFileName);
+            header('Content-Length: ' . filesize($zipFileName));
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            readfile($zipFileName);
+
+            // Delete the zip file after download
+            unlink($zipFileName);
+            exit;
+        } else {
+            // Handle the case when the zip file could not be created
+            echo 'Failed to create the zip file.';
+        }
+    }
+
+    public function cousreDownloadPDF($course_id){
+        $lesson_files = Lesson::where('course_id',$course_id)->select('lesson_file as file')->get();
+        foreach($lesson_files as $lesson_file){
+            $file_name = $lesson_file->file;
+            $file_arr = explode('.', $lesson_file->file);
+            $extention = $file_arr[1];
+            if($extention == 'pdf'){
+                $pdfFiles[] = $file_name;
+           }
+        }
+
+        $zipFileName = 'PDF_'.time().'.zip';
+        $zip = new ZipArchive;
+
+        if ($zip->open(public_path('uploads/lessons/files/'.$zipFileName), ZipArchive::CREATE) === TRUE) {
+            foreach ($pdfFiles as $file) {
+                if (file_exists(public_path('uploads/lessons/files/'.$file))) {
+                    $zip->addFile(public_path('uploads/lessons/files/'.$file), basename($file));
+                }
+            }
+            $zip->close();
+            return response()->download(public_path('uploads/lessons/files/'.$zipFileName))->deleteFileAfterSend(true);
+        } else {
+            // handle error here
+        }
+    }
+
+    public function certificateDownload($slug)
+    {
+            $course = Course::where('slug', $slug)
+            ->with('certificate')
+            ->first();
+
+            if (!$course) {
+                return redirect()->back()->with('error','There is no certificate found for this Course');
+            }
+
+            $courseDate = CourseActivity::where('user_id', Auth::user()->id)
+            ->where('is_completed', 1)
+            ->orderBy('updated_at', 'desc')
+            ->first();
+
+            if (!$courseDate) {
+                return redirect()->back()->with('error','There is no certificate found for this Course');
+            }
+
+            $certStyle = Certificate::where('instructor_id',$course->user_id)->where('course_id',$course->id)->first();
+
+            if (!$certStyle) {
+                $certificate_path = 'certificates/download/certificate1';
+            }
+
+            if ($certStyle) {
+                if ($certStyle->style == 3) {
+                    $certificate_path = 'certificates/download/certificate1';
+
+                }elseif ($certStyle->style == 2) {
+                    $certificate_path = 'certificates/download/certificate2';
+
+                }elseif ($certStyle->style == 1) {
+                    $certificate_path = 'certificates/download/certificate3';
+                }else{
+                    $certificate_path = 'certificates/download/certificate1';
+                }
+            }
+
+            $signature = $certStyle ? $certStyle->signature : '';
+            $logo = $certStyle ? $certStyle->logo : '';
+
+            $pdf = PDF::loadView($certificate_path, ['course' => $course, 'courseDate' => $courseDate->updated_at , 'signature' => $signature, 'logo' => $logo]);
+
+            return $pdf->download($course->title.'-certificate.pdf');
+
+    }
+
+    public function certificateView($slug)
+    {
+            $course = Course::where('slug', $slug)
+            ->with('certificate')
+            ->first();
+
+            if (!$course) {
+                return redirect()->back()->with('error','There is no certificate found for this Course');
+            }
+
+            $courseDate = CourseActivity::where('user_id', Auth::user()->id)
+            ->where('is_completed', 1)
+            ->orderBy('updated_at', 'desc')
+            ->first();
+
+            if (!$courseDate) {
+                return redirect()->back()->with('error','There is no certificate found for this Course');
+            }
+
+            $certStyle = Certificate::where('instructor_id',$course->user_id)->first();
+
+            if (!$certStyle) {
+                $certificate_show_path = 'certificates/show/certificate1';
+            }
+
+            if ($certStyle) {
+                if ($certStyle->style == 3) {
+                    $certificate_show_path = 'certificates/show/certificate1';
+
+                }elseif ($certStyle->style == 2) {
+                    $certificate_show_path = 'certificates/show/certificate2';
+
+                }elseif ($certStyle->style == 1) {
+                    $certificate_show_path = 'certificates/show/certificate3';
+                }else{
+                    $certificate_show_path = 'certificates/show/certificate1';
+                }
+            }
+
+            $signature = '';
+
+            if (!empty($certStyle->signature)) {
+                $signature = $certStyle->signature;
+            }else{
+                $signature = 'assets/images/certificate/one/signature.png';
+            }
+            return view($certificate_show_path, ['course' => $course, 'courseDate' => $courseDate->updated_at , 'signature' => $signature]);
+
+    }
+
+    // course overview
+    public function overview($slug)
+    {
+        $course = Course::where('slug', $slug)->with('modules.lessons','user')->first();
+        $promo_video_link = '';
+        if($course->promo_video != ''){
+            $ytarray=explode("/", $course->promo_video);
+            $ytendstring=end($ytarray);
+            $ytendarray=explode("?v=", $ytendstring);
+            $ytendstring=end($ytendarray);
+            $ytendarray=explode("&", $ytendstring);
+            $ytcode=$ytendarray[0];
+            $promo_video_link = $ytcode;
+        }
+
+        $cartCourses = Cart::where('user_id', auth()->id())->get();
+
+        $course_reviews = CourseReview::where('course_id', $course->id)->with('user')->get();
+        $course_like = course_like::where('course_id', $course->id)->where('user_id', Auth::user()->id)->first();
+
+        $courseEnrolledNumber = Checkout::where('course_id',$course->id)->count();
+
+        $liked = '';
+        if ($course_like ) {
+            $liked = 'active';
+        }
+
+        $related_course = [];
+        if ($course) {
+            if($course->categories){
+                $categoryArray = explode(',', $course->categories);
+
+                $related_course = Course::where('instructor_id', $course->instructor_id)
+                ->where('status','published')
+                ->where('id', '!=', $course->id)
+                ->where(function ($query) use ($categoryArray) {
+                    foreach ($categoryArray as $category) {
+                        $query->orWhere('categories', 'like', '%' . trim($category) . '%');
+                    }
+                })
+                ->take(4)
+                ->get();
+            }
+
+            return view('e-learning/course/students/overview', compact('course','promo_video_link','course_reviews','related_course','cartCourses','liked','courseEnrolledNumber'));
+        } else {
+            return redirect('students/dashboard')->with('error', 'Course not found!');
+        }
+    }
+
+      // my course details
+    public function courseDetails($slug){
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please login to access course details.');
+        }
+
+        $userId = Auth::id();
+        
+        // Create cache key for this course and user
+        $cacheKey = "course_details_{$slug}_user_{$userId}";
+        
+        // Try to get from cache first (cache for 10 minutes)
+        $courseData = cache()->remember($cacheKey, 600, function() use ($slug, $userId) {
+            return Course::where('slug', $slug)
+                ->with([
+                    'user',
+                    'modules' => function($query) {
+                        $query->where('status', 'published')
+                              ->with(['lessons' => function($lessonQuery) {
+                                  $lessonQuery->where('status', 'published')
+                                             ->select('id', 'module_id', 'title', 'type', 'video_link', 'audio', 'duration', 'status');
+                              }]);
+                    },
+                    'reviews' => function($query) {
+                        $query->with('user:id,name,avatar');
+                    },
+                    'enrollments' => function($query) {
+                        $query->where('status', CourseEnrollment::STATUS_APPROVED);
+                    }
+                ])
+                ->first();
+        });
+        
+        $course = $courseData;
+        
+        if (!$course) {
+            return redirect()->route('students.dashboard')->with('error', 'Course not found!');
+        }
+
+        // Check if user is enrolled in this course (using eager loaded data)
+        $enrollment = $course->enrollments->where('user_id', $userId)->first();
+        
+        if (!$enrollment) {
+            return redirect()->route('students.catalog.courses')->with('error', 'You are not enrolled in this course or your enrollment is not approved yet.');
+        }
+
+        // Get course statistics (using eager loaded data)
+        $courseEnrolledNumber = $course->enrollments->count();
+
+        // Get course reviews (using eager loaded data)
+        $course_reviews = $course->reviews;
+        $totalReviews = $course_reviews->count();
+
+        // Get completed lessons for this user in a single query with caching
+        $completedLessonsCacheKey = "user_{$userId}_course_{$course->id}_completed_lessons";
+        $completedLessonIds = cache()->remember($completedLessonsCacheKey, 300, function() use ($course, $userId) {
+            return CourseActivity::where([
+                'course_id' => $course->id,
+                'user_id' => $userId, 
+                'is_completed' => 1
+            ])->pluck('lesson_id')->toArray();
+        });
+        
+        // Create a lookup array for completed lessons for O(1) access
+        $completedLessonsLookup = array_flip($completedLessonIds);
+
+        // Mark lessons as completed using the lookup array
+        foreach ($course->modules as $module) {
+            foreach ($module->lessons as $lesson) {
+                $lesson->completed = isset($completedLessonsLookup[$lesson->id]) ? 1 : 0;
+            }
+        }
+        
+        // Cache user's enrollment status and completed lessons for helpers
+        app()->instance('user_enrolled_courses', collect([$course->id]));
+        app()->instance('user_completed_lessons', collect($completedLessonIds));
+        
+        // Prepare data for view to avoid multiple helper calls
+        $isUserEnrolled = true; // We already verified enrollment above
+        $userCompletedLessons = $completedLessonsLookup; // For quick lookup in blade
+        $firstLesson = null;
+        $currentLesson = null;
+        $totalModules = $course->modules->count();
+        $totalLessons = $course->modules->sum(function($module) {
+            return $module->lessons->count();
+        });
+        
+        // Get first lesson if exists
+        foreach ($course->modules as $module) {
+            if ($module->lessons->count() > 0) {
+                $firstLesson = $module->lessons->first();
+                break;
+            }
+        }
+        
+        // Set current lesson (you can modify this logic based on your needs)
+        $currentLesson = $firstLesson;
+        
+        // Check if user likes this course
+        $liked = \App\Models\course_like::where('course_id', $course->id)
+            ->where('user_id', $userId)
+            ->exists() ? 'active' : '';
+
+        return view('e-learning/course/students/myCourse', compact(
+            'course',
+            'totalReviews',
+            'courseEnrolledNumber',
+            'course_reviews',
+            'enrollment',
+            'isUserEnrolled',
+            'userCompletedLessons',
+            'firstLesson',
+            'currentLesson',
+            'totalModules',
+            'totalLessons',
+            'liked'
+        ));
+    }
+
+    public function storeCourseLog(Request $request){
+
+        $courseId = (int)$request->input('courseId');
+        $lessonId = (int)$request->input('lessonId');
+        $moduleId = (int)$request->input('moduleId');
+        $userId = auth()->user()->id;
+
+        $existingCourse = Course::find($courseId);
+        $courseLog = CourseLog::where('course_id', $courseId)->where('user_id',$userId)->first();
+        $currentPlayingLesson = Lesson::find($lessonId);
+
+        if(!$courseLog){
+            $courseLogInfo = new CourseLog([
+                'course_id' => $courseId,
+                'instructor_id' => $existingCourse->user_id,
+                'module_id' => $moduleId,
+                'lesson_id' => $lessonId,
+                'user_id'   => $userId,
+            ]);
+            $courseLogInfo->save();
+        }else{
+            $courseLog->course_id = $courseId;
+            $courseLog->instructor_id = $existingCourse->user_id;
+            $courseLog->module_id = $moduleId;
+            $courseLog->lesson_id = $lessonId;
+            $courseLog->update();
+        }
+
+        return response()->json(['currentPlayingLesson' => $currentPlayingLesson]);
+
+    }
+
+    /**
+     * Student activties lesson complete
+     */
+    public function storeActivities(Request $request)
+    {
+        
+        // Update or insert to course activities
+        $courseId = (int)$request->input('courseId');
+        $lessonId = (int)$request->input('lessonId');
+        $moduleId = (int)$request->input('moduleId');
+        $duration = (int)$request->input('duration');
+        $instructorId = (int)$request->input('instructorId');
+
+        $course = Course::find($courseId);
+        $userId = Auth()->user()->id;
+
+        // If instructorId is not provided in request, get it from course
+        if (!$instructorId && $course) {
+            $instructorId = $course->user_id;
+        }
+
+        $courseActivities = CourseActivity::updateOrCreate(
+            [
+                'lesson_id' => $lessonId, 
+                'module_id' => $moduleId,
+                'user_id' => $userId
+            ],
+            [
+                'course_id' => $courseId,
+                'instructor_id' => $instructorId,
+                'module_id' => $moduleId,
+                'lesson_id' => $lessonId,
+                'user_id'   => $userId,
+                'is_completed' => true,
+                'duration' => $duration
+            ]
+        );
+
+        
+        // Find next lesson for auto-play
+        $currentLesson = Lesson::find($lessonId);
+        $nextLesson = null;
+        
+        if ($currentLesson) {
+            // First try to find next lesson in same module
+            $nextLesson = Lesson::where('module_id', $moduleId)
+                ->where('id', '>', $lessonId)
+                ->where('status', 'published')
+                ->orderBy('id', 'asc')
+                ->first();
+            
+            // If no next lesson in current module, find first lesson of next module
+            if (!$nextLesson) {
+                $currentModule = Module::find($moduleId);
+                if ($currentModule) {
+                    $nextModule = Module::where('course_id', $courseId)
+                        ->where('id', '>', $moduleId)
+                        ->where('status', 'published')
+                        ->orderBy('id', 'asc')
+                        ->first();
+                    
+                    if ($nextModule) {
+                        $nextLesson = Lesson::where('module_id', $nextModule->id)
+                            ->where('status', 'published')
+                            ->orderBy('id', 'asc')
+                            ->first();
+                    }
+                }
+            }
+        }
+
+        // Invalidate cache when lesson is completed
+        if ($course) {
+            $completedLessonsCacheKey = "user_{$userId}_course_{$courseId}_completed_lessons";
+            cache()->forget($completedLessonsCacheKey);
+            
+            // Also invalidate course details cache
+            $courseDetailsCacheKey = "course_details_{$course->slug}_user_{$userId}";
+            cache()->forget($courseDetailsCacheKey);
+        }
+        
+        return response()->json([
+            'courseActivity' => $courseActivities,
+            'nextLesson' => $nextLesson,
+            'success' => true
+        ]);
+    }
+
+    public function activitiesList()
+    {
+        $myCoursesList = Checkout::where('user_id', Auth()->id())->get();
+
+        $courseActivities = Course::whereIn('id',$myCoursesList->pluck('course_id'))->orderby('id', 'desc')->paginate(12);
+        return view('e-learning/course/students/activity', compact('courseActivities'));
+    }
+
+    public function review(Request $request, $slug){
+        $userId = Auth()->user()->id;
+        $lessons = Lesson::orderby('id', 'desc')->paginate(10);
+        $modules = Module::orderby('id', 'desc')->paginate(10);
+        $course = Course::where('slug', $slug)->with('user')->first();
+        $course_reviews = CourseReview::where('course_id', $course->id)->where('user_id',$userId)->first();
+        if($course_reviews){
+            $course_reviews->comment = $request->comment;
+            $course_reviews->star = $request->star;
+            $course_reviews->save();
+        }else{
+            $review = new CourseReview([
+                'user_id'   => $userId,
+                'course_id' => $course->id,
+                'instructor_id' => $course->user_id,
+                'star'      => $request->star,
+                'comment'   => $request->comment,
+            ]);
+            $review->save();
+
+            // set notification for instructor
+                $notify = new Notification([
+                    'user_id'   => Auth::user()->id,
+                    'instructor_id' => $course->user_id,
+                    'course_id' => $course->id,
+                    'type'      => 'instructor',
+                    'message'   => "review",
+                    'status'   => 'unseen',
+                ]);
+                $notify->save();
+        }
+
+        return redirect()->route('students.show.courses', ['slug' => $slug] )->with('message', 'comment submitted successfully!');
+    }
+
+    public function certificate()
+    {
+        $myCoursesList = Checkout::where('user_id', Auth()->id())->get();
+        $certificateCourses = Course::whereIn('id',$myCoursesList->pluck('course_id'))->orderby('id', 'desc')->paginate(12);
+        return view('e-learning/course/students/certifiate',compact('certificateCourses'));
+    }
+
+    public function message()
+    {
+        return view('e-learning/course/students/message-2');
+    }
+
+    public function courseLike($course_id, $ins_id)
+    {
+
+        $course_liked = course_like::where('course_id', $course_id)->where('instructor_id', $ins_id)->first();
+
+        if ($course_liked) {
+             $course_liked->delete();
+             $status = 'unliked';
+        }else{
+            $course_like = new course_like([
+                'course_id' => $course_id,
+                'instructor_id' => $ins_id,
+                'user_id' => Auth::user()->id,
+                'status' => 1,
+            ]);
+            $course_like->save();
+
+            $status = 'liked';
+        }
+
+        return response()->json(['message' => $status]);
+    }
+
+    public function courseUnLike($course_id, $ins_id)
+    {
+
+        $course_liked = course_like::where('course_id', $course_id)->where('instructor_id', $ins_id)->first();
+
+        if ($course_liked) {
+             $course_liked->delete();
+             $status = 'unliked';
+        }
+
+        return redirect()->back()->with('success', 'Course Unlike Successfully Done!');
+    }
+
+    /**
+     * Modern Student Dashboard (New Design)
+     */
+    public function modernDashboard()
+    {
+        $user = User::where('id', Auth::id())->first();
+        $user->session_id = null;
+        $user->save();
+
+        // Get enrolled courses with progress tracking
+        $enrolments = Checkout::with('course')->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(12);
+        
+        // Calculate total watch time
+        $totalTimeSpend = CourseActivity::where('user_id', Auth::user()->id)->where('is_completed', 1)->sum('duration');
+        $totalHours = floor($totalTimeSpend / 3600);
+        $totalMinutes = floor(($totalTimeSpend % 3600) / 60);
+
+        // Course completion statistics
+        $notStartedCount = 0;
+        $inProgressCount = 0;
+        $completedCount = 0;
+
+        if ($enrolments) {
+            foreach ($enrolments as $enrolment) {
+                if ($enrolment->course) {
+                    $allCourses = StudentActitviesProgress(auth()->user()->id, $enrolment->course->id);
+                    if ($allCourses == 0) {
+                        $notStartedCount++;
+                    } elseif ($allCourses > 0 && $allCourses < 99) {
+                        $inProgressCount++;
+                    } elseif ($allCourses == 100) {
+                        $completedCount++;
+                    }
+                }
+            }
+        }
+
+        // Get achievements data
+        $achievements = $this->calculateAchievements($totalHours, $completedCount, $enrolments->count());
+
+        // Get certificates
+        $myCoursesList = Checkout::where('user_id', Auth()->id())->get();
+        $certificateCourses = Course::whereIn('id', $myCoursesList->pluck('course_id'))->orderby('id', 'desc')->get();
+
+        return view('e-learning/course/students/dashboard', compact(
+            'enrolments', 'totalHours', 'totalMinutes', 'notStartedCount', 
+            'inProgressCount', 'completedCount', 'achievements', 'certificateCourses'
+        ));
+    }
+
+    /**
+     * Enrolled Courses Page
+     */
+    public function enrolledCourses()
+    {
+        $queryParams = request()->except('page');
+        $title = isset($_GET['title']) ? $_GET['title'] : '';
+        $status = isset($_GET['status']) ? $_GET['status'] : '';
+
+        $enrolments = Checkout::with('course.reviews')->where('checkouts.user_id', Auth::user()->id);
+
+        if (!empty($title)) {
+            $enrolments->whereHas('course', function ($query) use ($title) {
+                $query->where('title', 'LIKE', '%' . $title . '%');
+            });
+        }
+
+        if ($status) {
+            if ($status == 'oldest') {
+                $enrolments->orderBy('id', 'asc');
+            } elseif ($status == 'newest') {
+                $enrolments->orderBy('id', 'desc');
+            }
+        } else {
+            $enrolments->orderBy('id', 'desc');
+        }
+
+        $enrolments = $enrolments->paginate(12)->appends($queryParams);
+
+        return view('e-learning/course/students/enrolled', compact('enrolments'));
+    }
+
+    /**
+     * Achievements Page
+     */
+    public function achievements()
+    {
+        $user = Auth::user();
+        
+        // Calculate achievements based on user activity
+        $totalTimeSpend = CourseActivity::where('user_id', $user->id)->where('is_completed', 1)->sum('duration');
+        $totalHours = floor($totalTimeSpend / 3600);
+        
+        $completedCourses = Checkout::where('user_id', $user->id)->count();
+        $enrolledCourses = Checkout::where('user_id', $user->id)->count();
+        
+        $achievements = $this->calculateAchievements($totalHours, $completedCourses, $enrolledCourses);
+        
+        return view('e-learning/course/students/achievements', compact('achievements', 'totalHours', 'completedCourses'));
+    }
+
+    /**
+     * Student Notifications
+     */
+    public function notifications()
+    {
+        $notifications = Notification::where('user_id', Auth::user()->id)
+                                   ->orderBy('created_at', 'desc')
+                                   ->paginate(20);
+        
+        // Mark notifications as seen
+        Notification::where('user_id', Auth::user()->id)
+                   ->where('status', 'unseen')
+                   ->update(['status' => 'seen']);
+        
+        return view('e-learning/course/students/notifications', compact('notifications'));
+    }
+
+    /**
+     * Calculate user achievements based on activity
+     */
+    private function calculateAchievements($totalHours, $completedCourses, $enrolledCourses)
+    {
+        $achievements = [
+            'first_enrollment' => [
+                'title' => 'প্রথম এনরোলমেন্ট',
+                'description' => 'প্রথম কোর্সে ভর্তি হয়েছেন',
+                'icon' => 'fas fa-graduation-cap',
+                'earned' => $enrolledCourses > 0,
+                'color' => 'success'
+            ],
+            'first_course_complete' => [
+                'title' => 'প্রথম কোর্স সম্পন্ন',
+                'description' => 'প্রথমবার একটি কোর্স শেষ করেছেন',
+                'icon' => 'fas fa-trophy',
+                'earned' => $completedCourses > 0,
+                'color' => 'warning'
+            ],
+            'five_hours_watched' => [
+                'title' => '৫ ঘণ্টা শিক্ষা',
+                'description' => '৫ ঘণ্টা ভিডিও দেখেছেন',
+                'icon' => 'fas fa-clock',
+                'earned' => $totalHours >= 5,
+                'color' => 'info'
+            ],
+            'ten_hours_watched' => [
+                'title' => '১০ ঘণ্টা শিক্ষা',
+                'description' => '১০ ঘণ্টা ভিডিও দেখেছেন',
+                'icon' => 'fas fa-fire',
+                'earned' => $totalHours >= 10,
+                'color' => 'danger'
+            ],
+            'dedicated_learner' => [
+                'title' => 'নিবেদিতপ্রাণ শিক্ষার্থী',
+                'description' => '৫০ ঘণ্টা শিক্ষা সম্পন্ন করেছেন',
+                'icon' => 'fas fa-star',
+                'earned' => $totalHours >= 50,
+                'color' => 'primary'
+            ],
+            'course_collector' => [
+                'title' => 'কোর্স সংগ্রাহক',
+                'description' => '৫টি কোর্স সম্পন্ন করেছেন',
+                'icon' => 'fas fa-medal',
+                'earned' => $completedCourses >= 5,
+                'color' => 'success'
+            ]
+        ];
+
+        return $achievements;
+    }
+
+    public function backToPavilion($userId)
+    {
+        $user_id = decrypt($userId);
+        $user = User::find($user_id);
+
+        if ($user->user_role == 'instructor') {
+            Auth::logout();
+            Auth::login($user);
+
+            $keysToForget = ['userId', 'userRole'];
+            foreach ($keysToForget as $key) {
+                if (session()->has($key)) {
+                    session()->forget($key);
+                }
+            }
+            return redirect()->route('instructor.dashboard');
+        } elseif ($user->user_role == 'admin') {
+            Auth::logout();
+            $keysToForget = ['userId', 'userRole'];
+            foreach ($keysToForget as $key) {
+                if (session()->has($key)) {
+                    session()->forget($key);
+                }
+            }
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('students.dashboard');
+    }
+}

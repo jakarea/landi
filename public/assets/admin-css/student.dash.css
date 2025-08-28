@@ -1,0 +1,69 @@
+.student_summery_chart {
+  margin-right: 40px;
+}
+
+.student_summery_content ul li {
+  line-height: 30px;
+}
+
+.student_summery .student_summery_chart .chart {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.student_summery .student_summery_chart canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.student_summery .student_summery_chart span {
+  color: #555;
+  display: block;
+  line-height: 120px;
+  text-align: center;
+  width: 120px;
+  font-size: 30px;
+  margin-left: 5px;
+}
+
+.status-card-box {
+  border-radius: 0.5rem;
+  background: var(--neutral-color-white, #FFF);
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.1);
+  padding: 1.5rem;
+}
+.status-card-box p {
+  color: var(--neutral-color-neutral-60, #66768E);
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25rem;
+  padding-bottom: 0.5rem;
+}
+.status-card-box .d-flex {
+  justify-content: space-between;
+  align-items: center;
+}
+.status-card-box .d-flex h5 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 2.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.75rem;
+  letter-spacing: -0.045rem;
+}
+.status-card-box .d-flex span {
+  display: inline-block;
+  border-radius: 1rem;
+  background: var(--success-green-lightest, #E8F6E5);
+  color: var(--success-green-dark, #2A920B);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25rem;
+}

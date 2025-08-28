@@ -1,0 +1,214 @@
+.dark-mode {
+    background-color: #1A1A1A !important;
+}
+
+.dark-mode .auth-part-sec {
+    background-color: #1A1A1A !important;
+}
+
+.dark-mode .header-section {
+    border: 1px solid #1A1A1A !important;
+    background: #0D0D0D !important;
+    box-shadow: -20px 20px 40px -4px rgba(0, 0, 0, 0.24), 0px 0px 2px 0px rgba(0, 0, 0, 0.24) !important;
+}
+
+.dark-mode .form-group label,
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6 {
+    color: #fff !important;
+}
+
+
+.dark-mode .go-to-stripe a{
+    color: #fff!important;
+}
+
+.dark-mode .form-control {
+    border: 1px solid #1A1A1A !important;
+    background: #0D0D0D !important;
+    color: #fff !important;
+}
+
+.dark-mode .username-box-wrap .form-submit .btn,
+.dark-mode .auth-form-wrap .form-submit .btn {
+    border: 1px solid #8F6BDD !important;
+    background: #7289FF !important;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05) !important;
+}
+
+.dark-mode .auth-form-wrap .optional-txt p a,
+.dark-mode .auth-form-wrap .d-flex a {
+    color: #7289FF !important;
+}
+
+.dark-mode .auth-form-wrap .form-check .form-check-input {
+    background-color: transparent !important;
+    border-color: #66768E !important;
+}
+
+.dark-mode .back-bttn a {
+    border: 1px solid var(--others-dark-stroke, #1A1A1A) !important;
+    background: #0D0D0D !important;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05) !important;
+    color: #A6B1C4 !important;
+}
+
+.dark-mode .step-item h6 {
+    color: #0D0D0D !important;
+}
+
+.dark-mode .step-item.active h6 {
+    background: #7289FF !important;
+}
+
+.dark-mode .step-item.active::after,
+.dark-mode .step-item.active::before {
+    background: #7289FF !important;
+}
+
+.dark-mode .form-check.form-switch .form-check-input:checked {
+    background-color: #7289FF !important;
+    border-color: #7289FF !important;
+}
+
+.dark-mode .pricing-plan-sec {
+    background: #121212 !important;
+}
+
+.dark-mode .pricing-box {
+    border-radius: 1rem !important;
+    border: 1px solid #1A1A1A !important;
+    background: #0D0D0D !important;
+    box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.05), 0px 12px 16px -4px rgba(16, 24, 40, 0.10) !important;
+}
+
+.dark-mode .pricing-box .bttn {
+    background-color: #121212 !important;
+}
+
+.dark-mode .pricing-box .txt h3 {
+    color: #D7DFEF !important;
+}
+
+.dark-mode .pricing-box .txt h6 {
+    color: #667085 !important;
+}
+
+.dark-mode .pricing-box .txt h5 {
+    color: #7289FF !important;
+}
+
+.dark-mode .pricing-box .bttn a {
+    background-color: #7289FF !important;
+}
+
+.dark-mode .pricing-tab-head .nav {
+    background: #191919;
+}
+
+.dark-mode .nav-item .nav-link.active {
+    background: #0D0D0D !important;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.10) !important;
+}
+
+.dark-mode .pricing-tab-head .nav .nav-item .nav-link {
+    color: #7289FF !important;
+}
+
+.dark-mode .username-box-wrap {
+    background: #0D0D0D !important;
+    box-shadow: 0px 12px 16px 4px rgba(37, 45, 52, 0.10), 0px 0px 2px 0px rgba(37, 45, 52, 0.20) !important;
+}
+
+.dark-mode .theme-settings-wrap h4,
+.dark-mode .username-box-wrap h1 {
+    color: #D7DFEF !important;
+}
+
+.dark-mode .input-group-text {
+    background-color: transparent !important;
+    color: #D2DEEF !important;
+    border-color: #1A1A1A !important;
+}
+
+.dark-mode .connect-modal-box .modal-content {
+    background: #0D0D0D !important;
+    box-shadow: 0px 12px 16px 4px rgba(37, 45, 52, 0.10), 0px 0px 2px 0px rgba(37, 45, 52, 0.20) !important;
+}
+
+.dark-mode .username-box-wrap .btn-primary,
+.dark-mode .save-bttns .btn-submit,
+.dark-mode .save-bttns .btn-submit,
+.dark-mode .stripe-settings-form-wrap .btn-primary {
+    background-color: #7289FF !important;
+    border: 0!important;
+}
+
+.dark-mode .theme-settings-box {
+    border: 1px solid #1A1A1A!important;
+    background: #0D0D0D!important;
+    box-shadow: 0px 1px 2px 0px rgba(145, 158, 171, 0.16)!important;
+}
+
+.dark-mode .favicon-box,
+.dark-mode .feat-box,
+.dark-mode .meta-box,
+.dark-mode .logo-box-view {
+    border: 1px solid var(--others-dark-stroke, #1A1A1A)!important;
+    background: #0D0D0D!important;
+}
+
+.dark-mode .logo-box-view p {
+    color: #5E6B80!important;
+}
+
+.dark-mode  .file-upload-area{ 
+    border: 1px dashed #313A49!important;
+    background: #0D0D0D!important;
+}
+
+.dark-mode .connect-modal-box .modal-header{
+    border-color: #1A1A1A!important;
+}
+
+.dark-mode .connect-modal-box .modal-content{
+    border: 2px solid #1A1A1A !important;
+}
+
+.dark-mode .connect-modal-box .fas.fa-close{
+    color: #fff!important;
+}
+
+.dark-mode .form-check-input:checked {
+    background-color: transparent!important;
+    border-color: #D2DEEF!important;
+}
+
+.dark-mode .pricing-box .bttn a.current-plan-bttn{
+    background-color: #EF6E79!important;
+    color: #0d0d0d!important;
+  }
+
+  .dark-mode .form-control:-webkit-autofill,
+.dark-mode .form-control:-webkit-autofill:hover, 
+.dark-mode .form-control:-webkit-autofill:focus, 
+.dark-mode .form-control:-webkit-autofill:active{
+    -webkit-background-clip: text!important;
+    -webkit-text-fill-color: #ffffff!important;
+    transition: background-color 5000s ease-in-out 0s!important; 
+    border-color: #0D0D0D !important; 
+}
+
+.dark-mode .current-plan{
+    background-color: #7289FF!important;
+  }
+
+  .dark-mode .dark-mode-bttn {
+    background-color: #0D0D0D !important;
+    border: 2px solid #1A1A1A !important;
+    box-shadow: 0px 12px 16px 4px rgba(37, 45, 52, 0.1), 0px 0px 2px 0px rgba(37, 45, 52, 0.2) !important;
+  }

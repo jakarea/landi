@@ -1,0 +1,406 @@
+main {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+main .container-fluid {
+  max-width: 76rem !important;
+}
+
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check) + .btn:active {
+  border-color: transparent !important;
+}
+
+.mt-15 {
+  margin-top: 1.5rem;
+}
+
+.total-client-box {
+  border-radius: 0.5rem;
+  border: 1px solid var(--neutral-color-neutral-30, #E5ECF6);
+  background: var(--neutral-color-white, #FFF);
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.1);
+  padding: 1.5rem 1.25rem;
+  height: 100%;
+  position: relative;
+}
+.total-client-box img {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+}
+.total-client-box h5 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5rem;
+  /* 150% */
+}
+.total-client-box h4 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 2.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.75rem;
+  /* 122.222% */
+  letter-spacing: -0.045rem;
+  margin-top: 1.5rem;
+}
+.total-client-box p {
+  color: var(--neutral-color-neutral-60, #66768E);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  margin-top: 1rem;
+}
+
+.earnings-chart-wrap {
+  padding: 1.5rem 1.25rem 2.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--neutral-gray-gray-50, #F0F1F3);
+  background: var(--neutral-white, #FFF);
+  box-shadow: 0px 4px 30px 0px rgba(46, 45, 116, 0.05);
+}
+.earnings-chart-wrap h5 {
+  color: var(--neutral-black-black-500, #1D1F2C);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.875rem;
+  /* 150% */
+  letter-spacing: 0.0125rem;
+}
+.earnings-chart-wrap p {
+  color: var(--gray-500, #667085);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  /* 142.857% */
+}
+
+.top-performing-course {
+  border-radius: 0.5rem;
+  background: var(--background-light-paper, #FFF);
+  box-shadow: 0px 12px 24px -4px rgba(145, 158, 171, 0.12), 0px 0px 2px 0px rgba(145, 158, 171, 0.2);
+  padding: 1rem 1.5rem;
+  min-height: 100%;
+}
+.top-performing-course .d-flex {
+  align-items: center;
+  justify-content: space-between;
+}
+.top-performing-course .d-flex h5 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.75rem;
+  /* 155.556% */
+}
+.top-performing-course .d-flex a {
+  border-radius: 0.375rem;
+  background: var(--transparent-grey-16, rgba(145, 158, 171, 0.16));
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.25rem;
+  /* 166.667% */
+  display: inline-block;
+  padding: 0.3rem 0.5rem;
+}
+
+.course-lists {
+  margin-left: 1.5rem;
+}
+.course-lists .media {
+  align-items: center;
+  margin-top: 1rem;
+}
+.course-lists .media img {
+  margin-right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.course-lists .media h5 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.375rem;
+}
+.course-lists .media p {
+  color: var(--neutral-color-neutral-60, #66768E);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.125rem;
+  /* 150% */
+}
+
+.messages-items-wrap {
+  margin-top: 1rem;
+}
+.messages-items-wrap .messages-item {
+  margin-top: 1rem;
+}
+.messages-items-wrap .messages-item .media {
+  align-items: center;
+}
+.messages-items-wrap .messages-item .media .avatar {
+  position: relative;
+  margin-right: 1rem;
+}
+.messages-items-wrap .messages-item .media .avatar img {
+  width: 2.4rem;
+  height: 2.4rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+}
+.messages-items-wrap .messages-item .media .avatar i {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 8px;
+  color: #D0D5DD;
+}
+.messages-items-wrap .messages-item .media h5 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.375rem;
+}
+.messages-items-wrap .messages-item .media h5 span {
+  color: var(--neutral-color-neutral-60, #66768E);
+  font-size: 12px;
+  display: inline-block;
+  margin-left: auto;
+}
+.messages-items-wrap .messages-item .media p {
+  overflow: hidden;
+  color: var(--neutral-color-neutral-60, #66768E);
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.125rem;
+  /* 150% */
+}
+
+.course-status-box {
+  border-radius: 0.5rem;
+  background: var(--background-light-paper, #FFF);
+  box-shadow: 0px 12px 24px -4px rgba(145, 158, 171, 0.12), 0px 0px 2px 0px rgba(145, 158, 171, 0.2);
+}
+.course-status-box .d-flex {
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.125rem 1.5rem;
+}
+.course-status-box .d-flex h4 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.75rem;
+}
+.course-status-box .d-flex a {
+  border-radius: 0.375rem;
+  background: var(--transparent-grey-16, rgba(145, 158, 171, 0.16));
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.25rem;
+  display: inline-block;
+  padding: 0.3rem 0.5rem;
+  margin-right: 1rem;
+}
+.course-status-box .d-flex select {
+  border-radius: 0.375rem;
+  background: var(--transparent-grey-16, rgba(145, 158, 171, 0.16));
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.25rem;
+  display: inline-block;
+  padding: 0.3rem 0.5rem;
+  border: 0;
+}
+.course-status-box table {
+  width: 100%;
+}
+.course-status-box table tr th {
+  padding: 0.7rem 1rem;
+  color: var(--neutral-color-neutral-60, #66768E);
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5rem;
+  background: var(--background-light-neutral, #F4F6F8);
+}
+.course-status-box table tr td {
+  padding: 0.6rem 1.5rem;
+  border-bottom: 1px solid var(--stroke, #E4E7EC);
+  background: var(--background-light-paper, #FFF);
+}
+.course-status-box table tr td p {
+  overflow: hidden;
+  color: var(--black, #212B36);
+  text-overflow: ellipsis;
+  whitespace: nowrap;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.375rem;
+}
+.course-status-box table tr td p i {
+  color: #F8AA00;
+}
+.course-status-box table tr td .media {
+  align-items: center;
+}
+.course-status-box table tr td .media .avatar {
+  margin-right: 1rem;
+}
+.course-status-box table tr td .media .avatar img {
+  width: 0.2em 0.4rem;
+  height: 2.4rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+}
+.course-status-box table tr td .media h5 {
+  color: var(--neutral-color-neutral-90, #101C2D);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.375rem;
+}
+.course-status-box table tr td .media h5 span {
+  color: var(--neutral-color-neutral-60, #66768E);
+  font-size: 12px;
+  display: inline-block;
+  margin-left: auto;
+}
+.course-status-box table tr td .media p {
+  overflow: hidden;
+  color: var(--neutral-color-neutral-60, #66768E);
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.125rem;
+}
+
+.no-result-found {
+  text-align: center;
+}
+.no-result-found h6 {
+  color: #000;
+  font-size: 1.3125rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.course-progress-box {
+  position: relative;
+  margin-top: -1rem;
+}
+.course-progress-box .txt {
+  position: absolute;
+  left: 0;
+  top: -1rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.course-progress-box .txt h5 {
+  color: var(--text-light-primary, #212B36);
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2rem;
+}
+.course-progress-box .txt p {
+  color: var(--text-light-secondary, #637381);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.375rem;
+}
+
+@media (min-width: 320px) and (max-width: 574px) {
+  main .container-fluid {
+    padding: 0 1rem;
+  }
+  .total-client-box {
+    height: auto;
+    margin-bottom: 1.5rem;
+  }
+  .course-status-box table {
+    width: 100%;
+    display: block;
+    overflow-x: scroll;
+  }
+  .course-status-box .d-flex {
+    padding: 0.8rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .course-status-box .d-flex div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+  }
+  .course-status-box table tr th,
+  .course-status-box table tr td {
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
+}
+@media (min-width: 574px) and (max-width: 767px) {
+  main .container-fluid {
+    padding: 0 1rem;
+  }
+  .course-status-box table {
+    width: 100%;
+    display: block;
+    overflow-x: scroll;
+  }
+  .course-status-box table tr th,
+  .course-status-box table tr td {
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
+  .course-status-wrap .d-flex {
+    flex-direction: row !important;
+  }
+}
+@media (min-width: 767px) and (max-width: 992px) {
+  main .container-fluid {
+    padding: 0 1rem;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  main .container-fluid {
+    padding: 0 1rem;
+  }
+}
