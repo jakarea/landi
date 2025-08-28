@@ -787,7 +787,7 @@ class DashboardController extends Controller
             ->orderBy('title')
             ->get();
 
-        return view('instructor.students.index', compact('students', 'instructorCourses'));
+        return view('dashboard.instructor.students', compact('students', 'instructorCourses'));
     }
 
     /**
