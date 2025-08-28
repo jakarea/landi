@@ -424,7 +424,7 @@ body {
                         </div>
                         
                         <h3 class="course-title">
-                            <a href="{{ route('courses.public.overview', $course->slug) }}">
+                            <a href="{{ route('courses.overview', $course->slug) }}">
                                 {{ Str::limit($course->title, 60) }}
                             </a>
                         </h3>
@@ -460,7 +460,7 @@ body {
         
         <div class="row">
             <div class="col-12 text-center">
-                <a href="{{ route('courses.public.index') }}" class="btn-cta" style="background: #667eea; border-color: #667eea;">
+                <a href="{{ route('courses') }}" class="btn-cta" style="background: #667eea; border-color: #667eea;">
                     সব কোর্স দেখুন
                 </a>
             </div>

@@ -415,7 +415,7 @@ body {
 <section class="filters-section">
     <div class="container">
         <div class="filters-card">
-            <form method="GET" action="{{ route('courses.public.index') }}">
+            <form method="GET" action="{{ route('courses') }}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="filter-group">
@@ -500,7 +500,7 @@ body {
                         </div>
                         
                         <h5 class="course-title">
-                            <a href="{{ route('courses.public.overview', $course->slug) }}">
+                            <a href="{{ route('courses.overview', $course->slug) }}">
                                 {{ $course->title }}
                             </a>
                         </h5>
@@ -583,7 +583,7 @@ body {
                         এখনো কোন কোর্স যোগ করা হয়নি।
                     @endif
                 </p>
-                <a href="{{ route('courses.public.index') }}" class="filter-btn" style="margin-top: 20px;">
+                <a href="{{ route('courses') }}" class="filter-btn" style="margin-top: 20px;">
                     সব কোর্স দেখুন
                 </a>
             </div>

@@ -1,6 +1,6 @@
 @extends('layouts.latest.auth')
 @section('title')
-Register | Join AI Bootcamp
+নিবন্ধন | এআই বুটক্যাম্পে যোগ দিন
 @endsection
 
 @section('content')
@@ -8,16 +8,16 @@ Register | Join AI Bootcamp
 <div class="row justify-content-center">
     <div class="col-lg-6 col-xl-5">
         <div class="auth-card">
-            <h1 class="auth-title">Join the Bootcamp</h1>
-            <p class="auth-subtitle">Future-Proof Your Career. Master AI for Ads.</p>
+            <h1 class="auth-title">বুটক্যাম্পে যোগ দিন</h1>
+            <p class="auth-subtitle">ভবিষ্যতের জন্য প্রস্তুত হন। বিজ্ঞাপনের জন্য এআই শিখুন।</p>
             
             <form method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="form-group">
-                    <label for="name">Full Name</label>
+                    <label for="name">পূর্ণ নাম</label>
                     <input type="text" 
                            id="name"
-                           placeholder="Enter your full name"
+                           placeholder="আপনার পূর্ণ নাম লিখুন"
                            class="form-control @error('name') is-invalid @enderror" 
                            name="name"
                            value="{{ old('name') }}"
@@ -31,10 +31,10 @@ Register | Join AI Bootcamp
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">ইমেইল ঠিকানা</label>
                     <input type="email" 
                            id="email"
-                           placeholder="Enter your email"
+                           placeholder="আপনার ইমেইল লিখুন"
                            class="form-control @error('email') is-invalid @enderror" 
                            name="email"
                            value="{{ old('email') }}"
@@ -47,23 +47,23 @@ Register | Join AI Bootcamp
                 </div>
 
                 <div class="form-group">
-                    <label for="company_name">Company (Optional)</label>
+                    <label for="company_name">কোম্পানি (ঐচ্ছিক)</label>
                     <input type="text" 
                            id="company_name"
-                           placeholder="Your company name"
+                           placeholder="আপনার কোম্পানির নাম"
                            class="form-control" 
                            name="company_name"
                            value="{{ old('company_name') }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="user_role">I want to join as</label>
+                    <label for="user_role">আমি যে হিসেবে যোগ দিতে চাই</label>
                     <select id="user_role" 
                             name="user_role" 
                             class="form-control @error('user_role') is-invalid @enderror">
-                        <option value="">Select your role</option>
-                        <option value="student" {{ old('user_role') == 'student' ? 'selected' : '' }}>Student</option>
-                        <option value="instructor" {{ old('user_role') == 'instructor' ? 'selected' : '' }}>Instructor</option>
+                        <option value="">আপনার ভূমিকা নির্বাচন করুন</option>
+                        <option value="student" {{ old('user_role') == 'student' ? 'selected' : '' }}>শিক্ষার্থী</option>
+                        <option value="instructor" {{ old('user_role') == 'instructor' ? 'selected' : '' }}>প্রশিক্ষক</option>
                     </select>
                     @error('user_role')
                     <div class="invalid-feedback">
@@ -73,10 +73,10 @@ Register | Join AI Bootcamp
                 </div>
                 
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">পাসওয়ার্ড</label>
                     <div class="password-field-wrapper">
                         <input id="password" 
-                               placeholder="Create a password" 
+                               placeholder="একটি পাসওয়ার্ড তৈরি করুন" 
                                type="password"
                                class="form-control @error('password') is-invalid @enderror" 
                                name="password"
@@ -91,10 +91,10 @@ Register | Join AI Bootcamp
                 </div>
                 
                 <div class="form-group">
-                    <label for="password_confirmation">Confirm Password</label>
+                    <label for="password_confirmation">পাসওয়ার্ড নিশ্চিত করুন</label>
                     <div class="password-field-wrapper">
                         <input id="password_confirmation" 
-                               placeholder="Confirm your password" 
+                               placeholder="আপনার পাসওয়ার্ড পুনরায় লিখুন" 
                                type="password"
                                class="form-control" 
                                name="password_confirmation"
@@ -110,7 +110,7 @@ Register | Join AI Bootcamp
                            id="terms"
                            {{ old('terms') ? 'checked' : '' }}>
                     <label class="form-check-label" for="terms">
-                        I agree to the <a href="#" class="auth-links">Terms of Service</a> and <a href="#" class="auth-links">Privacy Policy</a>
+                        আমি <a href="#" class="auth-links">সেবার শর্তাবলী</a> এবং <a href="#" class="auth-links">গোপনীয়তা নীতিমালাতে</a> সম্মত
                     </label>
                     @error('terms')
                     <div class="invalid-feedback d-block">
@@ -120,15 +120,15 @@ Register | Join AI Bootcamp
                 </div>
                 
                 <button class="btn btn-submit" type="submit">
-                    Join Now
+                    এখনই যোগ দিন
                 </button>
                 
                 <div class="auth-links">
-                    <p>Already have an account? <a href="{{ route('login') }}">Sign In</a></p>
+                    <p>ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="{{ route('login') }}">লগইন করুন</a></p>
                 </div>
                 
                 <div class="social-login">
-                    <a href="{{ url('login/google') }}">Continue with Google</a>
+                    <a href="{{ url('login/google') }}">গুগল দিয়ে চালিয়ে যান</a>
                 </div>
             </form>
         </div>

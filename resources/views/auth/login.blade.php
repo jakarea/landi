@@ -1,6 +1,6 @@
 @extends('layouts.latest.auth')
 @section('title')
-Login | Access Your AI Bootcamp
+লগইন | আপনার এআই বুটক্যাম্প প্রবেশ করুন
 @endsection
 
 @section('content')
@@ -21,16 +21,16 @@ Login | Access Your AI Bootcamp
             </div>
             @endif
             
-            <h1 class="auth-title">Welcome Back</h1>
-            <p class="auth-subtitle">Access your AI for Advertising training dashboard</p>
+            <h1 class="auth-title">স্বাগতম</h1>
+            <p class="auth-subtitle">আপনার এআই বিজ্ঞাপন প্রশিক্ষণ ড্যাশবোর্ডে প্রবেশ করুন</p>
             
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">ইমেইল ঠিকানা</label>
                     <input type="email" 
                            id="email"
-                           placeholder="Enter your email"
+                           placeholder="আপনার ইমেইল লিখুন"
                            class="form-control @error('email') is-invalid @enderror" 
                            name="email"
                            value="{{ old('email') }}"
@@ -44,10 +44,10 @@ Login | Access Your AI Bootcamp
                 </div>
                 
                 <div class="form-group">
-                    <label for="password-field">Password</label>
+                    <label for="password-field">পাসওয়ার্ড</label>
                     <div class="password-field-wrapper">
                         <input id="password-field" 
-                               placeholder="Enter your password" 
+                               placeholder="আপনার পাসওয়ার্ড লিখুন" 
                                type="password"
                                class="form-control @error('password') is-invalid @enderror" 
                                name="password"
@@ -69,26 +69,26 @@ Login | Access Your AI Bootcamp
                                id="remember" 
                                {{ old('remember') ? 'checked' : '' }}>
                         <label class="form-check-label" for="remember">
-                            Remember me
+                            আমাকে মনে রাখুন
                         </label>
                     </div>
                     @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}" class="forgot-password">
-                        Forgot Password?
+                        পাসওয়ার্ড ভুলে গেছেন?
                     </a>
                     @endif
                 </div>
                 
                 <button class="btn btn-submit" type="submit">
-                    Access Dashboard
+                    ড্যাশবোর্ডে প্রবেশ
                 </button>
                 
                 <div class="auth-links">
-                    <p>Don't have an account? <a href="{{ route('register') }}">Join the Bootcamp</a></p>
+                    <p>অ্যাকাউন্ট নেই? <a href="{{ route('register') }}">বুটক্যাম্পে যোগ দিন</a></p>
                 </div>
                 
                 <div class="social-login">
-                    <a href="{{ url('login/google') }}">Continue with Google</a>
+                    <a href="{{ url('login/google') }}">গুগল দিয়ে চালিয়ে যান</a>
                 </div>
             </form>
         </div>

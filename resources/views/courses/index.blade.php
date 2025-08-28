@@ -478,7 +478,7 @@ body {
 <section class="filter-section">
     <div class="container">
         <div class="filter-card">
-            <form method="GET" action="{{ route('courses.public.index') }}" class="filter-form">
+            <form method="GET" action="{{ route('courses') }}" class="filter-form">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-4">
                         <label for="search" class="form-label fw-semibold">কোর্স খুঁজুন</label>
@@ -516,7 +516,7 @@ body {
                                 খুঁজুন
                             </button>
                             @if($search || $category || $sort != 'latest')
-                                <a href="{{ route('courses.public.index') }}" class="btn btn-clear">
+                                <a href="{{ route('courses') }}" class="btn btn-clear">
                                     <i class="fas fa-times"></i>
                                 </a>
                             @endif
@@ -608,7 +608,7 @@ body {
                                     @endif
                                 </div>
                                 
-                                <a href="{{ route('courses.public.overview', $course->slug) }}" class="btn btn-enroll">
+                                <a href="{{ route('courses.overview', $course->slug) }}" class="btn btn-enroll">
                                     <i class="fas fa-eye"></i>
                                     বিস্তারিত দেখুন
                                 </a>
@@ -630,7 +630,7 @@ body {
                 <h3>কোনো কোর্স পাওয়া যায়নি</h3>
                 <p>আপনার অনুসন্ধানের সাথে মিল রয়েছে এমন কোনো কোর্স খুঁজে পাওয়া যায়নি।</p>
                 @if($search || $category)
-                    <a href="{{ route('courses.public.index') }}" class="btn btn-filter mt-3">
+                    <a href="{{ route('courses') }}" class="btn btn-filter mt-3">
                         <i class="fas fa-refresh"></i>
                         সব কোর্স দেখুন
                     </a>

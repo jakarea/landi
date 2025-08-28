@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'AI for Advertising Bootcamp \'25 - Future-Proof Your Career')</title>
-    <meta name="description" content="Master AI for advertising. The only bootcamp teaching practical AI skills for every aspect of advertising.">
+    <title>@yield('title', 'এআই অ্যাডভার্টাইজিং বুটক্যাম্প ২০২৫ - ভবিষ্যতের জন্য প্রস্তুত হোন')</title>
+    <meta name="description" content="বিজ্ঞাপনের জন্য এআই শিখুন। একমাত্র বুটক্যাম্প যা আপনাকে বিজ্ঞাপনের প্রতিটি দিকের জন্য ব্যবহারিক এআই দক্ষতা শেখায়।">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <!-- Favicon -->
@@ -238,7 +238,7 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 <div class="ai-logo">AI</div>
-                AI for Advertising Bootcamp '25
+এআই অ্যাডভার্টাইজিং বুটক্যাম্প ২৫
             </a>
             
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -248,18 +248,18 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-4">
                     <li class="nav-item">
-                        <a class="nav-link" href="#features">
-                            Features
+                        <a class="nav-link" href="{{ route('courses') }}">
+                            কোর্স
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">
-                            About
+                        <a class="nav-link" href="{{ route('about') }}">
+                            সম্পর্কে
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">
-                            Contact
+                        <a class="nav-link" href="{{ route('contact') }}">
+                            যোগাযোগ
                         </a>
                     </li>
                 </ul>
@@ -267,14 +267,14 @@
                 <div class="auth-buttons">
                     @auth
                         @if(auth()->user()->user_role === 'student')
-                            <a href="{{ route('students.dashboard') }}" class="dashboard-link">
+                            <a href="{{ route('student.dashboard') }}" class="dashboard-link">
                                 <i class="fas fa-tachometer-alt"></i>
-                                Dashboard
+                                ড্যাশবোর্ড
                             </a>
                         @elseif(auth()->user()->user_role === 'instructor')
                             <a href="{{ route('instructor.dashboard') }}" class="dashboard-link">
                                 <i class="fas fa-chalkboard-teacher"></i>
-                                Instructor Panel
+                                প্রশিক্ষক প্যানেল
                             </a>
                         @endif
                         
@@ -282,7 +282,7 @@
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
                            class="btn-login">
                             <i class="fas fa-sign-out-alt me-1"></i>
-                            Logout
+                            লগআউট
                         </a>
                         
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -290,10 +290,10 @@
                         </form>
                     @else
                         <a href="{{ route('login') }}" class="btn-login">
-                            Add your email
+                            লগইন করুন
                         </a>
                         <a href="{{ route('register') }}" class="btn-register">
-                            Join Now
+                            এখনই যোগ দিন
                         </a>
                     @endauth
                 </div>
@@ -313,7 +313,7 @@
                 <div class="footer-section">
                     <h5>
                         <div class="ai-logo me-2" style="width: 30px; height: 30px; font-size: 0.8rem; display: inline-flex;">AI</div>
-                        AI for Advertising Bootcamp '25
+        এআই অ্যাডভার্টাইজিং বুটক্যাম্প ২৫
                     </h5>
                     <p>
                         Future-Proof Your Career. Master AI for Ads. 
@@ -322,27 +322,27 @@
                 </div>
                 
                 <div class="footer-section">
-                    <h5>Quick Links</h5>
+                    <h5>দ্রুত লিংক</h5>
                     <div class="d-flex flex-column gap-2">
-                        <a href="#about">About</a>
-                        <a href="#courses">Courses</a>
-                        <a href="#instructors">Instructors</a>
-                        <a href="#contact">Contact</a>
+                        <a href="{{ route('about') }}">সম্পর্কে</a>
+                        <a href="{{ route('courses') }}">কোর্সের তালিকা</a>
+                        <a href="{{ route('landing') }}">ল্যান্ডিং পেজ</a>
+                        <a href="{{ route('contact') }}">যোগাযোগ</a>
                     </div>
                 </div>
                 
                 <div class="footer-section">
-                    <h5>Learning</h5>
+                    <h5>শিক্ষা</h5>
                     <div class="d-flex flex-column gap-2">
-                        <a href="#practical-projects">Practical Projects</a>
-                        <a href="#actionable-skills">Actionable Skills</a>
-                        <a href="#real-world">Real-World Applications</a>
-                        <a href="#certification">Certification</a>
+                        <a href="{{ route('courses') }}">বাস্তব প্রকল্প</a>
+                        <a href="{{ route('courses') }}">কার্যকরী দক্ষতা</a>
+                        <a href="{{ route('courses') }}">বাস্তব জগতের প্রয়োগ</a>
+                        <a href="{{ route('help') }}">সহায়তা</a>
                     </div>
                 </div>
                 
                 <div class="footer-section">
-                    <h5>Connect</h5>
+                    <h5>যোগাযোগ</h5>
                     <div class="d-flex flex-column gap-2">
                         <p><i class="fas fa-envelope me-2"></i> info@aibootcamp.com</p>
                         <p><i class="fas fa-globe me-2"></i> www.aibootcamp.com</p>
@@ -357,7 +357,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; {{ date('Y') }} AI for Advertising Bootcamp '25. All rights reserved. Built with cutting-edge technology.</p>
+                <p>&copy; {{ date('Y') }} এআই অ্যাডভার্টাইজিং বুটক্যাম্প ২৫। সব অধিকার সংরক্ষিত। অত্যাধুনিক প্রযুক্তি দিয়ে নির্মিত।</p>
             </div>
         </div>
     </footer>

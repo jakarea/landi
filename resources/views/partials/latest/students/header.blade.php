@@ -14,21 +14,43 @@
             @can('student')
                 <ul class="navbar-nav m-auto">
                     <li class="nav-item">
-                        <a href="{{ url('/') }}" class="{{ Request::is('/') ? ' active' : '' }} nav-link">
-                            <i class="fas fa-home me-1"></i>
-                            হোম
+                        <a href="{{ route('student.dashboard') }}" class="{{ Request::is('student') || Request::is('student/') ? ' active' : '' }} nav-link">
+                            <i class="fas fa-tachometer-alt me-1"></i>
+                            ড্যাশবোর্ড
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ url('student/dashboard/enrolled') }}" class="{{ Request::is('student/dashboard/enrolled*') ? ' active' : '' }} nav-link">
-                            <i class="fas fa-book-open me-1"></i>
-                            আমার কোর্স
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle {{ Request::is('student/courses*') ? ' active' : '' }}" data-bs-toggle="dropdown">
+                            <i class="fas fa-graduation-cap me-1"></i>
+                            কোর্স
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item {{ Request::is('student/courses') || Request::is('student/courses/') ? ' active' : '' }}" 
+                                   href="{{ route('student.courses') }}">
+                                   <i class="fas fa-book-open me-2"></i>
+                                   আমার কোর্স
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" 
+                                   href="{{ route('courses') }}">
+                                   <i class="fas fa-search me-2"></i>
+                                   নতুন কোর্স খুঁজুন
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('student/achievements') }}" class="{{ Request::is('student/achievements*') ? ' active' : '' }} nav-link">
+                        <a href="{{ route('student.activities') }}" class="{{ Request::is('student/activities*') ? ' active' : '' }} nav-link">
                             <i class="fas fa-trophy me-1"></i>
-                            অর্জনসমূহ
+                            কার্যকলাপ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.certificates') }}" class="{{ Request::is('student/certificates*') ? ' active' : '' }} nav-link">
+                            <i class="fas fa-certificate me-1"></i>
+                            সার্টিফিকেট
                         </a>
                     </li>
                     <li class="nav-item dropdown">
@@ -37,20 +59,20 @@
                             প্রোফাইল
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item {{ Request::is('student/profile/myprofile*') ? ' active' : '' }}" 
-                                   href="{{ url('student/profile/myprofile') }}">
+                            <li><a class="dropdown-item {{ Request::is('student/profile') || Request::is('student/profile/') ? ' active' : '' }}" 
+                                   href="{{ route('student.profile') }}">
                                    <i class="fas fa-user-circle me-2"></i>
                                    আমার প্রোফাইল
                                </a></li>
                             <li><a class="dropdown-item {{ Request::is('student/profile/edit*') ? ' active' : '' }}" 
-                                   href="{{ url('student/profile/edit') }}">
+                                   href="{{ route('student.profile.edit') }}">
                                    <i class="fas fa-cog me-2"></i>
-                                   একাউন্ট সেটিং
+                                   প্রোফাইল এডিট
                                </a></li>
-                            <li><a class="dropdown-item {{ Request::is('student/courses-certificate*') ? ' active' : '' }}" 
-                                   href="{{ url('student/courses-certificate') }}">
-                                   <i class="fas fa-certificate me-2"></i>
-                                   সার্টিফিকেট
+                            <li><a class="dropdown-item {{ Request::is('student/profile/password*') ? ' active' : '' }}" 
+                                   href="{{ route('student.profile.password') }}">
+                                   <i class="fas fa-key me-2"></i>
+                                   পাসওয়ার্ড পরিবর্তন
                                </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
@@ -68,11 +90,11 @@
                 </ul>
             @endcan
             <div class="d-flex">
-                <a href="{{ url('student/dashboard') }}" class="bttn" title="ড্যাশবোর্ড">
-                    <i class="fas fa-tachometer-alt"></i>
+                <a href="{{ route('courses') }}" class="bttn" title="কোর্স খুঁজুন">
+                    <i class="fas fa-search"></i>
                 </a>
-                <a href="{{ url('student/notification-details') }}"
-                   class="bttn {{ Request::is('student/notification-details*') ? ' active' : '' }}" 
+                <a href="{{ route('student.notifications') }}"
+                   class="bttn {{ Request::is('student/notifications*') ? ' active' : '' }}" 
                    title="নোটিফিকেশন">
                     <i class="fas fa-bell"></i>
                     @if (Auth::user() && function_exists('unseenNotification') && unseenNotification() >= 1)
@@ -93,17 +115,25 @@
                             <small class="text-muted">শিক্ষার্থী</small>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url('student/dashboard') }}">
+                        <li><a class="dropdown-item" href="{{ route('student.dashboard') }}">
                             <i class="fas fa-tachometer-alt me-2"></i>
                             ড্যাশবোর্ড
                         </a></li>
-                        <li><a class="dropdown-item" href="{{ url('student/profile/myprofile') }}">
+                        <li><a class="dropdown-item" href="{{ route('student.courses') }}">
+                            <i class="fas fa-book-open me-2"></i>
+                            আমার কোর্স
+                        </a></li>
+                        <li><a class="dropdown-item" href="{{ route('student.profile') }}">
                             <i class="fas fa-user-circle me-2"></i>
                             আমার প্রোফাইল
                         </a></li>
-                        <li><a class="dropdown-item" href="{{ url('student/achievements') }}">
+                        <li><a class="dropdown-item" href="{{ route('student.certificates') }}">
+                            <i class="fas fa-certificate me-2"></i>
+                            সার্টিফিকেট
+                        </a></li>
+                        <li><a class="dropdown-item" href="{{ route('student.activities') }}">
                             <i class="fas fa-trophy me-2"></i>
-                            অর্জনসমূহ
+                            কার্যকলাপ
                         </a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>

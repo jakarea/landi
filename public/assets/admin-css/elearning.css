@@ -7,10 +7,30 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modern-course-card {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(229, 236, 246, 0.6);
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 20px 40px -8px rgba(145, 158, 171, 0.2), 0px 0px 4px 0px rgba(145, 158, 171, 0.1);
 }
 .course-single-item .course-thumb-box {
   position: relative;
   height: 11rem;
+}
+
+.modern-course-card .course-thumb-box {
+  height: 200px;
+  margin: 0;
+  border-radius: 0;
 }
 .course-single-item .course-thumb-box img {
   flex: 1 0 0;
@@ -113,6 +133,238 @@
   font-weight: 400;
   line-height: 1.75rem;
   text-decoration: line-through;
+}
+
+/* Modern Course Card Styles */
+.course-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modern-course-card .course-thumb-box img {
+  border-radius: 0;
+  height: 100%;
+  object-fit: cover;
+}
+
+.status-badge-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+}
+
+.modern-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pending-badge {
+  background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+  color: #d63031;
+}
+
+.approved-badge {
+  background: linear-gradient(135deg, #a8e6cf, #7fd3c0);
+  color: #00b894;
+}
+
+.payment-badge {
+  background: linear-gradient(135deg, #ff7675, #fd79a8);
+  color: #ffffff;
+}
+
+.modern-course-card .course-txt-box {
+  padding: 20px;
+  background: #fff;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-meta-info {
+  margin-bottom: 12px;
+}
+
+.rating-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.star-rating {
+  display: flex;
+  gap: 2px;
+}
+
+.star-rating i {
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+.star-rating i.filled {
+  color: #FFB900;
+}
+
+.rating-score {
+  font-weight: 600;
+  font-size: 14px;
+  color: #101C2D;
+}
+
+.review-count {
+  font-size: 13px;
+  color: #66768E;
+}
+
+.modern-course-card .course-title {
+  margin: 0 0 12px 0;
+}
+
+.modern-course-card .course-title a {
+  font-size: 16px;
+  font-weight: 600;
+  color: #101C2D;
+  text-decoration: none;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.2s ease;
+}
+
+.modern-course-card .course-title a:hover {
+  color: #294CFF;
+}
+
+.course-description {
+  font-size: 14px;
+  color: #66768E;
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+}
+
+/* Modern Course Footer Styles */
+.modern-course-footer {
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e5ecf6;
+  margin-top: auto;
+}
+
+.modern-progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #66768E;
+}
+
+.progress-percentage {
+  font-size: 14px;
+  font-weight: 600;
+  color: #101C2D;
+}
+
+.modern-progress-bar {
+  width: 100%;
+}
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background-color: #e5ecf6;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #294CFF, #4dabf7);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.completed {
+  background: linear-gradient(90deg, #00b894, #55a3ff);
+}
+
+.completion-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #00b894;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.modern-status-section {
+  padding: 12px 0;
+}
+
+.status-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-content i {
+  font-size: 20px;
+}
+
+.status-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.status-text strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status-text small {
+  font-size: 12px;
+  color: #66768E;
+  line-height: 1.3;
+}
+
+.modern-status-section.pending .status-content i {
+  color: #f39c12;
+}
+
+.modern-status-section.pending .status-text strong {
+  color: #f39c12;
+}
+
+.modern-status-section.payment .status-content i {
+  color: #e74c3c;
+}
+
+.modern-status-section.payment .status-text strong {
+  color: #e74c3c;
 }
 
 span.avatar-big-box {

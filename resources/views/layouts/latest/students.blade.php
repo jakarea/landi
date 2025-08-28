@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>'Learncosy' | @yield('title')</title>
+    <title>'শিখুন' | @yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="Admin Template For Filter Developers" name="description" />
     <meta content="" name="author" />

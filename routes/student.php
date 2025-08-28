@@ -1,37 +1,38 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartController;
+// use App\Http\Controllers\CartController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\Payment\PaymentController;
-use App\Http\Controllers\Student\CheckoutController;
+// use App\Http\Controllers\Payment\PaymentController;
+// use App\Http\Controllers\Student\CheckoutController;
 use App\Http\Controllers\Student\StudentHomeController;
-use App\Http\Controllers\Student\CheckoutBundleController;
+// use App\Http\Controllers\Student\CheckoutBundleController;
 use App\Http\Controllers\Student\StudentProfileController;
-use App\Http\Controllers\CourseEnrollmentController;
+// use App\Http\Controllers\CourseEnrollmentController;
 
 /*
 |--------------------------------------------------------------------------
-| Student Routes
+| Student Routes - Clean Folder Structure
 |--------------------------------------------------------------------------
 |
-| All routes for students including dashboard, course access, profile
-| management, notifications, cart functionality, and enrollments.
+| Clean URL structure following folder hierarchy:
+| /student/ -> Dashboard
+| /student/courses/ -> Course catalog
+| /student/courses/{slug}/ -> Course overview
+| /student/courses/{slug}/learn/ -> Learning interface
+| /student/profile/ -> Profile management
+| /student/certificates/ -> Certificates
+| /student/activities/ -> Course activities
 |
 */
 
 // ========================================
-// PAYMENT ROUTES (Guest accessible)
+// GUEST ACCESSIBLE ROUTES
 // ========================================
 
-Route::post('/student/stripe-process-payment', [PaymentController::class, 'processPayment'])->name('process-payment');
-
-// ========================================
-// NOTIFICATION ROUTES (Guest accessible)
-// ========================================
-
-Route::get('student/notification-details', [NotificationController::class, 'notificationDetails'])->name('notification.details');
-Route::post('student/notification-details/destroy/{id}', [NotificationController::class, 'destroy'])->name('notification.destroy');
+// Route::post('/student/stripe-process-payment', [PaymentController::class, 'processPayment'])->name('process-payment');
+Route::get('/student/notifications/', [NotificationController::class, 'notificationDetails'])->name('student.notifications');
+Route::post('/student/notifications/{id}/destroy', [NotificationController::class, 'destroy'])->name('student.notifications.destroy');
 
 // ========================================
 // AUTHENTICATED STUDENT ROUTES
@@ -40,94 +41,79 @@ Route::post('student/notification-details/destroy/{id}', [NotificationController
 Route::middleware(['auth', 'role:student'])->group(function () {
 
     // ========================================
-    // DASHBOARD & HOME
+    // MAIN DASHBOARD
     // ========================================
     
-    Route::get('student/dashboard', [StudentHomeController::class, 'dashboard'])->name('students.dashboard')->middleware('page.access');
-    Route::get('student/dashboard/enrolled', [StudentHomeController::class,'enrolled'])->name('students.dashboard.enrolled');
-    Route::get('student/home', [StudentHomeController::class, 'catalog'])->name('students.catalog.courses')->middleware('page.access');
+    Route::get('/student/', [StudentHomeController::class, 'dashboard'])->name('student.dashboard');
+    
+    // ========================================
+    // COURSES SECTION
+    // ========================================
+    
+    Route::get('/student/courses/', [StudentHomeController::class, 'courses'])->name('student.courses');
+    Route::get('/student/courses/{slug}/', [StudentHomeController::class, 'courseOverview'])->name('student.courses.overview');
+    Route::get('/student/courses/{slug}/learn/', [StudentHomeController::class, 'courseLearn'])->name('student.courses.learn');
+    
+    // Course interactions
+    Route::post('/student/courses/{slug}/', [StudentHomeController::class, 'review'])->name('student.courses.review');
+    Route::post('/student/courses/{slug}/like/', [StudentHomeController::class, 'courseLike'])->name('student.courses.like');
+    Route::post('/student/courses/{slug}/unlike/', [StudentHomeController::class, 'courseUnLike'])->name('student.courses.unlike');
+    
+    // ========================================
+    // PROFILE SECTION
+    // ========================================
+    
+    Route::get('/student/profile/', [StudentProfileController::class, 'show'])->name('student.profile');
+    Route::get('/student/profile/edit/', [StudentProfileController::class, 'edit'])->name('student.profile.edit');
+    Route::post('/student/profile/edit/', [StudentProfileController::class, 'update'])->name('student.profile.update');
+    Route::post('/student/profile/cover/', [StudentProfileController::class, 'coverUpload'])->name('student.profile.cover');
+    Route::get('/student/profile/password/', [StudentProfileController::class, 'passwordUpdate'])->name('student.profile.password');
+    Route::post('/student/profile/password/', [StudentProfileController::class, 'postChangePassword'])->name('student.profile.password.update');
+    
+    // ========================================
+    // CERTIFICATES SECTION
+    // ========================================
+    
+    Route::get('/student/certificates/', [StudentHomeController::class, 'certificates'])->name('student.certificates');
+    Route::get('/student/certificates/{slug}/', [StudentHomeController::class, 'certificateView'])->name('student.certificates.view');
+    Route::get('/student/certificates/{slug}/download/', [StudentHomeController::class, 'certificateDownload'])->name('student.certificates.download');
+    
+    // ========================================
+    // ACTIVITIES SECTION
+    // ========================================
+    
+    Route::get('/student/activities/', [StudentHomeController::class, 'activities'])->name('student.activities');
+    Route::post('/student/activities/complete/', [StudentHomeController::class, 'completeActivity'])->name('student.activities.complete');
+    
+    // ========================================
+    // CART SECTION (Disabled for now)
+    // ========================================
+    
+    // Route::get('/student/cart/', [CartController::class, 'index'])->name('student.cart');
+    // Route::post('/student/cart/add/{course}/', [CartController::class, 'add'])->name('student.cart.add');
+    // Route::post('/student/cart/remove/{id}/', [CartController::class, 'remove'])->name('student.cart.remove');
+    
+    // ========================================
+    // CHECKOUT SECTION (Disabled for now)
+    // ========================================
+    
+    // Route::get('/student/checkout/', [CheckoutController::class, 'indexOfCart'])->name('student.checkout');
+    // Route::get('/student/checkout/{slug}/', [CheckoutController::class, 'index'])->name('student.checkout.course');
+    // Route::post('/student/checkout/{slug}/', [CheckoutController::class, 'store'])->name('student.checkout.store');
+    // Route::get('/student/checkout/{slug}/success/', [CheckoutController::class, 'success'])->name('student.checkout.success');
+    // Route::get('/student/checkout/{slug}/cancel/', [CheckoutController::class, 'cancel'])->name('student.checkout.cancel');
+    
+    // ========================================
+    // FILES & DOWNLOADS
+    // ========================================
+    
+    Route::get('/student/files/{course_id}/{extension}/', [StudentHomeController::class, 'fileDownload'])->name('student.files.download');
 
-    // ========================================
-    // COURSE ACCESS & MANAGEMENT
-    // ========================================
-    
-    Route::get('student/catalog/courses', [StudentHomeController::class,'catalog'])->name('students.catalog.courses');
-    Route::get('student/courses/{slug}', [StudentHomeController::class,'show'])->name('students.show.courses');
-    Route::get('student/courses/overview/{slug}', [StudentHomeController::class, 'overview'])->name('students.overview.courses');
-    Route::get('student/courses/my-courses/details/{slug}', [StudentHomeController::class, 'courseDetails'])->name('students.overview.myCourses');
-    
-    // Course Files & Downloads
-    Route::get('student/file-download/{course_id}/{extension}', [StudentHomeController::class, 'fileDownload'])->name('file.download');
-    
-    // Course Certificates
-    Route::get('student/certificate-download/{slug}', [StudentHomeController::class, 'certificateDownload'])->name('students.download.courses-certificate');
-    Route::get('student/certificate-view/{slug}', [StudentHomeController::class, 'certificateView'])->name('students.view.courses-certificate');
-    Route::get('student/courses-certificate', [StudentHomeController::class, 'certificate'])->name('students.certificate.course')->middleware('page.access');
-    
-    // Course Progress & Activities
-    Route::get('student/courses-log', [StudentHomeController::class, 'storeCourseLog'])->name('students.log.courses');
-    Route::get('student/courses-activies/list', [StudentHomeController::class, 'activitiesList'])->name('students.activity.lesson');
-    Route::get('student/courses-activies', [StudentHomeController::class, 'storeActivities'])->name('students.complete.lesson');
-    
-    // Course Interactions
-    Route::post('student/courses/{slug}', [StudentHomeController::class, 'review'])->name('students.review.courses');
-    Route::get('student/courses/{slug}/message', [StudentHomeController::class, 'message'])->name('students.courses.message');
-    Route::post('student/course-like/{course_id}/{ins_id}', [StudentHomeController::class, 'courseLike'])->name('students.course.like');
-    Route::post('student/course-unlike/{course_id}/{ins_id}', [StudentHomeController::class, 'courseUnLike'])->name('students.course.unlike');
-
-    // ========================================
-    // CHECKOUT ROUTES
-    // ========================================
-    
-    Route::get('checkout/{slug}', [CheckoutController::class, 'index'])->name('students.checkout');
-    Route::get('checkout/', [CheckoutController::class, 'indexOfCart'])->name('students.checkout.cart');
-    Route::post('checkout/{slug}', [CheckoutController::class, 'store'])->name('students.checkout.store');
-    Route::get('checkout/{slug}/success', [CheckoutController::class, 'success'])->name('checkout.success');
-    Route::get('checkout/{slug}/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
-
-    // ========================================
-    // BUNDLE CHECKOUT ROUTES
-    // ========================================
-    
-    Route::get('bundle/checkout/{slug}', [CheckoutBundleController::class, 'index'])->name('students.bundle.checkout');
-    Route::post('bundle/checkout/{slug}', [CheckoutBundleController::class, 'store'])->name('students.bundle.checkout.store');
-    Route::get('bundle/checkout/{slug}/success', [CheckoutBundleController::class, 'success'])->name('bundle.checkout.success');
-    Route::get('bundle/checkout/{slug}/cancel', [CheckoutBundleController::class, 'cancel'])->name('bundle.checkout.cancel');
-
-    // ========================================
-    // PROFILE MANAGEMENT
-    // ========================================
-    
-    Route::get('student/profile/myprofile', [StudentProfileController::class, 'show'])->name('students.profile');
-    Route::get('student/profile/edit', [StudentProfileController::class, 'edit']);
-    Route::post('student/profile/cover/upload', [StudentProfileController::class, 'coverUpload']);
-    Route::post('student/profile/edit', [StudentProfileController::class, 'update'])->name('students.profile.update');
-    Route::get('student/profile/change-password', [StudentProfileController::class, 'passwordUpdate']);
-    Route::post('student/profile/change-password', [StudentProfileController::class, 'postChangePassword'])->name('students.password.update');
-    Route::get('student/account-management', [StudentHomeController::class, 'accountManagement'])->name('students.account.management');
-
-    // ========================================
-    // CART MANAGEMENT
-    // ========================================
-    
-    Route::get('student/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('student/cart/add/{course}', [CartController::class, 'add'])->name('cart.add');
-    Route::post('student/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::post('student/cart/buycourse/{id}', [CartController::class, 'buyCourse'])->name('buy.course');
-    
-    // ========================================
-    // ENROLLMENT MANAGEMENT
-    // ========================================
-    
-    Route::get('/courses/{course}/enroll', [CourseEnrollmentController::class, 'show'])->name('courses.enroll');
-    Route::post('/courses/{course}/enroll', [CourseEnrollmentController::class, 'store'])->name('courses.enroll.store');
-    Route::get('/student/my-enrollments', [CourseEnrollmentController::class, 'myEnrollments'])->name('student.enrollments');
 });
 
 // ========================================
-// CART ROUTES (Guest accessible for adding without login)
+// GUEST CART ROUTES (Disabled for now)
 // ========================================
 
-Route::post('student/cart/added/{course}', [CartController::class, 'addToCartSkippLogin'])->name('cart.added');
-Route::post('student/cart/bundle/{bundlecourse}', [CartController::class, 'addToCartBundlekippLogin'])->name('cart.added.bundle');
+// Route::post('/student/cart/guest/{course}/', [CartController::class, 'addToCartSkippLogin'])->name('student.cart.guest');
 
