@@ -19,11 +19,11 @@ Course Create - Step 3
                 <div class="course-create-step-wrap">
                     <div class="step-box current">
                         <span class="circle"></span>
-                        <p><a href="{{ $course->id ? route('course.create.facts', ['id' => $course->id]) : route('course.create.step-1') }}">Facts</a></p>
+                        <p><a href="{{ $course->id ? route('instructor.courses.create.facts', ['id' => $course->id]) : route('instructor.courses.create') }}">Facts</a></p>
                     </div>
                     <div class="step-box">
                         <span class="circle"></span>
-                        <p><a href="{{ $course->id ? route('course.create.object', ['id' => $course->id]) : '#' }}" class="{{ !$course->id ? 'disabled' : '' }}">Objects</a></p>
+                        <p><a href="{{ $course->id ? route('instructor.courses.create.objectives', ['id' => $course->id]) : '#' }}" class="{{ !$course->id ? 'disabled' : '' }}">Objects</a></p>
                     </div>
                     <div class="step-box">
                         <span class="circle"></span>
@@ -66,9 +66,9 @@ Course Create - Step 3
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8 col-xl-7">
                 @if($course->id)
-                <form action="{{ route('course.store.facts', ['id' => $course->id]) }}" method="POST">
+                <form action="{{ route('instructor.courses.create.facts.store', ['id' => $course->id]) }}" method="POST">
                 @else
-                <form action="{{ route('course.create.step-1save') }}" method="POST">
+                <form action="{{ route('instructor.courses.create.start') }}" method="POST">
                 @endif
                     @csrf
                     {{-- error message --}}

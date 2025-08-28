@@ -119,7 +119,7 @@ Course Create - Initial Step
                                                     <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop_{{$module->id}}">Edit Module</a>
                                                 </li>
-                                                <form action="{{ route('instructor.module.delete', ['id' => $module->id]) }}" method="post"
+                                                <form action="{{ route('instructor.modules.delete', ['id' => $module->id]) }}" method="post"
                                                     class="d-inline">
                                                     @csrf
                                                     @method('delete')
@@ -139,7 +139,7 @@ Course Create - Initial Step
                                                             <div class="modal-body">
                                                                 <div class="course-name-txt">
                                                                     <h5>Module name</h5>
-                                                                    <form action="{{ route('course.module.step.create',['id' => request()->route('id')]) }}" method="post">
+                                                                    <form action="{{ route('instructor.modules.create', ['course_id' => request()->route('id')]) }}" method="post">
                                                                         @csrf
                                                                         <input type="hidden" name="module_id" value="{{$module->id}}">
                                                                         <div class="form-group form-error">
@@ -226,7 +226,7 @@ Course Create - Initial Step
                                                     </li>
                                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                             data-bs-target="#lessonAddModal_{{ $lesson->id }}">Edit Lesson</a></li>
-                                                    <form action="{{ route('instructor.lesson.delete', ['id' => $lesson->id]) }}" method="post"
+                                                    <form action="{{ route('instructor.lessons.delete', ['id' => $lesson->id]) }}" method="post"
                                                         class="d-inline">
                                                         @csrf
                                                         @method('delete')
@@ -245,7 +245,7 @@ Course Create - Initial Step
                                                                     <div class="course-name-txt">
                                                                         <h5>Lesson name</h5>
                                                                         <form
-                                                                            action="{{ route('course.lesson.step.update', ['id' => $lesson->id]) }}"
+                                                                            action="{{ route('instructor.lessons.update', ['id' => $lesson->id]) }}"
                                                                             method="post">
                                                                             @csrf
                                                                             <input type="hidden" name="course_id"
@@ -343,7 +343,7 @@ Course Create - Initial Step
                                                     <div class="modal-body">
                                                         <div class="course-name-txt">
                                                             <h5>Lesson name</h5>
-                                                            <form action="{{ route('course.lesson.step.create',['course_id'=>$module->course_id,'module_id' => $module->id]) }}" method="post">
+                                                            <form action="{{ route('instructor.lessons.create', ['course_id' => $module->course_id, 'module_id' => $module->id]) }}" method="post">
                                                                 @csrf
                                                                 {{-- error message --}}
                                                                 @if ($errors->any())
@@ -396,7 +396,7 @@ Course Create - Initial Step
                                                                                 <div class="d-flex lesson-types2">
 
                                                                                     <div class="form-check form-switch">
-                                                                                        <input class="form-check-input" type="checkbox" name="is_public" value="1" role="switch" id="is_public_edit_{{$lesson->id}}" {{ $lesson->is_public ? 'checked' : '' }}>
+                                                                                        <input class="form-check-input" type="checkbox" name="is_public" value="1" role="switch" id="is_public_new_{{$module->id}}">
                                                                                     </div>
                                                                                 </div>
                                                                                 <p>Allow visitors to access without login</p>
@@ -452,7 +452,7 @@ Course Create - Initial Step
                     <div class="course-name-txt">
                         <h5>Module name</h5>
 
-                        <form action="{{ route('course.module.step.create',['id' => request()->route('id')]) }}" method="post">
+                        <form action="{{ route('instructor.modules.create', ['course_id' => request()->route('id')]) }}" method="post">
                             @csrf
                             <div class="form-group form-error">
                                 <input autocomplete="off" type="text" placeholder="Enter Module Name" name="module_name"

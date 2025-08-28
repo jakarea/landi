@@ -765,19 +765,18 @@ class DashboardController extends Controller
     {
         $search = $request->get('search');
         
-        // Get all students with their enrollment info for this instructor's courses
-        $students = User::where('user_role', 'student')
+        // Get enrollments/checkouts for this instructor's courses with student info
+        $students = Checkout::whereHas('course', function($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->with(['user', 'course'])
             ->when($search, function ($query, $search) {
-                return $query->where(function($q) use ($search) {
+                return $query->whereHas('user', function($q) use ($search) {
                     $q->where('name', 'LIKE', '%' . $search . '%')
                       ->orWhere('email', 'LIKE', '%' . $search . '%');
                 });
             })
-            ->with(['enrollments' => function($query) {
-                $query->whereHas('course', function($courseQuery) {
-                    $courseQuery->where('user_id', Auth::id());
-                })->with('course:id,title,thumbnail');
-            }])
+            ->orderBy('created_at', 'desc')
             ->paginate(15)
             ->withQueryString();
 
@@ -787,7 +786,21 @@ class DashboardController extends Controller
             ->orderBy('title')
             ->get();
 
-        return view('dashboard.instructor.students', compact('students', 'instructorCourses'));
+        // Calculate total students enrolled in this instructor's courses
+        $totalStudents = Checkout::whereHas('course', function($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->distinct('user_id')
+            ->count();
+
+        // Calculate total earnings from this instructor's courses
+        $totalEarnings = Checkout::whereHas('course', function($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->where('payment_status', 'success')
+            ->sum('amount');
+
+        return view('dashboard.instructor.students', compact('students', 'instructorCourses', 'totalStudents', 'totalEarnings'));
     }
 
     /**

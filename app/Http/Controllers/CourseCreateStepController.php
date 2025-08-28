@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\Course;
 use App\Models\Notification;
 use App\Models\Certificate;
@@ -75,11 +76,11 @@ class CourseCreateStepController extends Controller
 
             session()->put('course_id', $course->id);
 
-            return redirect()->route('course.create.object', ['id' => $course->id])
+            return redirect()->route('instructor.courses.create.objectives', ['id' => $course->id])
                              ->with('success', 'Course facts saved successfully.');
 
         } catch (\Exception $e) {
-            \Log::error('Course creation failed: ' . $e->getMessage());
+            Log::error('Course creation failed: ' . $e->getMessage());
             return back()->withInput()->with('error', 'An unexpected server error occurred. Please try again.');
         }
     }
@@ -1054,7 +1055,7 @@ class CourseCreateStepController extends Controller
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['error' => 'Course not found or unauthorized'], 404);
         } catch (\Exception $e) {
-            \Log::error('Certificate removal failed: ' . $e->getMessage());
+            Log::error('Certificate removal failed: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to remove certificate'], 500);
         }
     }
@@ -1185,7 +1186,7 @@ class CourseCreateStepController extends Controller
             // Check if there's an active course creation in session
             if (session()->has('course_id')) {
                 // Redirect to the facts route with the session course ID
-                return redirect()->route('course.create.facts', ['id' => session('course_id')]);
+                return redirect()->route('instructor.courses.create.facts', ['id' => session('course_id')]);
             }
             // If no session, show empty form for new course creation
             $course = new Course();
@@ -1254,11 +1255,11 @@ class CourseCreateStepController extends Controller
             DB::commit();
 
             // Always redirect to objects page after saving facts (Next step in the flow)
-            return redirect()->route('course.create.object', ['id' => $course->id])->with('success', $message);
+            return redirect()->route('instructor.courses.create.objectives', ['id' => $course->id])->with('success', $message);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Course facts storage failed: ' . $e->getMessage());
+            Log::error('Course facts storage failed: ' . $e->getMessage());
             return back()->withInput()->with('error', 'An unexpected server error occurred. Please try again.');
         }
     }
