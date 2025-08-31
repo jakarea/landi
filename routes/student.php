@@ -37,27 +37,30 @@ Route::post('/student/notifications/{id}/destroy', [NotificationController::clas
 // ========================================
 // AUTHENTICATED STUDENT ROUTES
 // ========================================
-
 Route::middleware(['auth', 'role:student'])->group(function () {
 
     // ========================================
     // MAIN DASHBOARD
     // ========================================
     
-    Route::get('/student/', [StudentHomeController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('student/', [StudentHomeController::class, 'dashboard'])->name('student.dashboard');
     
     // ========================================
     // COURSES SECTION
     // ========================================
     
-    Route::get('/student/courses/', [StudentHomeController::class, 'courses'])->name('student.courses');
+    Route::get('/student/courses/', [StudentHomeController::class, 'enrolledCourses'])->name('student.courses');
     Route::get('/student/courses/{slug}/', [StudentHomeController::class, 'courseOverview'])->name('student.courses.overview');
-    Route::get('/student/courses/{slug}/learn/', [StudentHomeController::class, 'courseLearn'])->name('student.courses.learn');
+    Route::get('/student/courses/{slug}/learn/', [StudentHomeController::class, 'show'])->name('student.courses.learn');
     
     // Course interactions
     Route::post('/student/courses/{slug}/', [StudentHomeController::class, 'review'])->name('student.courses.review');
     Route::post('/student/courses/{slug}/like/', [StudentHomeController::class, 'courseLike'])->name('student.courses.like');
     Route::post('/student/courses/{slug}/unlike/', [StudentHomeController::class, 'courseUnLike'])->name('student.courses.unlike');
+    
+    // Course logging and progress
+    Route::match(['GET', 'POST'], '/student/courses/log/', [StudentHomeController::class, 'storeCourseLog'])->name('student.log.courses');
+    Route::get('/student/courses/complete-lesson', [StudentHomeController::class, 'storeActivity'])->name('student.complete.lesson');
     
     // ========================================
     // PROFILE SECTION
@@ -90,8 +93,8 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     // ========================================
     
     // Route::get('/student/cart/', [CartController::class, 'index'])->name('student.cart');
-    // Route::post('/student/cart/add/{course}/', [CartController::class, 'add'])->name('student.cart.add');
-    // Route::post('/student/cart/remove/{id}/', [CartController::class, 'remove'])->name('student.cart.remove');
+    // Route::post('/student/cart/add/{course}/', [CartController::class, 'add'])->name('cart.add');
+    // Route::post('/student/cart/remove/{id}/', [CartController::class, 'remove'])->name('cart.remove');
     
     // ========================================
     // CHECKOUT SECTION (Disabled for now)

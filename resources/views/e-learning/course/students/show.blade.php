@@ -35,6 +35,15 @@
     @php
         $i = 0;
     @endphp
+    
+    <!-- Debug information - remove in production -->
+    @if(config('app.debug'))
+        <div class="alert alert-info" style="margin: 10px; font-size: 12px;">
+            <strong>Debug Info:</strong> 
+            Completed Lessons: {{ count($userCompletedLessons ?? []) }} | 
+            Lesson IDs: {{ implode(',', array_keys($userCompletedLessons ?? [])) }}
+        </div>
+    @endif
     <main class="course-show-page-wrap">
         <div class="container-fluid">
             <div class="row">
@@ -221,7 +230,7 @@
                                 @endif
                                 <div class="media-body">
                                     <form
-                                        action="{{ route('students.review.courses', ['slug' => $course->slug, 'subdomain' => config('app.subdomain')]) }}"
+                                        action="{{ route('student.courses.review', $course->slug) }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
@@ -331,7 +340,7 @@
                                                         @if ($lesson->status == 'published')
                                                             <li>
                                                                 @if (!$isUserEnrolled)
-                                                                    <a href="{{ route('students.checkout', ['slug' => $course->slug, 'subdomain' => config('app.subdomain')]) }}"
+                                                                    <a href="{{ url('student/checkout/' . $course->slug) }}"
                                                                         class="video_list_play d-inline-block">
                                                                         <i class="fas fa-lock"></i>
                                                                         {{ $lesson->title }}
@@ -351,14 +360,16 @@
 
                                                                         <span class="mt-2 ms-1" style="cursor:pointer;">
                                                                             @if (isset($userCompletedLessons[$lesson->id]))
-                                                                                <i class="fas fa-check-circle text-primary"></i>
+                                                                                <i class="fas fa-check-circle text-primary" 
+                                                                                   title="Completed - Lesson ID: {{ $lesson->id }}"></i>
                                                                             @else
                                                                                 <i class="fas fa-check-circle is_complete_lesson"
                                                                                     data-course="{{ $course->id }}"
                                                                                     data-module="{{ $module->id }}"
                                                                                     data-lesson="{{ $lesson->id }}"
                                                                                     data-duration="{{ $lesson->duration ?? 0 }}"
-                                                                                    data-user="{{ Auth::user()->id }}"></i>
+                                                                                    data-user="{{ Auth::user()->id }}"
+                                                                                    title="Not completed - Lesson ID: {{ $lesson->id }}"></i>
                                                                             @endif
                                                                         </span>
 
@@ -537,13 +548,64 @@
             let currentURL = window.location.href;
             const baseUrl = currentURL.split('/').slice(0, 3).join('/');
 
+            // Setup CSRF token for all AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             // Video/Audio players
             let audioPlayer = document.getElementById('audioPlayer');
+
+            // Initialize with last lesson from course_logs
+            @if($currentLesson)
+                console.log('🎬 Initializing with last lesson from course_logs:', {
+                    lessonId: {{ $currentLesson->id }},
+                    moduleId: {{ $currentLesson->module_id }},
+                    type: '{{ $currentLesson->type }}'
+                });
+
+                // Set the current lesson as active in sidebar
+                $('a[data-lesson-id="{{ $currentLesson->id }}"]').addClass('active');
+                $('a[data-lesson-id="{{ $currentLesson->id }}"] .actv-hide').hide();
+                $('a[data-lesson-id="{{ $currentLesson->id }}"] .actv-show').show();
+
+                @if($currentModule)
+                    // Open the accordion for current module
+                    $('#collapse_{{ $currentModule->id }}').addClass('show');
+                @endif
+
+                // Initialize the Mark as Complete button for current lesson
+                updateMarkAsCompleteButton({{ $currentLesson->id }}, {{ $currentLesson->module_id }}, {{ $course->user_id }}, {{ $currentLesson->duration ?? 0 }});
+
+                // Load the current lesson content
+                @if($currentLesson->type == 'video' && $currentLesson->video_link)
+                    loadVideo('{{ $currentLesson->video_link }}', {{ $currentLesson->id }});
+                @elseif($currentLesson->type == 'audio' && $currentLesson->audio)
+                    // Load audio
+                    document.querySelector('.audio-iframe-box').classList.remove('d-none');
+                    document.querySelector('#videoPlayerContainer').style.display = 'none';
+                    $('#textHideShow').hide();
+                    var audioSource = audioPlayer.querySelector('source');
+                    audioSource.src = baseUrl + '/{{ $currentLesson->audio }}';
+                    audioPlayer.load();
+                @elseif($currentLesson->type == 'text')
+                    // Load text content
+                    $('#textHideShow').show();
+                    $('#textHideShowSeparator').show();
+                    document.querySelector('.audio-iframe-box').classList.add('d-none');
+                    document.querySelector('#videoPlayerContainer').style.display = 'none';
+                    // Load text content here if needed
+                @endif
+            @endif
 
             // Lesson click handler
             $('a.video_list_play').click(function(e) {
                 e.preventDefault();
-                console.log('Lesson clicked - icon switching should work');
+                console.log('🎯 Lesson clicked - icon switching should work');
+                
+                // Remove alert for production
 
                 // Reset all lesson icons - show play icons, hide pause icons
                 $('a.video_list_play').removeClass('active');
@@ -624,7 +686,7 @@
                 
                 // ONLY Log course progress (similar to instructor) - DO NOT mark as complete
                 $.ajax({
-                    url: '{{ route('students.log.courses') }}',
+                    url: '{{ route('student.log.courses') }}',
                     method: 'GET',
                     data: data,
                     success: function(response) {
@@ -638,6 +700,9 @@
                     },
                     error: function(xhr, status, error) {
                         console.log('❌ course_logs AJAX ERROR:', error);
+                        console.log('Response Status:', xhr.status);
+                        console.log('Response Text:', xhr.responseText);
+                        console.log('Error Details:', {status: status, error: error});
                     }
                 });
             });
@@ -700,19 +765,22 @@
                 
                 var $button = $('#markCompleteBtn');
                 
-                // Check if lesson is already completed
-                var $lessonIcon = $('a[data-lesson-id="' + lessonId + '"] .fas.fa-check-circle');
-                var isCompleted = $lessonIcon.hasClass('text-primary') && !$lessonIcon.hasClass('is_complete_lesson');
+                // Check if lesson is already completed by checking the PHP-generated completed lessons array
+                var completedLessons = @json(array_keys($userCompletedLessons ?? []));
+                var isCompleted = completedLessons.includes(parseInt(lessonId));
                 
-                console.log('Lesson completion status:', isCompleted);
+                console.log('Lesson completion status from server:', {
+                    lessonId: lessonId,
+                    completedLessons: completedLessons,
+                    isCompleted: isCompleted
+                });
                 
                 if (isCompleted) {
-                    // Lesson is already completed - show Completed and disable AJAX
+                    // Lesson is already completed - show Completed and disable
                     $button.removeClass('btn-success').addClass('btn-secondary');
                     $button.html('<i class="fas fa-check-circle me-1"></i>Completed');
                     $button.prop('disabled', true);
-                    $button.off('click'); // Remove click handler to prevent AJAX calls
-                    console.log('✅ Button set to Completed state - AJAX disabled');
+                    console.log('✅ Button set to Completed state');
                 } else {
                     // Lesson not completed yet
                     $button.removeClass('btn-secondary').addClass('btn-success');
@@ -734,6 +802,8 @@
             // Handle main "Mark as Complete" button click (beside heart icon)
             $(document).on('click', '#markCompleteBtn', function(e) {
                 e.preventDefault();
+                
+                console.log('🎯 Mark Complete button clicked!');
                 
                 // Check if lesson is already completed - if so, don't proceed
                 if ($(this).hasClass('btn-secondary') && $(this).text().includes('Completed')) {
@@ -761,7 +831,7 @@
                 console.log('Inserting into course_activities table:', data);
 
                 $.ajax({
-                    url: '{{ route('students.complete.lesson') }}',
+                    url: '{{ route('student.complete.lesson') }}',
                     method: 'GET',
                     data: data,
                     beforeSend: function() {
@@ -793,11 +863,16 @@
                             $lessonIcon.removeClass('is_complete_lesson');
                         }
                         
+                        // Update the module icon if all lessons in module are completed
+                        updateModuleCompletionIcon(moduleId);
+                        
                         console.log('✅ Main completion button updated');
                     },
                     error: function(xhr, status, error) {
                         console.log('❌ MAIN completion ERROR:', error);
-                        console.log('Error details:', xhr.responseText);
+                        console.log('Response Status:', xhr.status);
+                        console.log('Response Text:', xhr.responseText);
+                        console.log('Error Details:', {status: status, error: error});
                         
                         // Reset button on error
                         $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
@@ -833,7 +908,7 @@
                 console.log('Inserting into course_activities table:', data);
 
                 $.ajax({
-                    url: '{{ route('students.complete.lesson') }}',
+                    url: '{{ route('student.complete.lesson') }}',
                     method: 'GET',
                     data: data,
                     beforeSend: function() {
@@ -856,16 +931,55 @@
                         // Change icon to success checkmark
                         $element.removeClass('spinner-border spinner-border-sm').addClass('fas fa-check-circle text-primary');
                         $element.removeClass('is_complete_lesson'); // Remove click handler
+                        
+                        // Update the module icon if all lessons in module are completed
+                        updateModuleCompletionIcon(moduleId);
+                        
                         console.log('✅ Manual completion icon updated');
                     },
                     error: function(xhr, status, error) {
                         console.log('❌ MANUAL completion ERROR:', error);
-                        console.log('Error details:', xhr.responseText);
+                        console.log('Response Status:', xhr.status);
+                        console.log('Response Text:', xhr.responseText);
+                        console.log('Error Details:', {status: status, error: error});
                         // Reset on error
                         $element.removeClass('spinner-border spinner-border-sm').addClass('fas fa-check-circle');
                     }
                 });
             });
+
+            // Function to update module completion icon when all lessons are completed
+            function updateModuleCompletionIcon(moduleId) {
+                console.log('🔍 Checking module completion for module:', moduleId);
+                
+                var $moduleHeader = $('#heading_' + moduleId + ' .fas.fa-check-circle');
+                var $allLessonsInModule = $('a[data-modules-id="' + moduleId + '"] .fas.fa-check-circle');
+                var totalLessons = $allLessonsInModule.length;
+                var completedLessons = $allLessonsInModule.filter('.text-primary').length;
+                
+                console.log('Module completion check:', {
+                    moduleId: moduleId,
+                    totalLessons: totalLessons,
+                    completedLessons: completedLessons
+                });
+                
+                if (totalLessons > 0 && completedLessons === totalLessons) {
+                    // All lessons completed - make module icon primary color
+                    $moduleHeader.addClass('text-primary');
+                    console.log('✅ Module ' + moduleId + ' marked as completed');
+                } else {
+                    // Not all lessons completed - remove primary color
+                    $moduleHeader.removeClass('text-primary');
+                    console.log('⏳ Module ' + moduleId + ' still in progress');
+                }
+            }
+
+            // Initialize module completion status on page load
+            @foreach($course->modules as $module)
+                @if($module->status == 'published' && count($module->lessons) > 0)
+                    updateModuleCompletionIcon({{ $module->id }});
+                @endif
+            @endforeach
         });
     </script>
     

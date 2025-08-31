@@ -12,21 +12,23 @@ class CourseEnrollmentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // Auth middleware is applied at route level
     }
 
     /**
      * Show enrollment form for a course
      */
-    public function show(Course $course)
+    public function show($slug)
     {
+        $course = Course::where('slug', $slug)->firstOrFail();
+        
         // Check if student is already enrolled
         $existingEnrollment = CourseEnrollment::where('course_id', $course->id)
             ->where('user_id', Auth::id())
             ->first();
 
         if ($existingEnrollment) {
-            return redirect()->back()->with('info', 'You have already applied for this course.');
+            return redirect()->route('courses.overview', $course->slug)->with('info', 'You have already applied for this course.');
         }
 
         return view('courses.enroll', compact('course'));
@@ -35,8 +37,10 @@ class CourseEnrollmentController extends Controller
     /**
      * Store enrollment application
      */
-    public function store(Request $request, Course $course)
+    public function store(Request $request, $slug)
     {
+        $course = Course::where('slug', $slug)->firstOrFail();
+        
         // Basic validation
         $request->validate([
             'payment_method' => 'required|in:bkash,nogod,rocket,cash',
@@ -48,7 +52,7 @@ class CourseEnrollmentController extends Controller
         // Custom validation for digital payments - require either transaction_id OR payment_screenshot
         if ($request->payment_method !== 'cash') {
             if (empty($request->transaction_id) && !$request->hasFile('payment_screenshot')) {
-                return redirect()->back()
+                return redirect()->route('courses.enroll', $course->slug)
                     ->withErrors(['payment_proof' => 'For digital payments, please provide either transaction ID or payment screenshot.'])
                     ->withInput();
             }
@@ -60,7 +64,7 @@ class CourseEnrollmentController extends Controller
             ->first();
 
         if ($existingEnrollment) {
-            return redirect()->back()->with('error', 'You have already applied for this course.');
+            return redirect()->route('courses.overview', $course->slug)->with('error', 'You have already applied for this course.');
         }
 
         // Calculate final amount (considering promo code if provided)
@@ -131,7 +135,7 @@ class CourseEnrollmentController extends Controller
                   ? 'Your enrollment has been submitted successfully with payment proof. Wait for instructor approval.'
                   : 'Your enrollment application has been submitted. Please complete payment to proceed.';
         
-        return redirect()->route('students.dashboard')
+        return redirect()->route('student.dashboard')
             ->with('success', $message);
     }
 

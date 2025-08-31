@@ -23,9 +23,57 @@ class StudentProfileController extends Controller
     {
         $id = Auth::user()->id;
         $user = User::find($id);
-        $checkout = Checkout::where('user_id', $id)->with('course')->get();
+        
+        // Get purchased courses from Checkout table
+        $checkout = Checkout::where('user_id', $id)->with('course.user')->get();
+        
+        // Get enrolled courses from CourseEnrollment table
+        $enrolledCourses = \App\Models\CourseEnrollment::where('user_id', $id)
+            ->where('status', 'approved')
+            ->with('course.user')
+            ->get();
+            
+        // Combine both collections for display
+        $allEnrollments = collect();
+        
+        // Add checkout courses
+        foreach ($checkout as $purchase) {
+            if ($purchase->course) {
+                $allEnrollments->push([
+                    'type' => 'purchase',
+                    'id' => $purchase->payment_id ?? $purchase->id,
+                    'course' => $purchase->course,
+                    'instructor' => $purchase->course->user,
+                    'date' => $purchase->created_at,
+                    'amount' => $purchase->amount,
+                    'status' => $purchase->payment_status,
+                    'original' => $purchase
+                ]);
+            }
+        }
+        
+        // Add enrolled courses (free or approved)
+        foreach ($enrolledCourses as $enrollment) {
+            if ($enrollment->course) {
+                $allEnrollments->push([
+                    'type' => 'enrollment',
+                    'id' => 'ENR-' . $enrollment->id,
+                    'course' => $enrollment->course,
+                    'instructor' => $enrollment->course->user,
+                    'date' => $enrollment->created_at,
+                    'amount' => $enrollment->amount ?? 0,
+                    'status' => $enrollment->paid ? 'Paid' : 'Free Access',
+                    'original' => $enrollment
+                ]);
+            }
+        }
+        
+        // Sort by date (newest first)
+        $allEnrollments = $allEnrollments->sortByDesc('date');
+        
         $totalTimeSpend = CourseActivity::where('user_id', $id)->where('is_completed',1)->sum('duration');
-        return view('profile/students/profile',compact('user','checkout','totalTimeSpend'));
+        
+        return view('profile/students/profile',compact('user','checkout','allEnrollments','totalTimeSpend'));
     }
 
     // profile edit

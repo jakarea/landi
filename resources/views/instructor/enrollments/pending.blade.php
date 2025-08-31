@@ -255,7 +255,7 @@
                     <p class="mb-0 opacity-90">নতুন নথিভুক্তির আবেদন পর্যালোচনা করুন এবং অনুমোদন করুন</p>
                 </div>
                 <div>
-                    <a href="{{ route('instructor.enrollments.all') }}" class="header-btn">
+                    <a href="{{ route('instructor.enrollments') }}" class="header-btn">
                         <i class="fas fa-list me-2"></i> সকল নথিভুক্তি
                     </a>
                 </div>

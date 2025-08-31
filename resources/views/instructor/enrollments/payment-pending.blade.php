@@ -255,7 +255,7 @@
                     <p class="mb-0 opacity-90">যে শিক্ষার্থীরা এখনও পেমেন্ট করেননি তাদের তালিকা দেখুন</p>
                 </div>
                 <div>
-                    <a href="{{ route('instructor.enrollments.all') }}" class="header-btn">
+                    <a href="{{ route('instructor.enrollments') }}" class="header-btn">
                         <i class="fas fa-list me-2"></i> সকল নথিভুক্তি
                     </a>
                 </div>

@@ -45,21 +45,24 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
     // ========================================
     
     Route::prefix('instructor/profile')->group(function () {
+        // Main profile routes
         Route::get('/', [ProfileManagementController::class, 'show'])->name('instructor.profile');
-        Route::get('/edit/', [ProfileManagementController::class, 'edit'])->name('instructor.profile.edit');
-        Route::post('/update/', [ProfileManagementController::class, 'update'])->name('instructor.profile.update');
-        Route::post('/cover/', [ProfileManagementController::class, 'coverUpload'])->name('instructor.profile.cover');
-        Route::get('/password/', [ProfileManagementController::class, 'passwordUpdate'])->name('instructor.profile.password');
-        Route::post('/password/', [ProfileManagementController::class, 'postChangePassword'])->name('instructor.profile.password.update');
-        Route::get('/settings/', [ProfileManagementController::class, 'edit'])->name('instructor.profile.settings');
-        Route::post('/payment/', [ProfileManagementController::class, 'updatePaymentSettings'])->name('instructor.profile.payment');
+        Route::get('/edit', [ProfileManagementController::class, 'edit'])->name('instructor.profile.edit');
+        Route::post('/update', [ProfileManagementController::class, 'update'])->name('instructor.profile.update');
+        Route::post('/cover', [ProfileManagementController::class, 'coverUpload'])->name('instructor.profile.cover');
+        
+        // Settings and password management
+        Route::get('/settings', [ProfileManagementController::class, 'edit'])->name('instructor.profile.settings');
+        Route::get('/password', [ProfileManagementController::class, 'passwordUpdate'])->name('instructor.profile.password');
+        Route::post('/password', [ProfileManagementController::class, 'postChangePassword'])->name('instructor.profile.password.update');
+        Route::post('/payment', [ProfileManagementController::class, 'updatePaymentSettings'])->name('instructor.profile.payment');
         
         // Experience Management
-        Route::prefix('experience')->group(function () {
+        Route::prefix('experiences')->group(function () {
             Route::post('/', [ExperienceController::class, 'store'])->name('instructor.profile.experience.store');
-            Route::get('/{experienceId}/edit/', [ExperienceController::class, 'edit'])->name('instructor.profile.experience.edit');
-            Route::put('/{experienceId}/', [ExperienceController::class, 'update'])->name('instructor.profile.experience.update');
-            Route::delete('/{experienceId}/', [ExperienceController::class, 'destroy'])->name('instructor.profile.experience.delete');
+            Route::get('/{experienceId}/edit', [ExperienceController::class, 'edit'])->name('instructor.profile.experience.edit');
+            Route::put('/{experienceId}', [ExperienceController::class, 'update'])->name('instructor.profile.experience.update');
+            Route::delete('/{experienceId}', [ExperienceController::class, 'destroy'])->name('instructor.profile.experience.delete');
         });
     });
     
@@ -95,9 +98,7 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
         Route::get('/files/{course_id}/{extension}/', [CourseController::class, 'fileDownload'])->name('instructor.courses.files');
         
         // Dynamic slug routes come LAST
-        Route::get('/{slug}/', [CourseController::class, 'courseOverview'])->name('instructor.courses.overview');
-        Route::get('/{slug}/edit/', [CourseController::class, 'courseEdit'])->name('instructor.courses.edit');
-        Route::get('/{slug}/preview/', [CourseController::class, 'preview'])->name('instructor.courses.preview');
+        Route::get('/{slug}/', [CourseController::class, 'courseOverview'])->name('instructor.courses.show');
         Route::delete('/{id}/', [CourseController::class, 'destroy'])->name('instructor.courses.destroy');
     });
 

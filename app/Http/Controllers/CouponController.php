@@ -40,6 +40,7 @@ class CouponController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'code' => 'nullable|string|max:20|unique:coupons,code',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type' => 'required|in:percentage,fixed',
@@ -52,21 +53,29 @@ class CouponController extends Controller
             'is_active' => 'boolean'
         ]);
 
-        $coupon = new Coupon();
-        $coupon->code = $request->code ?: Coupon::generateCode();
-        $coupon->name = $request->name;
-        $coupon->description = $request->description;
-        $coupon->type = $request->type;
-        $coupon->value = $request->value;
-        $coupon->instructor_id = Auth::id();
-        $coupon->applicable_courses = $request->applicable_courses;
-        $coupon->usage_limit = $request->usage_limit;
-        $coupon->valid_from = $request->valid_from;
-        $coupon->valid_until = $request->valid_until;
-        $coupon->is_active = $request->is_active ?? true;
-        $coupon->save();
+        try {
+            $coupon = new Coupon();
+            $coupon->code = $request->code ?: Coupon::generateCode();
+            $coupon->name = $request->name;
+            $coupon->description = $request->description;
+            $coupon->type = $request->type;
+            $coupon->value = $request->value;
+            $coupon->instructor_id = Auth::id();
+            $coupon->applicable_courses = $request->applicable_courses;
+            $coupon->usage_limit = $request->usage_limit;
+            $coupon->valid_from = $request->valid_from;
+            $coupon->valid_until = $request->valid_until;
+            $coupon->is_active = $request->is_active ?? true;
+            $coupon->save();
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle duplicate code error specifically
+            if ($e->getCode() == 23000) {
+                return back()->withErrors(['code' => 'This coupon code already exists. Please choose a different code.'])->withInput();
+            }
+            throw $e;
+        }
 
-        return redirect()->route('instructor.coupons.index')
+        return redirect()->route('instructor.coupons')
             ->with('success', 'Coupon created successfully!');
     }
 
@@ -97,6 +106,7 @@ class CouponController extends Controller
         $this->authorize('update', $coupon);
 
         $request->validate([
+            'code' => 'nullable|string|max:20|unique:coupons,code,' . $coupon->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type' => 'required|in:percentage,fixed',
@@ -121,7 +131,7 @@ class CouponController extends Controller
             'is_active' => $request->is_active ?? true
         ]);
 
-        return redirect()->route('instructor.coupons.index')
+        return redirect()->route('instructor.coupons')
             ->with('success', 'Coupon updated successfully!');
     }
 
@@ -133,7 +143,7 @@ class CouponController extends Controller
         $this->authorize('delete', $coupon);
         $coupon->delete();
 
-        return redirect()->route('instructor.coupons.index')
+        return redirect()->route('instructor.coupons')
             ->with('success', 'Coupon deleted successfully!');
     }
 

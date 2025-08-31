@@ -43,6 +43,12 @@ Route::get('/', [HomepageController::class, 'homepage'])->name('home');
 Route::get('/courses/', [CourseController::class, 'publicIndex'])->name('courses');
 Route::get('/courses/{slug}/', [CourseController::class, 'publicOverview'])->name('courses.overview');
 
+// Course enrollment routes
+Route::middleware('auth')->group(function () {
+    Route::get('/courses/{slug}/enroll/', [\App\Http\Controllers\CourseEnrollmentController::class, 'show'])->name('courses.enroll');
+    Route::post('/courses/{slug}/enroll/', [\App\Http\Controllers\CourseEnrollmentController::class, 'store'])->name('courses.enroll.store');
+});
+
 // ========================================
 // LANDING PAGES SECTION
 // ========================================
@@ -77,6 +83,7 @@ Route::prefix('auth')->group(function () {
             }
             return view('auth.login');
         })->name('login');
+        Route::post('/login/', [LoginController::class, 'login'])->name('login.post');
 
         // Registration Routes
         Route::get('/register/', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -95,8 +102,8 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-// Logout Route (Authenticated users only)
-Route::get('/auth/logout/', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+// Logout Routes (Authenticated users only)
+Route::match(['get', 'post'], '/auth/logout/', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 // ========================================
 // ROLE-BASED DASHBOARD REDIRECT

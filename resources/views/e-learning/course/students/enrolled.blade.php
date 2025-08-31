@@ -94,7 +94,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search me-2"></i>ফিল্টার প্রয়োগ
                                 </button>
-                                <a href="{{ route('students.dashboard.enrolled') }}" class="btn btn-outline-secondary ms-2">
+                                <a href="{{ route('student.courses') }}" class="btn btn-outline-secondary ms-2">
                                     <i class="fas fa-refresh me-2"></i>রিসেট
                                 </a>
                             </div>

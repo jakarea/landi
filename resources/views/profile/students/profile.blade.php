@@ -143,29 +143,35 @@
                                 <th>কার্যক্রম</th>
                             </tr>
                             {{-- item @S --}}
-                            @foreach ($checkout as $key => $value)
-                            @if ($value->course)
+                            @foreach ($allEnrollments as $key => $enrollment)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $value->payment_id }}</td>
-                                <td>{{ $value->course->title }}</td>
-                                <td>{{ $value->course->user->name }}</td>
-                                <td>{{ $value->created_at }}</td>
-                                <td>৳ {{ $value->amount }}</td>
+                                <td>{{ $enrollment['id'] }}</td>
+                                <td>{{ $enrollment['course']->title }}</td>
+                                <td>{{ $enrollment['instructor']->name }}</td>
+                                <td>{{ $enrollment['date']->format('d M Y') }}</td>
                                 <td>
-                                    @if ($value->payment_status == 'Paid')
-                                    <span>পরিশোধিত</span>
-                                    @elseif ($value->payment_status == 'completed')
-                                    <span>সম্পন্ন</span>
+                                    @if($enrollment['amount'] > 0)
+                                        ৳ {{ number_format($enrollment['amount']) }}
                                     @else
-                                    <span class="bg-danger">ব্যর্থ</span>
+                                        <span class="text-success">বিনামূল্যে</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ url('student/courses/my-courses/details/'.$value->course->slug) }}">কোর্স দেখুন</a>
+                                    @if ($enrollment['status'] == 'Paid')
+                                    <span class="text-success">পরিশোধিত</span>
+                                    @elseif ($enrollment['status'] == 'completed')
+                                    <span class="text-success">সম্পন্ন</span>
+                                    @elseif ($enrollment['status'] == 'Free Access')
+                                    <span class="text-info">বিনামূল্যে প্রবেশাধিকার</span>
+                                    @else
+                                    <span class="text-danger">ব্যর্থ</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ url('student/courses/'.$enrollment['course']->slug.'/learn') }}" class="btn btn-sm btn-primary">কোর্স দেখুন</a>
                                 </td>
                             </tr>
-                            @endif
                             @endforeach
                             {{-- item @E --}}
                         </table>

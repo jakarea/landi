@@ -13,7 +13,7 @@
                         <a href="{{ route('instructor.coupons.show', $coupon) }}" class="btn btn-info">
                             <i class="fas fa-eye"></i> View
                         </a>
-                        <a href="{{ route('instructor.coupons.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('instructor.coupons') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
                     </div>
