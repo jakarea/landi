@@ -31,7 +31,7 @@ class ProfileManagementController extends Controller
         $user = User::find($id);
         $courses = Course::where('user_id', $id)->get();
         $experiences = Experience::where('user_id', Auth::user()->id)->orderBy('id','desc')->get();
-        return view('profile/instructor/profile',compact('user','courses','experiences'));
+        return view('profile/instructor/profile-tailwind',compact('user','courses','experiences'));
     }
 
     // profile edit
@@ -74,6 +74,10 @@ class ProfileManagementController extends Controller
             'short_bio' => 'string',
             'phone' => 'required|string',
             'base64_avatar' => 'nullable|string',
+            'facebook_url' => 'nullable|url',
+            'linkedin_url' => 'nullable|url',
+            'youtube_url' => 'nullable|url',
+            'website_url' => 'nullable|url',
             // 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5000',
         ],
         [
@@ -84,7 +88,14 @@ class ProfileManagementController extends Controller
         $user = User::where('id', $userId)->first();
         $user->name = $request->name;
         $user->short_bio = $request->website;
-        $user->social_links = implode(",",$request->social_links);
+        // Collect social media URLs
+        $socialLinks = [];
+        if ($request->facebook_url) $socialLinks[] = $request->facebook_url;
+        if ($request->linkedin_url) $socialLinks[] = $request->linkedin_url;
+        if ($request->youtube_url) $socialLinks[] = $request->youtube_url;
+        if ($request->website_url) $socialLinks[] = $request->website_url;
+        
+        $user->social_links = implode(",", $socialLinks);
         $user->phone = $request->phone;
         $user->description = $request->description;
         $user->recivingMessage = $request->recivingMessage ? true : false;

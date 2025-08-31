@@ -2,7 +2,10 @@
 @section('title', 'কুপন ব্যবস্থাপনা')
 @section('header-title', 'কুপন ব্যবস্থাপনা')
 @section('header-subtitle', 'আপনার কোর্সের জন্য ডিসকাউন্ট কুপন তৈরি এবং পরিচালনা করুন')
-
+@php
+    use Illuminate\Support\Str;
+@endphp
+@endphp
 @section('style')
 <style>
 /* Coupon type badges */

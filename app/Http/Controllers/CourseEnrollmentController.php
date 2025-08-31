@@ -150,7 +150,7 @@ class CourseEnrollmentController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('instructor.enrollments.pending', compact('enrollments'));
+        return view('instructor.enrollments.pending-tailwind', compact('enrollments'));
     }
 
     /**
@@ -164,7 +164,7 @@ class CourseEnrollmentController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('instructor.enrollments.payment-pending', compact('enrollments'));
+        return view('instructor.enrollments.payment-pending-tailwind', compact('enrollments'));
     }
 
     /**

@@ -31,7 +31,7 @@ class CouponController extends Controller
     public function create()
     {
         $courses = Course::where('user_id', Auth::id())->get();
-        return view('instructor.coupons.create', compact('courses'));
+        return view('instructor.coupons.create-tailwind', compact('courses'));
     }
 
     /**
@@ -95,7 +95,7 @@ class CouponController extends Controller
     {
         $this->authorize('update', $coupon);
         $courses = Course::where('user_id', Auth::id())->get();
-        return view('instructor.coupons.edit', compact('coupon', 'courses'));
+        return view('instructor.coupons.edit-tailwind', compact('coupon', 'courses'));
     }
 
     /**
