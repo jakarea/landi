@@ -25,7 +25,7 @@ class CertificateController extends Controller
         $courses = Course::where('instructor_id', $userId)->get();
         $certificates = Certificate::where('instructor_id', $userId)->with('course')->orderBy('id','desc')->get();
 
-        return view('profile/instructor/edit', compact('user','experiences','editExp','courses','certificates'))->with('tab', 'certificate');
+        return view('profile/instructor/edit-tailwind', compact('user','experiences','editExp','courses','certificates'))->with('tab', 'certificate');
     }
 
     // update or create certificate
@@ -308,7 +308,7 @@ class CertificateController extends Controller
         $certificates = Certificate::where('instructor_id', $userId)->with('course')->orderBy('id','desc')->get();
         $editCertificate = $certificate;
 
-        return view('profile/instructor/edit', compact('user','experiences','editExp','courses','certificates','editCertificate'))->with('tab', 'certificate');
+        return view('profile/instructor/edit-tailwind', compact('user','experiences','editExp','courses','certificates','editCertificate'))->with('tab', 'certificate');
     }
 
     // delete certficate

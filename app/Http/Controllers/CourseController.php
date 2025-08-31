@@ -74,9 +74,9 @@ class CourseController extends Controller
             $courses->orderBy('id', 'desc');
         }
 
-        $courses = $courses->paginate(12)->appends($queryParams);
+        $courses = $courses->paginate(16)->appends($queryParams);
 
-        return view('e-learning/course/instructor/list',compact('courses'));
+        return view('e-learning/course/instructor/list-tailwind',compact('courses'));
     }
 
     // course show

@@ -1,0 +1,185 @@
+@import "tailwindcss"; 
+
+@theme {
+  --color-*: initial;
+  
+  /* Dark theme colors (default) */
+  --color-body: #091D3D;
+  --color-primary: #021A30;
+  --color-card: #0F2342;
+  --color-orange: #FFBB32;
+  --color-lime: #CBFB90;
+  --color-blue: #5AEAF4;
+  --color-secondary-100: #C7C7C7;
+  --color-secondary-200: #ABABAB;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+/* Light theme colors */
+:root.light-theme {
+  --color-body: #F8FAFC;
+  --color-primary: #FFFFFF;
+  --color-card: #FFFFFF;
+  --color-orange: #F59E0B;
+  --color-lime: #10B981;
+  --color-blue: #3B82F6;
+  --color-secondary-100: #4B5563;
+  --color-secondary-200: #6B7280;
+  --color-text-primary: #1F2937;
+  --color-text-secondary: #6B7280;
+}
+
+/* custom class */
+.first-gradient {
+  background: linear-gradient(180deg, #08454D 0%, #011330 100%);
+}
+
+.l-h {
+  background: linear-gradient(180deg, #14CEF4 0%, #FFFFFF 100%);
+}
+
+body {
+  font-family: "Hind Siliguri", sans-serif;
+}
+
+@layer components {
+  .grid-background {
+    background-image:
+      linear-gradient(to right, rgba(20, 206, 244, 0.3) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20, 206, 244, 0.3) 1px, transparent 1px);
+    background-size: 11px 11px;
+  } 
+  
+  .container-x{
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+  }
+
+  /* Light theme text colors */
+  :root.light-theme .text-white,
+  :root.light-theme .theme-text-primary {
+    color: #1F2937 !important;
+  }
+
+  :root.light-theme .text-secondary-100 {
+    color: #4B5563 !important;
+  }
+
+  :root.light-theme .text-secondary-200 {
+    color: #6B7280 !important;
+  }
+
+  /* Light theme background colors */
+  :root.light-theme .bg-body {
+    background-color: #F8FAFC !important;
+  }
+
+  :root.light-theme .bg-card {
+    background-color: #FFFFFF !important;
+  }
+
+  :root.light-theme .bg-primary {
+    background-color: #FFFFFF !important;
+    border-color: #E5E7EB !important;
+  }
+
+  /* Light theme borders */
+  :root.light-theme .border-white\/20,
+  :root.light-theme .theme-border {
+    border-color: #E5E7EB !important;
+  }
+
+  /* Light theme shadows */
+  :root.light-theme .shadow-1 {
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  :root.light-theme .shadow-2 {
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Light theme sidebar */
+  :root.light-theme .bg-primary {
+    background-color: #FFFFFF !important;
+    border-right: 1px solid #E5E7EB;
+  }
+
+  /* Light theme hover effects */
+  :root.light-theme .hover\:bg-card:hover {
+    background-color: #F3F4F6 !important;
+  }
+
+  :root.light-theme .hover\:text-blue:hover {
+    color: #3B82F6 !important;
+  }
+
+  /* Responsive line clamp utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.anim{
+ transition: all 0.3s ease-in-out;
+ -webkit-transition: all 0.3s ease-in-out;
+ -moz-transition: all 0.3s ease-in-out;
+ -ms-transition: all 0.3s ease-in-out;
+ -o-transition: all 0.3s ease-in-out;
+}
+
+.over-shaped{
+  background: linear-gradient(0deg, #091D3D 34.13%, rgba(9, 29, 61, 0.1) 100%);
+}
+
+@layer components {
+  .gradient-border {
+    @apply relative bg-gradient-to-b from-[#E7FFCA] to-[#14CEF4] p-0.5 rounded-xl;
+  }
+  
+  .gradient-border-content {
+    @apply bg-transparent rounded-[calc(0.75rem-2px)] relative z-10;
+  }
+
+  .shadow-1{
+    box-shadow: 0px 0px 30px 0px #36DEFF99;
+  }
+
+  .shadow-2{
+    box-shadow: 0px 0px 20px 0px #00000040;
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, #CBFB90 60.58%, #5AEAF4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .common-para{
+    font-weight: 400;
+    font-size: 14px; 
+    line-height: 140%;
+  }
+
+  .smooth-bounce {
+    transform: translateY(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .smooth-bounce:hover {
+    transform: translateY(-8px);
+  }
+}
+
+/* media query */
+@media only screen and (min-width: 1200px) {
+  .common-para{ 
+    font-size: 18px;  
+  }
+}

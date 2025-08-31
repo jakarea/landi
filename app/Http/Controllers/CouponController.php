@@ -22,7 +22,7 @@ class CouponController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('instructor.coupons.index', compact('coupons'));
+        return view('instructor.coupons.index-tailwind', compact('coupons'));
     }
 
     /**

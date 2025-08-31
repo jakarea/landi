@@ -48,7 +48,7 @@ class ProfileManagementController extends Controller
         $courses = Course::where('instructor_id', $userId)->get();
         $certificates = Certificate::where('instructor_id', $userId)->with('course')->orderBy('id','desc')->get();
 
-        return view('profile/instructor/edit',compact('user','experiences','editExp','courses','certificates'));
+        return view('profile/instructor/edit-tailwind',compact('user','experiences','editExp','courses','certificates'));
     }
 
     public function deleteExperience($domain, $experience_id)

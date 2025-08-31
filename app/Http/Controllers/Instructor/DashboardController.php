@@ -436,7 +436,7 @@ class DashboardController extends Controller
         }
 
 
-        return view('dashboard/instructor/analytics', compact('categories', 'courses', 'students', 'enrolments', 'course_wise_payments', 'activeInActiveStudents', 'earningByDates','earningByMonth','messages','formatedPercentageChangeOfStudentEnroll','formatedPercentageOfCourse','formattedPercentageChangeOfEarning','activeCourses','draftCourses','currentMonthEnrolledStudentsCount','analytics_title','compear','totalAmounts'));
+        return view('dashboard/instructor/analytics-tailwind', compact('categories', 'courses', 'students', 'enrolments', 'course_wise_payments', 'activeInActiveStudents', 'earningByDates','earningByMonth','messages','formatedPercentageChangeOfStudentEnroll','formatedPercentageOfCourse','formattedPercentageChangeOfEarning','activeCourses','draftCourses','currentMonthEnrolledStudentsCount','analytics_title','compear','totalAmounts'));
 
     }
 
@@ -767,7 +767,7 @@ class DashboardController extends Controller
             ->orderBy('title')
             ->get();
         
-        return view('dashboard.instructor.earnings', compact('earnings', 'totalEarnings', 'monthlyEarnings', 'paymentMethods', 'students', 'instructorCourses'));
+        return view('dashboard.instructor.earnings-tailwind', compact('earnings', 'totalEarnings', 'monthlyEarnings', 'paymentMethods', 'students', 'instructorCourses'));
     }
 
     /**
@@ -923,7 +923,7 @@ class DashboardController extends Controller
             
         $totalEarnings = $checkoutEarnings + $pivotEarnings;
 
-        return view('dashboard.instructor.students', compact('students', 'instructorCourses', 'totalStudents', 'totalEarnings', 'checkoutStudents', 'pivotStudents'));
+        return view('dashboard.instructor.students-tailwind', compact('students', 'instructorCourses', 'totalStudents', 'totalEarnings', 'checkoutStudents', 'pivotStudents'));
     }
 
     /**

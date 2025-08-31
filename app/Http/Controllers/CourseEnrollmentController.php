@@ -202,7 +202,7 @@ class CourseEnrollmentController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('instructor.enrollments.all', compact('enrollments'));
+        return view('instructor.enrollments.all-tailwind', compact('enrollments'));
     }
 
     /**
