@@ -2,7 +2,9 @@
 @section('title')
     Home Page
 @endsection
-
+@php
+    use Illuminate\Support\Str;
+@endphp
 @section('seo')
     <meta name="description"
         content="Explore a diverse course list on LearnCosy. Boost your skills with engaging lessons in technology, business, arts, and more. Begin your educational journey today and unlock your full potential. Discover now!"
@@ -94,13 +96,8 @@
                                             class="img-fluid">
                                     </div>
                                     <div class="course-txt-box">
-                                        @if (isEnrolled($course->id))
-                                            <a href="{{ url('student/courses/my-courses/details/' . $course->slug) }}">
-                                                {{ Str::limit($course->title, 45) }}</a>
-                                        @else
-                                            <a href="{{ url('student/courses/overview/' . $course->slug) }}">
-                                                {{ Str::limit($course->title, 50) }}</a>
-                                        @endif
+                                        <a href="{{ url('student/courses/' . $course->slug . '/learn') }}">
+                                            {{ Str::limit($course->title, 45) }}</a>
 
                                         <p>{{ Str::limit($course->short_description, $limit = 46, $end = '...') }}</p>
                                         <ul>
@@ -113,14 +110,7 @@
                                     </div>
                                 </div>
                                 <div class="course-txt-box">
-                                    @if ($course->offer_price)
-                                        <h5>৳ {{ $course->offer_price }} <span>৳ {{ $course->price }}</span></h5>
-                                     @elseif(!$course->offer_price && !$course->price)
-                                     <h5>Free</h5>
-
-                                        @else
-                                        <h5>৳ {{ $course->price }}</h5>
-                                    @endif
+                                    <h5><i class="fas fa-check-circle text-success"></i> Enrolled</h5>
                                 </div>
                                 <div class="course-ol-box">
                                     <h5>{{ Str::limit($course->title, 50) }}</h5>
@@ -135,22 +125,7 @@
                                             <li><i class="fas fa-check"></i>{{ Str::limit($object, 34) }}</li>
                                         @endforeach
                                     </ul>
-                                    @if (!isEnrolled($course->id))
-
-
-                                        <form action="{{ route('cart.add', ['course' => $course->id, 'subdomain' => config('app.subdomain') ]) }}" method="POST">
-                                            @csrf
-                                            @if ($cartCourses->pluck('course_id')->contains($course->id))
-                                                <button type="button" class="btn add-to-cart-button bg-secondary"
-                                                    disabled>Already Added to Cart</button>
-                                            @else
-                                                <button type="submit" class="btn add-to-cart-button">Add to Cart</button>
-                                            @endif
-                                        </form>
-                                    @else
-                                        <a href="{{ url('student/courses/my-courses/details/' . $course->slug) }}">Go to
-                                            Course</a>
-                                    @endif
+                                    <a href="{{ url('student/courses/' . $course->slug . '/learn') }}" class="btn btn-primary">Continue Learning</a>
                                 </div>
                             </div>
                         </div>
@@ -166,7 +141,7 @@
                 <div class="col-12">
                     {{-- pagginate --}}
                     <div class="paggination-wrap">
-                        {{-- {{ $courses->links('pagination::bootstrap-5') }} --}}
+                        {{ $courses->links('pagination::bootstrap-5') }}
                     </div>
                     {{-- pagginate --}}
                 </div>

@@ -69,7 +69,7 @@ My Profile Details
                         <h4>Experiences</h4>
                         <div>
                             <a
-                                href="{{ route('account.settings', ['tab' => 'experience', 'subdomain' => config('app.subdomain') ]) }}"><img
+                                href="{{ route('instructor.profile.settings') }}"><img
                                     src="{{ asset('assets/images/icons/plus.svg') }}" alt="img"
                                     class="img-fluid"></a>
                         </div>
@@ -83,13 +83,13 @@ My Profile Details
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5>{{ $experience->profession }}</h5>
                                 <div>
-                                    <a href="{{ route('instructor.edit.experience', ['experienceId' => $experience->id]) }}?tab=experience">
+                                    <a href="{{ route('instructor.profile.experience.edit', ['experienceId' => $experience->id]) }}?tab=experience">
                                         <img
                                             src=" {{ asset('assets/images/icons/pen.svg') }}" alt="img"
                                             class="img-fluid">
                                     </a>
 
-                                    <form method="POST" action="{{ route('instructor.delete.experience', ['experienceId' => $experience->id]) }}" 
+                                    <form method="POST" action="{{ route('instructor.profile.experience.delete', ['experienceId' => $experience->id]) }}" 
                                           class="d-inline" onsubmit="return confirm('Are you sure you want to delete this experience?')">
                                         @csrf
                                         @method('DELETE')

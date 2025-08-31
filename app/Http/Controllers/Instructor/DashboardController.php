@@ -677,13 +677,17 @@ class DashboardController extends Controller
     {
         $instructorId = Auth::user()->id;
         
-        // Get checkout earnings
-        $checkoutQuery = Checkout::where('instructor_id', $instructorId)
+        // Get checkout earnings - use course relationship instead of instructor_id
+        $checkoutQuery = Checkout::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
+            })
             ->with(['user', 'course'])
             ->orderBy('created_at', 'desc');
         
-        // Get manual enrollment earnings    
-        $manualQuery = CourseEnrollment::where('instructor_id', $instructorId)
+        // Get manual enrollment earnings - use course relationship instead of instructor_id   
+        $manualQuery = CourseEnrollment::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
+            })
             ->where('status', CourseEnrollment::STATUS_APPROVED)
             ->whereIn('payment_method', ['bkash', 'nogod', 'rocket'])
             ->with(['student', 'course'])
@@ -722,19 +726,27 @@ class DashboardController extends Controller
             ['path' => request()->url(), 'query' => request()->query()]
         );
         
-        // Calculate totals from both sources
-        $totalCheckoutEarnings = Checkout::where('instructor_id', $instructorId)->sum('amount');
-        $totalManualEarnings = CourseEnrollment::where('instructor_id', $instructorId)
+        // Calculate totals from both sources - use course relationship
+        $totalCheckoutEarnings = Checkout::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
+            })->sum('amount');
+        $totalManualEarnings = CourseEnrollment::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
+            })
             ->where('status', CourseEnrollment::STATUS_APPROVED)
             ->whereIn('payment_method', ['bkash', 'nogod', 'rocket'])
             ->sum('amount');
         $totalEarnings = $totalCheckoutEarnings + $totalManualEarnings;
         
-        $monthlyCheckoutEarnings = Checkout::where('instructor_id', $instructorId)
+        $monthlyCheckoutEarnings = Checkout::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
+            })
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->sum('amount');
-        $monthlyManualEarnings = CourseEnrollment::where('instructor_id', $instructorId)
+        $monthlyManualEarnings = CourseEnrollment::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
+            })
             ->where('status', CourseEnrollment::STATUS_APPROVED)
             ->whereIn('payment_method', ['bkash', 'nogod', 'rocket'])
             ->whereMonth('created_at', now()->month)
@@ -764,10 +776,11 @@ class DashboardController extends Controller
     public function students(Request $request)
     {
         $search = $request->get('search');
+        $instructorId = Auth::id();
         
-        // Get enrollments/checkouts for this instructor's courses with student info
-        $students = Checkout::whereHas('course', function($query) {
-                $query->where('user_id', Auth::id());
+        // Get students from checkout table (paid enrollments)
+        $checkoutStudentsQuery = Checkout::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
             })
             ->with(['user', 'course'])
             ->when($search, function ($query, $search) {
@@ -776,31 +789,141 @@ class DashboardController extends Controller
                       ->orWhere('email', 'LIKE', '%' . $search . '%');
                 });
             })
-            ->orderBy('created_at', 'desc')
-            ->paginate(15)
-            ->withQueryString();
+            ->orderBy('created_at', 'desc');
+
+        // Get students from course_user pivot table (all enrollments including manual)
+        $pivotStudentsQuery = DB::table('course_user')
+            ->join('courses', 'course_user.course_id', '=', 'courses.id')
+            ->join('users', 'course_user.user_id', '=', 'users.id')
+            ->where('courses.user_id', $instructorId)
+            ->when($search, function ($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('users.name', 'LIKE', '%' . $search . '%')
+                      ->orWhere('users.email', 'LIKE', '%' . $search . '%');
+                });
+            })
+            ->select(
+                'users.id as user_id',
+                'users.name',
+                'users.email', 
+                'users.avatar',
+                'courses.id as course_id',
+                'courses.title as course_title',
+                'courses.thumbnail as course_thumbnail',
+                'course_user.amount',
+                'course_user.payment_method',
+                'course_user.status',
+                'course_user.created_at',
+                'course_user.start_at',
+                'course_user.end_at',
+                DB::raw("'pivot' as enrollment_type")
+            )
+            ->orderBy('course_user.created_at', 'desc');
+
+        // Get paginated results
+        $checkoutStudents = $checkoutStudentsQuery->paginate(5, ['*'], 'checkout_page');
+        $pivotStudents = $pivotStudentsQuery->paginate(5, ['*'], 'pivot_page');  
+
+        // For combined view, merge all and paginate manually
+        $allCheckouts = $checkoutStudentsQuery->get();
+        $allPivots = $pivotStudentsQuery->get();
+        
+        // Combine all enrollments for pagination
+        $combinedStudents = collect();
+        
+        // Add checkout students
+        foreach ($allCheckouts as $checkout) {
+            $combinedStudents->push((object)[
+                'type' => 'checkout',
+                'user_id' => $checkout->user_id,
+                'user' => $checkout->user,
+                'course' => $checkout->course,
+                'amount' => $checkout->amount,
+                'payment_method' => $checkout->payment_method,
+                'created_at' => \Carbon\Carbon::parse($checkout->created_at),
+                'start_date' => $checkout->start_date ? \Carbon\Carbon::parse($checkout->start_date) : null,
+                'end_date' => $checkout->end_date ? \Carbon\Carbon::parse($checkout->end_date) : null,
+                'enrollment' => $checkout
+            ]);
+        }
+        
+        // Add pivot students (exclude duplicates from checkout)
+        $checkoutUserIds = $allCheckouts->pluck('user_id')->toArray();
+        foreach ($allPivots as $pivot) {
+            // Create a unique key combining user_id and course_id to avoid duplicates
+            $uniqueKey = $pivot->user_id . '_' . $pivot->course_id;
+            if (!in_array($uniqueKey, $checkoutUserIds)) {
+                $user = (object)['id' => $pivot->user_id, 'name' => $pivot->name, 'email' => $pivot->email, 'avatar' => $pivot->avatar];
+                $course = (object)['id' => $pivot->course_id, 'title' => $pivot->course_title, 'thumbnail' => $pivot->course_thumbnail];
+                
+                $combinedStudents->push((object)[
+                    'type' => 'pivot',
+                    'unique_key' => $uniqueKey,
+                    'user_id' => $pivot->user_id,
+                    'user' => $user,
+                    'course' => $course,
+                    'amount' => $pivot->amount,
+                    'payment_method' => $pivot->payment_method,
+                    'status' => $pivot->status,
+                    'created_at' => \Carbon\Carbon::parse($pivot->created_at),
+                    'start_date' => $pivot->start_at ? \Carbon\Carbon::parse($pivot->start_at) : null,
+                    'end_date' => $pivot->end_at ? \Carbon\Carbon::parse($pivot->end_at) : null,
+                    'enrollment' => $pivot
+                ]);
+            }
+        }
+        
+        // Sort by created_at desc
+        $combinedStudents = $combinedStudents->sortByDesc('created_at');
+        
+        // Manual pagination for combined results
+        $perPage = 15;
+        $currentPage = request()->get('page', 1);
+        $offset = ($currentPage - 1) * $perPage;
+        $students = new \Illuminate\Pagination\LengthAwarePaginator(
+            $combinedStudents->slice($offset, $perPage)->values(),
+            $combinedStudents->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
 
         // Get instructor's courses for the grant access modal
-        $instructorCourses = Course::where('user_id', Auth::id())
+        $instructorCourses = Course::where('user_id', $instructorId)
             ->select('id', 'title', 'price', 'offer_price', 'thumbnail')
             ->orderBy('title')
             ->get();
 
-        // Calculate total students enrolled in this instructor's courses
-        $totalStudents = Checkout::whereHas('course', function($query) {
-                $query->where('user_id', Auth::id());
-            })
-            ->distinct('user_id')
-            ->count();
+        // Calculate total unique students enrolled in this instructor's courses
+        $checkoutUserIds = Checkout::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
+            })->distinct()->pluck('user_id');
+            
+        $pivotUserIds = DB::table('course_user')
+            ->join('courses', 'course_user.course_id', '=', 'courses.id')
+            ->where('courses.user_id', $instructorId)
+            ->distinct()
+            ->pluck('course_user.user_id');
+        
+        $allUniqueUserIds = $checkoutUserIds->merge($pivotUserIds)->unique();
+        $totalStudents = $allUniqueUserIds->count();
 
-        // Calculate total earnings from this instructor's courses
-        $totalEarnings = Checkout::whereHas('course', function($query) {
-                $query->where('user_id', Auth::id());
+        // Calculate total earnings from all sources
+        $checkoutEarnings = Checkout::whereHas('course', function($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
             })
-            ->where('payment_status', 'success')
+            ->where('payment_status', 'completed')
             ->sum('amount');
+            
+        $pivotEarnings = DB::table('course_user')
+            ->join('courses', 'course_user.course_id', '=', 'courses.id')
+            ->where('courses.user_id', $instructorId)
+            ->where('course_user.paid', true)
+            ->sum('course_user.amount');
+            
+        $totalEarnings = $checkoutEarnings + $pivotEarnings;
 
-        return view('dashboard.instructor.students', compact('students', 'instructorCourses', 'totalStudents', 'totalEarnings'));
+        return view('dashboard.instructor.students', compact('students', 'instructorCourses', 'totalStudents', 'totalEarnings', 'checkoutStudents', 'pivotStudents'));
     }
 
     /**

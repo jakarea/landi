@@ -297,8 +297,12 @@
                                     <span class="amount-badge">৳{{ number_format($student->amount ?? 0) }}</span>
                                 </td>
                                 <td style="padding: 1rem;">
-                                    <div>{{ $student->created_at->format('d M Y') }}</div>
-                                    <small class="text-muted">{{ $student->created_at->format('h:i A') }}</small>
+                                    @if($student->created_at)
+                                        <div>{{ $student->created_at->format('d M Y') }}</div>
+                                        <small class="text-muted">{{ $student->created_at->format('h:i A') }}</small>
+                                    @else
+                                        <div class="text-muted">N/A</div>
+                                    @endif
                                 </td>
                                 <td style="padding: 1rem;">
                                     @php

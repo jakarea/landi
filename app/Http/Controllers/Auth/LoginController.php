@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Auth;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;

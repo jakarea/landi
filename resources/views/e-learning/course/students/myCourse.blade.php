@@ -76,8 +76,8 @@
                                 @endif
                             </h4>
 
-                            <a href="{{ url('student/courses/' . $course->slug) }}" class="common-bttn"
-                                style="border-radius: 6.25rem; margin-top: 2rem"><img src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="a" class="img-fluid me-1"> Start Course</a>
+                            <a href="{{ url('student/courses/' . $course->slug.'/learn') }}" class="common-bttn"
+                                style="border-radius: 6.25rem; margin-top: 2rem"><img src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="a" class="img-fluid me-1"> Start Learning</a>
 
                         </div>
                     </div>

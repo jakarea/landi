@@ -1064,7 +1064,7 @@ All Courses
                     <!-- Course Header -->
                     <div class="course-header">
                         <h3 class="course-title">
-                            <a href="{{ url('instructor/courses/overview/' . $course->slug) }}">
+                            <a href="{{ url('instructor/courses/' . $course->slug) }}">
                                 {{ $course->title ? $course->title : 'Untitled course' }}
                             </a>
                         </h3>
@@ -1130,7 +1130,7 @@ All Courses
                 <!-- Course Actions -->
                 <div class="course-actions">
                     <div class="action-buttons">
-                        <a href="{{ url('instructor/courses/' . $course->id) }}" 
+                        <a href="{{ url('instructor/courses/' . $course->slug) }}" 
                            class="btn btn-outline-primary btn-sm" 
                            title="View Details">
                             <i class="fas fa-eye"></i>
@@ -1142,7 +1142,7 @@ All Courses
                             <i class="fas fa-edit"></i>
                         </a>
                         
-                        <a href="{{ url('instructor/courses/overview/' . $course->slug) }}" 
+                        <a href="{{ url('courses/' . $course->slug) }}" 
                            class="btn btn-outline-success btn-sm" 
                            title="Preview Course">
                             <i class="fas fa-external-link-alt"></i>
@@ -1189,11 +1189,11 @@ All Courses
         </div>
         @endif
 
-        <!-- Pagination -->
-        @if (count($courses) > 0)
-        <div class="pagination-wrapper">
-            {{ $courses->links('pagination::bootstrap-5') }}
-        </div>
+       <!-- Pagination -->
+        @if ($courses->hasPages())
+            <div class="pagination-wrapper">
+                {{ $courses->links('pagination::bootstrap-5') }}
+            </div>
         @endif
     </div>
 </main>

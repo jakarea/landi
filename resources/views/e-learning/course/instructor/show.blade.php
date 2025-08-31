@@ -420,18 +420,7 @@
                     moduleId: firstModuleId
                 };
                 
-                // Log course progress
-                $.ajax({
-                    url: '{{ route('instructor.log.courses', config('app.subdomain')) }}',
-                    method: 'GET',
-                    data: data,
-                    success: function(response) {
-                        // console.log('response', response)
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle errors, if any
-                    }
-                });
+                // Course progress logging not needed for instructor preview
 
                 // Auto-load first lesson video
                 const firstVideoUrl = "{{ getFirstLesson($course->id)->video_link }}";
@@ -476,21 +465,7 @@
                 let courseId = this.getAttribute('data-course-id');
                 let moduleId = this.getAttribute('data-modules-id');
 
-                // Log lesson access
-                var logData = {
-                    courseId: courseId,
-                    lessonId: lessonId,
-                    moduleId: moduleId
-                };
-                
-                $.ajax({
-                    url: '{{ route('instructor.log.courses', config('app.subdomain')) }}',
-                    method: 'GET',
-                    data: logData,
-                    success: function(response) {
-                        // console.log('Lesson logged', response)
-                    }
-                });
+                // Lesson access logging not needed for instructor preview
 
                 if (type == 'video') {
                     document.querySelector('#hideShow').classList.add('d-none');

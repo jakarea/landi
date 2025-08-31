@@ -309,7 +309,7 @@
         <!-- Filters -->
         <div class="filter-card">
             <div class="card-body p-4">
-                <form method="GET" action="{{ route('instructor.enrollments.all') }}">
+                <form method="GET" action="{{ route('instructor.enrollments') }}">
                     <div class="row align-items-end">
                         <div class="col-md-3 mb-3">
                             <label for="search" class="form-label fw-semibold">অনুসন্ধান</label>
@@ -351,7 +351,7 @@
                                 <button type="submit" class="filter-btn">
                                     <i class="fas fa-search me-1"></i> ফিল্টার
                                 </button>
-                                <a href="{{ route('instructor.enrollments.all') }}" class="btn btn-outline-secondary" style="border-radius: 25px;">
+                                <a href="{{ route('instructor.enrollments') }}" class="btn btn-outline-secondary" style="border-radius: 25px;">
                                     <i class="fas fa-refresh me-1"></i> রিসেট
                                 </a>
                             </div>

@@ -110,7 +110,7 @@
                     </div>
 
                     <!-- Enrollment Form -->
-                    <form action="{{ route('courses.enroll.store', $course) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('courses.enroll.store', $course->slug) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         
                         <!-- Hidden field for coupon code -->
@@ -180,7 +180,7 @@
                             <button type="submit" class="btn btn-success btn-lg">
                                 <i class="fas fa-lock"></i> Complete Enrollment
                             </button>
-                            <a href="{{ route('students.catalog.courses') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('courses') }}" class="btn btn-outline-secondary">
                                 <i class="fas fa-arrow-left"></i> Back to Courses
                             </a>
                         </div>

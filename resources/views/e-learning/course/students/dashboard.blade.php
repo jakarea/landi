@@ -211,7 +211,7 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <form action="{{ route('students.course.unlike',['course_id' => $likeCourse->course->id, 'ins_id' => $likeCourse->course->instructor_id ?? $likeCourse->course->user_id, 'subdomain' => config('app.subdomain') ]) }}" method="POST" class="d-block">
+                                        <form action="{{ route('student.courses.unlike', $likeCourse->course->slug) }}" method="POST" class="d-block">
                                             @csrf
                                             <button type="submit" class="btn p-0 dropdown-item">অপছন্দ</button>
                                         </form>

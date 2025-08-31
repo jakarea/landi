@@ -106,12 +106,12 @@
                         @if (Auth::user() && auth()->user()->avatar)
                             <img src="{{ asset(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="img-fluid">
                         @else
-                            <span class="avatar-user">{!! Auth::user() && strtoupper(auth()->user()->name[0]) !!}</span>
+                            <span class="avatar-user">{!! Auth::user() && strtoupper(auth()->user()->name) !!}</span>
                         @endif
                     </button>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">
-                            <strong>{{ auth()->user() && auth()->user()->name }}</strong><br>
+                            <strong>{{ Auth::user() && auth()->user()->name }}</strong><br>
                             <small class="text-muted">শিক্ষার্থী</small>
                         </li>
                         <li><hr class="dropdown-divider"></li>

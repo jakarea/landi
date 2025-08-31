@@ -132,7 +132,7 @@
                                         @endphp
                                         
                                         @if(!$existingEnrollment)
-                                            <a href="{{ route('courses.enroll', $course->id) }}" class="common-bttn"
+                                            <a href="{{ route('courses.enroll', $course->slug) }}" class="common-bttn"
                                                 style="border-radius: 6.25rem; margin-top: 2rem"><img
                                                     src="{{ asset('assets/images/icons/graduation-cap.svg') }}" alt="a"
                                                     class="img-fluid me-1">Enroll Now</a>
@@ -179,7 +179,7 @@
                 <div class="col-lg-8 col-12 order-2 order-lg-1">
                     <div class="white-block">
                         <p class="mb-2 fw-semibold">{{ strtoupper($course->user->name) }}</p>
-                        <p>{!! $course->user !!}</p>
+                        <p>{!! $course->user->description !!}</p>
                         
                     </div>
 

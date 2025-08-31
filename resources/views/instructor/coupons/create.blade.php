@@ -177,7 +177,7 @@ Create Coupon
 
                         <div class="form-footer">
                             <div class="d-flex justify-content-between">
-                                <a href="{{ route('instructor.coupons.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('instructor.coupons') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Back
                                 </a>
                                 <button type="submit" class="btn btn-primary">
