@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap"
   rel="stylesheet">
-@vite(['resources/css/tailwind.css'])
+@vite(['resources/css/app.css', 'resources/css/tailwind.css', 'resources/js/app.js'])
 <style>
 /* Override Bootstrap styles for this page */
 body {

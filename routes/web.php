@@ -57,7 +57,7 @@ Route::get('/landing/', [LandingPageBuilderController::class, 'index'])->name('l
 Route::get('/landing/{slug}/', [LandingPageBuilderController::class, 'show'])->name('landing.show');
 
 // AI for Advertising Bootcamp Static Landing Page
-Route::get('/ai-for-advertising-bootcamp-25/', function () {
+Route::get('/ai-for-advertising-bootcamp-25', function () {
     return view('landing.ai-bootcamp');
 })->name('ai-bootcamp-25');
 
