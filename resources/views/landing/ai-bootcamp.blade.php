@@ -1,560 +1,1137 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI for Advertising Bootcamp 2025 - Rouf Razu</title>
-    <meta name="description" content="এডভার্টাইজিংয়ের পুরোনো বইয়ের পাতা উল্টাও। নতুন যুগ শুরুর সময় এখন। Rouf Razu এর সাথে AI শিখুন।">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kalpurush&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #6366f1;
-            --secondary-color: #f59e0b;
-            --dark-bg: #0f0f23;
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --text-light: #e2e8f0;
-            --text-dark: #1e293b;
-            --gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6);
-            --gradient-secondary: linear-gradient(135deg, #f59e0b, #ef4444);
-        }
+@extends('layouts.landing-static')
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@section('title', 'আব্দুর রউফ')
 
-        body {
-            font-family: 'Inter', 'Kalpurush', sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-        }
+@section('content')
+<!-- first section start -->
+<section class="w-full pt-12 pb-20 first-gradient relative overflow-hidden border-b border-[#fff]/20 xl:py-[188px]">
 
-        .bangla-text {
-            font-family: 'Kalpurush', sans-serif;
-        }
+  <div class="absolute inset-0 grid-background opacity-[13%] z-10"></div> <!-- line elements -->
 
-        .hero-section {
-            background: var(--dark-bg);
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
+  <img src="{{ asset('razu-landing/dist/images/section-one-shadow.svg') }}" class="absolute inset-0 left-0 top-0 w-full h-full z-30" alt="shadow">
 
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="70" cy="70" r="1" fill="%236366f1" opacity="0.2"/></svg>') repeat;
-            animation: float 20s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) translateX(0px); }
-            50% { transform: translateY(-10px) translateX(5px); }
-            100% { transform: translateY(0px) translateX(0px); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 100px 0;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: #cbd5e1;
-            margin-bottom: 2.5rem;
-            line-height: 1.5;
-        }
-
-        .cta-button {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 18px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-            color: white;
-        }
-
-        .mentor-image {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .section-padding {
-            padding: 100px 0;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .shift-section {
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-        }
-
-        .split-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            min-height: 500px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .split-left {
-            background: linear-gradient(45deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)),
-                        url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800') center/cover;
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: white;
-            position: relative;
-        }
-
-        .split-right {
-            background: linear-gradient(45deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)),
-                        url('https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800') center/cover;
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .session-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin: 20px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .session-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
-            border-color: var(--primary-color);
-        }
-
-        .session-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .mentor-section {
-            background: var(--dark-bg);
-            color: var(--text-light);
-        }
-
-        .community-section {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
-        }
-
-        .opportunity-ladder {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .ladder-item {
-            padding: 20px;
-            margin: 20px 0;
-            background: var(--gradient-primary);
-            color: white;
-            border-radius: 15px;
-            position: relative;
-            transform: scale(1);
-            transition: all 0.3s ease;
-        }
-
-        .ladder-item:hover {
-            transform: scale(1.05);
-        }
-
-        .ladder-item:first-child {
-            background: var(--gradient-secondary);
-        }
-
-        .final-cta {
-            background: var(--dark-bg);
-            color: var(--text-light);
-            text-align: center;
-        }
-
-        .price-highlight {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--secondary-color);
-            margin: 20px 0;
-        }
-
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .feature-list li {
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            padding-left: 40px;
-        }
-
-        .feature-list li:before {
-            content: "✨";
-            position: absolute;
-            left: 0;
-            top: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .split-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-content {
-                padding: 50px 0;
-            }
-            
-            .section-padding {
-                padding: 50px 0;
-            }
-        }
-
-        .testimonial-quote {
-            font-size: 1.5rem;
-            font-style: italic;
-            text-align: center;
-            margin: 40px 0;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="particles"></div>
-        <div class="container hero-content">
-            <div class="row align-items-center">
-                <div class="col-lg-7">
-                    <h1 class="hero-title bangla-text">
-                        এডভার্টাইজিংয়ের পুরোনো বইয়ের পাতা উল্টাও। নতুন যুগ শুরুর সময় এখন।
-                    </h1>
-                    <p class="hero-subtitle bangla-text">
-                        যেখানে AI না জানাটাই হবে তোমার সবচেয়ে বড় weakness, সেখানে Rouf Razu এর হাত ধরে AI তোমাকে করবে industry-এর সবচেয়ে valuable player।
-                    </p>
-                    <a href="#enroll" class="cta-button bangla-text">
-                        🚀 ফিউচারের এজেন্ট হওয়ার জার্নি শুরু কর!
-                    </a>
-                </div>
-                <div class="col-lg-5">
-                    <div class="mentor-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop&crop=face" 
-                             alt="Rouf Razu" class="img-fluid">
-                    </div>
-                </div>
-            </div>
+  <div class="container-x">
+    <div class="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-x-20 xl:gap-x-[105px] lg:items-center">
+      <div class="w-full">
+        <div class="w-full flex justify-center items-center gap-x-2.5 relative z-40 lg:justify-start">
+          <!-- icon -->
+          <div
+            class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+            <img src="{{ asset('razu-landing/dist/images/icons/b-camp-01.svg') }}" alt="icon 1" class="w-6">
+          </div>
+          <!-- icon -->
+          <!-- icon -->
+          <div
+            class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+            <img src="{{ asset('razu-landing/dist/images/icons/b-camp-02.svg') }}" alt="icon 2" class="w-6">
+          </div>
+          <!-- icon -->
+          <!-- icon -->
+          <div
+            class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+            <img src="{{ asset('razu-landing/dist/images/icons/b-camp-03.svg') }}" alt="icon 3" class="w-6">
+          </div>
+          <!-- icon -->
         </div>
-    </section>
+        <div class="text-center relative z-40 lg:text-start">
+          <h1 class="text-orange font-medium text-sm my-2.5 lg:text-base">বিজ্ঞাপনের জন্য AI বুটক্যাম্প - ২৫</h1>
+          <h2 class="font-bold text-[28px] leading-[110%] text-[#fff] lg:text-[40px]">Ai অ্যাডভার্টাইজিং <span
+              class="text-gradient">বুটক্যাম্প -
+              ২৫</span> </h2>
+          <h3 class="text-secondary-200 mt-2 font-medium text-sm lg:text-base">৩ দিনের অনলাইন লাইভ ওয়ার্কশপ |
+            প্রশিক্ষক: আব্দুর
+            রউফ
+          </h3>
+          <p
+            class="text-secondary-100 mt-[30px] font-normal text-sm md:text-base lg:text-base lg:max-w-[80%] xl:max-w-[70%]">
+            এই বুটক্যাম্পে আপনি হাতে-কলমে শিখবেন AI ইমেজ,
+            ভিডিও
+            ও মিউজিক ক্রিয়েশন যা বিজ্ঞাপন, কনটেন্ট ক্রিয়েশন এবং
+            আধুনিক মার্কেটিং জগতে আপনাকে এগিয়ে রাখবে। আন্তর্জাতিক মানের টেকনিক, প্রম্পট ইঞ্জিনিয়ারিং, টুলস এবং
+            প্রজেক্ট-ভিত্তিক শেখানোর মাধ্যমে আপনি হয়ে উঠবেন একজন AI-powered ক্রিয়েটিভ প্রফেশনাল।</p>
 
-    <!-- The Shift Section -->
-    <section class="shift-section section-padding">
-        <div class="container">
-            <h2 class="section-title bangla-text">
-                সেই সময় গেছে যখন একটা ad copy লিখতে ৩ দিন সময় দিতে হত।
-            </h2>
-            
-            <div class="split-container">
-                <div class="split-left">
-                    <h3 class="bangla-text mb-4">তখন</h3>
-                    <p class="bangla-text">
-                        একটা সময় ছিল যখন "Creativity" মানে ছিল ঘণ্টার পর ঘণ্টা brain storming, client-এর endless feedback আর campaign launch করতে করতে weeks পার হয়ে যাওয়া।
-                    </p>
-                </div>
-                <div class="split-right">
-                    <h3 class="bangla-text mb-4">এখন</h3>
-                    <p class="bangla-text">
-                        <strong>আজকে, AI তোমার হয়ে করতে পারে ১০০ ad copy, ৫০টা image idea, আর ১০টা video script... সময় নিতে পারে মাত্র ১০ minute!</strong>
-                    </p>
-                    <p class="bangla-text mt-3">
-                        যে এই technology harness করতে পারছে, সে-ই দিচ্ছে industry-তে domination pack। আর যে পারছে না, সে slowly কিন্তু surely becoming irrelevant।
-                    </p>
-                </div>
-            </div>
+          <div class="w-full lg:flex lg:items-center lg:gap-x-[30px] lg:mt-[30px]">
+            <h4 class="mt-[30px] mb-2.5 font-medium text-sm text-secondary-100 underline lg:my-0 lg:order-2 lg:text-lg">কোর্স ফি
+              মাত্র <strong class="text-orange underline">৳৫,৩২০</strong> টাকা</h4>
+            <a href="#" class="inline-flex justify-center items-center bg-primary rounded-full p-1.5 font-medium text-sm text-secondary-100 pl-4 gap-x-2.5 anim
+             hover:bg-orange md:text-base lg:text-lg lg:p-2.5 lg:pl-4.5 hover:text-primary group lg:my-0 lg:order-1">
+              এখনই এনরোল করুন
+              <span
+                class="w-[30px] h-[30px] rounded-full bg-[#fff]/40 flex items-center justify-center anim group-hover:bg-primary">
+                <svg width="17" height="10" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12.3672 8.78662L15.6601 5.49373C16.0506 5.1032 16.0506 4.47004 15.6601 4.07951L12.3672 0.786621M15.3672 4.78662L1.36719 4.78662"
+                    stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+              </span>
+            </a>
+          </div>
         </div>
-    </section>
-
-    <!-- Mentor Section -->
-    <section class="mentor-section section-padding">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h2 class="section-title bangla-text text-start">
-                        কোনো theoretical guru নন, তোমার mentor হবেন Rouf Razu
-                    </h2>
-                    <p class="bangla-text mb-4">
-                        তিনি কেবল theory পড়ান না। তিনি battlefield-এর soldier। তিনি নিজের হাতে তৈরি করেছেন AI content, যা জয় করেছে million+ views। তিনি GP, Samsung, Daraz-এর মতো giants brands-কে AI-powered campaign দিয়ে সাহায্য করেছেন their competition থেকে miles ahead থাকতে।
-                    </p>
-                    <p class="bangla-text">
-                        <strong>এই বুটক্যাম্পে তিনি শেখাবেন তাঁর ৭+ বছরের যুদ্ধ experience-এর condensed version। শেখাবেন real client-এর জন্য কাজে লাগানোর magic formula।</strong>
-                    </p>
-                </div>
-                <div class="col-lg-6">
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=300&h=200&fit=crop" 
-                                 alt="Campaign Success" class="img-fluid rounded-3">
-                        </div>
-                        <div class="col-6">
-                            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=300&h=200&fit=crop" 
-                                 alt="Speaking Engagement" class="img-fluid rounded-3">
-                        </div>
-                        <div class="col-12">
-                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=200&fit=crop" 
-                                 alt="Workshop" class="img-fluid rounded-3">
-                        </div>
-                    </div>
-                </div>
+      </div>
+      <div class="text-center relative z-40 mt-7 lg:max-w-[90%] xl:max-w-[80%]">
+        <div class="gradient-border">
+          <div class="gradient-border-content p-0 relative">
+            <img src="{{ asset('razu-landing/dist/images/speaking-person.png') }}" alt="speaking-person"
+              class="rounded-[calc(0.75rem-2px)] w-full shadow-1">
+            <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+              <button type="button"
+                class="w-[90px] h-[90px] rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
+                <img src="{{ asset('razu-landing/dist/images/icons/play.svg') }}" alt="play" class="w-8">
+              </button>
             </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- first section end -->
 
-    <!-- Blueprint Section -->
-    <section class="section-padding">
-        <div class="container">
-            <h2 class="section-title bangla-text">
-                ৪টি Live Session, ১টি Transformed You
-            </h2>
-            
-            <div class="row">
-                <div class="col-lg-6 mb-4">
-                    <div class="session-card">
-                        <div class="session-icon">
-                            🥷
-                        </div>
-                        <h4 class="bangla-text">সেশন ১: Prompt Ninja হওয়ার প্রতারণা!</h4>
-                        <p class="bangla-text">Text & Image AI-র fullest utilization</p>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                    <div class="session-card">
-                        <div class="session-icon">
-                            🎬
-                        </div>
-                        <h4 class="bangla-text">সেশন ২: AI দিয়ে Viral Video Content বানানো</h4>
-                        <p class="bangla-text">Idea থেকে Final Cut পর্যন্ত</p>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                    <div class="session-card">
-                        <div class="session-icon">
-                            🤝
-                        </div>
-                        <h4 class="bangla-text">সেশন ৩: Real-World Campaign</h4>
-                        <p class="bangla-text">Strategy, Execution, এবং Client Presentation</p>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                    <div class="session-card">
-                        <div class="session-icon">
-                            ⛰️
-                        </div>
-                        <h4 class="bangla-text">সেশন ৪: ক্যারিয়ার কিকস্টার্ট</h4>
-                        <p class="bangla-text">Freelancing, Agency Job, কিংবা Own Agency খোলা</p>
-                    </div>
-                </div>
+<!-- ai advertising section start -->
+<section class="w-full pt-20">
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/book.svg') }}" alt="icon book" class="">
+      </div>
+
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">এক নজরে আমাদের Ai অ্যাডভার্টাইজিং <span
+          class="text-gradient">বুটক্যাম্প-২৫</span></h2>
+      <p class="common-para text-secondary-200">এই কোর্সে যা যা থাকছে</p>
+    </div>
+    <!-- common title end -->
+    <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 xl:gap-x-[45px]">
+      <!-- card -->
+      <div class="rounded-[10px] p-[30px] bg-card text-center">
+        <img src="{{ asset('razu-landing/dist/images/icons/feat-01.svg') }}" alt="feat icon 01" class="w-10 mx-auto lg:w-[60px]">
+        <h4 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">AI ইমেজ জেনারেশন ও প্রম্পটিং</h4>
+        <p class="common-para text-secondary-200 lg:!text-[15px]">বাংলাদেশ ও বিশ্বজুড়ে বিজ্ঞাপনে AI এর প্রভাব,
+          প্রম্পট ইঞ্জিনিয়ারিং, শীর্ষ AI টুলস, পারফেক্ট ইমেজ কম্পোজিশন, ক্যারেক্টার ট্রেনিং, ফেস সোয়াপ ও এডিটিং
+          শেখানো হবে।</p>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div class="rounded-[10px] p-[30px] bg-card text-center">
+        <img src="{{ asset('razu-landing/dist/images/icons/feat-02.svg') }}" alt="feat icon 02" class="w-10 mx-auto lg:w-[60px]">
+        <h4 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">AI ভিডিও জেনারেশন</h4>
+        <p class="common-para text-secondary-200 lg:!text-[15px]">ভিডিও প্রম্পট তৈরি, প্রম্পট থেকে ভিডিও, ইমেজ থেকে
+          ভিডিও, অডিও সহ ভিডিও, লিপসিঙ্ক এবং ভয়েস অ্যানিমেশন কৌশল শেখানো হবে।</p>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div class="rounded-[10px] p-[30px] bg-card text-center">
+        <img src="{{ asset('razu-landing/dist/images/icons/feat-03.svg') }}" alt="feat icon 02" class="w-10 mx-auto lg:w-[60px]">
+        <h4 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">AI মিউজিক ও ভয়েস জেনারেশন</h4>
+        <p class="common-para text-secondary-200 lg:!text-[15px]">AI দিয়ে জিঙ্গল, ব্যাকগ্রাউন্ড স্কোর, গান, ভয়েসওভার
+          স্ক্রিপ্ট লেখা, ভয়েসওভার জেনারেশন এবং ভিডিওর জন্য সাউন্ড ইফেক্ট তৈরি শেখানো হবে।</p>
+      </div>
+      <!-- card -->
+    </div>
+  </div>
+</section>
+<!-- ai advertising section end -->
+
+<!-- module learning plan start -->
+<section class="w-full py-20">
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/check-list.svg') }}" alt="icon book" class="">
+      </div>
+
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">স্টেপ–বাই–স্টেপ মডিউল <span
+          class="text-gradient"> লার্নিং প্ল্যান</span></h2>
+      <p class="common-para text-secondary-200">৩ ধাপে সাজানো কোর্স পরিকল্পনা</p>
+    </div>
+    <!-- common title end -->
+
+    <!-- learning steps -->
+    <div class="w-full grid grid-cols-1 lg:grid-cols-11 gap-y-10 lg:gap-y-0 lg:gap-x-[58px] lg:items-center">
+      <div class="img order-2 lg:order-1 lg:col-span-5">
+        <img src="{{ asset('razu-landing/dist/images/learning-steps.webp') }}" alt="learning-steps" class="w-full rounded-[10px]">
+      </div>
+      <div class="txt order-1 lg:order-2 lg:col-span-5">
+        <div class="flex flex-col gap-y-2.5 lg:gap-y-6">
+          <!-- card -->
+          <div
+            class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 lg:pr-5">
+            <span
+              class="block bg-[#10274B] rounded-[10px] p-2.5 text-base font-bold text-[#2669D0] col-span-2 text-center lg:text-2xl lg:text-[#fff] lg:max-w-[85%] lg:py-4 shrink-0">Day
+              <br>
+              1</span>
+            <div class="w-full col-span-8 lg:pt-4">
+              <h5 class="text-[#E2E8F0] font-medium text-base lg:text-xl">AI Image Generation &amp; Prompting</h5>
+              <h6 class="text-[#ABABAB] font-normal text-xs lg:text-base mt-2 lg:mt-3">০৭ ধাপে শিখুন – হয়ে উঠুন ইমেজ
+                জেনারেশনের সম্রাট</h6>
             </div>
+            <button type="button" class="col-span-2 flex justify-end">
+              <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+            </button>
+          </div>
+          <!-- card -->
+          <!-- card -->
+          <div
+            class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 lg:pr-5">
+            <span
+              class="block bg-[#10274B] rounded-[10px] p-2.5 text-base font-bold text-[#2669D0] col-span-2 text-center lg:text-2xl lg:text-[#fff]  lg:max-w-[85%] lg:py-4 shrink-0">Day
+              <br>
+              2</span>
+            <div class="w-full col-span-8 lg:pt-4">
+              <h5 class="text-[#E2E8F0] font-medium text-base lg:text-xl">AI Video Generation</h5>
+              <h6 class="text-[#ABABAB] font-normal text-xs lg:text-base mt-2 lg:mt-3">৫ সহজ ধাপেই আয়ত্ত করুন ভিডিও
+                কনটেন্ট তৈরির সম্পূর্ণ দক্ষতা</h6>
+            </div>
+            <button type="button" class="col-span-2 flex justify-end">
+              <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 2" class="w-5 lg:w-[26px]">
+            </button>
+          </div>
+          <!-- card -->
+          <!-- card -->
+          <div
+            class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 lg:pr-5">
+            <span
+              class="block bg-[#10274B] rounded-[10px] p-2.5 text-base font-bold text-[#2669D0] col-span-2 text-center lg:text-2xl lg:text-[#fff]  lg:max-w-[85%] lg:py-4 shrink-0">Day
+              <br>
+              3</span>
+            <div class="w-full col-span-8 lg:pt-4">
+              <h5 class="text-[#E2E8F0] font-medium text-base lg:text-xl">AI Song, Jingle, Voiceover &amp;
+                SFX</h5>
+              <h6 class="text-[#ABABAB] font-normal text-xs lg:text-base mt-2 lg:mt-3">৫ সহজ ধাপেই আয়ত্ত করুন ভিডিও
+                কনটেন্ট তৈরির সম্পূর্ণ দক্ষতা</h6>
+            </div>
+            <button type="button" class="col-span-2 flex justify-end">
+              <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 3" class="w-5 lg:w-[26px]">
+            </button>
+          </div>
+          <!-- card -->
         </div>
-    </section>
+      </div>
+    </div>
+    <!-- learning steps -->
+  </div>
+</section>
+<!-- module learning plan end -->
 
-    <!-- Community Section -->
-    <section class="community-section section-padding">
-        <div class="container text-center">
-            <h2 class="section-title bangla-text">
-                তুমি শুধু একটা course করছ না, join করছ একটা movement
-            </h2>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=400&fit=crop" 
-                         alt="Community" class="img-fluid rounded-3 mb-4">
-                    <p class="bangla-text lead">
-                        এই বুটক্যাম্পের সবচেয়ে powerful জিনিসটা হচ্ছে community। এখানে তোমার মতোই future-focused marketers-দের সাথে connect করতে পারবে। পারবে collaboration করতে, idea share করতে, job opportunity পেতে।
-                    </p>
-                    <p class="bangla-text">
-                        <strong>এই network তোমার ক্যারিয়ারে priceless value দিবে, আজীবন।</strong>
-                    </p>
-                </div>
-            </div>
+<!-- tools used start -->
+<section class="w-full py-20 bg-[#011330] border-y border-[#fff]/20">
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/tools.svg') }}" alt="icon book" class="">
+      </div>
+
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">কোর্সে যেসব AI টুলস সরাসরি <span
+          class="text-gradient"> ব্যবহার করবেন</span></h2>
+      <p class="common-para text-secondary-200">কোর্সে শিখবেন যে AI টুলস</p>
+    </div>
+    <!-- common title end -->
+
+    <!-- tools -->
+    <div class="w-full grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-6">
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-01.svg') }}" alt="tools-01" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-02.svg') }}" alt="tools-02" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-03.svg') }}" alt="tools-03" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-04.svg') }}" alt="tools-04" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-05.svg') }}" alt="tools-05" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-06.svg') }}" alt="tools-06" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-06.svg') }}" alt="tools-06" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-05.svg') }}" alt="tools-05" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-04.svg') }}" alt="tools-04" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-03.svg') }}" alt="tools-04" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-02.svg') }}" alt="tools-04" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+      <!-- tool -->
+      <div
+        class="text-center bg-card rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer">
+        <img src="{{ asset('razu-landing/dist/images/tools-01.svg') }}" alt="tools-04" class="max-w-fit smooth-bounce">
+      </div>
+      <!-- tool -->
+    </div>
+    <!-- tools -->
+  </div>
+</section>
+<!-- tools used end -->
+
+<!-- projects section start -->
+<section class="w-full pt-20 lg:pt-[90px]">
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/bulb.svg') }}" alt="icon bulb" class="w-6">
+      </div>
+
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">হাতে-কলমে প্র্যাকটিক্যাল <span
+          class="text-gradient"> প্রজেক্ট থাকবে</span></h2>
+      <p class="common-para text-secondary-200">১৫টি বাস্তব প্রজেক্টের মাধ্যমে শিখবেন কার্যকরী স্কিল</p>
+    </div>
+    <!-- common title end -->
+
+    <div class="w-full grid grid-cols-12 gap-5">
+      <!-- group one -->
+      <div class="w-full col-span-12 md:col-span-6 lg:col-span-4 grid grid-cols-12 gap-5">
+        <!-- item -->
+        <div class="w-full relative col-span-12">
+          <img src="{{ asset('razu-landing/dist/images/project-01.png') }}" alt="project-01" class="w-full rounded-[10px]">
+          <p
+            class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+            Ai
+            video by prompt</p>
         </div>
-    </section>
-
-    <!-- Opportunity Section -->
-    <section class="section-padding">
-        <div class="container">
-            <h2 class="section-title bangla-text">
-                AI না শিখে যে Marketers, তারা আগামী ২ বছরেই হবে outdated
-            </h2>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="opportunity-ladder">
-                        <div class="ladder-item">
-                            <h5>Head of Marketing</h5>
-                            <p>AI-Powered Strategy Leader</p>
-                        </div>
-                        <div class="ladder-item">
-                            <h5>Campaign Manager</h5>
-                            <p>Multi-Platform AI Expert</p>
-                        </div>
-                        <div class="ladder-item">
-                            <h5>AI Specialist</h5>
-                            <p>Content & Automation Pro</p>
-                        </div>
-                        <div class="ladder-item">
-                            <h5>Junior Marketer</h5>
-                            <p>You Are Here 👆</p>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <p class="bangla-text">
-                                Companies aggressively খুঁজছে ঐগুলো marketers আমরা যারা AI-কে leverage করতে পারে। এই skillটা এখনই learn করা মানেই হল নিজের market value-কে ২x, ৩x এমনকি ৫x করে নেওয়া।
-                            </p>
-                            <p class="bangla-text">
-                                <strong>এই বুটক্যাম্প তোমাকে দিয়ে দিবে সেই lethal weapon, যা দিয়ে তুমি demand করতে পারবে higher salary, land করতে পারবে better clients, এবং build করতে পারবে future-proof career।</strong>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- item -->
+        <div class="w-full relative col-span-8 lg:col-span-6">
+          <div class="w-full relative mb-5">
+            <img src="{{ asset('razu-landing/dist/images/project-04.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai Image</p>
+          </div>
+          <div class="w-full relative hidden lg:block">
+            <img src="{{ asset('razu-landing/dist/images/project-06.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai monalisa</p>
+          </div>
         </div>
-    </section>
-
-    <!-- Final CTA Section -->
-    <section class="final-cta section-padding" id="enroll">
-        <div class="container text-center">
-            <div class="testimonial-quote bangla-text">
-                "তোমার হাতেই এখন choice টা: Spectator হও, নাকি Creator?"
-            </div>
-            
-            <h2 class="section-title bangla-text">
-                তোমার হাতেই এখন choiceটা: Spectator হও, নাকি Creator?
-            </h2>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <ul class="feature-list bangla-text text-start">
-                        <li>৪টি Power-Packed Live Session</li>
-                        <li>Lifetime Access to Recordings</li>
-                        <li>Exclusive Community Access</li>
-                        <li>Personal Prompt Library & Certificate</li>
-                    </ul>
-                    
-                    <div class="price-highlight bangla-text">
-                        এক্সclusive Early Bird Prize: <span style="color: var(--secondary-color);">৳ ৩,০০০ টাকা</span>
-                    </div>
-                    <p class="bangla-text mb-4">(সীমিত সিট)</p>
-                    
-                    <a href="#" class="cta-button bangla-text mb-4">
-                        🔥 আমি Creator হতেই Ready!
-                    </a>
-                    
-                    <p class="bangla-text mt-3">
-                        <small>এনরোল করতেই পারবে সহজে। bKash, Nagad, বা Rocket - যেভাবে ইচ্ছা payment done!</small>
-                    </p>
-                </div>
-            </div>
+        <!-- item -->
+        <div class="w-full relative col-span-4 lg:col-span-6">
+          <div class="w-full relative">
+            <img src="{{ asset('razu-landing/dist/images/project-05.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai Music</p>
+          </div>
         </div>
-    </section>
+      </div>
+      <!-- group one -->
+      <!-- group two -->
+      <div class="w-full col-span-12 md:col-span-6 lg:col-span-4 grid-cols-12 gap-5 hidden md:grid">
+        <!-- item -->
+        <div class="w-full relative col-span-8 lg:col-span-6">
+          <div class="w-full relative mb-5">
+            <img src="{{ asset('razu-landing/dist/images/project-04.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai Image</p>
+          </div>
+          <div class="w-full relative hidden lg:block">
+            <img src="{{ asset('razu-landing/dist/images/project-06.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai monalisa</p>
+          </div>
+        </div>
+        <!-- item -->
+        <div class="w-full relative col-span-4 lg:col-span-6">
+          <div class="w-full relative">
+            <img src="{{ asset('razu-landing/dist/images/project-05.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai Music</p>
+          </div>
+        </div>
+        <!-- item -->
+        <div class="w-full relative col-span-12">
+          <img src="{{ asset('razu-landing/dist/images/project-01.png') }}" alt="project-01" class="w-full rounded-[10px]">
+          <p
+            class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+            Ai
+            video by prompt</p>
+        </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Smooth Scrolling -->
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+      </div>
+      <!-- group two -->
+      <!-- group three -->
+      <div class="w-full col-span-12 md:col-span-6 lg:col-span-4 grid-cols-12 gap-5 hidden lg:grid">
+        <!-- item -->
+        <div class="w-full relative col-span-12">
+          <img src="{{ asset('razu-landing/dist/images/project-01.png') }}" alt="project-01" class="w-full rounded-[10px]">
+          <p
+            class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+            Ai
+            video by prompt</p>
+        </div>
+        <!-- item -->
+        <div class="w-full relative col-span-8 lg:col-span-6">
+          <div class="w-full relative mb-5">
+            <img src="{{ asset('razu-landing/dist/images/project-04.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai Image</p>
+          </div>
+          <div class="w-full relative hidden lg:block">
+            <img src="{{ asset('razu-landing/dist/images/project-06.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai monalisa</p>
+          </div>
+        </div>
+        <!-- item -->
+        <div class="w-full relative col-span-4 lg:col-span-6">
+          <div class="w-full relative">
+            <img src="{{ asset('razu-landing/dist/images/project-05.png') }}" alt="project-04" class="w-full rounded-[10px]">
+            <p
+              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+              Ai Music</p>
+          </div>
+        </div>
+      </div>
+      <!-- group three -->
+    </div>
+  </div>
+</section>
+<!-- projects section end -->
 
-        // Add animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+<!-- course achivement start -->
+<section class="w-full py-20">
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/achivement.svg') }}" alt="achivement bulb" class="w-6">
+      </div>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">কোর্স শেষে আপনার <span
+          class="text-gradient"> অর্জন</span></h2>
+      <p class="common-para text-secondary-200">এই কোর্স শেষ করলে যা যা শিখবেন ও পাবেন আমাদের কাছ থেকে</p>
+    </div>
+    <!-- common title end -->
 
-        // Observe all sections for animation
-        document.querySelectorAll('section').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(20px)';
-            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(section);
-        });
+    <!-- achovement -->
+    <div class="w-full grid grid-cols-1 lg:grid-cols-3 lg:divide-x lg:divide-[#fff]/20">
+      <!-- card -->
+      <div
+        class="bg-card rounded-t-[10px] text-center p-4 py-14 lg:rounded-none lg:rounded-l-[10px] lg:px-18 lg:py-24">
+        <img src="{{ asset('razu-landing/dist/images/icons/achivement-01.svg') }}" alt="achivement 01" class="mx-auto lg:w-[77px]">
+        <h5 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">Live Hands-on Demos</h5>
+        <p class="common-para text-secondary-200 lg:!text-[15px]">রিয়েল-টাইমে শিখবেন AI ইমেজ, ভিডিও ও মিউজিক তৈরির
+          টুলস এবং টেকনিক প্র্যাকটিক্যাল ওয়ার্কশপ স্টাইল সেশনে।</p>
+        <div class="bg-[#fff]/10 w-full h-px mt-20 lg:hidden"></div>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div class="bg-card text-center p-4 pb-14 lg:pb-4 lg:px-18 lg:py-24">
+        <img src="{{ asset('razu-landing/dist/images/icons/achivement-02.svg') }}" alt="achivement 01" class="mx-auto lg:w-[64px]">
+        <h5 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">Certificate of Completion</h5>
+        <p class="common-para text-secondary-200 lg:!text-[15px]">কোর্স শেষে পাবেন অফিসিয়াল সার্টিফিকেট, যা আপনার
+          প্রফেশনাল প্রোফাইল বা পোর্টফোলিওতে যুক্ত করতে পারবেন।</p>
+        <div class="bg-[#fff]/10 w-full h-px mt-20 lg:hidden"></div>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="bg-card rounded-b-[10px] text-center p-4 pb-14 lg:rounded-none lg:rounded-r-[10px] lg:px-18 lg:py-24">
+        <img src="{{ asset('razu-landing/dist/images/icons/achivement-02.svg') }}" alt="achivement 01" class="mx-auto lg:w-[57px]">
+        <h5 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">Q&A + Community Access</h5>
+        <p class="common-para text-secondary-200 lg:!text-[15px]">সরাসরি প্রশ্ন করার সুযোগ এবং বিশেষ কমিউনিটিতে
+          অ্যাক্সেস যেখানে থাকছে সহায়তা, নেটওয়ার্কিং ও ভবিষ্যৎ আপডেট।</p>
+      </div>
+      <!-- card -->
+    </div>
+    <!-- achovement -->
+  </div>
+</section>
+<!-- course achivement end -->
 
-        // Hero section should be visible immediately
-        document.querySelector('.hero-section').style.opacity = '1';
-        document.querySelector('.hero-section').style.transform = 'translateY(0)';
-    </script>
-</body>
-</html>
+<!-- instructor details -->
+<section class="w-full py-20 relative bg-[#011330]">
+  <div class="absolute inset-0 grid-background opacity-[13%] z-10"></div> <!-- line elements, animate-pulse -->
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/instructor.svg') }}" alt="achivement bulb" class="w-6">
+      </div>
+
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">আপনার কোর্স <span class="text-gradient">
+          ইন্সট্রাক্টর</span></h2>
+      <p class="common-para text-secondary-200">আপনার সাফল্যের সঙ্গী</p>
+    </div>
+    <!-- common title end -->
+
+    <div class="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-x-20 xl:gap-x-[105px] lg:items-center">
+      <div class="w-full">
+
+        <div class="text-center relative z-40 lg:text-start">
+
+          <h2 class="font-bold text-[28px] leading-[110%] text-blue lg:text-[40px]">Md Abdur Rouf (Razu)</h2>
+          <h3 class="text-secondary-200 mt-2 font-medium text-sm lg:text-base lg:max-w-[80%]"><span
+              class="text-orange">AI Lead at Nagad</span> | Corporate AI Trainer
+            | Founder of Biggapon Biroti | AI Artist (Image, Video & Music)
+          </h3>
+          <p
+            class="text-secondary-100 mt-[30px] font-normal text-sm md:text-base lg:text-base lg:max-w-[80%] xl:max-w-[70%]">
+            মোঃ আব্দুর রউফ (রাজু) বাংলাদেশের এআই–ভিত্তিক সৃজনশীলতার একজন পথপ্রদর্শক। ডিজাইন ও বিজ্ঞাপনে ১২+ বছরের
+            অভিজ্ঞতা এবং এআই–এ ২.৫+ বছরের কাজের অভিজ্ঞতা নিয়ে তিনি বর্তমানে নগদ-এর ক্রিয়েটিভ লিড - এআই হিসেবে কাজ
+            করছেন। একইসাথে তিনি প্রতিষ্ঠা করেছেন বিজ্ঞাপন বিরতি, দেশের প্রথম এআই-ফার্স্ট বিজ্ঞাপন সংস্থা।
+          </p>
+
+          <p class="text-secondary-100 mt-[20px] lg:mt-7 font-normal text-sm md:text-base lg:text-base">follow by</p>
+
+          <ul class="flex items-center justify-center gap-x-2.5 mt-2.5 lg:justify-start">
+            <li>
+              <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                <img src="{{ asset('razu-landing/dist/images/icons/call.svg') }}" alt="call" class="w-full">
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                <img src="{{ asset('razu-landing/dist/images/icons/mail.svg') }}" alt="call" class="w-full">
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                <img src="{{ asset('razu-landing/dist/images/icons/linkedin.svg') }}" alt="call" class="w-full">
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                <img src="{{ asset('razu-landing/dist/images/icons/facebook.svg') }}" alt="call" class="w-full">
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="text-center relative z-40 mt-7 lg:max-w-[90%] xl:max-w-[80%]">
+        <div class="gradient-border">
+          <div class="gradient-border-content p-0 relative">
+            <img src="{{ asset('razu-landing/dist/images/instructor.png') }}" alt="speaking-person"
+              class="rounded-[calc(0.75rem-2px)] w-full shadow-1">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- instructor details -->
+
+<!-- clients section start -->
+<div class="w-full py-10 lg:py-14">
+  <div class="container-x">
+    <div class="w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 lg:gap-x-12">
+      <!-- client -->
+      <div class="text-center">
+        <a href="#" class="flex justify-center">
+          <img src="{{ asset('razu-landing/dist/images/clients/nagad.svg') }}" alt="naagd" class="w-fit mx-auto">
+        </a>
+      </div>
+      <!-- client -->
+      <!-- client -->
+      <div class="text-center">
+        <a href="#" class="flex justify-center">
+          <img src="{{ asset('razu-landing/dist/images/clients/prothomalo.svg') }}" alt="prothomalo" class="w-fit mx-auto">
+        </a>
+      </div>
+      <!-- client -->
+      <!-- client -->
+      <div class="text-center">
+        <a href="#" class="flex justify-center">
+          <img src="{{ asset('razu-landing/dist/images/clients/undp.svg') }}" alt="undp" class="w-fit mx-auto">
+        </a>
+      </div>
+      <!-- client -->
+      <!-- client -->
+      <div class="text-center">
+        <a href="#" class="flex justify-center">
+          <img src="{{ asset('razu-landing/dist/images/clients/square-food.svg') }}" alt="square" class="w-fit mx-auto">
+        </a>
+      </div>
+      <!-- client -->
+      <!-- client -->
+      <div class="text-center">
+        <a href="#" class="flex justify-center">
+          <img src="{{ asset('razu-landing/dist/images/clients/yamaha.svg') }}" alt="yamaha" class="w-fit mx-auto">
+        </a>
+      </div>
+      <!-- client -->
+      <!-- client -->
+      <div class="text-center">
+        <a href="#" class="flex justify-center">
+          <img src="{{ asset('razu-landing/dist/images/clients/ifad.svg') }}" alt="ifad" class="w-fit mx-auto">
+        </a>
+      </div>
+      <!-- client -->
+    </div>
+  </div>
+</div>
+<!-- clients section end -->
+
+<!-- who will attend here -->
+<section class="w-full py-20">
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/who.svg') }}" alt="who icon" class="w-6">
+      </div>
+
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">কারা অংশ নেবেন <span class="text-gradient">
+          এখানে</span></h2>
+      <p class="common-para text-secondary-200">সৃজনশীলতা ও ক্যারিয়ারের উন্নত ভবিষ্যৎ</p>
+    </div>
+    <!-- common title end -->
+
+    <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-y-2.5 lg:gap-y-5 lg:gap-x-6">
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">ডিজাইনার</h5>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কনটেন্ট ক্রিয়েটর</h5>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">এআই শেখার আগ্রহী যেকোনো ব্যক্তি</h5>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">শিক্ষার্থী</h5>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">বিজ্ঞাপণ নির্মাতা</h5>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">মার্কেটার</h5>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">ভিডিও এডিটর</h5>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">মিউজিশিয়ান</h5>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+    </div>
+  </div>
+</section>
+<!-- who will attend here -->
+
+<!-- joiner feedback start -->
+<section class="w-full py-10 lg:py-20">
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/joiner.svg') }}" alt="joiner icon" class="w-6">
+      </div>
+
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">অংশগ্রহণকারীদের <span class="text-gradient">
+          অভিজ্ঞতা</span></h2>
+      <p class="common-para text-secondary-200">যারা শিখেছেন, তাদের মুখে এআই শেখার গল্প</p>
+    </div>
+    <!-- common title end -->
+
+    <div class="relative">
+      <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- group one -->
+        <div class="w-full flex flex-col gap-y-6">
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">আমি একজন ডিজাইনার। আগে ডিজাইন করতে
+              ঘন্টার পর ঘন্টা লাগত, কিন্তু এআই শেখার পর কাজ অনেক সহজ হয়েছে। কালার প্যালেট, লেআউট আর ভিজ্যুয়াল তৈরিতে
+              এখন আর ঝামেলা নেই। প্রতিদিনের কাজের গতি বেড়েছে এবং মানও উন্নত হয়েছে। আমার ক্লায়েন্টরা এখন আগের চেয়ে
+              অনেক বেশি সন্তুষ্ট।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>সাদিয়া রহমান</h5>
+            <h6 class="common-para text-secondary-200 ml-5">গ্রাফিক ডিজাইনার</h6>
+          </div>
+          <!-- card -->
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই দিয়ে মিউজিকে নতুন সাউন্ড
+              এক্সপ্লোর করেছি। গান বানানো অনেক সহজ হয়েছে। শ্রোতারাও ভালো রেসপন্স দিচ্ছে।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>রাহাত খান</h5>
+            <h6 class="common-para text-secondary-200 ml-5">মিউজিশিয়ান</h6>
+          </div>
+          <!-- card -->
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই দিয়ে মিউজিকে নতুন সাউন্ড
+              এক্সপ্লোর করেছি। গান বানানো অনেক সহজ হয়েছে। শ্রোতারাও ভালো রেসপন্স দিচ্ছে।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>রাহাত খান</h5>
+            <h6 class="common-para text-secondary-200 ml-5">মিউজিশিয়ান</h6>
+          </div>
+          <!-- card -->
+        </div>
+        <!-- group one -->
+
+        <!-- group two -->
+        <div class="w-full flex-col gap-y-6 hidden md:flex">
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই আমার মার্কেটিং কাজকে বদলে দিয়েছে।
+              কম সময়ে টার্গেটেড ক্যাম্পেইন বানাতে পারি। রেজাল্টও অনেক ভালো আসছে।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>তানভীর আহমেদ</h5>
+            <h6 class="common-para text-secondary-200 ml-5">মার্কেটার</h6>
+          </div>
+          <!-- card -->
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">কনটেন্ট ক্রিয়েশনে প্রতিদিন নতুন
+              আইডিয়া খুঁজতে হয়। এআই শেখার পর টপিক সাজেশন অনেক সহজে পাই। ট্রেন্ডি কনটেন্ট লেখা আর ভিজ্যুয়াল বানানো
+              দ্রুত হয়। আমার কাজের মান অনেক উন্নত হয়েছে। প্রোডাক্টিভিটিও দ্বিগুণ বেড়েছে। এআই আমাকে কনটেন্টে
+              প্রতিযোগিতায় এগিয়ে রেখেছে।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>নওশীন হোসেন</h5>
+            <h6 class="common-para text-secondary-200 ml-5">কনটেন্ট ক্রিয়েটর</h6>
+          </div>
+          <!-- card -->
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">কনটেন্ট ক্রিয়েশনে প্রতিদিন নতুন
+              আইডিয়া খুঁজতে হয়। এআই শেখার পর টপিক সাজেশন অনেক সহজে পাই। ট্রেন্ডি কনটেন্ট লেখা আর ভিজ্যুয়াল বানানো
+              দ্রুত হয়। আমার কাজের মান অনেক উন্নত হয়েছে। প্রোডাক্টিভিটিও দ্বিগুণ বেড়েছে। এআই আমাকে কনটেন্টে
+              প্রতিযোগিতায় এগিয়ে রেখেছে।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>নওশীন হোসেন</h5>
+            <h6 class="common-para text-secondary-200 ml-5">কনটেন্ট ক্রিয়েটর</h6>
+          </div>
+          <!-- card -->
+        </div>
+        <!-- group two -->
+
+        <!-- group three -->
+        <div class="w-full flex-col gap-y-6 hidden lg:flex">
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">আমি একজন ডিজাইনার। আগে ডিজাইন করতে
+              ঘন্টার পর ঘন্টা লাগত, কিন্তু এআই শেখার পর কাজ অনেক সহজ হয়েছে। কালার প্যালেট, লেআউট আর ভিজ্যুয়াল তৈরিতে
+              এখন আর ঝামেলা নেই। প্রতিদিনের কাজের গতি বেড়েছে এবং মানও উন্নত হয়েছে। আমার ক্লায়েন্টরা এখন আগের চেয়ে
+              অনেক বেশি সন্তুষ্ট।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>সাদিয়া রহমান</h5>
+            <h6 class="common-para text-secondary-200 ml-5">গ্রাফিক ডিজাইনার</h6>
+          </div>
+          <!-- card -->
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই দিয়ে মিউজিকে নতুন সাউন্ড
+              এক্সপ্লোর করেছি। গান বানানো অনেক সহজ হয়েছে। শ্রোতারাও ভালো রেসপন্স দিচ্ছে।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>রাহাত খান</h5>
+            <h6 class="common-para text-secondary-200 ml-5">মিউজিশিয়ান</h6>
+          </div>
+          <!-- card -->
+          <!-- card -->
+          <div class="w-full bg-card rounded-[10px] p-5 shadow-2">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-body p-1">
+              <img src="{{ asset('razu-landing/dist/images/icons/quote.svg') }}" alt="quote" class="w-5">
+            </span>
+
+            <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই দিয়ে মিউজিকে নতুন সাউন্ড
+              এক্সপ্লোর করেছি। গান বানানো অনেক সহজ হয়েছে। শ্রোতারাও ভালো রেসপন্স দিচ্ছে।</p>
+
+            <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
+                class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>রাহাত খান</h5>
+            <h6 class="common-para text-secondary-200 ml-5">মিউজিশিয়ান</h6>
+          </div>
+          <!-- card -->
+        </div>
+        <!-- group three -->
+      </div>
+      <div class="over-shaped absolute left-0 -bottom-4 w-full h-[30%] z-30"></div>
+      <div class="text-center relative z-40 mt-10">
+        <a href="#"
+          class="inline-flex bg-[#0F2342] rounded-full py-2.5 px-5 font-medium text-base text-[#fff] md:text-lg lg:text-2xl">আরও
+          <span class="text-blue mx-[3px]"> ২০০+</span> রিভিউ</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- joiner feedback end -->
+
+<!-- faq section start -->
+<section class="w-full py-10 lg:py-20 bg-[#011330]">
+  <div class="container-x">
+    <!-- common title start -->
+    <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
+      <div
+        class="text-center w-12 h-12 rounded-full bg-[#3C5D62] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
+        <img src="{{ asset('razu-landing/dist/images/icons/faq.svg') }}" alt="faq icon" class="w-6">
+      </div>
+
+      <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">সচরাচর জানতে চাওয়া <span
+          class="text-gradient">
+          প্রশ্নের উত্তর</span></h2>
+      <p class="common-para text-secondary-200">সবচেয়ে বেশি করা প্রশ্নের উত্তর এক জায়গায়</p>
+    </div>
+    <!-- common title end -->
+
+    <div class="w-full grid grid-cols-1 gap-y-1 lg:gap-y-2">
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">এই কোর্সে যোগ দেওয়ার জন্য কি কোনো
+            বিশেষ যোগ্যতার প্রয়োজন আছে?</h5>
+
+          <p class="text-sm text-secondary-200 mt-4 lg:text-base">আমি একজন ডিজাইনার। আগে ডিজাইন করতে ঘন্টার পর ঘন্টা
+            লাগত, কিন্তু এআই শেখার পর কাজ অনেক সহজ হয়েছে। কালার প্যালেট, লেআউট আর ভিজ্যুয়াল তৈরিতে এখন আর ঝামেলা
+            নেই। প্রতিদিনের কাজের গতি বেড়েছে এবং মানও উন্নত হয়েছে। আমার ক্লায়েন্টরা এখন আগের চেয়ে অনেক বেশি
+            সন্তুষ্ট।</p>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কোর্সের সময়কাল কতদিন এবং কীভাবে
+            ক্লাসগুলো পরিচালিত হয়?</h5>
+
+          <p class="text-sm text-secondary-200 mt-4 lg:text-base hidden">Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Dolorum maxime deleniti quia. Numquam neque voluptatem fugiat officiis ad voluptate ex.
+          </p>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কোর্স ফি কত এবং কি কোনো লুকানো চার্জ
+            আছে?</h5>
+
+          <p class="text-sm text-secondary-200 mt-4 lg:text-base hidden">Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Dolorum maxime deleniti quia. Numquam neque voluptatem fugiat officiis ad voluptate ex.
+          </p>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কোর্স শেষ করার পর কি কোনো সার্টিফিকেট
+            পাওয়া যাবে?</h5>
+
+          <p class="text-sm text-secondary-200 mt-4 lg:text-base hidden">Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Dolorum maxime deleniti quia. Numquam neque voluptatem fugiat officiis ad voluptate ex.
+          </p>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">আমি যদি একেবারে নতুন হই, তাহলে কি
+            কোর্সটি বুঝতে পারব?</h5>
+
+          <p class="text-sm text-secondary-200 mt-4 lg:text-base hidden">Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Dolorum maxime deleniti quia. Numquam neque voluptatem fugiat officiis ad voluptate ex.
+          </p>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+      <!-- card -->
+      <div
+        class="item bg-card rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5">
+        <div class="w-full col-span-10">
+          <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কোর্স শেষে আমি বাস্তবে কী কী কাজে
+            লাগাতে পারব?</h5>
+
+          <p class="text-sm text-secondary-200 mt-4 lg:text-base hidden">Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Dolorum maxime deleniti quia. Numquam neque voluptatem fugiat officiis ad voluptate ex.
+          </p>
+        </div>
+        <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+          <img src="{{ asset('razu-landing/dist/images/icons/angle-down-circle.svg') }}" alt="angle 1" class="w-5 lg:w-[26px]">
+        </button>
+      </div>
+      <!-- card -->
+    </div>
+  </div>
+</section>
+<!-- faq section end -->
+
+<!-- payment section start -->
+<section class="w-full py-10 lg:py-20">
+  <div class="container-x">
+    <div class="w-full bg-card rounded-[10px] py-5 px-6 flex flex-col lg:flex-row justify-center items-center text-center lg:justify-between">
+      <div class="lg:text-start">
+        <h5 class="font-medium text-lg text-[#fff] lg:text-2xl">Ai অ্যাডভার্টাইজিং <span class="text-gradient">বুটক্যাম্প -
+            ২৫</span></h5>
+        <p class="font-medium text-sm text-[#ABABAB] mt-1 lg:text-base">৩ দিনের অনলাইন লাইভ ওয়ার্কশপ | প্রশিক্ষক: আব্দুর রউফ</p>
+      </div>
+      <h6 class="font-medium text-base text-[#ABABAB] mt-6 lg:text-2xl lg:mt-0">কোর্স ফি মাত্র <span
+          class="text-orange font-bold lg:text-3xl">৳৫,৩২০</span> টাকা</h6>
+    </div>
+
+    <div class="w-full bg-card rounded-[10px] py-5 px-4 mt-10 divide-y lg:divide-x lg:divide-y-0 divide-[#fff]/10 lg:p-10 lg:mt-12 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10">
+      <div class="left pb-10 lg:pb-0">
+        <h3 class="text-center font-medium text-2xl text-[#E2E8F0] lg:text-start lg:text-[32px]">এখনই সহজে পেমেন্ট করুন</h3>
+        <p class="font-medium text-sm text-[#ABABAB] mt-1 text-center lg:text-start lg:text-base lg:max-w-[80%]">আমাদের কোর্সে ভর্তি হতে পেমেন্ট করা একেবারেই
+          সহজ। বিকাশ, নগদ বা রকেট দিয়ে পেমেন্ট করলেই সঙ্গে সঙ্গে কোর্স এক্সেস পাবেন।</p>
+
+        <h4 class="mt-10 font-medium text-base text-[#E2E8F0] text-center mb-2.5 lg:mt-[60px] lg:text-xl lg:text-start">এই নম্বরে পেমেন্ট করুন</h4>
+
+        <div class="flex bg-[#011330] justify-between items-center max-w-[80%] rounded-[4px] mx-auto p-1.5 pl-4 lg:mx-0 lg:mr-auto lg:max-w-[46%] lg:rounded-lg">
+          <h5 class="font-bold text-xl text-gradient lg:text-2xl">০১৭১২৩৪৫৬১৮</h5>
+          <button type="button" class="bg-[#0B2042] rounded-[2px] py-2 px-3 font-normal text-xs text-blue lg:text-sm anim hover:bg-orange hover:text-primary cursor-pointer anim animate-pulse">কপি
+            করুন</button>
+        </div>
+
+        <h6 class="mt-6 font-medium text-[#fff] text-base lg:mt-[30px] lg:text-lg">বিশেষ দ্রষ্টব্য</h6>
+
+        <ul class="mt-2.5 flex flex-col gap-y-1">
+          <li class="flex items-center gap-x-2">
+            <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
+            <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
+              Transaction ID সংরক্ষণ করুন, ভুল নম্বরে পাঠালে দায়ভার আমাদের নয়।
+            </p>
+          </li>
+          <li class="flex items-center gap-x-2">
+            <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
+            <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
+              সফল পেমেন্টে SMS/ইমেইল পাবেন।
+            </p>
+          </li>
+          <li class="flex items-center gap-x-2">
+            <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
+            <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
+              টাকা ফেরতযোগ্য নয়, সমস্যায় সাপোর্টে যোগাযোগ করুন।
+            </p>
+          </li>
+        </ul>
+      </div>
+      <div class="right pt-10 lg:pt-0">
+        <h5 class="font-medium text-base text-[#E2E8F0] text-center mb-2.5 lg:text-lg lg:text-start">আপনার পেমেন্ট করা মাধ্যমটি বেছে নিন</h5>
+
+        <form class="block mt-5 lg:mt-3 lg:grid lg:grid-cols-12 lg:gap-x-5">
+          <div class="flex w-full justify-between items-center gap-x-5 lg:justify-start lg:gap-x-6 lg:mb-[60px] lg:col-span-12">
+            <label for="nagad" class="flex items-center gap-x-4 bg-[#091D3D] rounded-sm py-1.5 px-4 anim hover:bg-[#fff]/20 lg:gap-x-6 cursor-pointer">
+              <input type="radio" name="payment" id="nagad">
+              <span class="block font-medium text-lg text-[#ABABAB]">নগদ</span>
+            </label>
+            <label for="bkash" class="flex items-center gap-x-4 bg-[#091D3D] rounded-sm py-1.5 px-4 anim hover:bg-[#fff]/20 lg:gap-x-6 cursor-pointer">
+              <input type="radio" name="payment" id="bkash">
+              <span class="block font-medium text-lg text-[#ABABAB]">বিকাশ</span>
+            </label>
+            <label for="rocket" class="flex items-center gap-x-4 bg-[#091D3D] rounded-sm py-1.5 px-4 anim hover:bg-[#fff]/20 lg:gap-x-6 cursor-pointer">
+              <input type="radio" name="payment" id="rocket">
+              <span class="block font-medium text-lg text-[#ABABAB]">রকেট</span>
+            </label>
+          </div>
+          <div class="w-full mt-5 lg:col-span-6">
+            <label for="name" class="font-medium text-base text-[#E2E8F0] block w-full mb-2.5">আপনার নাম</label>
+            <input type="text" name="name" id="name" placeholder="নাম" class="bg-[#051734] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-[#1C3A68]">
+          </div>
+          <div class="w-full mt-5 lg:col-span-6">
+            <label for="email" class="font-medium text-base text-[#E2E8F0] block w-full mb-2.5">আপনার ইমেইল</label>
+            <input type="email" name="email" id="email" placeholder="ইমেইল" class="bg-[#051734] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-[#1C3A68]">
+          </div>
+          <div class="w-full mt-5 lg:col-span-6">
+            <label for="number" class="font-medium text-base text-[#E2E8F0] block w-full mb-2.5">আপনার নম্বর</label>
+            <input type="text" name="number" id="number" placeholder="নম্বর" class="bg-[#051734] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-[#1C3A68]">
+          </div>
+          <div class="w-full mt-5 lg:col-span-6">
+            <label for="transaction" class="font-medium text-base text-[#E2E8F0] block w-full mb-2.5">পেমেন্ট ট্রানজেকশন ID</label>
+            <input type="text" name="transaction" id="transaction" placeholder="ট্রানজেকশন ID" class="bg-[#051734] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-[#1C3A68]">
+          </div>
+
+          <div class="w-full flex justify-center lg:col-span-12 lg:justify-end">
+            <button type="submit" class="bg-[#14CEF4] rounded-sm py-2 px-4 font-medium text-base text-[#fff] mt-5 anim hover:bg-orange cursor-pointer lg:text-xl lg:py-2.5 lg:px-6">কনফার্ম করুন</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- payment section end -->
+
+<!-- footer section start -->
+ <footer class="w-full">
+  <div class="container-x">
+    <div class="w-full text-center lg:flex items-center justify-between border-t border-[#fff]/20 py-5 xl:py-10">
+      <h6 class="font-medium text-sm text-[#ABABAB] lg:text-base">কপিরাইট &copy;2025 আব্দুর রউফ। সর্বস্বত্ব সংরক্ষিত।</h6>
+      <p class="font-semibold text-base text-[#ABABAB] lg:text-base">ভবিষ্যতের দৃষ্টিভঙ্গি নিয়ে ডেভেলপ করেছে - <a target="_blank" href="https://giopio.com" class="font-semibold text-base text-[#ABABAB]">Giopio</a></p>
+    </div>
+  </div>
+ </footer>
+<!-- footer section end -->
+@endsection
