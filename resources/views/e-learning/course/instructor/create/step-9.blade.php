@@ -230,7 +230,7 @@
                                 
                                
                                     <div class="mt-3">
-                                        <p class="text-muted">Or you can <a href="{{ url('instructor/profile/account-settings?tab=certificate') }}" 
+                                        <p class="text-muted">Or you can <a href="{{ url('instructor/certificates') }}" 
                                            class="link blue" target="_blank">create new certificate</a> from here.</p>
                                         
                                     </div>
