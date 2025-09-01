@@ -1,414 +1,698 @@
-@extends('layouts.latest.instructor')
-@section('title')
-Course Create - Step 3
-@endsection
-{{-- page style @S --}}
+@extends('layouts.instructor-tailwind')
+@section('title', 'লেসন সারাংশ - কোর্স তৈরি করুন')
+@section('header-title', 'লেসন সারাংশ')
+@section('header-subtitle', 'আপনার লেসনের বিস্তারিত তথ্য এবং সম্পাদনা বিকল্প')
+
 @section('style')
-<link href="{{ asset('assets/admin-css/elearning.css') }}" rel="stylesheet" type="text/css" />
 <style>
-    .content-preview-wrap {
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        margin-bottom: 2rem;
-    }
+/* Lesson overview specific styles */
+.lesson-overview-card {
+    background: linear-gradient(135deg, #0F2342, #1A365D);
+    border: 2px solid rgba(90, 234, 244, 0.3);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
 
-    .content-overview-card {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 2rem;
-        margin: 2rem;
-        position: relative;
-    }
+.lesson-overview-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #5AEAF4, #CBFB90);
+    border-radius: 0 2px 2px 0;
+}
 
-    .content-overview-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 0 4px 4px 0;
-    }
+.lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
 
-    .content-title {
-        color: #1a202c;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        font-size: 1.25rem;
-    }
+.lesson-type-icon-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 2.5rem;
+    color: #FFFFFF;
+}
 
-    .content-meta .badge {
-        font-size: 0.85rem;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-    }
+.lesson-type-video {
+    background: linear-gradient(135deg, #EF4444, #F87171);
+}
 
-    .content-slug code {
-        background: #e2e8f0;
-        color: #4a5568;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.85rem;
-    }
+.lesson-type-audio {
+    background: linear-gradient(135deg, #F59E0B, #FBBF24);
+}
 
-    .content-type-icon {
-        opacity: 0.7;
-    }
+.lesson-type-text {
+    background: linear-gradient(135deg, #3B82F6, #60A5FA);
+}
 
-    .editable-fields-section {
-        padding: 2rem;
-        background: #ffffff;
-        border-top: 1px solid #e2e8f0;
-    }
+.lesson-info h1 {
+    color: #FFFFFF;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
 
-    .section-title {
-        color: #2d3748;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #e2e8f0;
-        font-size: 1.1rem;
-    }
+.lesson-info p {
+    color: #9CA3AF;
+    font-size: 1rem;
+    margin: 0;
+}
 
-    .professional-form-group {
-        margin-bottom: 1.5rem;
-    }
+.lesson-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
 
-    .professional-form-group .form-label {
-        color: #4a5568;
-        font-weight: 500;
-        margin-bottom: 0.75rem;
-        font-size: 0.95rem;
-    }
+.meta-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #FFFFFF;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
 
-    .professional-form-group .form-control-lg {
-        border: 2px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        background: #ffffff;
-    }
+.meta-badge.success {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #10B981;
+}
 
-    .professional-form-group .form-control-lg:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        background: #ffffff;
-    }
+.meta-badge.warning {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #F59E0B;
+}
 
-    .professional-form-group .form-control-lg[readonly] {
-        background: #f8fafc;
-        cursor: not-allowed;
-        color: #4a5568;
-    }
+.meta-badge.info {
+    background: rgba(90, 234, 244, 0.2);
+    border-color: rgba(90, 234, 244, 0.3);
+    color: #5AEAF4;
+}
 
-    .professional-form-group .form-text {
-        color: #718096;
-        font-size: 0.85rem;
-        margin-top: 0.5rem;
-    }
+.lesson-slug {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+}
 
-    .content-type-display {
-        padding: 2rem;
-        background: #f7fafc;
-        border-top: 1px solid #e2e8f0;
-    }
+.lesson-slug code {
+    background: rgba(90, 234, 244, 0.2);
+    color: #5AEAF4;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-family: 'Courier New', monospace;
+}
 
-    .content-type-options {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1rem;
-    }
+/* Details sections */
+.details-section {
+    background: linear-gradient(135deg, #0F2342, #1A365D);
+    border: 2px solid rgba(90, 234, 244, 0.2);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
 
-    .type-option {
-        background: #ffffff;
-        border: 2px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 1.5rem;
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-header h2 {
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.section-header i {
+    color: #5AEAF4;
+    font-size: 1.25rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.field-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #FFFFFF;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.field-label i {
+    color: #5AEAF4;
+    font-size: 0.875rem;
+}
+
+.field-input {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    color: #9CA3AF;
+    font-size: 1rem;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+}
+
+.field-input:focus {
+    outline: none;
+    border-color: rgba(90, 234, 244, 0.3);
+}
+
+.field-help {
+    color: #9CA3AF;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Content type display */
+.content-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.content-type-card {
+    background: linear-gradient(135deg, #091D3D, #0F2342);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.content-type-card.active {
+    border-color: #5AEAF4;
+    background: linear-gradient(135deg, rgba(90, 234, 244, 0.1), rgba(203, 251, 144, 0.05));
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(90, 234, 244, 0.2);
+}
+
+.content-type-card.inactive {
+    opacity: 0.4;
+}
+
+.content-type-card i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+    color: #9CA3AF;
+}
+
+.content-type-card.active i {
+    color: #5AEAF4;
+}
+
+.content-type-card h3 {
+    color: #FFFFFF;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.content-type-card p {
+    color: #9CA3AF;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.content-type-card .check-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #10B981;
+    font-size: 1.5rem;
+}
+
+/* Status indicators */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-complete {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-pending {
+    background: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-info {
+    background: rgba(90, 234, 244, 0.2);
+    color: #5AEAF4;
+    border: 1px solid rgba(90, 234, 244, 0.3);
+}
+
+/* Action buttons */
+.action-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #5AEAF4, #CBFB90);
+    color: #091D3D;
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(90, 234, 244, 0.3);
+}
+
+.btn-back {
+    background: rgba(255, 255, 255, 0.1);
+    color: #C7C7C7;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-back:hover {
+    background: rgba(249, 115, 22, 0.1);
+    border-color: #F97316;
+    color: #F97316;
+}
+
+.btn-next {
+    background: linear-gradient(135deg, #10B981, #34D399);
+    color: #FFFFFF;
+}
+
+.btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+}
+
+/* Completion checklist */
+.completion-checklist {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.checklist-item:last-child {
+    border-bottom: none;
+}
+
+.checklist-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+}
+
+.checklist-icon.complete {
+    background: #10B981;
+    color: #FFFFFF;
+}
+
+.checklist-icon.pending {
+    background: rgba(239, 68, 68, 0.2);
+    border: 2px solid #EF4444;
+    color: #EF4444;
+}
+
+.checklist-text {
+    color: #FFFFFF;
+    font-size: 0.875rem;
+}
+
+.checklist-text.complete {
+    opacity: 0.7;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .lesson-header {
+        flex-direction: column;
         text-align: center;
-        position: relative;
-        transition: all 0.3s ease;
-        flex: 1;
+        gap: 1rem;
     }
+    
+    .lesson-info h1 {
+        font-size: 1.5rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .content-types-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .lesson-meta {
+        justify-content: center;
+    }
+}
 
-    .type-option.selected {
-        border-color: #48bb78;
-        background: #f0fff4;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(72, 187, 120, 0.15);
+/* Animation */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-    .type-option.disabled {
-        opacity: 0.5;
-        background: #f7fafc;
-    }
-
-    .type-option i {
-        font-size: 2rem;
-        margin-bottom: 0.75rem;
-        display: block;
-    }
-
-    .type-option.selected i {
-        color: #48bb78;
-    }
-
-    .type-option span {
-        font-weight: 500;
-        color: #4a5568;
-        font-size: 0.95rem;
-    }
-
-    .type-option .fa-check-circle {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        font-size: 1.2rem;
-    }
-
-    .back-next-bttns {
-        margin-top: 2rem;
-        padding: 1.5rem 2rem;
-        background: #f8fafc;
-        border-radius: 0 0 12px 12px;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    .back-next-bttns a {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        text-decoration: none;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        display: inline-block;
-    }
-
-    .back-next-bttns a:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        color: white;
-    }
-
-    .back-next-bttns a:first-child {
-        background: #6c757d;
-        margin-right: 1rem;
-    }
-
-    .back-next-bttns a:first-child:hover {
-        background: #5a6268;
-        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
-    }
-
-    @media (max-width: 768px) {
-        .content-overview-card,
-        .editable-fields-section,
-        .content-type-display {
-            padding: 1.5rem;
-        }
-        
-        
-        .back-next-bttns a {
-            display: block;
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-    }
+.animate-slide-up {
+    animation: slideInUp 0.6s ease-out;
+}
 </style>
 @endsection
-{{-- page style @S --}}
 
-{{-- page content @S --}}
 @section('content')
-<main class="course-create-step-page-wrap">
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-4 col-xl-3">
+<div class="space-y-6 animate-slide-up">
+    <!-- Error Messages -->
+    @if ($errors->any())
+        <div class="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl p-4">
+            <ul class="list-disc list-inside space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @php 
+        $module = \App\Models\Module::find($lesson->module_id);
+        $hasContent = $lesson->video_link || $lesson->audio_link || $lesson->text_content;
+        $contentStatus = $lesson->status ?? 'pending';
+    @endphp
+
+    <!-- Lesson Overview Card -->
+    <div class="lesson-overview-card">
+        <div class="lesson-header">
+            <div class="lesson-type-icon-large lesson-type-{{ $lesson->type }}">
+                @if($lesson->type == 'text')
+                    <i class="fas fa-file-alt"></i>
+                @elseif($lesson->type == 'audio')
+                    <i class="fas fa-volume-up"></i>
+                @elseif($lesson->type == 'video')
+                    <i class="fas fa-play"></i>
+                @endif
+            </div>
+            <div class="lesson-info">
+                <h1>{{ $lesson->title }}</h1>
+                <p>{{ ucfirst($lesson->type) }} লেসন - {{ $module->title }} মডিউল</p>
                 
-                <div class="course-create-step-wrap page-create-step">
-                    <div class="step-box active">
-                        <span class="circle">
-                            <img src="{{asset('assets/images/icons/check-mark.svg')}}" alt="icon"
-                                class="img-fluid">
-                        </span>
-                        <p><a href="{{ url('instructor/courses/create', optional(request())->route('id')).'/content' }}">Contents</a></p>
+                <div class="lesson-meta">
+                    <div class="meta-badge info">
+                        <i class="fas fa-folder"></i>
+                        মডিউল: {{ $module->title }}
                     </div>
-                    <div class="step-box current">
-                        <span class="circle"></span>
-                        <p>Institutions</p>
-                    </div>
+                    
+                    @if($hasContent)
+                        @if($contentStatus == 'published' || $contentStatus == 'active')
+                            <div class="meta-badge success">
+                                <i class="fas fa-check-circle"></i>
+                                কন্টেন্ট সম্পূর্ণ
+                            </div>
+                        @else
+                            <div class="meta-badge warning">
+                                <i class="fas fa-clock"></i>
+                                কন্টেন্ট যোগ করা হয়েছে
+                            </div>
+                        @endif
+                    @else
+                        <div class="meta-badge warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            কন্টেন্ট নেই
+                        </div>
+                    @endif
+                    
+                    @if($lesson->is_public)
+                        <div class="meta-badge info">
+                            <i class="fas fa-globe"></i>
+                            পাবলিক লেসন
+                        </div>
+                    @endif
+                </div>
+
+                <div class="lesson-slug">
+                    <i class="fas fa-link text-cyan"></i>
+                    <span class="text-secondary-200">URL Slug:</span>
+                    <code>{{ $lesson->slug }}</code>
                 </div>
             </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-10 col-lg-8 col-xl-7"> 
-                <form action="" id="contentSettingsForm">
-                    {{-- error message --}}
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+        <!-- Completion Checklist -->
+        <div class="completion-checklist">
+            <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+                <i class="fas fa-tasks text-cyan"></i>
+                লেসন সম্পূর্ণতার চেকলিস্ট
+            </h3>
+            <div class="space-y-2">
+                <div class="checklist-item">
+                    <div class="checklist-icon complete">
+                        <i class="fas fa-check"></i>
                     </div>
-                    @endif
-                    {{-- error message --}}
-                    
-                    {{-- Professional Preview Card --}}
-                    <div class="content-preview-wrap">
-                        {{-- session message @S --}}
-                        @include('partials/session-message')
-                        {{-- session message @E --}}
-
-                        @php 
-                            $module = \App\Models\Module::find($lesson->module_id);
-                        @endphp
-
-                        {{-- Content Overview Card --}}
-                        <div class="content-overview-card">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <div class="content-info">
-                                        <h5 class="content-title">{{ $lesson->title }}</h5>
-                                        <div class="content-meta">
-                                            <span class="badge bg-light text-dark me-2">
-                                                <i class="fas fa-folder me-1"></i>
-                                                Module: {{ $module->title }}
-                                            </span>
-                                            <span class="badge bg-success text-white">
-                                                @if($lesson->type == 'text')
-                                                    <i class="fas fa-file-alt me-1"></i>
-                                                @elseif($lesson->type == 'audio')  
-                                                    <i class="fas fa-volume-up me-1"></i>
-                                                @elseif($lesson->type == 'video')
-                                                    <i class="fas fa-play-circle me-1"></i>
-                                                @endif
-                                                {{ ucfirst($lesson->type) }} Content
-                                            </span>
-                                        </div>
-                                        <div class="content-slug mt-2">
-                                            <small class="text-muted">
-                                                <i class="fas fa-link me-1"></i>
-                                                Slug: <code>{{ $lesson->slug }}</code>
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 text-end">
-                                    <div class="content-type-icon">
-                                        @if($lesson->type == 'text')
-                                            <i class="fas fa-file-alt fa-3x text-primary"></i>
-                                        @elseif($lesson->type == 'audio')
-                                            <i class="fas fa-volume-up fa-3x text-warning"></i>
-                                        @elseif($lesson->type == 'video')
-                                            <i class="fas fa-play-circle fa-3x text-danger"></i>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Editable Fields Section --}}
-                        <div class="editable-fields-section">
-                            <h5 class="section-title">
-                                <i class="fas fa-edit me-2"></i>
-                                Edit Content Details
-                            </h5>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="professional-form-group">
-                                        <label for="name" class="form-label">
-                                            <i class="fas fa-tag me-1"></i>
-                                            Lesson Name
-                                        </label>
-                                        <input id="name" class="form-control form-control-lg" type="text" 
-                                               value="{{ $lesson->title }}" readonly>
-                                        <div class="form-text">This will be displayed as the lesson title</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <div class="professional-form-group">
-                                        <label for="slug" class="form-label">
-                                            <i class="fas fa-link me-1"></i>
-                                            Lesson Slug
-                                        </label>
-                                        <input id="slug" class="form-control form-control-lg" type="text" 
-                                               value="{{ $lesson->slug }}" readonly>
-                                        <div class="form-text">URL-friendly version of the lesson name</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <div class="professional-form-group">
-                                    <label for="cls" class="form-label">
-                                        <i class="fas fa-folder me-1"></i>
-                                        Module Name
-                                    </label>
-                                    <input id="cls" class="form-control form-control-lg" type="text" 
-                                           value="{{ $module->title }}" readonly>
-                                    <div class="form-text">The module that will contain this lesson</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Content Type Display --}}
-                        <div class="content-type-display">
-                            <h5 class="section-title">
-                                <i class="fas fa-cog me-2"></i>
-                                Content Type
-                            </h5>
-                            <div class="content-type-options">
-                                <div class="type-option {{ $lesson->type == 'text' ? 'selected' : 'disabled' }}">
-                                    <i class="fas fa-file-alt"></i>
-                                    <span>Text Content</span>
-                                    @if($lesson->type == 'text')
-                                        <i class="fas fa-check-circle text-success"></i>
-                                    @endif
-                                </div>
-                                <div class="type-option {{ $lesson->type == 'audio' ? 'selected' : 'disabled' }}">
-                                    <i class="fas fa-volume-up"></i>
-                                    <span>Audio Content</span>
-                                    @if($lesson->type == 'audio')
-                                        <i class="fas fa-check-circle text-success"></i>
-                                    @endif
-                                </div>
-                                <div class="type-option {{ $lesson->type == 'video' ? 'selected' : 'disabled' }}">
-                                    <i class="fas fa-play-circle"></i>
-                                    <span>Video Content</span>
-                                    @if($lesson->type == 'video')
-                                        <i class="fas fa-check-circle text-success"></i>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- step next bttns --}}
-                    <div class="back-next-bttns">
-                        @if ($lesson->type == 'audio')
-                            <a href="{{ url('instructor/courses/create/'.$course->id.'/audio/'.$lesson->module_id.'/content/'.$lesson->id) }}">Edit</a>
-                        @elseif ($lesson->type == 'text')
-                            <a href="{{ url('instructor/courses/create/'.$course->id.'/text/'.$lesson->module_id.'/content/'.$lesson->id) }}">Edit</a>
-                        @elseif ($lesson->type == 'video')
-                            <a href="{{ url('instructor/courses/create/'.$course->id.'/video/'.$lesson->module_id.'/content/'.$lesson->id) }}">Edit</a>
+                    <div class="checklist-text complete">লেসন তৈরি এবং নাম নির্ধারণ</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-icon {{ $hasContent ? 'complete' : 'pending' }}">
+                        @if($hasContent)
+                            <i class="fas fa-check"></i>
+                        @else
+                            <i class="fas fa-exclamation"></i>
                         @endif
-                         
-                        <a href="{{url('instructor/courses/create/'.$course->id.'/content')}}">Next</a>
                     </div>
-                    {{-- step next bttns --}}
-                </form>
+                    <div class="checklist-text {{ $hasContent ? 'complete' : '' }}">
+                        {{ $lesson->type == 'video' ? 'ভিডিও আপলোড' : ($lesson->type == 'audio' ? 'অডিও আপলোড' : 'টেক্সট কন্টেন্ট') }}
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="checklist-icon {{ $lesson->short_description ? 'complete' : 'pending' }}">
+                        @if($lesson->short_description)
+                            <i class="fas fa-check"></i>
+                        @else
+                            <i class="fas fa-exclamation"></i>
+                        @endif
+                    </div>
+                    <div class="checklist-text {{ $lesson->short_description ? 'complete' : '' }}">লেসন বিবরণ</div>
+                </div>
             </div>
         </div>
-</main>
+    </div>
+
+    <!-- Lesson Details Section -->
+    <div class="details-section">
+        <div class="section-header">
+            <i class="fas fa-info-circle"></i>
+            <h2>লেসনের তথ্য</h2>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-field">
+                <label class="field-label">
+                    <i class="fas fa-tag"></i>
+                    লেসনের নাম
+                </label>
+                <input type="text" class="field-input" value="{{ $lesson->title }}" readonly>
+                <p class="field-help">এটি লেসনের শিরোনাম হিসেবে প্রদর্শিত হবে</p>
+            </div>
+
+            <div class="form-field">
+                <label class="field-label">
+                    <i class="fas fa-link"></i>
+                    URL Slug
+                </label>
+                <input type="text" class="field-input" value="{{ $lesson->slug }}" readonly>
+                <p class="field-help">URL-বান্ধব সংস্করণ</p>
+            </div>
+
+            <div class="form-field">
+                <label class="field-label">
+                    <i class="fas fa-folder"></i>
+                    মডিউলের নাম
+                </label>
+                <input type="text" class="field-input" value="{{ $module->title }}" readonly>
+                <p class="field-help">এই লেসনটি যে মডিউলে রয়েছে</p>
+            </div>
+
+            <div class="form-field">
+                <label class="field-label">
+                    <i class="fas fa-calendar"></i>
+                    তৈরির তারিখ
+                </label>
+                <input type="text" class="field-input" value="{{ $lesson->created_at->format('d M Y, h:i A') }}" readonly>
+                <p class="field-help">লেসন তৈরির সময়</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Type Section -->
+    <div class="details-section">
+        <div class="section-header">
+            <i class="fas fa-cogs"></i>
+            <h2>কন্টেন্টের ধরন</h2>
+        </div>
+
+        <div class="content-types-grid">
+            <div class="content-type-card {{ $lesson->type == 'text' ? 'active' : 'inactive' }}">
+                <i class="fas fa-file-alt"></i>
+                <h3>টেক্সট কন্টেন্ট</h3>
+                <p>লিখিত বিষয়বস্তু এবং তথ্য</p>
+                @if($lesson->type == 'text')
+                    <i class="fas fa-check-circle check-icon"></i>
+                @endif
+            </div>
+
+            <div class="content-type-card {{ $lesson->type == 'audio' ? 'active' : 'inactive' }}">
+                <i class="fas fa-volume-up"></i>
+                <h3>অডিও কন্টেন্ট</h3>
+                <p>শ্রবণযোগ্য বিষয়বস্তু এবং পডকাস্ট</p>
+                @if($lesson->type == 'audio')
+                    <i class="fas fa-check-circle check-icon"></i>
+                @endif
+            </div>
+
+            <div class="content-type-card {{ $lesson->type == 'video' ? 'active' : 'inactive' }}">
+                <i class="fas fa-play-circle"></i>
+                <h3>ভিডিও কন্টেন্ট</h3>
+                <p>দৃশ্যমান বিষয়বস্তু এবং টিউটোরিয়াল</p>
+                @if($lesson->type == 'video')
+                    <i class="fas fa-check-circle check-icon"></i>
+                @endif
+            </div>
+        </div>
+
+        @if($lesson->short_description)
+            <div class="mt-6">
+                <label class="field-label">
+                    <i class="fas fa-align-left"></i>
+                    লেসনের বিবরণ
+                </label>
+                <div class="field-input min-h-[100px] cursor-text" style="height: auto; padding-top: 1rem; padding-bottom: 1rem;">
+                    {{ $lesson->short_description }}
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons-grid">
+        @if ($lesson->type == 'audio')
+            <a href="{{ url('instructor/courses/create/'.$course->id.'/audio/'.$lesson->module_id.'/content/'.$lesson->id) }}" 
+               class="btn-action btn-edit">
+                <i class="fas fa-edit"></i>
+                অডিও কন্টেন্ট সম্পাদনা
+            </a>
+        @elseif ($lesson->type == 'text')
+            <a href="{{ url('instructor/courses/create/'.$course->id.'/text/'.$lesson->module_id.'/content/'.$lesson->id) }}" 
+               class="btn-action btn-edit">
+                <i class="fas fa-edit"></i>
+                টেক্সট কন্টেন্ট সম্পাদনা
+            </a>
+        @elseif ($lesson->type == 'video')
+            <a href="{{ url('instructor/courses/create/'.$course->id.'/video/'.$lesson->module_id.'/content/'.$lesson->id) }}" 
+               class="btn-action btn-edit">
+                <i class="fas fa-edit"></i>
+                ভিডিও কন্টেন্ট সম্পাদনা
+            </a>
+        @endif
+         
+        <a href="{{url('instructor/courses/create/'.$course->id.'/content')}}" class="btn-action btn-next">
+            <i class="fas fa-arrow-right"></i>
+            পরবর্তী ধাপ
+        </a>
+    </div>
+</div>
 
 @endsection
 {{-- page content @E --}}
