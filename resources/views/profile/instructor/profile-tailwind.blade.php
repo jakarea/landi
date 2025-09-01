@@ -14,6 +14,9 @@
     overflow: hidden;
     border-radius: 1rem;
     background: linear-gradient(135deg, rgba(90, 234, 244, 0.1) 0%, rgba(203, 251, 144, 0.1) 100%);
+    object-fit: cover;
+    object-position: center;
+    max-height: 250px;
 }
 
 .cover-upload-area:hover .upload-overlay {
@@ -170,7 +173,7 @@
     <!-- Profile Header Section -->
     <div class="bg-card rounded-xl border border-[#fff]/20 overflow-hidden">
         <!-- Cover Photo Section -->
-        <div class="cover-upload-area relative h-64">
+        <div class="cover-upload-area relative max-h-64">
             @if ($user->cover_photo)
                 <img src="{{ asset($user->cover_photo) }}" alt="Cover Photo" 
                      class="w-full h-full object-cover" id="item-img-output">
@@ -214,7 +217,7 @@
                 <div class="flex items-end gap-6">
                     <div class="avatar-container flex-shrink-0">
                         @if ($user->avatar)
-                            <img src="{{ asset($user->avatar) }}" alt="{{ $user->name }}" 
+                            <img src="{{ asset($user->avatar_img) }}" alt="{{ $user->name }}" 
                                  class="avatar-image">
                         @else
                             <div class="avatar-placeholder">
@@ -237,7 +240,7 @@
                 </div>
                 
                 <!-- Edit Profile Button -->
-                <div class="pb-4 mt-4 lg:mt-0">
+                <div class="pb-4 mt-4 lg:mt-2">
                     <a href="{{ route('instructor.profile.edit') }}" 
                        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue to-lime hover:from-blue/80 hover:to-lime/80 text-primary rounded-lg font-semibold anim">
                         <i class="fas fa-edit"></i>
@@ -291,7 +294,7 @@
                     </div>
                     
                     <a href="{{ route('instructor.profile.settings') }}" 
-                       class="flex items-center gap-2 px-4 py-2 bg-blue hover:bg-blue/80 text-primary rounded-lg font-semibold anim">
+                       class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue to-lime hover:from-blue/80 hover:to-lime/80 text-primary rounded-lg font-semibold anim">
                         <i class="fas fa-plus"></i>
                         <span class="hidden sm:inline">নতুন যোগ করুন</span>
                     </a>

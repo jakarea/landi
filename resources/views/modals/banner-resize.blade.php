@@ -1,4 +1,4 @@
-<div class="banner-size-modal">
+<div class="banner-size-modal hidden">
     <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

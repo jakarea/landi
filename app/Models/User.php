@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -56,6 +57,18 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Avatar attributes
+     */
+    protected function avatarImg() : Attribute
+    {
+        return Attribute::make(
+            get: fn($value, $attributes) => asset($attributes['avatar']) 
+                ? asset($attributes['avatar']) 
+                : asset('assets/images/avatar.avif')
+        );
+    }
 
     /**
      * subscription
