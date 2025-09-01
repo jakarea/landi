@@ -878,6 +878,99 @@
         </div>
     </div>
 </div>
+
+<!-- Add Experience Modal -->
+<div id="addExperienceModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-card rounded-xl max-w-2xl w-full p-6 border border-[#fff]/10 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-orange to-yellow-500 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,2A3,3 0 0,1 15,5V7H19A2,2 0 0,1 21,9V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V9A2,2 0 0,1 5,7H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V7H13V5A1,1 0 0,0 12,4Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white">নতুন অভিজ্ঞতা যোগ করুন</h3>
+            </div>
+            <button onclick="closeAddExperienceModal()" class="text-secondary-200 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="addExperienceForm" method="POST" action="{{ route('instructor.profile.experience.store') }}">
+            @csrf
+            <div class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">পেশা *</label>
+                        <input type="text" name="profession" required 
+                               class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white placeholder-secondary-200 focus:outline-none focus:border-orange transition-colors" 
+                               placeholder="যেমন: সফটওয়্যার ইঞ্জিনিয়ার">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="profession-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">কোম্পানির নাম *</label>
+                        <input type="text" name="company_name" required 
+                               class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white placeholder-secondary-200 focus:outline-none focus:border-orange transition-colors" 
+                               placeholder="যেমন: Google, Microsoft">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="company_name-error"></div>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">চাকরির ধরন *</label>
+                        <select name="job_type" required 
+                                class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange transition-colors">
+                            <option value="">নির্বাচন করুন</option>
+                            <option value="Full-time">ফুল-টাইম</option>
+                            <option value="Part-time">পার্ট-টাইম</option>
+                            <option value="Contract">কন্ট্রাক্ট</option>
+                            <option value="Freelance">ফ্রিল্যান্স</option>
+                            <option value="Internship">ইন্টার্নশিপ</option>
+                        </select>
+                        <div class="text-red-400 text-sm mt-1 hidden" id="job_type-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">অভিজ্ঞতার সময়কাল *</label>
+                        <input type="text" name="experience" required 
+                               class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white placeholder-secondary-200 focus:outline-none focus:border-orange transition-colors" 
+                               placeholder="যেমন: ২ বছর, ৬ মাস">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="experience-error"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">বিবরণ</label>
+                    <textarea name="short_description" rows="4" 
+                              class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white placeholder-secondary-200 focus:outline-none focus:border-orange transition-colors resize-none" 
+                              placeholder="আপনার কাজের দায়িত্ব এবং অর্জনের সংক্ষিপ্ত বিবরণ লিখুন..."></textarea>
+                    <div class="text-red-400 text-sm mt-1 hidden" id="short_description-error"></div>
+                </div>
+                
+                <div class="flex items-center gap-4 pt-4 border-t border-[#fff]/10">
+                    <button type="button" onclick="closeAddExperienceModal()" 
+                            class="px-6 py-3 bg-secondary hover:bg-secondary/80 text-secondary-100 rounded-lg font-medium transition-colors">
+                        বাতিল
+                    </button>
+                    <button type="submit" 
+                            class="px-6 py-3 bg-gradient-to-r from-orange to-yellow-500 hover:from-yellow-500 hover:to-orange text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                            অভিজ্ঞতা যোগ করুন
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 @endsection
 
 @section('script')
@@ -1008,11 +1101,85 @@ function togglePassword(button) {
     }
 }
 
-// Add experience modal (placeholder)
+// Add experience modal functions
 function showAddExperienceModal() {
-    // Redirect to experience edit page
-    window.location.href = '{{ route("instructor.profile.settings") }}?tab=experience';
+    const modal = document.getElementById('addExperienceModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
 }
+
+function closeAddExperienceModal() {
+    const modal = document.getElementById('addExperienceModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    
+    // Clear form
+    document.getElementById('addExperienceForm').reset();
+    // Clear error messages
+    document.querySelectorAll('[id$="-error"]').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+    });
+}
+
+// Handle form submission for add experience
+document.getElementById('addExperienceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitBtn = this.querySelector('button[type="submit"]');
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4 animate-spin" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>যোগ করা হচ্ছে...</span>';
+    
+    // Clear previous errors
+    document.querySelectorAll('[id$="-error"]').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+    });
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeAddExperienceModal();
+            showSuccessMessage('অভিজ্ঞতা সফলভাবে যোগ করা হয়েছে!');
+            // Reload page to show new experience
+            setTimeout(() => {
+                window.location.href = '{{ route("instructor.profile.settings") }}?tab=experience';
+            }, 1500);
+        } else {
+            // Show validation errors
+            if (data.errors) {
+                Object.keys(data.errors).forEach(field => {
+                    const errorEl = document.getElementById(field + '-error');
+                    if (errorEl) {
+                        errorEl.textContent = data.errors[field][0];
+                        errorEl.classList.remove('hidden');
+                    }
+                });
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showSuccessMessage('কিছু ভুল হয়েছে, আবার চেষ্টা করুন।');
+    })
+    .finally(() => {
+        // Restore button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>অভিজ্ঞতা যোগ করুন</span>';
+    });
+});
 
 // Certificate preview (placeholder)
 function previewCertificate() {

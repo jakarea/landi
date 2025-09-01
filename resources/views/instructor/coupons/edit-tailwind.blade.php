@@ -424,7 +424,7 @@
                         class="px-6 py-2 bg-secondary hover:bg-secondary/80 text-secondary-100 rounded-lg anim">
                     বাতিল
                 </button>
-                <form action="{{ route('instructor.coupons.destroy', $coupon) }}" method="POST" class="inline">
+                <form action="{{ route('instructor.coupons.delete', $coupon) }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
                     <button type="submit" 

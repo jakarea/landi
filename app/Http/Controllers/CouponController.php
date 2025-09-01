@@ -85,7 +85,7 @@ class CouponController extends Controller
     public function show(Coupon $coupon)
     {
         $this->authorize('view', $coupon);
-        return view('instructor.coupons.show', compact('coupon'));
+        return view('instructor.coupons.show-tailwind', compact('coupon'));
     }
 
     /**
