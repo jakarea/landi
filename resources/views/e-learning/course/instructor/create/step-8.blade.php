@@ -661,7 +661,7 @@
 
         @if ( session()->has('course_id') )
             <div class="text-center mt-6 pt-6 border-t border-[#fff]/20">
-                <a href="{{ url('instructor/finish/edit') }}" 
+                <a href="{{ url('instructor/courses') }}" 
                    class="inline-flex items-center gap-2 bg-lime text-primary rounded-lg px-6 py-3 font-semibold anim hover:bg-orange hover:text-primary">
                     <i class="fas fa-save"></i>
                     সংরক্ষণ করুন এবং সমাপ্ত করুন

@@ -211,7 +211,7 @@
         </div>
         
         <!-- Profile Info Section -->
-        <div class="px-8 pb-8">
+        <div class="px-8 pb-8" style="padding-bottom: 24px; padding-top: 10px;">
             <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between">
                 <!-- Avatar and Name -->
                 <div class="flex items-end gap-6">
@@ -251,7 +251,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-8">
             <!-- About Section -->
@@ -284,7 +284,7 @@
             </div>
 
             <!-- Experience Section -->
-            <div class="bg-card rounded-xl border border-[#fff]/20 p-6">
+            <div class="bg-card rounded-xl border border-[#fff]/20 p-6 mt-6">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
