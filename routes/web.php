@@ -61,6 +61,10 @@ Route::get('/ai-for-advertising-bootcamp-25/', function () {
     return view('landing.ai-bootcamp');
 })->name('ai-bootcamp-25');
 
+Route::get('/AI-for-Advertising-Bootcamp-25/', function () {
+    return view('landing.ai-bootcamp');
+})->name('ai-bootcamp-25');
+
 // ========================================
 // ABOUT & INFORMATION PAGES
 // ========================================
