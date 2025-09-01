@@ -429,12 +429,7 @@
                                             @endif
                                         </label>
                                         
-                                        <div class="upload-overlay">
-                                            <div class="text-center">
-                                                <i class="fas fa-camera text-2xl text-white mb-2"></i>
-                                                <p class="text-white text-sm font-semibold">ছবি পরিবর্তন করুন</p>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     
                                     <p class="text-secondary-200 text-xs mt-3">সর্বোচ্চ ৫MB, JPG/PNG ফরম্যাট</p>
