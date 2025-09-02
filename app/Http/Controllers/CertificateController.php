@@ -31,18 +31,23 @@ class CertificateController extends Controller
     // update or create certificate
     public function certificateUpdate(Request $request)
     {
-
-        $this->validate($request, [
-            'course_id' => 'required|string',
-            'certificate_style' => 'required',
-            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5000',
-            'signature' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5000',
-        ],
-        [
-            'course_id' => 'Select a course to set certificate',
-            'logo' => 'Max file size is 5 MB!',
-            'signature' => 'Max file size is 5 MB!'
-        ]);
+        try {
+            $this->validate($request, [
+                'course_id' => 'required|string',
+                'certificate_style' => 'required',
+                'certificate_clr' => 'required',
+                'accent_clr' => 'required',
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5000',
+                'signature' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5000',
+            ],
+            [
+                'course_id' => 'কোর্স নির্বাচন করুন',
+                'certificate_style' => 'সার্টিফিকেট স্টাইল নির্বাচন করুন',
+                'certificate_clr' => 'সার্টিফিকেটের রং নির্বাচন করুন',
+                'accent_clr' => 'অ্যাকসেন্ট রং নির্বাচন করুন',
+                'logo' => 'লোগো সর্বোচ্চ ৫MB হতে পারে!',
+                'signature' => 'স্বাক্ষর সর্বোচ্চ ৫MB হতে পারে!'
+            ]);
 
         $userId = Auth::user()->id;
         $courseId = $request->course_id;
@@ -111,7 +116,16 @@ class CertificateController extends Controller
 
             $certificate->save();
 
-            return redirect('instructor/profile/account-settings?tab=certificate')->with('success', 'Your certificate has been Updated successfully');
+            // Check if this is an AJAX request
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'সার্টিফিকেট সফলভাবে আপডেট করা হয়েছে!',
+                    'certificate' => $certificate
+                ]);
+            }
+
+            return redirect('instructor/profile/settings?tab=certificate')->with('success', 'Your certificate has been Updated successfully');
 
 
         } else {
@@ -158,9 +172,35 @@ class CertificateController extends Controller
 
             $newCertificate->save();
 
-            return redirect('instructor/profile/account-settings?tab=certificate')->with('success', 'Your certificate has been SET successfully!');
+            // Check if this is an AJAX request
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'সার্টিফিকেট সফলভাবে সেট করা হয়েছে!',
+                    'certificate' => $newCertificate
+                ]);
+            }
+
+            return redirect('instructor/profile/settings?tab=certificate')->with('success', 'Your certificate has been SET successfully!');
         }
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $e->errors()
+                ], 422);
+            }
+            throw $e;
+        } catch (\Exception $e) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'কিছু ভুল হয়েছে, আবার চেষ্টা করুন।'
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Something went wrong!');
+        }
     }
 
     // custom certificate generate
@@ -169,7 +209,7 @@ class CertificateController extends Controller
        $courseId = $request->input('c_course_id');
 
         if (!$courseId) {
-            return redirect('instructor/profile/account-settings?tab=certificate')->with('error', 'Failedd to Generate Certificate');
+            return redirect('instructor/profile/settings?tab=certificate')->with('error', 'Failedd to Generate Certificate');
         }else{
             $course = Course::where('id', $courseId)->first();
         }
@@ -206,7 +246,7 @@ class CertificateController extends Controller
             }elseif ($certStyle == 1) {
                 $certificate_path = 'certificates/generate/certificate3';
             }else{
-                return redirect('instructor/profile/account-settings?tab=certificate')->with('error', 'Failedd to Generate Certificate');
+                return redirect('instructor/profile/settings?tab=certificate')->with('error', 'Failedd to Generate Certificate');
             }
 
             // logo
@@ -288,11 +328,11 @@ class CertificateController extends Controller
             $pdf = PDF::loadView($certificate_path, ['course' => $course, 'courseCompletionDate' => $courseCompletionDate,'courseIssueDate' => $courseIssueDate, 'signature' => $signaturePath, 'logo' => $logoPath, 'fullName' => $fullName, 'certColor' => $certColor, 'accentColor' => $accentColor]);
 
             return $pdf->download('Learncosy-custom-certificate.pdf');
-            return redirect('instructor/profile/account-settings?tab=certificate')->with('success', 'Certificate Generated Succesfully');
+            return redirect('instructor/profile/settings?tab=certificate')->with('success', 'Certificate Generated Succesfully');
 
 
         }else{
-            return redirect('instructor/profile/account-settings?tab=certificate')->with('error', 'Failedd to Generate Certificate');
+            return redirect('instructor/profile/settings?tab=certificate')->with('error', 'Failedd to Generate Certificate');
         }
     }
 
