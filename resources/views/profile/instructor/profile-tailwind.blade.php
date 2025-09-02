@@ -323,7 +323,7 @@
                                                 <p class="text-secondary-100 leading-relaxed">{{ $experience->short_description }}</p>
                                             </div>
                                             
-                                            <div class="flex items-center gap-2 ml-4">
+                                            <div class="flex items-center gap-2 ml-4 hidden">
                                                 <a href="{{ route('instructor.profile.experience.edit', ['experienceId' => $experience->id]) }}?tab=experience"
                                                    class="action-btn" title="সম্পাদনা করুন">
                                                     <i class="fas fa-edit text-sm"></i>
