@@ -1334,7 +1334,7 @@ class StudentHomeController extends Controller
         $title = isset($_GET['title']) ? $_GET['title'] : '';
         $status = isset($_GET['status']) ? $_GET['status'] : '';
 
-        $enrolments = Checkout::with('course.reviews')->where('checkouts.user_id', Auth::user()->id);
+        $enrolments = Checkout::with('course.reviews')->where('course_user.user_id', Auth::user()->id);
 
         if (!empty($title)) {
             $enrolments->whereHas('course', function ($query) use ($title) {
@@ -1353,6 +1353,8 @@ class StudentHomeController extends Controller
         }
 
         $enrolments = $enrolments->paginate(12)->appends($queryParams);
+
+        // dd($enrolments);
 
         return view('e-learning/course/students/enrolled', compact('enrolments'));
     }
