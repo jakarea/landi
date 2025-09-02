@@ -137,7 +137,7 @@
             <div class="p-4 border-t border-[#fff]/20 flex-shrink-0">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="flex items-center gap-3 w-full px-4 py-3 text-secondary-100 rounded-lg anim hover:bg-orange hover:text-primary">
+                    <button type="submit" class="flex items-center gap-3 w-full cursor-pointer px-4 py-3 text-secondary-100 rounded-lg anim hover:bg-red-800 hover:text-white">
                         <i class="fas fa-sign-out-alt text-lg flex-shrink-0"></i>
                         <span class="font-medium">লগআউট</span>
                     </button>

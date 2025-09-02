@@ -130,7 +130,7 @@
                 <div class="text-secondary-200 text-sm">অবশিষ্ট</div>
             </div>
             <div class="text-center">
-                <div class="text-2xl font-bold text-orange">{{ $coupon->valid_until->diffInDays(now()) }}</div>
+                <div class="text-2xl font-bold text-orange">{{ floor(now()->diffInDays($coupon->valid_until, false)) }}</div>
                 <div class="text-secondary-200 text-sm">দিন বাকি</div>
             </div>
             <div class="text-center">

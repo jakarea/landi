@@ -389,12 +389,12 @@
                                             title="পেমেন্ট সহ অনুমোদন">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button type="button" 
+                                    {{-- <button type="button" 
                                             onclick="showApproveModal({{ $enrollment->id }}, 'without_payment')"
                                             class="action-btn action-btn-free"
                                             title="ফ্রি অ্যাক্সেস">
                                         <i class="fas fa-gift"></i>
-                                    </button>
+                                    </button> --}}
                                     <button type="button" 
                                             onclick="showRejectModal({{ $enrollment->id }})"
                                             class="action-btn action-btn-reject"

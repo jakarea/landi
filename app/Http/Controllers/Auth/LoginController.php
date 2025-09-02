@@ -73,10 +73,19 @@ class LoginController extends Controller
             $user->session_id = $sessionId;
             $user->save();
            
-            Auth::login($user);
-            
+            Auth::login($user);            
             // Redirect based on user role
-            return redirect()->route('home');
+            switch($user->user_role) {
+                case 'admin':
+                    return redirect()->route('admin.dashboard');
+                case 'instructor':
+                    return redirect()->route('instructor.dashboard');
+                case 'student':
+                    return redirect()->route('student.dashboard');
+                default:
+                    return redirect()->route('home');
+            }
+            
         } else {
             return redirect()->back()->with('error', 'Invalid Credentials');
         }

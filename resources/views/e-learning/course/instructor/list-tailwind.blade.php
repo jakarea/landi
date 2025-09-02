@@ -329,10 +329,10 @@
             </div>
             
             <!-- Course Content -->
-            <div class="p-6">
+            <div class="p-6 flex flex-col">
                 <!-- Course Header -->
                 <div class="flex justify-between items-start gap-3 mb-3">
-                    <h3 class="text-white theme-text-primary font-semibold text-lg leading-tight line-clamp-2 flex-1">
+                    <h3 class="text-white theme-text-primary font-semibold text-lg leading-tight line-clamp-2 flex-1 truncate">
                         <a href="{{ route('instructor.courses.show', $course->slug) }}" class="hover:text-blue anim">
                             {{ $course->title ? $course->title : 'শিরোনামহীন কোর্স' }}
                         </a>
@@ -356,7 +356,7 @@
                 </p>
                 
                 <!-- Course Statistics -->
-                <div class="grid grid-cols-4 gap-3 py-4 border-t border-[#fff]/10 theme-border">
+                <div class="grid grid-cols-4 gap-3 py-4 border-t border-[#fff]/10 theme-border mt-auto">
                     <div class="text-center">
                         <i class="fas fa-play-circle text-blue text-lg mb-1"></i>
                         <div class="text-white theme-text-primary font-semibold text-sm">{{ $lessonCount }}</div>
@@ -373,7 +373,7 @@
                         <div class="text-secondary-200 text-xs">({{ $total }})</div>
                     </div>
                     <div class="text-center">
-                        <i class="fas fa-taka-sign text-blue text-lg mb-1"></i>
+                        <i class="fas fa-donate text-blue text-lg mb-1"></i>
                         <div class="text-white theme-text-primary font-semibold text-sm">{{ number_format($revenueCount) }}</div>
                         <div class="text-secondary-200 text-xs">আয়</div>
                     </div>
@@ -397,7 +397,7 @@
                         <button class="more-actions-btn p-2 text-secondary-200 hover:text-blue anim" title="আরও অপশন">
                             <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <div class="more-actions-menu absolute right-0 top-full mt-2 w-48 bg-card border border-[#fff]/20 theme-border rounded-lg shadow-1 hidden z-10">
+                        <div class="more-actions-menu absolute right-0 top-auto bottom-0 mt-2 w-48 bg-card border border-[#fff]/20 theme-border rounded-lg shadow-1 hidden z-10">
                             <div class="py-2">
                                 <form method="POST" action="{{ route('instructor.courses.destroy', $course->id) }}" class="w-full">
                                     @csrf
