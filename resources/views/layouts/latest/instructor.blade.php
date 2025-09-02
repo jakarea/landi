@@ -20,6 +20,10 @@
         
             <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
       
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
             integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
@@ -27,6 +31,9 @@
         <!-- all css start -->
         {{-- jquery ui css --}}
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <!-- Tailwind CSS for Landing Page Styles -->
+        <link rel="stylesheet" href="{{ asset('/assets/landing/index-BdpMqcnK.css') }}">
+        
         <!-- App css -->
         <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/admin-css/style.css') }}" rel="stylesheet" type="text/css" />
@@ -89,7 +96,7 @@
 
     </head>
 
-    <body class="{{ session('darkModePreference') == 'dark-mode' ? 'dark-mode' : '' }}">
+    <body class="bg-body {{ session('darkModePreference') == 'dark-mode' ? 'dark-mode' : '' }}">
         {{-- Main Root Wrapper @S --}}
 
         {{-- header start --}}

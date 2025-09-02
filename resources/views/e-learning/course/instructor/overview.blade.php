@@ -47,7 +47,7 @@
         }
         
         .course-description-content blockquote {
-            border-left: 4px solid #007bff;
+            border-left: 4px solid #F97316;
             padding-left: 1rem;
             margin: 1rem 0;
             font-style: italic;
@@ -55,18 +55,127 @@
         }
         
         .course-description-content a {
-            color: #007bff;
+            color: #F97316;
             text-decoration: none;
         }
         
         .course-description-content a:hover {
-            color: #0056b3;
+            color: #EA580C;
             text-decoration: underline;
         }
         
         .course-short-desc {
             max-width: 600px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        /* Override Bootstrap conflicts */
+        .course-overview-main .container-x {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .course-overview-main .container-x {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+        
+        /* Ensure Tailwind utilities work */
+        .course-overview-main * {
+            box-sizing: border-box;
+        }
+        
+        /* Override Bootstrap grid conflicts */
+        .course-overview-main .grid {
+            display: grid !important;
+        }
+        
+        .course-overview-main .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+        }
+        
+        @media (min-width: 1024px) {
+            .course-overview-main .lg\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+        }
+        
+        /* Ensure flex utilities work */
+        .course-overview-main .flex {
+            display: flex !important;
+        }
+        
+        .course-overview-main .items-center {
+            align-items: center !important;
+        }
+        
+        .course-overview-main .justify-between {
+            justify-content: space-between !important;
+        }
+        
+        /* Fix spacing utilities */
+        .course-overview-main .space-y-3 > * + * {
+            margin-top: 0.75rem !important;
+        }
+        
+        .course-overview-main .space-y-4 > * + * {
+            margin-top: 1rem !important;
+        }
+        
+        /* Override Bootstrap text colors */
+        .course-overview-main .text-orange {
+            color: #F97316 !important;
+        }
+        
+        .course-overview-main .bg-orange {
+            background-color: #F97316 !important;
+        }
+        
+        .course-overview-main .border-orange\/30 {
+            border-color: rgba(249, 115, 22, 0.3) !important;
+        }
+        
+        /* Ensure rounded corners work */
+        .course-overview-main .rounded-2xl {
+            border-radius: 1rem !important;
+        }
+        
+        .course-overview-main .rounded-xl {
+            border-radius: 0.75rem !important;
+        }
+        
+        /* Fix shadows */
+        .course-overview-main .shadow-sm {
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+        }
+        
+        /* Hero section gradient */
+        .course-overview-main .first-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+        }
+        
+        /* Grid background pattern */
+        .course-overview-main .grid-background {
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        
+        /* Make sure text colors work over gradient */
+        .course-overview-main .text-white {
+            color: #ffffff !important;
+        }
+        
+        .course-overview-main .text-white\/90 {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        .course-overview-main .text-white\/80 {
+            color: rgba(255, 255, 255, 0.8) !important;
         }
     </style>
 @endsection
@@ -78,26 +187,26 @@
 @endsection
 
 @section('content')
-    <main class="course-overview-page">
-        <div class="overview-banner-box"
-            style="background-image: url({{ asset('assets/images/courseds/' . $course->banner) }});">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 col-lg-8">
-                        <div class="banner-title">
-                            <h1>{{ $course->title }}</h1>
-                            <p>{{ $course->sub_title }}</p>
+    <main class="w-full course-overview-main">
+        <section class="w-full pt-12 pb-20 first-gradient relative overflow-hidden border-b border-[#fff]/20 xl:py-[188px]" style="background-image: url({{ asset('assets/images/courseds/' . $course->banner) }});">
+            <div class="absolute inset-0 grid-background opacity-[13%] z-10"></div>
+            <div class="container-x">
+                <div class="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-x-20 xl:gap-x-[105px] lg:items-center">
+                    <div class="w-full">
+                        <div class="text-center relative z-40 lg:text-start">
+                            <h2 class="font-bold text-[28px] leading-[110%] text-[#fff] lg:text-[42px] xl:text-[52px] 2xl:text-[62px] mb-5">{{ $course->title }}</h2>
+                            <p class="text-base text-[#fff]/90 leading-[150%] mb-8 lg:text-lg xl:text-xl course-short-desc">{{ $course->sub_title }}</p>
 
                             @if ($course->user)
-                                <div class="media">
+                                <div class="w-full flex justify-center items-center gap-x-4 mb-8 lg:justify-start">
                                     @if ($course->user->avatar)
-                                        <img src="{{ asset($course->user->avatar) }}" alt="Place" class="img-fluid">
+                                        <img src="{{ asset($course->user->avatar) }}" alt="Instructor" class="w-12 h-12 rounded-full object-cover lg:w-[50px] lg:h-[50px]">
                                     @else
-                                        <span class="user-name-avatar me-1">{!! strtoupper($course->user->name[0]) !!}</span>
+                                        <span class="w-12 h-12 rounded-full bg-[#3C5D62] text-white flex items-center justify-center font-semibold text-lg lg:w-[50px] lg:h-[50px]">{!! strtoupper($course->user->name[0]) !!}</span>
                                     @endif
-                                    <div class="media-body">
-                                        <h5>{{ $course->user->name }}</h5>
-                                        <h6 class="text-capitalize">{{ $course->user->user_role }}</h6>
+                                    <div class="text-center lg:text-start">
+                                        <h5 class="text-white font-semibold text-base lg:text-lg">{{ $course->user->name }}</h5>
+                                        <h6 class="text-white/80 capitalize text-sm font-medium">{{ $course->user->user_role }}</h6>
                                     </div>
                                 </div>
                             @endif
@@ -164,77 +273,74 @@
                                 
                             @endphp
 
-                            <h4>@if ($hours > 0)
-                                {{ $hours }} {{ $hours > 1 ? 'Hours' : 'Hour' }}
-                            @endif
-
-                            {{ $minutes }} {{ $minutes > 1 ? 'Minutes' : 'Minute' }} to Complete . {{ $modulesCount }} Module{{ $modulesCount != 1 ? 's' : '' }} in
-                                Course
-
-                                @if ($course->allow_review)
-                                   . {{ count($course_reviews) }} {{ count($course_reviews) > 1 ? 'Reviews' : 'Review' }}
+                            <div class="text-white/80 text-sm leading-[150%] mb-8 lg:text-base">
+                                @if ($hours > 0)
+                                    {{ $hours }} {{ $hours > 1 ? 'Hours' : 'Hour' }}
                                 @endif
-                            </h4>
+                                {{ $minutes }} {{ $minutes > 1 ? 'Minutes' : 'Minute' }} to Complete • {{ $modulesCount }} Module{{ $modulesCount != 1 ? 's' : '' }} in Course
+                                @if ($course->allow_review)
+                                   • {{ count($course_reviews) }} {{ count($course_reviews) > 1 ? 'Reviews' : 'Review' }}
+                                @endif
+                            </div>
 
                            
 
-                            <a href="{{ url('instructor/courses/' . $course->id) }}" class="common-bttn"
-                                style="border-radius: 6.25rem; margin-top: 2rem"><img
-                                    src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="a"
-                                    class="img-fluid me-1">Go to Course</a>
+                            <a href="{{ url('instructor/courses/' . $course->id) }}" class="inline-flex items-center gap-x-2.5 bg-orange text-white px-6 py-3 rounded-full font-semibold text-base hover:bg-orange/90 transition-all duration-300 lg:px-8 lg:py-4 lg:text-lg relative z-40">
+                                <img src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="Play" class="w-5 h-5 lg:w-6 lg:h-6">
+                                Go to Course
+                            </a>
 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-8 col-12 order-2 order-lg-1">
-                    <div class="what-you-learn-box">
-                        <h3>What You'll Learn</h3>
+        </section>
+        
+        <div class="container-x py-12 lg:py-20">
+            <div class="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-x-20 xl:gap-x-[105px]">
+                <div class="w-full order-2 lg:order-1">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8 lg:p-8">
+                        <h3 class="font-bold text-xl text-gray-900 mb-6 lg:text-2xl">What You'll Learn</h3>
                         @php
                             $objectives = explode('[objective]', $course->objective);
                         @endphp
-                        <ul>
+                        <ul class="space-y-3">
                             @foreach ($objectives as $object)
                                 @if (trim($object) !== '')
-                                    <li><i class="fas fa-check"></i> {{ $object }} </li>
+                                    <li class="flex items-start gap-3">
+                                        <i class="fas fa-check text-orange mt-1 flex-shrink-0"></i>
+                                        <span class="text-gray-700 text-sm leading-[150%] lg:text-base">{{ $object }}</span>
+                                    </li>
                                 @else
-                                    <li>No Objective Found!</li>
+                                    <li class="text-gray-500 italic text-sm">No Objective Found!</li>
                                 @endif
                             @endforeach
                         </ul>
                     </div>
                     
                     @if ($course->description)
-                    <div class="what-you-learn-box ">
-                        <h3>Course Details</h3>
-                        <div class="course-description-content course-outline-wrap" style="line-height: 1.7; color: #555;">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8 lg:p-8">
+                        <h3 class="font-bold text-xl text-gray-900 mb-6 lg:text-2xl">Course Details</h3>
+                        <div class="course-description-content prose prose-sm max-w-none lg:prose-base">
                             {!! $course->description !!} 
                         </div>
                     </div>
                     @endif
                     
-                    <div class="common-header">
-                        <h3 class="mb-0">Course Content</h3>
-                    </div>
-                    {{-- course outline --}}
-                    <div class="course-outline-wrap course-content">
-                        <div class="accordion" id="accordionExample">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8 lg:p-8">
+                        <h3 class="font-bold text-xl text-gray-900 mb-6 lg:text-2xl">Course Content</h3>
+                        <div class="space-y-3">
                             @foreach ($course->modules as $module)
-                                    <div class="accordion-item">
-                                        <div class="accordion-header" id="heading_{{ $module->id }}">
-                                            <button class="accordion-button pb-0" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapse_{{ $module->id }}" aria-expanded="false"
-                                                aria-controls="collapse_{{ $module->id }}">
-                                                <div class="w-100">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <h5 class="mb-0">{{ $module->title }}
-                                                            {{ $module->checkNumber() ? ' - Module ' . $loop->iteration : '' }}
-                                                        </h5>
-                                                        <i class="fas fa-angle-down"></i>
-                                                    </div>
+                                    <div class="border border-gray-200 rounded-xl overflow-hidden hover:border-orange/30 transition-colors">
+                                        <div class="bg-gray-50/50">
+                                            <button class="w-full p-5 text-left focus:outline-none focus:ring-2 focus:ring-orange/20 focus:ring-inset lg:p-6" type="button" onclick="toggleModule({{ $module->id }})">
+                                                <div class="flex justify-between items-center">
+                                                    <h5 class="text-base font-semibold text-gray-900 lg:text-lg">{{ $module->title }}
+                                                        {{ $module->checkNumber() ? ' - Module ' . $loop->iteration : '' }}
+                                                    </h5>
+                                                    <i class="fas fa-chevron-down text-orange transition-transform duration-200" id="icon_{{ $module->id }}"></i>
+                                                </div>
                                                     {{-- lessons total minutes --}}
                                                     @php
                                                     $totalDuration3 = 0;
@@ -250,24 +356,26 @@
                                                         $lessonCount = $module->lessons->count();
                                                     @endphp
 
-                                                    <p class="common-para mb-0 mt-2 text-muted">
-                                                        <i class="fas fa-clock me-1"></i>
-                                                        @if ($hours3 > 0)
-                                                            {{ $hours3 }} {{ $hours3 > 1 ? 'Hours' : 'Hour' }}
-                                                        @endif
-                                                        {{ $minutes3 }} Min • 
-                                                        <i class="fas fa-list me-1"></i>
-                                                        {{ $lessonCount }} {{ $lessonCount > 1 ? 'Lessons' : 'Lesson' }}
+                                                    <p class="text-xs text-orange mt-2.5 flex items-center gap-4 lg:text-sm lg:mt-3">
+                                                        <span class="flex items-center gap-1.5">
+                                                            <i class="fas fa-clock text-orange"></i>
+                                                            @if ($hours3 > 0)
+                                                                {{ $hours3 }} {{ $hours3 > 1 ? 'Hours' : 'Hour' }}
+                                                            @endif
+                                                            {{ $minutes3 }} Min
+                                                        </span>
+                                                        <span class="flex items-center gap-1.5">
+                                                            <i class="fas fa-list text-orange"></i>
+                                                            {{ $lessonCount }} {{ $lessonCount > 1 ? 'Lessons' : 'Lesson' }}
+                                                        </span>
                                                     </p>
                                                     {{-- lessons total minutes --}}
                                                 </div>
                                             </button>
                                         </div>
-                                        <div id="collapse_{{ $module->id }}" class="accordion-collapse collapse "
-                                            aria-labelledby="heading_{{ $module->id }}"
-                                            data-bs-parent="#accordionExample">
-                                            <div class="accordion-body p-0">
-                                                <ul class="lesson-wrap">
+                                        <div id="collapse_{{ $module->id }}" class="hidden transition-all duration-300">
+                                            <div class="border-t border-gray-200/50">
+                                                <ul class="divide-y divide-gray-100/50">
                                                     @foreach ($module->lessons as $lesson)
                                                         @php
                                                             // Calculate lesson duration
@@ -287,41 +395,41 @@
 
                                                         <li>
                                                             <a href="javascript:void(0)" 
-                                                               class="video_list_play d-flex {{ ($lesson->type == 'video' || $lesson->type == 'audio') && ($isPublic || auth()->check()) && !$isFuture ? 'lesson-playable' : '' }}"
+                                                               class="video_list_play flex items-center justify-between p-3.5 hover:bg-orange/5 transition-colors {{ ($lesson->type == 'video' || $lesson->type == 'audio') && ($isPublic || auth()->check()) && !$isFuture ? 'lesson-playable cursor-pointer' : 'cursor-default' }} lg:p-4"
                                                                data-lesson-id="{{ $lesson->id }}"
                                                                data-lesson-type="{{ $lesson->type }}"
                                                                data-video-url="{{ $lesson->video_link ?? '' }}">
-                                                                <div class="d-flex align-items-center flex-grow-1">
+                                                                <div class="flex items-center gap-2.5 flex-1 lg:gap-3">
                                                                     @if ($isFuture)
-                                                                        <i class="fas fa-clock me-2" style="color: #17a2b8;"></i>
+                                                                        <i class="fas fa-clock text-blue-500 text-sm"></i>
                                                                     @elseif ($isPublic)
-                                                                        <i class="fas fa-play-circle me-2" style="color: #28a745;"></i>
+                                                                        <i class="fas fa-play-circle text-orange text-sm"></i>
                                                                     @elseif (auth()->check())
-                                                                        <i class="fas fa-play-circle me-2" style="color: #28a745;"></i>
+                                                                        <i class="fas fa-play-circle text-orange text-sm"></i>
                                                                     @else
-                                                                        <i class="fas fa-lock me-2" style="color: #6c757d;"></i>
+                                                                        <i class="fas fa-lock text-gray-400 text-sm"></i>
                                                                     @endif
                                                                     
-                                                                    {{ $lesson->title }}
+                                                                    <span class="text-gray-900 font-medium text-sm lg:text-base">{{ $lesson->title }}</span>
                                                                     
                                                                     @if ($isPublic)
-                                                                        <span class="badge bg-success ms-2 small">Public</span>
+                                                                        <span class="px-1.5 py-0.5 bg-orange/10 text-orange text-xs font-medium rounded-full">Public</span>
                                                                     @endif
                                                                 </div>
-                                                                <div class="lesson-meta">
+                                                                <div class="text-right">
                                                                     @if ($isFuture)
-                                                                        <small class="text-muted">Available {{ $publishAt->format('M d, Y') }}</small>
+                                                                        <small class="text-gray-500 text-xs lg:text-sm">Available {{ $publishAt->format('M d, Y') }}</small>
                                                                     @else
-                                                                        <p class="common-para mb-0">
+                                                                        <div class="text-orange text-xs lg:text-sm">
                                                                             @if ($lesson->type != 'text')
                                                                                 @if ($hours2 > 0)
                                                                                     {{ $hours2 }} {{ $hours2 > 1 ? 'Hours' : 'Hour' }}
                                                                                 @endif
                                                                                 {{ $minutes2 < 1 ? 1 : $minutes2 }} Min
                                                                             @else
-                                                                                <i class="fa-regular fa-file-lines"></i>
+                                                                                <i class="fa-regular fa-file-lines text-orange"></i>
                                                                             @endif
-                                                                        </p>
+                                                                        </div>
                                                                     @endif
                                                                 </div>
                                                             </a>
@@ -334,54 +442,50 @@
                             @endforeach
                         </div>
                     </div>
-                    {{-- course outline --}}
                     @if ($course->allow_review)
-                    <div class="common-header">
-                        <h3 class="mb-0">Student Review's</h3>
-                        <span>Total {{ count($course_reviews) }} Reviews</span>
-                    </div>
-                    <div class="row">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8 lg:p-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-xl text-gray-900 lg:text-2xl">Student Reviews</h3>
+                            <span class="text-orange text-sm lg:text-base">Total {{ count($course_reviews) }} Reviews</span>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
                         @if (count($course_reviews) > 0)
                             @foreach ($course_reviews as $course_review)
-                                <div class="col-lg-6">
-                                    <div class="course-rev-box">
-                                        <div class="media">
-                                            @if ($course_review->user)
-                                                @if ($course_review->user->avatar)
-                                                    <img src="{{ asset($course_review->user->avatar) }}" alt="Avatar"
-                                                        class="img-fluid">
-                                                @else
-                                                    <span class="user-name-avatar me-3">{!! strtoupper($course->user->name[0]) !!}</span>
-                                                @endif
+                                <div class="bg-gray-50/50 rounded-xl p-5 border border-gray-100/50 lg:p-6">
+                                    <div class="flex items-start gap-3 mb-4 lg:gap-4">
+                                        @if ($course_review->user)
+                                            @if ($course_review->user->avatar)
+                                                <img src="{{ asset($course_review->user->avatar) }}" alt="Avatar" class="w-10 h-10 rounded-full object-cover lg:w-12 lg:h-12">
+                                            @else
+                                                <span class="w-10 h-10 rounded-full bg-orange/10 text-orange flex items-center justify-center font-semibold text-sm lg:w-12 lg:h-12">{!! strtoupper($course->user->name[0]) !!}</span>
                                             @endif
+                                        @endif
 
-                                            <div class="media-body">
-                                                <h5>{{ $course_review->user->name }}</h5>
-                                                <h6>{{ \Carbon\Carbon::parse($course_review->created_at)->format('D, M d Y') }}
-                                                </h6>
-                                            </div>
+                                        <div class="flex-1">
+                                            <h5 class="font-semibold text-gray-900 text-sm lg:text-base">{{ $course_review->user->name }}</h5>
+                                            <p class="text-xs text-orange lg:text-sm">{{ \Carbon\Carbon::parse($course_review->created_at)->format('M d, Y') }}</p>
                                         </div>
-                                        <p>{{ $course_review->comment }}</p>
-                                        <ul>
-                                            @for ($i = 0; $i < $course_review->star; $i++)
-                                                <li><i class="fas fa-star"></i></li>
-                                            @endfor
-                                        </ul>
+                                    </div>
+                                    <p class="text-gray-700 mb-3 text-sm leading-[150%] lg:text-base lg:mb-4">{{ $course_review->comment }}</p>
+                                    <div class="flex gap-0.5">
+                                        @for ($i = 0; $i < $course_review->star; $i++)
+                                            <i class="fas fa-star text-orange text-sm"></i>
+                                        @endfor
                                     </div>
                                 </div>
                             @endforeach
                         @else
-                            <div class="text-center">
-                                <p>No Review Found!</p>
+                            <div class="text-center py-8 lg:py-12">
+                                <p class="text-gray-500 text-base lg:text-lg">No Review Found!</p>
                             </div>
                         @endif
+                        </div>
                     </div>
                     @endif
                     @if (count($related_course) > 0)
-                        <div class="common-header">
-                            <h3 class="mb-0">Similar Course</h3>
-                        </div>
-                        <div class="row">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8 lg:p-8">
+                            <h3 class="font-bold text-xl text-gray-900 mb-6 lg:text-2xl">Similar Courses</h3>
+                            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
                             @foreach ($related_course as $r_course)
                                 @php
                                     $review_sum = 0;
@@ -395,91 +499,96 @@
                                         $review_avg = $review_sum / $total;
                                     }
                                 @endphp
-                                {{-- course single box start --}}
-                                <div class="col-lg-5 col-sm-6 mb-4">
-                                    <div class="course-single-item">
-                                        <div>
-                                            <div class="course-thumb-box">
-                                                <img src="{{ $r_course->thumbnail ? asset($r_course->thumbnail) : asset('assets/images/courses/default-thumbnail.svg') }}" alt="{{ $r_course->slug }}"
-                                                    class="img-fluid">
-                                            </div>
-                                            <div class="course-txt-box">
-                                                <a href="{{ url('instructor/courses/overview/' . $r_course->slug) }}">
-                                                    {{ Str::limit($r_course->title, 45) }}</a>
-
-                                                <p>{{ Str::limit($r_course->short_description, $limit = 46, $end = '...') }}
-                                                </p>
-                                                <ul>
-                                                    <li><span>{{ $review_avg }}</span></li>
-                                                    @for ($i = 0; $i < $review_avg; $i++)
-                                                        <li><i class="fas fa-star"></i></li>
+                                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-sm hover:border-orange/30 transition-all duration-300">
+                                    <div class="aspect-video overflow-hidden">
+                                        <img src="{{ $r_course->thumbnail ? asset($r_course->thumbnail) : asset('assets/images/courses/default-thumbnail.svg') }}" alt="{{ $r_course->slug }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="p-5 lg:p-6">
+                                        <h4 class="text-base font-semibold text-gray-900 mb-3 leading-tight lg:text-lg">
+                                            <a href="{{ url('instructor/courses/overview/' . $r_course->slug) }}" class="hover:text-orange transition-colors">
+                                                {{ Str::limit($r_course->title, 45) }}
+                                            </a>
+                                        </h4>
+                                        <p class="text-orange text-xs mb-4 leading-[150%] lg:text-sm">{{ Str::limit($r_course->short_description, $limit = 46, $end = '...') }}</p>
+                                        
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="text-xs font-medium text-gray-700 lg:text-sm">{{ number_format($review_avg, 1) }}</span>
+                                                <div class="flex gap-0.5">
+                                                    @for ($i = 0; $i < floor($review_avg); $i++)
+                                                        <i class="fas fa-star text-orange text-xs"></i>
                                                     @endfor
-                                                    <li><span>({{ $total }})</span></li>
-                                                </ul>
+                                                </div>
+                                                <span class="text-xs text-gray-500 lg:text-sm">({{ $total }})</span>
                                             </div>
-                                        </div>
-                                        <div class="course-txt-box">
-                                            @if ($r_course->offer_price)
-                                                <h5>৳ {{ $r_course->offer_price }} <span>৳ {{ $r_course->price }}</span>
-                                                </h5>
-                                            @elseif(!$r_course->offer_price && !$r_course->price)
-                                                <h5>Free</h5>
-                                            @else
-                                                <h5>৳ {{ $r_course->price }}</h5>
-                                            @endif
+                                            
+                                            <div class="text-right">
+                                                @if ($r_course->offer_price)
+                                                    <div class="text-base font-bold text-gray-900 lg:text-lg">৳ {{ $r_course->offer_price }}</div>
+                                                    <div class="text-xs text-gray-500 line-through lg:text-sm">৳ {{ $r_course->price }}</div>
+                                                @elseif(!$r_course->offer_price && !$r_course->price)
+                                                    <div class="text-base font-bold text-orange lg:text-lg">Free</div>
+                                                @else
+                                                    <div class="text-base font-bold text-gray-900 lg:text-lg">৳ {{ $r_course->price }}</div>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                {{-- course single box end --}}
                             @endforeach
+                            </div>
                         </div>
                     @endif
                 </div>
-                <div class="col-lg-4 col-12 order-1 order-lg-2 col-md-6">
-                    <div class="course-overview-right-part">
-                        <div class="course-main-thumb">
-                            @if ($promo_video_link != '')
-                                <iframe style="border-radius: 1rem" width="300" height="220"
-                                    src="https://www.youtube-nocookie.com/embed/{{ $promo_video_link }}"></iframe>
-                            @else
-                                <img src="{{ $course->thumbnail ? asset($course->thumbnail) : asset('assets/images/courses/default-thumbnail.svg') }}" alt="" class="img-fluid">
-                            @endif
-                            <div class="d-flex justify-content-between align-items-center">
+                <div class="lg:col-span-4 order-1 lg:order-2">
+                    <div class="sticky top-8">
+                        <div class="bg-white rounded-2xl p-8 shadow-lg mb-8">
+                            <div class="aspect-video rounded-2xl overflow-hidden mb-6">
+                                @if ($promo_video_link != '')
+                                    <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/{{ $promo_video_link }}"></iframe>
+                                @else
+                                    <img src="{{ $course->thumbnail ? asset($course->thumbnail) : asset('assets/images/courses/default-thumbnail.svg') }}" alt="Course Thumbnail" class="w-full h-full object-cover">
+                                @endif
+                            </div>
+                            <div class="flex justify-between items-center mb-6">
                                 <div>
                                     @if ($course->offer_price)
-                                        <h2>৳ {{ $course->offer_price }}</h2>
+                                        <h2 class="text-3xl font-bold text-gray-900">৳ {{ $course->offer_price }}</h2>
+                                        @if ($course->price)
+                                            <p class="text-lg text-gray-500 line-through">৳ {{ $course->price }}</p>
+                                        @endif
                                     @elseif(!$course->offer_price && $course->price)
-                                        <h2>৳ {{ $course->price }}</h2>
+                                        <h2 class="text-3xl font-bold text-gray-900">৳ {{ $course->price }}</h2>
                                     @else
-                                        <h2>Free</h2>
+                                        <h2 class="text-3xl font-bold text-orange">Free</h2>
                                     @endif
                                 </div>
-                                <button type="button" class="btn btn-preview" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">Preview</button>
+                                <button type="button" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium hover:bg-blue-200 transition-colors" data-bs-toggle="modal" data-bs-target="#exampleModal">Preview</button>
                             </div>
 
-                            <button type="button" class="btn enrol-bttn btn-share" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal2"><img
-                                    src="{{ asset('assets/images/icons/share.svg') }}" alt="a"
-                                    class="img-fluid me-2" style="width: 1.5rem"> Share this course</button>
+                            <button type="button" class="w-full flex items-center justify-center gap-3 bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                <img src="{{ asset('assets/images/icons/share.svg') }}" alt="Share" class="w-6 h-6">
+                                Share this course
+                            </button>
 
                         </div>
-                        <div class="course-desc-txt">
-                            {!! $course->short_description !!}</p>
                         </div>
-                        <div class="course-details-txt">
-                            <h4>Course Summary</h4>
+                        
+                        <div class="bg-white rounded-2xl p-8 shadow-lg">
+                            <div class="prose prose-sm max-w-none mb-6">
+                                {!! $course->short_description !!}
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 mb-6">Course Summary</h4>
                             
-                            {{-- Course Statistics --}}
-                            <div class="course-stats mb-3">
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-users me-2" style="color: #007bff; width: 20px;"></i>
-                                    <span><strong>{{ $courseEnrolledNumber }}</strong> Students Enrolled</span>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-users text-orange w-5"></i>
+                                    <span class="text-gray-700"><strong>{{ $courseEnrolledNumber }}</strong> Students Enrolled</span>
                                 </div>
                                 
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-clock me-2" style="color: #28a745; width: 20px;"></i>
-                                    <span><strong>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-clock text-orange w-5"></i>
+                                    <span class="text-gray-700"><strong>
                                         @if ($hours > 0)
                                             {{ $hours }} {{ $hours > 1 ? 'Hours' : 'Hour' }}
                                         @endif
@@ -500,50 +609,48 @@
                                 </div>
                                 --}}
 
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-list-ul me-2" style="color: #17a2b8; width: 20px;"></i>
-                                    <span><strong>{{ $lessonsCount }} Lesson{{ $lessonsCount != 1 ? 's' : '' }}</strong> in <strong>{{ $modulesCount }} Module{{ $modulesCount != 1 ? 's' : '' }}</strong></span>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-list-ul text-orange w-5"></i>
+                                    <span class="text-gray-700"><strong>{{ $lessonsCount }} Lesson{{ $lessonsCount != 1 ? 's' : '' }}</strong> in <strong>{{ $modulesCount }} Module{{ $modulesCount != 1 ? 's' : '' }}</strong></span>
                                 </div>
 
                                 @if ($course->language)
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-language me-2" style="color: #6c757d; width: 20px;"></i>
-                                    <span>Language: <strong>{{ $course->language }}</strong></span>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-language text-orange w-5"></i>
+                                    <span class="text-gray-700">Language: <strong>{{ $course->language }}</strong></span>
                                 </div>
                                 @endif
 
                                 @if ($course->platform)
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-desktop me-2" style="color: #fd7e14; width: 20px;"></i>
-                                    <span>Platform: <strong>{{ $course->platform }}</strong></span>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-desktop text-orange w-5"></i>
+                                    <span class="text-gray-700">Platform: <strong>{{ $course->platform }}</strong></span>
                                 </div>
                                 @endif
 
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-infinity me-2" style="color: #6f42c1; width: 20px;"></i>
-                                    <span><strong>Full Lifetime Access</strong></span>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-infinity text-orange w-5"></i>
+                                    <span class="text-gray-700"><strong>Full Lifetime Access</strong></span>
                                 </div>
 
                                 @if ($course->hascertificate)
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-certificate me-2" style="color: #ffc107; width: 20px;"></i>
-                                    <span><strong>Certificate of Completion</strong></span>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-certificate text-orange w-5"></i>
+                                    <span class="text-gray-700"><strong>Certificate of Completion</strong></span>
                                 </div>
                                 @endif
 
-                                {{-- Course Level --}}
                                 @if ($course->level)
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-layer-group me-2" style="color: #e83e8c; width: 20px;"></i>
-                                    <span>Level: <strong>{{ ucfirst($course->level) }}</strong></span>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-layer-group text-orange w-5"></i>
+                                    <span class="text-gray-700">Level: <strong>{{ ucfirst($course->level) }}</strong></span>
                                 </div>
                                 @endif
 
-                                {{-- Last Updated --}}
                                 @if ($course->updated_at)
-                                <div class="stat-item d-flex align-items-center mb-2">
-                                    <i class="fas fa-calendar-alt me-2" style="color: #20c997; width: 20px;"></i>
-                                    <span>Updated: <strong>{{ \Carbon\Carbon::parse($course->updated_at)->format('M Y') }}</strong></span>
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-calendar-alt text-orange w-5"></i>
+                                    <span class="text-gray-700">Updated: <strong>{{ \Carbon\Carbon::parse($course->updated_at)->format('M Y') }}</strong></span>
                                 </div>
                                 @endif
                             </div>
@@ -555,60 +662,48 @@
     </main>
 
     {{-- overview tab modal start --}}
-    <div class="overview-modal-box">
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="overview-box-wrap">
-                            {{-- header --}}
-                            <div class="media">
-                                <div class="media-body">
-                                    <h5>Course Preview</h5>
-                                    <h4>{{ $course->title }}</h4>
+    <div class="fixed inset-0 z-50 hidden" id="exampleModal">
+        <div class="fixed inset-0 bg-black bg-opacity-50" onclick="closeModal('exampleModal')"></div>
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl mx-4">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="p-0">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h5 class="text-lg font-semibold text-gray-900">Course Preview</h5>
+                                    <h4 class="text-2xl font-bold text-gray-900 mt-1">{{ $course->title }}</h4>
                                 </div>
-                                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn">
-                                    <i class="fas fa-close"></i>
+                                <button type="button" onclick="closeModal('exampleModal')" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                                    <i class="fas fa-times text-orange"></i>
                                 </button>
                             </div>
-                            {{-- header --}}
 
-                            {{-- intro video --}}
-                            <div class="intro-video-box">
+                            <div class="aspect-video rounded-2xl overflow-hidden mb-6">
                                 @if ($promo_video_link != '')
-                                    <iframe class="youtubePlayer" style="border-radius: 1rem" width="100%"
-                                        height="320"
-                                        src="https://www.youtube-nocookie.com/embed/{{ $promo_video_link }}"></iframe>
+                                    <iframe class="youtubePlayer w-full h-full" src="https://www.youtube-nocookie.com/embed/{{ $promo_video_link }}"></iframe>
                                 @else
-                                    <img src="{{ $course->thumbnail ? asset($course->thumbnail) : asset('assets/images/courses/default-thumbnail.svg') }}" alt="Thumbnail"
-                                        class="img-fluid d-block w-100">
+                                    <img src="{{ $course->thumbnail ? asset($course->thumbnail) : asset('assets/images/courses/default-thumbnail.svg') }}" alt="Thumbnail" class="w-full h-full object-cover">
                                 @endif
                             </div>
-                            {{-- intro video --}}
 
-                            {{-- free sample video --}}
-                            <div class="free-sample-video-list">
-                                <h5 class="mb-4">Course Videos:</h5>
-                                @foreach ($course->modules as $module)
-                                    @foreach ($module->lessons as $lesson)
-                                        @if ($lesson->type == 'video')
-                                            {{-- item --}}
-                                            <div class="media d-flex py-2">
-                                                <img src="{{ asset('assets/images/icons/icon-play.svg') }}"
-                                                    alt="video-thumb" class="img-fluid icon">
-                                                <div class="media-body">
-                                                    <p class="mt-0">{{ $lesson->title }}</p>
+                            <div class="space-y-4">
+                                <h5 class="text-lg font-semibold text-gray-900">Course Videos:</h5>
+                                <div class="max-h-64 overflow-y-auto space-y-3">
+                                    @foreach ($course->modules as $module)
+                                        @foreach ($module->lessons as $lesson)
+                                            @if ($lesson->type == 'video')
+                                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                    <div class="flex items-center gap-3">
+                                                        <img src="{{ asset('assets/images/icons/icon-play.svg') }}" alt="Play" class="w-5 h-5">
+                                                        <p class="text-gray-900 font-medium">{{ $lesson->title }}</p>
+                                                    </div>
+                                                    <img src="{{ asset('assets/images/icons/lok.svg') }}" alt="Lock" class="w-5 h-5">
                                                 </div>
-                                                <img src="{{ asset('assets/images/icons/lok.svg') }}"
-                                                    alt="video-thumb" class="img-fluid icon">
-                                            </div>
-                                            {{-- item --}}
-                                        @endif
+                                            @endif
+                                        @endforeach
                                     @endforeach
-                                @endforeach
+                                </div>
                             </div>
-                            {{-- free sample video --}}
                         </div>
                     </div>
                 </div>
@@ -618,65 +713,67 @@
     {{-- overview tab modal end --}}
 
     {{-- share course modal --}}
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="share-on-social-wrap mt-0">
-                    <h4>Share</h4>
-                    <h6>As a post</h6>
-                    <div class="d-flex">
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('courses/overview-courses', $course->slug) }}"
-                            target="_blank">
-                            <img src="{{ asset('assets/images/icons/fb.svg') }}" alt="FB"
-                                class="img-fluid">
-                            <span>Facebook</span>
+    <div class="fixed inset-0 z-50 hidden" id="exampleModal2">
+        <div class="fixed inset-0 bg-black bg-opacity-50" onclick="closeModal('exampleModal2')"></div>
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md mx-4">
+            <div class="bg-white rounded-2xl p-8">
+                <div class="text-center mb-8">
+                    <h4 class="text-2xl font-bold text-gray-900 mb-2">Share</h4>
+                    <button type="button" onclick="closeModal('exampleModal2')" class="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full">
+                        <i class="fas fa-times text-orange"></i>
+                    </button>
+                </div>
+                
+                <div class="mb-8">
+                    <h6 class="text-sm font-semibold text-gray-700 mb-4">As a post</h6>
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('courses/overview-courses', $course->slug) }}" target="_blank" class="flex flex-col items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors">
+                            <img src="{{ asset('assets/images/icons/fb.svg') }}" alt="Facebook" class="w-8 h-8 mb-2">
+                            <span class="text-sm font-medium text-gray-900">Facebook</span>
                         </a>
-                        <a href="#">
-                            <img src="{{ asset('assets/images/icons/tg.svg') }}" alt="TG"
-                                class="img-fluid">
-                            <span>Telegram</span>
+                        <a href="#" class="flex flex-col items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors">
+                            <img src="{{ asset('assets/images/icons/tg.svg') }}" alt="Telegram" class="w-8 h-8 mb-2">
+                            <span class="text-sm font-medium text-gray-900">Telegram</span>
                         </a>
-                        <a href="https://www.linkedin.com/shareArticle?url={{ url('courses/overview-courses', $course->slug) }}"
-                            target="_blank">
-                            <img src="{{ asset('assets/images/icons/linkedin-ic.svg') }}" alt="FB"
-                                class="img-fluid">
-                            <span>LinkedIn</span>
+                        <a href="https://www.linkedin.com/shareArticle?url={{ url('courses/overview-courses', $course->slug) }}" target="_blank" class="flex flex-col items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors">
+                            <img src="{{ asset('assets/images/icons/linkedin-ic.svg') }}" alt="LinkedIn" class="w-8 h-8 mb-2">
+                            <span class="text-sm font-medium text-gray-900">LinkedIn</span>
                         </a>
-                        <a href="https://twitter.com/intent/tweet?url={{ url('courses/overview-courses', $course->slug) }}&text={{ $course->title }}"
-                            target="_blank"> <img src="{{ asset('assets/images/icons/twt.svg') }}" alt="FB"
-                                class="img-fluid">
-                            <span>Twitter</span>
-                        </a>
-                    </div>
-                    <h6>As a message</h6>
-                    <div class="d-flex">
-                        <a
-                            href="https://www.messenger.com/share.php?text={{ url('courses/overview-courses', $course->slug) }}">
-                            <img src="{{ asset('assets/images/icons/messenger.svg') }}" alt="FB"
-                                class="img-fluid">
-                            <span>Messenger</span>
-                        </a>
-                        <a href="https://api.whatsapp.com/send?text={{ url('courses/overview-courses', $course->slug) }}">
-                            <img src="{{ asset('assets/images/icons/wapp.svg') }}" alt="FB"
-                                class="img-fluid">
-                            <span>Whatsapp</span>
-                        </a>
-                        <a href="https://telegram.me/share/url?url={{ url('courses/overview-courses', $course->slug) }}">
-                            <img src="{{ asset('assets/images/icons/teleg.svg') }}" alt="FB"
-                                class="img-fluid">
-                            <span>Telegram</span>
+                        <a href="https://twitter.com/intent/tweet?url={{ url('courses/overview-courses', $course->slug) }}&text={{ $course->title }}" target="_blank" class="flex flex-col items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors">
+                            <img src="{{ asset('assets/images/icons/twt.svg') }}" alt="Twitter" class="w-8 h-8 mb-2">
+                            <span class="text-sm font-medium text-gray-900">Twitter</span>
                         </a>
                     </div>
-                    <div class="d-flex align-items-center justify-content-between mb-0">
-                        <h6>Or copy link</h6>
-                        <span id="notify" style="color: green; font-size: 14px;"></span>
+                </div>
+                
+                <div class="mb-8">
+                    <h6 class="text-sm font-semibold text-gray-700 mb-4">As a message</h6>
+                    <div class="flex gap-4 justify-center">
+                        <a href="https://www.messenger.com/share.php?text={{ url('courses/overview-courses', $course->slug) }}" class="flex flex-col items-center p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors">
+                            <img src="{{ asset('assets/images/icons/messenger.svg') }}" alt="Messenger" class="w-8 h-8 mb-2">
+                            <span class="text-sm font-medium text-gray-900">Messenger</span>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?text={{ url('courses/overview-courses', $course->slug) }}" class="flex flex-col items-center p-4 bg-green-50 rounded-xl hover:bg-green-100 transition-colors">
+                            <img src="{{ asset('assets/images/icons/wapp.svg') }}" alt="WhatsApp" class="w-8 h-8 mb-2">
+                            <span class="text-sm font-medium text-gray-900">WhatsApp</span>
+                        </a>
+                        <a href="https://telegram.me/share/url?url={{ url('courses/overview-courses', $course->slug) }}" class="flex flex-col items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors">
+                            <img src="{{ asset('assets/images/icons/teleg.svg') }}" alt="Telegram" class="w-8 h-8 mb-2">
+                            <span class="text-sm font-medium text-gray-900">Telegram</span>
+                        </a>
                     </div>
-                    <div class="copy-link">
-                        <input autocomplete="off" type="text" placeholder="Link"
-                            value="{{ url('courses/overview-courses', $course->slug) }}" class="form-control"
-                            id="linkToCopy">
-                        <a href="#" id="copyButton" class="ms-1 px-0">Copy</a>
+                </div>
+                
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h6 class="text-sm font-semibold text-gray-700">Or copy link</h6>
+                        <span id="notify" class="text-orange text-sm font-medium"></span>
                     </div>
+                    <div class="flex gap-2">
+                        <input autocomplete="off" type="text" placeholder="Link" value="{{ url('courses/overview-courses', $course->slug) }}" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" id="linkToCopy" readonly>
+                        <button type="button" id="copyButton" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">Copy</button>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -688,36 +785,70 @@
 {{-- js --}}
 @section('script')
     <script>
+        // Modal Functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+        
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+        
+        // Module Toggle Function
+        function toggleModule(moduleId) {
+            const collapse = document.getElementById(`collapse_${moduleId}`);
+            const icon = document.getElementById(`icon_${moduleId}`);
+            
+            if (collapse.classList.contains('hidden')) {
+                collapse.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                collapse.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        // Modal event listeners
+        document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = button.getAttribute('data-bs-target');
+                if (target) {
+                    const modalId = target.replace('#', '');
+                    openModal(modalId);
+                }
+            });
+        });
+        
         let currentURL = window.location.href;
         const baseUrl = currentURL.split('/').slice(0, 3).join('/');
         const likeBttn = document.getElementById('likeBttn');
 
-        likeBttn.addEventListener('click', (e) => {
+        if (likeBttn) {
+            likeBttn.addEventListener('click', (e) => {
+                const course_id = {{ $course->id }};
+                const ins_id = {{ $course->user_id }};
 
-            const course_id = {{ $course->id }};
-            const ins_id = {{ $course->user_id }};
-
-            fetch(`${baseUrl}/student/course-like/${course_id}/${ins_id}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === 'liked') {
-                        likeBttn.classList.add('active');
-
-                    } else {
-                        likeBttn.classList.remove('active');
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-
-        });
+                fetch(`${baseUrl}/student/course-like/${course_id}/${ins_id}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'liked') {
+                            likeBttn.classList.add('active');
+                        } else {
+                            likeBttn.classList.remove('active');
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        }
     </script>
 
     <script>
@@ -725,17 +856,18 @@
         const linkToCopy = document.getElementById("linkToCopy");
         const notify = document.getElementById("notify");
 
-        copyButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            linkToCopy.select();
-            document.execCommand("copy");
-            notify.innerText = 'Copied!';
+        if (copyButton && linkToCopy && notify) {
+            copyButton.addEventListener("click", (e) => {
+                e.preventDefault();
+                linkToCopy.select();
+                document.execCommand("copy");
+                notify.innerText = 'Copied!';
 
-            setTimeout(() => {
-                notify.innerText = '';
-            }, 1000);
-
-        });
+                setTimeout(() => {
+                    notify.innerText = '';
+                }, 1000);
+            });
+        }
     </script>
 
     {{-- Video Popup Script --}}

@@ -1,4 +1,4 @@
-@extends('layouts.latest.instructor')
+@extends('layouts/latest/instructor')
 @section('title')
     Course Details
 @endsection
@@ -229,7 +229,6 @@
 
             {{-- Right Side --}}
             <div class="col-xl-4 col-lg-5 col-md-12 col-12">
-
                 {{-- course outline --}}
                 <div class="course-outline-wrap course-modules-lessons-redesign">
                     <div class="header">
@@ -256,12 +255,12 @@
                                         data-bs-parent="#accordionExample">
                                         <div class="accordion-body p-0">
                                             <ul class="lesson-wrap">
-                                                @foreach ($module->lessons as $lesson)
-                                                    @php
-                                                        $isPublic = isset($lesson->is_public) && $lesson->is_public;
-                                                        $publishAt = isset($lesson->publish_at) ? \Carbon\Carbon::parse($lesson->publish_at) : null;
-                                                        $isFuture = $publishAt && $publishAt->isFuture();
-                                                    @endphp
+                                                    @foreach ($module->lessons as $lesson)
+                                                        @php
+                                                            $isPublic = isset($lesson->is_public) && $lesson->is_public;
+                                                            $publishAt = isset($lesson->publish_at) ? \Carbon\Carbon::parse($lesson->publish_at) : null;
+                                                            $isFuture = $publishAt && $publishAt->isFuture();
+                                                        @endphp
                                                     <li>
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div class="d-flex align-items-center flex-grow-1">
@@ -299,7 +298,7 @@
                                                             </div>
                                                         </div>
                                                     </li>
-                                                @endforeach
+                                                    @endforeach
                                                 
                                                 @can('instructor')
                                                 <!-- Add Lesson Button -->
@@ -313,12 +312,12 @@
                                                     </div>
                                                 </li>
                                                 @endcan
-                                            </ul>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endif
-                        @endforeach
+                                @endif
+                            @endforeach
                         @can('instructor')
                         <div class="text-center add-module-section mt-3 mb-2">
                             <a href="{{ url('instructor/courses/create/' . $course->id . '/content') }}" 
@@ -332,7 +331,7 @@
                 </div>
                 {{-- course outline --}}
 
-                {{-- related course --}}
+                    {{-- related course --}}
                 <div class="related-course-box mt-4">
                     <h3>Related Courses</h3>
                     <div class="row">
