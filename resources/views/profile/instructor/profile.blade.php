@@ -68,32 +68,101 @@ My Profile Details
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4>Experiences</h4>
                         <div>
-                            <a
-                                href="{{ route('instructor.profile.settings') }}"><img
-                                    src="{{ asset('assets/images/icons/plus.svg') }}" alt="img"
-                                    class="img-fluid"></a>
+                            <button type="button" id="toggleExperienceForm" class="btn p-0 border-0 bg-transparent">
+                                <img src="{{ asset('assets/images/icons/plus.svg') }}" alt="Add Experience" class="img-fluid">
+                            </button>
                         </div>
                     </div>
+                    
+                    {{-- Add/Edit Experience Form --}}
+                    <div id="experienceFormContainer" class="mb-4" style="display: none;">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <form action="{{ route('instructor.profile.experience.store') }}" method="POST" id="experienceForm">
+                                    @csrf
+                                    <input type="hidden" name="id" id="experienceId" value="" />
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <input autocomplete="off" type="text" class="form-control" id="profession"
+                                                    placeholder="Add skill (e.g ui/ux design)" name="profession" required>
+                                                <label for="profession">Profession</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <input autocomplete="off" type="text" class="form-control" id="company_name"
+                                                    name="company_name" placeholder="Add company (e.g learn cosy)" required>
+                                                <label for="company_name">Company Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" id="join_date" name="join_date" required>
+                                                <label for="join_date">Join Date</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <select name="job_type" id="job_type" class="form-control" required>
+                                                    <option value="">Select Job Type</option>
+                                                    <option value="Full-time">Full-time</option>
+                                                    <option value="Part-time">Part-time</option>
+                                                    <option value="Contract">Contract</option>
+                                                    <option value="Freelance">Freelance</option>
+                                                    <option value="Internship">Internship</option>
+                                                </select>
+                                                <label for="job_type">Job Type</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="experience" name="experience"
+                                                    placeholder="Add experience (e.g 2 years)" required>
+                                                <label for="experience">Experience Duration</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" id="retire_date" name="retire_date">
+                                                <label for="retire_date">End Date (Optional)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <textarea name="short_description" id="short_description"
+                                                    placeholder="Add short description about this job..." class="form-control" rows="3"></textarea>
+                                                <label for="short_description">Short Description</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-end gap-2 mt-3">
+                                                <button type="button" id="cancelExperience" class="btn btn-secondary btn-sm">Cancel</button>
+                                                <button type="submit" class="btn btn-primary btn-sm" id="submitExperience">Save Experience</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {{-- Experience List --}}
                     @if (count($experiences) > 0)
                     @foreach ($experiences as $experience)
-                    <div class="media brdr-bttm">
+                    <div class="media brdr-bttm" data-experience-id="{{ $experience->id }}">
                         <img src="{{ asset('assets/images/experience-img.svg') }}" alt="experience-img"
                             class="img-fluid">
                         <div class="media-body">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5>{{ $experience->profession }}</h5>
                                 <div>
-                                    <a href="{{ route('instructor.profile.experience.edit', ['experienceId' => $experience->id]) }}?tab=experience">
-                                        <img
-                                            src=" {{ asset('assets/images/icons/pen.svg') }}" alt="img"
-                                            class="img-fluid">
-                                    </a>
-
+                                    <button type="button" onclick="editExperience({{ $experience->id }})" class="btn p-0 border-0 bg-transparent me-2">
+                                        <img src="{{ asset('assets/images/icons/pen.svg') }}" alt="Edit" class="img-fluid">
+                                    </button>
                                     <button onclick="showDeleteExperienceModal({{ $experience->id }}, '{{ addslashes($experience->profession) }}', '{{ addslashes($experience->company_name) }}')" 
                                             class="btn p-0 border-0 bg-transparent">
-                                        <img
-                                            src=" {{ asset('assets/images/icons/minus.svg') }}" alt="img"
-                                            class="img-fluid">
+                                        <img src="{{ asset('assets/images/icons/minus.svg') }}" alt="Delete" class="img-fluid">
                                     </button>
                                 </div>
                             </div>
@@ -360,6 +429,138 @@ My Profile Details
             // Restore button
             confirmBtn.disabled = false;
             confirmBtn.innerHTML = originalText;
+        });
+    });
+
+    // Experience Form Functionality
+    let isEditing = false;
+    let editingId = null;
+    
+    // Experience data for editing
+    const experiencesData = {
+        @foreach($experiences as $exp)
+        {{ $exp->id }}: {
+            profession: '{{ addslashes($exp->profession) }}',
+            company_name: '{{ addslashes($exp->company_name) }}',
+            job_type: '{{ $exp->job_type }}',
+            experience: '{{ addslashes($exp->experience) }}',
+            join_date: '{{ $exp->join_date }}',
+            retire_date: '{{ $exp->retire_date ?? '' }}',
+            short_description: '{{ addslashes($exp->short_description ?? '') }}'
+        },
+        @endforeach
+    };
+    
+    // Toggle experience form
+    document.getElementById('toggleExperienceForm').addEventListener('click', function() {
+        const container = document.getElementById('experienceFormContainer');
+        if (container.style.display === 'none') {
+            resetExperienceForm();
+            container.style.display = 'block';
+            isEditing = false;
+            document.getElementById('submitExperience').textContent = 'Save Experience';
+        } else {
+            container.style.display = 'none';
+            resetExperienceForm();
+        }
+    });
+    
+    // Cancel button
+    document.getElementById('cancelExperience').addEventListener('click', function() {
+        document.getElementById('experienceFormContainer').style.display = 'none';
+        resetExperienceForm();
+    });
+    
+    // Edit experience function
+    window.editExperience = function(experienceId) {
+        const exp = experiencesData[experienceId];
+        if (!exp) return;
+        
+        // Show form
+        document.getElementById('experienceFormContainer').style.display = 'block';
+        
+        // Populate form
+        document.getElementById('experienceId').value = experienceId;
+        document.getElementById('profession').value = exp.profession;
+        document.getElementById('company_name').value = exp.company_name;
+        document.getElementById('job_type').value = exp.job_type;
+        document.getElementById('experience').value = exp.experience;
+        document.getElementById('join_date').value = exp.join_date;
+        document.getElementById('retire_date').value = exp.retire_date;
+        document.getElementById('short_description').value = exp.short_description;
+        
+        isEditing = true;
+        editingId = experienceId;
+        document.getElementById('submitExperience').textContent = 'Update Experience';
+        
+        // Update form action for editing
+        const form = document.getElementById('experienceForm');
+        form.action = `/instructor/profile/experiences/${experienceId}`;
+        
+        // Add method spoofing for PUT request
+        let methodField = form.querySelector('input[name="_method"]');
+        if (!methodField) {
+            methodField = document.createElement('input');
+            methodField.type = 'hidden';
+            methodField.name = '_method';
+            form.appendChild(methodField);
+        }
+        methodField.value = 'PUT';
+    };
+    
+    // Reset form
+    function resetExperienceForm() {
+        const form = document.getElementById('experienceForm');
+        form.reset();
+        form.action = '{{ route("instructor.profile.experience.store") }}';
+        document.getElementById('experienceId').value = '';
+        
+        // Remove method spoofing
+        const methodField = form.querySelector('input[name="_method"]');
+        if (methodField) {
+            methodField.remove();
+        }
+        
+        isEditing = false;
+        editingId = null;
+    }
+    
+    // Form submission
+    document.getElementById('experienceForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitExperience');
+        const originalText = submitBtn.textContent;
+        
+        // Show loading
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Saving...';
+        
+        // Submit form
+        const formData = new FormData(this);
+        
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert(isEditing ? 'Experience updated successfully!' : 'Experience added successfully!');
+                window.location.reload();
+            } else {
+                throw new Error('Failed to save experience');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to save experience. Please try again.');
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
         });
     });
 </script>
