@@ -258,6 +258,11 @@
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
+    min-height: 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .certificate-upload-area:hover {
@@ -544,20 +549,14 @@
                                             </div>
                                         </div>
                                         <div class="flex items-center gap-2">
-                                            <a href="{{ route('instructor.profile.experience.edit', $experience->id) }}?tab=experience" 
+                                            <button onclick="showEditExperienceModal({{ $experience->id }}, '{{ addslashes($experience->profession) }}', '{{ addslashes($experience->company_name) }}', '{{ $experience->job_type }}', '{{ addslashes($experience->experience) }}', '{{ addslashes($experience->short_description) }}')" 
                                                class="w-8 h-8 bg-blue/20 text-blue rounded-lg flex items-center justify-center hover:bg-blue hover:text-primary anim">
                                                 <i class="fas fa-edit text-sm"></i>
-                                            </a>
-                                            <form action="{{ route('instructor.profile.experience.delete', $experience->id) }}" 
-                                                  method="POST" class="inline"
-                                                  onsubmit="return confirm('আপনি কি এই অভিজ্ঞতা মুছে ফেলতে চান?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" 
-                                                        class="w-8 h-8 bg-red-500/20 text-red-500 rounded-lg flex items-center justify-center hover:bg-red-500 hover:text-white anim">
-                                                    <i class="fas fa-trash text-sm"></i>
-                                                </button>
-                                            </form>
+                                            </button>
+                                            <button onclick="showDeleteExperienceModal({{ $experience->id }}, '{{ addslashes($experience->profession) }}', '{{ addslashes($experience->company_name) }}')" 
+                                                    class="w-8 h-8 bg-red-500/20 text-red-500 rounded-lg flex items-center justify-center hover:bg-red-500 hover:text-white anim">
+                                                <i class="fas fa-trash text-sm"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -581,117 +580,95 @@
 
             <!-- Certificate Tab -->
             <div id="tab-certificate" class="tab-content hidden">
-                <form action="{{ route('instructor.certificates.settings') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-section">
-                        <div class="form-section-header">
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
+                                <div class="w-10 h-10 bg-gradient-to-r from-orange to-yellow-500 rounded-full flex items-center justify-center">
                                     <i class="fas fa-certificate text-white"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-white font-semibold text-lg">সার্টিফিকেট সেটিংস</h3>
+                                    <h3 class="text-white font-semibold text-lg">সার্টিফিকেট ম্যানেজমেন্ট</h3>
                                     <p class="text-secondary-200 text-sm">আপনার কোর্সের সার্টিফিকেট কাস্টমাইজ করুন</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="space-y-6">
-                            <div class="form-group">
-                                <label class="form-label">কোর্স নির্বাচন করুন *</label>
-                                <select name="course_id" class="form-control" required>
-                                    <option value="">কোর্স নির্বাচন করুন</option>
-                                    @if(isset($courses))
-                                        @foreach($courses as $course)
-                                            <option value="{{ $course->id }}">{{ $course->title }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">সার্টিফিকেট টেমপ্লেট *</label>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <label class="certificate-template cursor-pointer">
-                                        <input type="radio" name="certificate_style" value="1" class="hidden">
-                                        <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 hover:border-blue anim">
-                                            <div class="text-center">
-                                                <i class="fas fa-certificate text-3xl text-blue mb-2"></i>
-                                                <h4 class="text-white font-semibold">ক্লাসিক</h4>
-                                                <p class="text-secondary-200 text-sm">ঐতিহ্যবাহী নকশা</p>
-                                            </div>
-                                        </div>
-                                    </label>
-
-                                    <label class="certificate-template cursor-pointer">
-                                        <input type="radio" name="certificate_style" value="2" class="hidden">
-                                        <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-green-500/20 to-blue-500/20 hover:border-green-500 anim">
-                                            <div class="text-center">
-                                                <i class="fas fa-award text-3xl text-green-500 mb-2"></i>
-                                                <h4 class="text-white font-semibold">আধুনিক</h4>
-                                                <p class="text-secondary-200 text-sm">আধুনিক নকশা</p>
-                                            </div>
-                                        </div>
-                                    </label>
-
-                                    <label class="certificate-template cursor-pointer">
-                                        <input type="radio" name="certificate_style" value="3" class="hidden">
-                                        <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 hover:border-purple-500 anim">
-                                            <div class="text-center">
-                                                <i class="fas fa-medal text-3xl text-purple-500 mb-2"></i>
-                                                <h4 class="text-white font-semibold">প্রিমিয়াম</h4>
-                                                <p class="text-secondary-200 text-sm">প্রিমিয়াম নকশা</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="form-group">
-                                    <label class="form-label">লোগো আপলোড</label>
-                                    <div class="certificate-upload-area">
-                                        <input type="file" name="logo" accept="image/*" id="logo" class="hidden">
-                                        <label for="logo" class="cursor-pointer">
-                                            <i class="fas fa-image text-3xl text-blue mb-3"></i>
-                                            <p class="text-white font-semibold mb-1">লোগো আপলোড করুন</p>
-                                            <p class="text-secondary-200 text-sm">PNG, JPG (সর্বোচ্চ ৫MB)</p>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">স্বাক্ষর আপলোড</label>
-                                    <div class="certificate-upload-area">
-                                        <input type="file" name="signature" accept="image/*" id="signature" class="hidden">
-                                        <label for="signature" class="cursor-pointer">
-                                            <i class="fas fa-signature text-3xl text-lime mb-3"></i>
-                                            <p class="text-white font-semibold mb-1">স্বাক্ষর আপলোড করুন</p>
-                                            <p class="text-secondary-200 text-sm">PNG, JPG (সর্বোচ্চ ৫MB)</p>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" onclick="previewCertificate()" class="btn-secondary">
-                                <i class="fas fa-eye"></i>
-                                প্রিভিউ দেখুন
-                            </button>
-                            <button type="submit" class="btn-primary">
-                                <i class="fas fa-save"></i>
-                                সার্টিফিকেট সেভ করুন
+                            <button onclick="showAddCertificateModal()" class="btn-primary">
+                                <i class="fas fa-plus"></i>
+                                নতুন সার্টিফিকেট যোগ করুন
                             </button>
                         </div>
                     </div>
-                </form>
+
+                    <div class="space-y-4">
+                        @if(isset($certificates) && $certificates->count() > 0)
+                            @foreach($certificates as $certificate)
+                                <div class="certificate-item">
+                                    <div class="flex items-center justify-between p-6 bg-card rounded-lg border border-[#fff]/10">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-orange to-yellow-500 flex items-center justify-center">
+                                                <i class="fas fa-certificate text-white text-lg"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center gap-3 mb-2">
+                                                    <h4 class="text-white font-semibold">{{ $certificate->course->title ?? 'Unknown Course' }}</h4>
+                                                    <span class="text-xs px-2 py-1 bg-blue/20 text-blue rounded-full">স্টাইল {{ $certificate->style }}</span>
+                                                </div>
+                                                <div class="flex items-center gap-4 text-sm text-secondary-200">
+                                                    <span><i class="fas fa-palette mr-1"></i> {{ $certificate->certificate_clr ?? '#3B82F6' }}</span>
+                                                    <span><i class="fas fa-star mr-1"></i> {{ $certificate->accent_clr ?? '#10B981' }}</span>
+                                                    @if($certificate->logo)
+                                                        <span><i class="fas fa-image mr-1"></i> লোগো আছে</span>
+                                                    @endif
+                                                    @if($certificate->signature)
+                                                        <span><i class="fas fa-signature mr-1"></i> স্বাক্ষর আছে</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <button onclick="previewCertificate({{ $certificate->id }})" 
+                                               class="w-8 h-8 bg-blue/20 text-blue rounded-lg flex items-center justify-center hover:bg-blue hover:text-primary anim">
+                                                <i class="fas fa-eye text-sm"></i>
+                                            </button>
+                                            <button onclick="showEditCertificateModal({{ $certificate->id }}, '{{ $certificate->course_id }}', '{{ $certificate->style }}', '{{ addslashes($certificate->certificate_clr) }}', '{{ addslashes($certificate->accent_clr) }}', '{{ addslashes($certificate->logo) }}', '{{ addslashes($certificate->signature) }}')" 
+                                               class="w-8 h-8 bg-blue/20 text-blue rounded-lg flex items-center justify-center hover:bg-blue hover:text-primary anim">
+                                                <i class="fas fa-edit text-sm"></i>
+                                            </button>
+                                            <button onclick="showDeleteCertificateModal({{ $certificate->id }}, '{{ addslashes($certificate->course->title ?? 'Unknown Course') }}')" 
+                                                    class="w-8 h-8 bg-red-500/20 text-red-500 rounded-lg flex items-center justify-center hover:bg-red-500 hover:text-white anim">
+                                                <i class="fas fa-trash text-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="text-center py-12">
+                                <div class="w-16 h-16 bg-gradient-to-r from-orange to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-certificate text-white text-2xl"></i>
+                                </div>
+                                <h3 class="text-white font-semibold mb-2">কোন সার্টিফিকেট নেই</h3>
+                                <p class="text-secondary-200 text-sm mb-4">আপনার প্রথম সার্টিফিকেট তৈরি করুন</p>
+                                <button onclick="showAddCertificateModal()" class="btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                    সার্টিফিকেট যোগ করুন
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
 
             <!-- Social Media Tab -->
             <div id="tab-social" class="tab-content hidden">
                 <form action="{{ route('instructor.profile.update') }}" method="POST">
                     @csrf
+                    <!-- Hidden fields required by controller -->
+                    <input type="hidden" name="name" value="{{ $user->name }}">
+                    <input type="hidden" name="phone" value="{{ $user->phone }}">
+                    <input type="hidden" name="short_bio" value="{{ $user->short_bio }}">
+                    <input type="hidden" name="description" value="{{ $user->description }}">
+                    <input type="hidden" name="recivingMessage" value="{{ $user->recivingMessage ? '1' : '0' }}">
                     @php
                         // Parse existing social links
                         $social_links = explode(",", $user->social_links ?? '');
@@ -700,22 +677,74 @@
                         $youtube_url = '';
                         $website_url = '';
                         
+                        // Debug: Let's see what we have  
+                        $debugInfo = [
+                            'raw' => $user->social_links ?? 'NULL',
+                            'exploded' => $social_links,
+                            'exploded_count' => count($social_links),
+                            'facebook' => '',
+                            'linkedin' => '',
+                            'youtube' => '',
+                            'website' => ''
+                        ];
+                        
                         foreach($social_links as $link) {
                             $link = trim($link);
                             if(empty($link)) continue;
                             
-                            if(str_contains($link, 'facebook.com')) {
+                            // Make URL matching more flexible and robust
+                            $lowerLink = strtolower($link);
+                            
+                            // Check for Facebook variations
+                            if(str_contains($lowerLink, 'facebook.com') || 
+                               str_contains($lowerLink, 'fb.com') || 
+                               str_contains($lowerLink, 'm.facebook.com')) {
                                 $facebook_url = $link;
-                            } elseif(str_contains($link, 'linkedin.com')) {
+                                $debugInfo['facebook'] = $link;
+                            } 
+                            // Check for LinkedIn variations
+                            elseif(str_contains($lowerLink, 'linkedin.com') || 
+                                   str_contains($lowerLink, 'lnkd.in')) {
                                 $linkedin_url = $link;
-                            } elseif(str_contains($link, 'youtube.com')) {
+                                $debugInfo['linkedin'] = $link;
+                            } 
+                            // Check for YouTube variations
+                            elseif(str_contains($lowerLink, 'youtube.com') || 
+                                   str_contains($lowerLink, 'youtu.be') ||
+                                   str_contains($lowerLink, 'm.youtube.com')) {
                                 $youtube_url = $link;
-                            } else {
-                                $website_url = $link;
+                                $debugInfo['youtube'] = $link;
+                            } 
+                            // Everything else is treated as website
+                            else {
+                                if(empty($website_url)) { // Only set the first non-social URL
+                                    $website_url = $link;
+                                    $debugInfo['website'] = $link;
+                                }
                             }
                         }
                     @endphp
                     
+                    @if(config('app.debug') && request()->get('debug'))
+                    <div class="bg-yellow-500/20 border border-yellow-500 rounded-lg p-4 mb-6">
+                        <h4 class="text-yellow-500 font-semibold mb-2">Debug Info:</h4>
+                        <div class="text-sm space-y-1">
+                            <div>Raw social_links: <code class="bg-black/20 px-2 py-1 rounded">{{ $debugInfo['raw'] }}</code></div>
+                            <div>Exploded array count: <code class="bg-black/20 px-2 py-1 rounded">{{ $debugInfo['exploded_count'] }}</code></div>
+                            <div>Array contents: <code class="bg-black/20 px-2 py-1 rounded">{{ json_encode($debugInfo['exploded']) }}</code></div>
+                            <div>Parsed Facebook: <code class="bg-black/20 px-2 py-1 rounded">{{ $debugInfo['facebook'] ?: 'empty' }}</code></div>
+                            <div>Parsed LinkedIn: <code class="bg-black/20 px-2 py-1 rounded">{{ $debugInfo['linkedin'] ?: 'empty' }}</code></div>
+                            <div>Parsed YouTube: <code class="bg-black/20 px-2 py-1 rounded">{{ $debugInfo['youtube'] ?: 'empty' }}</code></div>
+                            <div>Parsed Website: <code class="bg-black/20 px-2 py-1 rounded">{{ $debugInfo['website'] ?: 'empty' }}</code></div>
+                            <div class="mt-3 pt-3 border-t border-yellow-500/20">Form Values:</div>
+                            <div>Facebook field: <code class="bg-black/20 px-2 py-1 rounded">{{ old('facebook_url', $facebook_url) ?: 'empty' }}</code></div>
+                            <div>LinkedIn field: <code class="bg-black/20 px-2 py-1 rounded">{{ old('linkedin_url', $linkedin_url) ?: 'empty' }}</code></div>
+                            <div>YouTube field: <code class="bg-black/20 px-2 py-1 rounded">{{ old('youtube_url', $youtube_url) ?: 'empty' }}</code></div>
+                            <div>Website field: <code class="bg-black/20 px-2 py-1 rounded">{{ old('website_url', $website_url) ?: 'empty' }}</code></div>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="form-section">
                         <div class="form-section-header">
                             <div class="flex items-center gap-3">
@@ -822,12 +851,27 @@
                             <div class="form-group">
                                 <label class="form-label">নতুন পাসওয়ার্ড *</label>
                                 <div class="relative">
-                                    <input type="password" name="password" class="form-control pr-12" 
-                                           placeholder="নতুন পাসওয়ার্ড" required minlength="8">
+                                    <input type="password" name="password" id="newPassword" class="form-control pr-12" 
+                                           placeholder="নতুন পাসওয়ার্ড" required minlength="8"
+                                           oninput="checkPasswordStrength()">
                                     <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary-200 hover:text-white anim"
                                             onclick="togglePassword(this)">
                                         <i class="fas fa-eye"></i>
                                     </button>
+                                </div>
+                                
+                                <!-- Password Strength Indicator -->
+                                <div id="password-strength" class="mt-3 bg-gray-500/20 border border-gray-500 rounded-lg p-4 transition-all duration-300">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-secondary-200">পাসওয়ার্ড শক্তি:</span>
+                                        <div class="flex items-center gap-2">
+                                            <i id="length-check" class="fas fa-circle text-gray-400"></i>
+                                            <i id="upper-check" class="fas fa-circle text-gray-400"></i>
+                                            <i id="lower-check" class="fas fa-circle text-gray-400"></i>
+                                            <i id="number-check" class="fas fa-circle text-gray-400"></i>
+                                            <i id="special-check" class="fas fa-circle text-gray-400"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -971,6 +1015,507 @@
     </div>
 </div>
 
+<!-- Edit Experience Modal -->
+<div id="editExperienceModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-card rounded-xl max-w-2xl w-full p-6 border border-[#fff]/10 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue to-lime flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,2A3,3 0 0,1 15,5V7H19A2,2 0 0,1 21,9V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V9A2,2 0 0,1 5,7H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V7H13V5A1,1 0 0,0 12,4Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white">অভিজ্ঞতা সম্পাদনা করুন</h3>
+            </div>
+            <button onclick="closeEditExperienceModal()" class="text-secondary-200 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="editExperienceForm" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="hidden" id="edit_experience_id" name="experience_id">
+            <div class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">পেশা *</label>
+                        <input type="text" name="profession" id="edit_profession" required 
+                               class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white placeholder-secondary-200 focus:outline-none focus:border-blue transition-colors" 
+                               placeholder="যেমন: সফটওয়্যার ইঞ্জিনিয়ার">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="edit_profession-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">কোম্পানির নাম *</label>
+                        <input type="text" name="company_name" id="edit_company_name" required 
+                               class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white placeholder-secondary-200 focus:outline-none focus:border-blue transition-colors" 
+                               placeholder="যেমন: Google, Microsoft">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="edit_company_name-error"></div>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">চাকরির ধরন *</label>
+                        <select name="job_type" id="edit_job_type" required 
+                                class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue transition-colors">
+                            <option value="">নির্বাচন করুন</option>
+                            <option value="Full-time">ফুল-টাইম</option>
+                            <option value="Part-time">পার্ট-টাইম</option>
+                            <option value="Contract">কন্ট্রাক্ট</option>
+                            <option value="Freelance">ফ্রিল্যান্স</option>
+                            <option value="Internship">ইন্টার্নশিপ</option>
+                        </select>
+                        <div class="text-red-400 text-sm mt-1 hidden" id="edit_job_type-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">অভিজ্ঞতার সময়কাল *</label>
+                        <input type="text" name="experience" id="edit_experience" required 
+                               class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white placeholder-secondary-200 focus:outline-none focus:border-blue transition-colors" 
+                               placeholder="যেমন: ২ বছর, ৬ মাস">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="edit_experience-error"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">বিবরণ</label>
+                    <textarea name="short_description" id="edit_short_description" rows="4" 
+                              class="w-full bg-primary border border-[#fff]/20 rounded-lg px-4 py-3 text-white placeholder-secondary-200 focus:outline-none focus:border-blue transition-colors resize-none" 
+                              placeholder="আপনার কাজের দায়িত্ব এবং অর্জনের সংক্ষিপ্ত বিবরণ লিখুন..."></textarea>
+                    <div class="text-red-400 text-sm mt-1 hidden" id="edit_short_description-error"></div>
+                </div>
+                
+                <div class="flex items-center gap-4 pt-4 border-t border-[#fff]/10">
+                    <button type="button" onclick="closeEditExperienceModal()" 
+                            class="px-6 py-3 bg-secondary hover:bg-secondary/80 text-secondary-100 rounded-lg font-medium transition-colors">
+                        বাতিল
+                    </button>
+                    <button type="submit" 
+                            class="px-6 py-3 bg-gradient-to-r from-blue to-lime hover:from-lime hover:to-blue text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M9,10H7V12H9V10M13,10H11V12H13V10M17,10H15V12H17V10M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M19,6V5H5V6H19Z"/>
+                            </svg>
+                            অভিজ্ঞতা আপডেট করুন
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Experience Confirmation Modal -->
+<div id="deleteExperienceModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-card rounded-xl max-w-md w-full p-6 border border-[#fff]/10">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-white text-sm"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">অভিজ্ঞতা মুছে ফেলুন</h3>
+            </div>
+            <button onclick="closeDeleteExperienceModal()" class="text-secondary-200 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <div class="flex items-center gap-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg mb-4">
+                <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-briefcase text-red-500 text-lg"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-1">আপনি কি নিশ্চিত?</h4>
+                    <p class="text-secondary-200 text-sm">আপনি <strong id="delete-experience-profession"></strong> পদে <strong id="delete-experience-company"></strong> এর অভিজ্ঞতা মুছে ফেলতে চান?</p>
+                </div>
+            </div>
+            <p class="text-secondary-200 text-sm">
+                <i class="fas fa-info-circle text-orange mr-2"></i>
+                এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না। অভিজ্ঞতার তথ্য স্থায়ীভাবে মুছে যাবে।
+            </p>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <button onclick="closeDeleteExperienceModal()" 
+                    class="flex-1 px-4 py-3 bg-secondary hover:bg-secondary/80 text-secondary-100 rounded-lg font-medium transition-colors">
+                বাতিল
+            </button>
+            <button id="confirmDeleteExperience" onclick="deleteExperience()" 
+                    class="flex-1 px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                <span class="flex items-center justify-center gap-2">
+                    <i class="fas fa-trash"></i>
+                    মুছে ফেলুন
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Add Certificate Modal -->
+<div id="addCertificateModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-card rounded-xl max-w-4xl w-full p-6 border border-[#fff]/10 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-orange to-yellow-500 flex items-center justify-center">
+                    <i class="fas fa-certificate text-white text-sm"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">নতুন সার্টিফিকেট যোগ করুন</h3>
+            </div>
+            <button onclick="closeAddCertificateModal()" class="text-secondary-200 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="addCertificateForm" method="POST" action="{{ route('instructor.certificates.settings') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="space-y-6">
+                <div class="form-group">
+                    <label class="form-label">কোর্স নির্বাচন করুন *</label>
+                    <select name="course_id" class="form-control" required>
+                        <option value="">কোর্স নির্বাচন করুন</option>
+                        @if(isset($courses))
+                            @foreach($courses as $course)
+                                <option value="{{ $course->id }}">{{ $course->title }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                    <div class="text-red-400 text-sm mt-1 hidden" id="add_course_id-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">সার্টিফিকেট টেমপ্লেট *</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <label class="certificate-template cursor-pointer">
+                            <input type="radio" name="certificate_style" value="1" class="hidden">
+                            <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 hover:border-blue anim">
+                                <div class="text-center">
+                                    <i class="fas fa-certificate text-3xl text-blue mb-2"></i>
+                                    <h4 class="text-white font-semibold">ক্লাসিক</h4>
+                                    <p class="text-secondary-200 text-sm">ঐতিহ্যবাহী নকশা</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="certificate-template cursor-pointer">
+                            <input type="radio" name="certificate_style" value="2" class="hidden">
+                            <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-green-500/20 to-blue-500/20 hover:border-green-500 anim">
+                                <div class="text-center">
+                                    <i class="fas fa-award text-3xl text-green-500 mb-2"></i>
+                                    <h4 class="text-white font-semibold">আধুনিক</h4>
+                                    <p class="text-secondary-200 text-sm">আধুনিক নকশা</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="certificate-template cursor-pointer">
+                            <input type="radio" name="certificate_style" value="3" class="hidden">
+                            <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 hover:border-purple-500 anim">
+                                <div class="text-center">
+                                    <i class="fas fa-medal text-3xl text-purple-500 mb-2"></i>
+                                    <h4 class="text-white font-semibold">প্রিমিয়াম</h4>
+                                    <p class="text-secondary-200 text-sm">প্রিমিয়াম নকশা</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="text-red-400 text-sm mt-1 hidden" id="add_certificate_style-error"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">সার্টিফিকেটের মূল রং *</label>
+                        <input type="color" name="certificate_clr" value="#3B82F6" class="form-control h-12">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="add_certificate_clr-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">অ্যাকসেন্ট রং *</label>
+                        <input type="color" name="accent_clr" value="#10B981" class="form-control h-12">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="add_accent_clr-error"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">লোগো আপলোড</label>
+                        <div class="certificate-upload-area" id="add-logo-upload-area">
+                            <input type="file" name="logo" accept="image/*" id="add-logo" class="hidden">
+                            <label for="add-logo" class="cursor-pointer w-full h-full flex flex-col items-center justify-center" id="add-logo-label">
+                                <i class="fas fa-image text-3xl text-blue mb-3"></i>
+                                <p class="text-white font-semibold mb-1">লোগো আপলোড করুন</p>
+                                <p class="text-secondary-200 text-sm">PNG, JPG (সর্বোচ্চ ৫MB)</p>
+                            </label>
+                            <div id="add-logo-preview" class="hidden w-full h-full">
+                                <img id="add-logo-preview-img" src="" alt="Logo Preview" class="w-full h-full object-contain rounded-lg">
+                                <div class="absolute top-2 right-2">
+                                    <button type="button" onclick="clearFilePreview('add-logo')" class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-red-400 text-sm mt-1 hidden" id="add_logo-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">স্বাক্ষর আপলোড</label>
+                        <div class="certificate-upload-area" id="add-signature-upload-area">
+                            <input type="file" name="signature" accept="image/*" id="add-signature" class="hidden">
+                            <label for="add-signature" class="cursor-pointer w-full h-full flex flex-col items-center justify-center" id="add-signature-label">
+                                <i class="fas fa-signature text-3xl text-lime mb-3"></i>
+                                <p class="text-white font-semibold mb-1">স্বাক্ষর আপলোড করুন</p>
+                                <p class="text-secondary-200 text-sm">PNG, JPG (সর্বোচ্চ ৫MB)</p>
+                            </label>
+                            <div id="add-signature-preview" class="hidden w-full h-full">
+                                <img id="add-signature-preview-img" src="" alt="Signature Preview" class="w-full h-full object-contain rounded-lg">
+                                <div class="absolute top-2 right-2">
+                                    <button type="button" onclick="clearFilePreview('add-signature')" class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-red-400 text-sm mt-1 hidden" id="add_signature-error"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-4 pt-4 border-t border-[#fff]/10">
+                    <button type="button" onclick="closeAddCertificateModal()" 
+                            class="px-6 py-3 bg-secondary hover:bg-secondary/80 text-secondary-100 rounded-lg font-medium transition-colors">
+                        বাতিল
+                    </button>
+                    <button type="button" onclick="previewCertificate('add')" 
+                            class="px-6 py-3 bg-blue hover:bg-blue/80 text-white rounded-lg font-medium transition-colors">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-eye"></i>
+                            প্রিভিউ দেখুন
+                        </span>
+                    </button>
+                    <button type="submit" 
+                            class="px-6 py-3 bg-gradient-to-r from-orange to-yellow-500 hover:from-yellow-500 hover:to-orange text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-save"></i>
+                            সার্টিফিকেট সেভ করুন
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Certificate Modal -->
+<div id="editCertificateModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-card rounded-xl max-w-4xl w-full p-6 border border-[#fff]/10 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue to-lime flex items-center justify-center">
+                    <i class="fas fa-certificate text-white text-sm"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">সার্টিফিকেট সম্পাদনা করুন</h3>
+            </div>
+            <button onclick="closeEditCertificateModal()" class="text-secondary-200 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="editCertificateForm" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" id="edit_certificate_id" name="certificate_id">
+            <div class="space-y-6">
+                <div class="form-group">
+                    <label class="form-label">কোর্স নির্বাচন করুন *</label>
+                    <select name="course_id" id="edit_course_id" class="form-control" required>
+                        <option value="">কোর্স নির্বাচন করুন</option>
+                        @if(isset($courses))
+                            @foreach($courses as $course)
+                                <option value="{{ $course->id }}">{{ $course->title }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                    <div class="text-red-400 text-sm mt-1 hidden" id="edit_course_id-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">সার্টিফিকেট টেমপ্লেট *</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="edit-templates">
+                        <label class="certificate-template cursor-pointer">
+                            <input type="radio" name="certificate_style" value="1" class="hidden">
+                            <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 hover:border-blue anim">
+                                <div class="text-center">
+                                    <i class="fas fa-certificate text-3xl text-blue mb-2"></i>
+                                    <h4 class="text-white font-semibold">ক্লাসিক</h4>
+                                    <p class="text-secondary-200 text-sm">ঐতিহ্যবাহী নকশা</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="certificate-template cursor-pointer">
+                            <input type="radio" name="certificate_style" value="2" class="hidden">
+                            <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-green-500/20 to-blue-500/20 hover:border-green-500 anim">
+                                <div class="text-center">
+                                    <i class="fas fa-award text-3xl text-green-500 mb-2"></i>
+                                    <h4 class="text-white font-semibold">আধুনিক</h4>
+                                    <p class="text-secondary-200 text-sm">আধুনিক নকশা</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="certificate-template cursor-pointer">
+                            <input type="radio" name="certificate_style" value="3" class="hidden">
+                            <div class="p-4 border-2 border-transparent rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 hover:border-purple-500 anim">
+                                <div class="text-center">
+                                    <i class="fas fa-medal text-3xl text-purple-500 mb-2"></i>
+                                    <h4 class="text-white font-semibold">প্রিমিয়াম</h4>
+                                    <p class="text-secondary-200 text-sm">প্রিমিয়াম নকশা</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="text-red-400 text-sm mt-1 hidden" id="edit_certificate_style-error"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">সার্টিফিকেটের মূল রং *</label>
+                        <input type="color" name="certificate_clr" id="edit_certificate_clr" value="#3B82F6" class="form-control h-12">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="edit_certificate_clr-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">অ্যাকসেন্ট রং *</label>
+                        <input type="color" name="accent_clr" id="edit_accent_clr" value="#10B981" class="form-control h-12">
+                        <div class="text-red-400 text-sm mt-1 hidden" id="edit_accent_clr-error"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="form-label">লোগো আপলোড</label>
+                        <div class="certificate-upload-area" id="edit-logo-upload-area">
+                            <input type="file" name="logo" accept="image/*" id="edit-logo" class="hidden">
+                            <label for="edit-logo" class="cursor-pointer w-full h-full flex flex-col items-center justify-center" id="edit-logo-label">
+                                <i class="fas fa-image text-3xl text-blue mb-3"></i>
+                                <p class="text-white font-semibold mb-1">লোগো আপলোড করুন</p>
+                                <p class="text-secondary-200 text-sm">PNG, JPG (সর্বোচ্চ ৫MB)</p>
+                            </label>
+                            <div id="edit-logo-preview" class="hidden w-full h-full">
+                                <img id="edit-logo-preview-img" src="" alt="Logo Preview" class="w-full h-full object-contain rounded-lg">
+                                <div class="absolute top-2 right-2">
+                                    <button type="button" onclick="clearFilePreview('edit-logo')" class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-red-400 text-sm mt-1 hidden" id="edit_logo-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">স্বাক্ষর আপলোড</label>
+                        <div class="certificate-upload-area" id="edit-signature-upload-area">
+                            <input type="file" name="signature" accept="image/*" id="edit-signature" class="hidden">
+                            <label for="edit-signature" class="cursor-pointer w-full h-full flex flex-col items-center justify-center" id="edit-signature-label">
+                                <i class="fas fa-signature text-3xl text-lime mb-3"></i>
+                                <p class="text-white font-semibold mb-1">স্বাক্ষর আপলোড করুন</p>
+                                <p class="text-secondary-200 text-sm">PNG, JPG (সর্বোচ্চ ৫MB)</p>
+                            </label>
+                            <div id="edit-signature-preview" class="hidden w-full h-full">
+                                <img id="edit-signature-preview-img" src="" alt="Signature Preview" class="w-full h-full object-contain rounded-lg">
+                                <div class="absolute top-2 right-2">
+                                    <button type="button" onclick="clearFilePreview('edit-signature')" class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-red-400 text-sm mt-1 hidden" id="edit_signature-error"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-4 pt-4 border-t border-[#fff]/10">
+                    <button type="button" onclick="closeEditCertificateModal()" 
+                            class="px-6 py-3 bg-secondary hover:bg-secondary/80 text-secondary-100 rounded-lg font-medium transition-colors">
+                        বাতিল
+                    </button>
+                    <button type="button" onclick="previewCertificate('edit')" 
+                            class="px-6 py-3 bg-blue hover:bg-blue/80 text-white rounded-lg font-medium transition-colors">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-eye"></i>
+                            প্রিভিউ দেখুন
+                        </span>
+                    </button>
+                    <button type="submit" 
+                            class="px-6 py-3 bg-gradient-to-r from-blue to-lime hover:from-lime hover:to-blue text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-save"></i>
+                            সার্টিফিকেট আপডেট করুন
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Certificate Confirmation Modal -->
+<div id="deleteCertificateModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-card rounded-xl max-w-md w-full p-6 border border-[#fff]/10">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-white text-sm"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">সার্টিফিকেট মুছে ফেলুন</h3>
+            </div>
+            <button onclick="closeDeleteCertificateModal()" class="text-secondary-200 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <div class="flex items-center gap-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg mb-4">
+                <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-certificate text-red-500 text-lg"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-1">আপনি কি নিশ্চিত?</h4>
+                    <p class="text-secondary-200 text-sm">আপনি <strong id="delete-certificate-course"></strong> কোর্সের সার্টিফিকেট মুছে ফেলতে চান?</p>
+                </div>
+            </div>
+            <p class="text-secondary-200 text-sm">
+                <i class="fas fa-info-circle text-orange mr-2"></i>
+                এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না। সার্টিফিকেট এবং এর সাথে সংযুক্ত সকল ফাইল স্থায়ীভাবে মুছে যাবে।
+            </p>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <button onclick="closeDeleteCertificateModal()" 
+                    class="flex-1 px-4 py-3 bg-secondary hover:bg-secondary/80 text-secondary-100 rounded-lg font-medium transition-colors">
+                বাতিল
+            </button>
+            <button id="confirmDeleteCertificate" onclick="deleteCertificate()" 
+                    class="flex-1 px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                <span class="flex items-center justify-center gap-2">
+                    <i class="fas fa-trash"></i>
+                    মুছে ফেলুন
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('script')
@@ -1000,6 +1545,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 targetContent.classList.add('active');
                 targetContent.classList.remove('hidden');
             }
+            
+            // Save tab state to localStorage
+            localStorage.setItem('instructor_profile_active_tab', targetTab);
+            
+            // Update URL without reloading the page
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('tab', targetTab);
+            window.history.replaceState(null, '', newUrl);
         });
     });
 
@@ -1041,20 +1594,334 @@ document.addEventListener('DOMContentLoaded', function() {
     const certificateTemplates = document.querySelectorAll('.certificate-template');
     certificateTemplates.forEach(template => {
         template.addEventListener('click', function() {
+            // Clear all selections
             certificateTemplates.forEach(t => {
+                t.querySelector('input[type="radio"]').checked = false;
                 t.querySelector('div').classList.remove('border-blue', 'border-green-500', 'border-purple-500');
                 t.querySelector('div').classList.add('border-transparent');
             });
             
-            const radioValue = this.querySelector('input').value;
+            // Select this template
+            const radioInput = this.querySelector('input[type="radio"]');
+            radioInput.checked = true;
+            
+            const radioValue = radioInput.value;
             let borderColor = 'border-blue';
             if (radioValue === '2') borderColor = 'border-green-500';
             if (radioValue === '3') borderColor = 'border-purple-500';
             
             this.querySelector('div').classList.remove('border-transparent');
             this.querySelector('div').classList.add(borderColor);
+            
+            console.log('Selected certificate style:', radioValue);
         });
     });
+
+    // Set default certificate style if none selected
+    if (certificateTemplates.length > 0 && !document.querySelector('input[name="certificate_style"]:checked')) {
+        certificateTemplates[0].click();
+    }
+
+    // Certificate file upload handlers
+    const logoInput = document.getElementById('logo');
+    const signatureInput = document.getElementById('signature');
+
+    if (logoInput) {
+        logoInput.addEventListener('change', function(e) {
+            handleFilePreview(e.target, 'logo');
+        });
+    }
+
+    if (signatureInput) {
+        signatureInput.addEventListener('change', function(e) {
+            handleFilePreview(e.target, 'signature');
+        });
+    }
+
+    // Add Certificate file upload handlers
+    const addLogoInput = document.getElementById('add-logo');
+    const addSignatureInput = document.getElementById('add-signature');
+    const editLogoInput = document.getElementById('edit-logo');
+    const editSignatureInput = document.getElementById('edit-signature');
+
+    if (addLogoInput) {
+        addLogoInput.addEventListener('change', function(e) {
+            handleFilePreview(e.target, 'add-logo');
+        });
+    }
+
+    if (addSignatureInput) {
+        addSignatureInput.addEventListener('change', function(e) {
+            handleFilePreview(e.target, 'add-signature');
+        });
+    }
+
+    if (editLogoInput) {
+        editLogoInput.addEventListener('change', function(e) {
+            handleFilePreview(e.target, 'edit-logo');
+        });
+    }
+
+    if (editSignatureInput) {
+        editSignatureInput.addEventListener('change', function(e) {
+            handleFilePreview(e.target, 'edit-signature');
+        });
+    }
+
+    // Add Certificate form handling
+    const addCertificateForm = document.getElementById('addCertificateForm');
+    if (addCertificateForm) {
+        addCertificateForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            // Ensure CSRF token is in the form data
+            if (!formData.has('_token')) {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                formData.append('_token', csrfToken);
+            }
+            
+            // Show loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4 animate-spin" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>সেভ করা হচ্ছে...</span>';
+            
+            // Clear previous errors
+            clearAllErrors('add');
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().catch(() => {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    closeAddCertificateModal();
+                    showSuccessMessage(data.message);
+                    // Reload page to show new certificate
+                    setTimeout(() => {
+                        window.location.href = '{{ route("instructor.profile.settings") }}?tab=certificate';
+                    }, 1500);
+                } else {
+                    // Show validation errors
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(field => {
+                            const errorEl = document.getElementById('add_' + field + '-error');
+                            if (errorEl) {
+                                errorEl.textContent = data.errors[field][0];
+                                errorEl.classList.remove('hidden');
+                            }
+                        });
+                    } else if (data.message) {
+                        showSuccessMessage(data.message);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Add Certificate - Error:', error);
+                showSuccessMessage('কিছু ভুল হয়েছে, আবার চেষ্টা করুন।');
+            })
+            .finally(() => {
+                // Restore button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            });
+        });
+    }
+
+    // Edit Certificate form handling
+    const editCertificateForm = document.getElementById('editCertificateForm');
+    if (editCertificateForm) {
+        editCertificateForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            // Ensure CSRF token is in the form data
+            if (!formData.has('_token')) {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                formData.append('_token', csrfToken);
+            }
+            
+            // Show loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4 animate-spin" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>আপডেট করা হচ্ছে...</span>';
+            
+            // Clear previous errors
+            clearAllErrors('edit');
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().catch(() => {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    closeEditCertificateModal();
+                    showSuccessMessage(data.message);
+                    // Reload page to show updated certificate
+                    setTimeout(() => {
+                        window.location.href = '{{ route("instructor.profile.settings") }}?tab=certificate';
+                    }, 1500);
+                } else {
+                    // Show validation errors
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(field => {
+                            const errorEl = document.getElementById('edit_' + field + '-error');
+                            if (errorEl) {
+                                errorEl.textContent = data.errors[field][0];
+                                errorEl.classList.remove('hidden');
+                            }
+                        });
+                    } else if (data.message) {
+                        showSuccessMessage(data.message);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Edit Certificate - Error:', error);
+                showSuccessMessage('কিছু ভুল হয়েছে, আবার চেষ্টা করুন।');
+            })
+            .finally(() => {
+                // Restore button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            });
+        });
+    }
+
+    // Old certificate form handling (remove this)
+    const certificateForm = document.querySelector('form[action*="certificates/settings"]');
+    if (certificateForm && certificateForm.id !== 'addCertificateForm' && certificateForm.id !== 'editCertificateForm') {
+        certificateForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            console.log('Certificate Form action:', this.action);
+            console.log('Certificate Form data:', Object.fromEntries(formData));
+            
+            // Check required fields
+            console.log('Course ID:', formData.get('course_id'));
+            console.log('Certificate Style:', formData.get('certificate_style'));
+            console.log('Certificate Color:', formData.get('certificate_clr'));
+            console.log('Accent Color:', formData.get('accent_clr'));
+            console.log('Logo file:', formData.get('logo'));
+            console.log('Signature file:', formData.get('signature'));
+            
+            // Ensure CSRF token is in the form data
+            if (!formData.has('_token')) {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                formData.append('_token', csrfToken);
+                console.log('Certificate form - Added CSRF token to form data:', csrfToken);
+            }
+            
+            // Show loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4 animate-spin" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>সেভ করা হচ্ছে...</span>';
+            
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                console.log('Certificate - Response status:', response.status);
+                if (!response.ok) {
+                    return response.json().catch(() => {
+                        return response.text().then(text => {
+                            console.error('Certificate - Error response:', text);
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        });
+                    }).then(errorData => {
+                        if (errorData.errors || errorData.message) {
+                            return errorData;
+                        }
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Certificate - Response data:', data);
+                if (data.success) {
+                    showSuccessMessage(data.message);
+                    // Reload page to show updated certificate
+                    setTimeout(() => {
+                        window.location.href = '{{ route("instructor.profile.settings") }}?tab=certificate';
+                    }, 1500);
+                } else {
+                    // Handle validation errors (422 status)
+                    if (data.errors) {
+                        console.log('Validation errors:', data.errors);
+                        let errorMessages = [];
+                        Object.keys(data.errors).forEach(field => {
+                            const fieldEl = document.querySelector(`[name="${field}"]`);
+                            const errorMessage = data.errors[field][0];
+                            errorMessages.push(`${field}: ${errorMessage}`);
+                            
+                            if (fieldEl) {
+                                const errorDiv = document.createElement('div');
+                                errorDiv.className = 'error-message text-red-400 text-sm mt-1';
+                                errorDiv.textContent = errorMessage;
+                                fieldEl.parentNode.appendChild(errorDiv);
+                            } else {
+                                console.log(`Field not found: ${field}`);
+                            }
+                        });
+                        
+                        // Also show a summary message
+                        showSuccessMessage('ফর্মে ত্রুটি রয়েছে: ' + errorMessages.join(', '));
+                    } else if (data.message) {
+                        showSuccessMessage(data.message);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Certificate - Error:', error);
+                showSuccessMessage('কিছু ভুল হয়েছে, আবার চেষ্টা করুন। Error: ' + error.message);
+            })
+            .finally(() => {
+                // Restore button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            });
+        });
+    }
 
     // Form submission handling
     const forms = document.querySelectorAll('form');
@@ -1074,15 +1941,48 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Auto-select active tab based on URL parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const tabParam = urlParams.get('tab');
-    if (tabParam) {
-        const tabButton = document.querySelector(`[data-tab="${tabParam}"]`);
+    // Auto-select active tab based on URL parameter, session, or localStorage
+    function setActiveTab() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        const sessionTab = '{{ session("tab") }}'; // Check for session tab
+        let targetTab = tabParam;
+        
+        // If no URL parameter, check session then localStorage
+        if (!targetTab) {
+            targetTab = sessionTab || localStorage.getItem('instructor_profile_active_tab') || 'profile';
+        }
+        
+        // Find and click the target tab
+        const tabButton = document.querySelector(`[data-tab="${targetTab}"]`);
         if (tabButton) {
-            tabButton.click();
+            // Remove active from all tabs first
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                content.classList.add('hidden');
+            });
+            
+            // Set active tab
+            tabButton.classList.add('active');
+            const targetContent = document.getElementById(`tab-${targetTab}`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                targetContent.classList.remove('hidden');
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('instructor_profile_active_tab', targetTab);
+            
+            // Update URL without reloading the page
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('tab', targetTab);
+            window.history.replaceState(null, '', newUrl);
         }
     }
+    
+    // Call setActiveTab on page load
+    setActiveTab();
 });
 
 // Password visibility toggle
@@ -1098,6 +1998,62 @@ function togglePassword(button) {
         input.type = 'password';
         icon.classList.remove('fa-eye-slash');
         icon.classList.add('fa-eye');
+    }
+}
+
+// Password Strength Indicator
+function checkPasswordStrength() {
+    const password = document.getElementById('newPassword').value;
+    const passwordStrengthDiv = document.getElementById('password-strength');
+    
+    // Check criteria
+    const hasLength = password.length >= 8;
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    // Update checkmarks - green check for met criteria, red X for unmet
+    document.getElementById('length-check').className = hasLength 
+        ? 'fas fa-check text-green-500' : 'fas fa-times text-red-500';
+    document.getElementById('upper-check').className = hasUpper 
+        ? 'fas fa-check text-green-500' : 'fas fa-times text-red-500';
+    document.getElementById('lower-check').className = hasLower 
+        ? 'fas fa-check text-green-500' : 'fas fa-times text-red-500';
+    document.getElementById('number-check').className = hasNumber 
+        ? 'fas fa-check text-green-500' : 'fas fa-times text-red-500';
+    document.getElementById('special-check').className = hasSpecial 
+        ? 'fas fa-check text-green-500' : 'fas fa-times text-red-500';
+    
+    // Calculate strength and update container border/background
+    const score = [hasLength, hasUpper, hasLower, hasNumber, hasSpecial].filter(Boolean).length;
+    
+    if (!password) {
+        // Reset to gray when empty
+        passwordStrengthDiv.className = 'mt-3 bg-gray-500/20 border border-gray-500 rounded-lg p-4 transition-all duration-300';
+        // Reset all checks to gray circles
+        document.getElementById('length-check').className = 'fas fa-circle text-gray-400';
+        document.getElementById('upper-check').className = 'fas fa-circle text-gray-400';
+        document.getElementById('lower-check').className = 'fas fa-circle text-gray-400';
+        document.getElementById('number-check').className = 'fas fa-circle text-gray-400';
+        document.getElementById('special-check').className = 'fas fa-circle text-gray-400';
+        return;
+    }
+    
+    // Update container based on strength
+    switch(score) {
+        case 0:
+        case 1:
+        case 2:
+            passwordStrengthDiv.className = 'mt-3 bg-red-500/20 border border-red-500 rounded-lg p-4 transition-all duration-300';
+            break;
+        case 3:
+            passwordStrengthDiv.className = 'mt-3 bg-yellow-500/20 border border-yellow-500 rounded-lg p-4 transition-all duration-300';
+            break;
+        case 4:
+        case 5:
+            passwordStrengthDiv.className = 'mt-3 bg-green-500/20 border border-green-500 rounded-lg p-4 transition-all duration-300';
+            break;
     }
 }
 
@@ -1124,12 +2080,63 @@ function closeAddExperienceModal() {
     });
 }
 
+// Edit experience modal functions
+function showEditExperienceModal(id, profession, company_name, job_type, experience, short_description) {
+    const modal = document.getElementById('editExperienceModal');
+    const form = document.getElementById('editExperienceForm');
+    
+    // Set form action
+    form.action = `/instructor/profile/experiences/${id}`;
+    
+    // Populate form fields
+    document.getElementById('edit_experience_id').value = id;
+    document.getElementById('edit_profession').value = profession;
+    document.getElementById('edit_company_name').value = company_name;
+    document.getElementById('edit_job_type').value = job_type;
+    document.getElementById('edit_experience').value = experience;
+    document.getElementById('edit_short_description').value = short_description;
+    
+    // Clear error messages
+    document.querySelectorAll('[id^="edit_"][id$="-error"]').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+    });
+    
+    // Show modal
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEditExperienceModal() {
+    const modal = document.getElementById('editExperienceModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    
+    // Clear form
+    document.getElementById('editExperienceForm').reset();
+    // Clear error messages
+    document.querySelectorAll('[id^="edit_"][id$="-error"]').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+    });
+}
+
 // Handle form submission for add experience
 document.getElementById('addExperienceForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
     const submitBtn = this.querySelector('button[type="submit"]');
+    
+    console.log('Form action:', this.action);
+    console.log('Form data:', Object.fromEntries(formData));
+    
+    // Check CSRF token
+    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+    console.log('CSRF meta tag:', csrfToken);
+    console.log('CSRF token value:', csrfToken ? csrfToken.getAttribute('content') : 'NOT FOUND');
     
     // Show loading state
     submitBtn.disabled = true;
@@ -1141,15 +2148,34 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
         el.textContent = '';
     });
     
+    // Ensure CSRF token is in the form data
+    if (!formData.has('_token')) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        formData.append('_token', csrfToken);
+        console.log('Added CSRF token to form data:', csrfToken);
+    }
+
     fetch(this.action, {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Add Experience - Response status:', response.status);
+        console.log('Add Experience - Response ok:', response.ok);
+        if (!response.ok) {
+            return response.text().then(text => {
+                console.error('Add Experience - Error response:', text);
+                throw new Error(`HTTP error! status: ${response.status}`);
+            });
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log('Add Experience - Response data:', data);
         if (data.success) {
             closeAddExperienceModal();
             showSuccessMessage('অভিজ্ঞতা সফলভাবে যোগ করা হয়েছে!');
@@ -1167,6 +2193,73 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
                         errorEl.classList.remove('hidden');
                     }
                 });
+            } else if (data.message) {
+                showSuccessMessage(data.message);
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Add Experience - Error:', error);
+        showSuccessMessage('কিছু ভুল হয়েছে, আবার চেষ্টা করুন। Error: ' + error.message);
+    })
+    .finally(() => {
+        // Restore button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>অভিজ্ঞতা যোগ করুন</span>';
+    });
+});
+
+// Handle form submission for edit experience
+document.getElementById('editExperienceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitBtn = this.querySelector('button[type="submit"]');
+    
+    // Ensure CSRF token is in the form data
+    if (!formData.has('_token')) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        formData.append('_token', csrfToken);
+        console.log('Edit form - Added CSRF token to form data:', csrfToken);
+    }
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4 animate-spin" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>আপডেট করা হচ্ছে...</span>';
+    
+    // Clear previous errors
+    document.querySelectorAll('[id^="edit_"][id$="-error"]').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+    });
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeEditExperienceModal();
+            showSuccessMessage('অভিজ্ঞতা সফলভাবে আপডেট করা হয়েছে!');
+            // Reload page to show updated experience
+            setTimeout(() => {
+                window.location.href = '{{ route("instructor.profile.settings") }}?tab=experience';
+            }, 1500);
+        } else {
+            // Show validation errors
+            if (data.errors) {
+                Object.keys(data.errors).forEach(field => {
+                    const errorEl = document.getElementById('edit_' + field + '-error');
+                    if (errorEl) {
+                        errorEl.textContent = data.errors[field][0];
+                        errorEl.classList.remove('hidden');
+                    }
+                });
             }
         }
     })
@@ -1177,13 +2270,328 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
     .finally(() => {
         // Restore button
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>অভিজ্ঞতা যোগ করুন</span>';
+        submitBtn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9,10H7V12H9V10M13,10H11V12H13V10M17,10H15V12H17V10M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M19,6V5H5V6H19Z"/></svg>অভিজ্ঞতা আপডেট করুন</span>';
     });
 });
 
-// Certificate preview (placeholder)
-function previewCertificate() {
+// File upload preview handler
+function handleFilePreview(input, type) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        
+        // Validate file size (5MB max)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('ফাইলের সাইজ ৫MB এর চেয়ে বড় হতে পারে না!');
+            input.value = '';
+            return;
+        }
+        
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            alert('শুধুমাত্র ছবি ফাইল আপলোড করুন!');
+            input.value = '';
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const label = document.getElementById(type + '-label');
+            const preview = document.getElementById(type + '-preview');
+            const previewImg = document.getElementById(type + '-preview-img');
+            
+            if (label && preview && previewImg) {
+                label.classList.add('hidden');
+                preview.classList.remove('hidden');
+                previewImg.src = e.target.result;
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Clear file preview
+function clearFilePreview(type) {
+    const input = document.getElementById(type);
+    const label = document.getElementById(type + '-label');
+    const preview = document.getElementById(type + '-preview');
+    const previewImg = document.getElementById(type + '-preview-img');
+    
+    if (input && label && preview && previewImg) {
+        input.value = '';
+        label.classList.remove('hidden');
+        preview.classList.add('hidden');
+        previewImg.src = '';
+    }
+}
+
+// Certificate modal functions
+function showAddCertificateModal() {
+    const modal = document.getElementById('addCertificateModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    
+    // Reset form and set default template
+    document.getElementById('addCertificateForm').reset();
+    clearAllErrors('add');
+    
+    // Set default template selection
+    const defaultTemplate = document.querySelector('#addCertificateModal .certificate-template input[value="1"]');
+    if (defaultTemplate) {
+        defaultTemplate.click();
+    }
+}
+
+function closeAddCertificateModal() {
+    const modal = document.getElementById('addCertificateModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    
+    // Clear form and previews
+    document.getElementById('addCertificateForm').reset();
+    clearFilePreview('add-logo');
+    clearFilePreview('add-signature');
+    clearAllErrors('add');
+}
+
+function showEditCertificateModal(id, courseId, style, certificateClr, accentClr, logo, signature) {
+    const modal = document.getElementById('editCertificateModal');
+    const form = document.getElementById('editCertificateForm');
+    
+    // Set form action
+    form.action = `/instructor/certificates/settings`;
+    
+    // Populate form fields
+    document.getElementById('edit_certificate_id').value = id;
+    document.getElementById('edit_course_id').value = courseId;
+    document.getElementById('edit_certificate_clr').value = certificateClr || '#3B82F6';
+    document.getElementById('edit_accent_clr').value = accentClr || '#10B981';
+    
+    // Set template selection
+    const templateInput = document.querySelector(`#editCertificateModal input[name="certificate_style"][value="${style}"]`);
+    if (templateInput) {
+        templateInput.click();
+    }
+    
+    // Show existing logo
+    if (logo && logo !== 'null' && logo !== '') {
+        const logoLabel = document.getElementById('edit-logo-label');
+        const logoPreview = document.getElementById('edit-logo-preview');
+        const logoImg = document.getElementById('edit-logo-preview-img');
+        
+        logoLabel.classList.add('hidden');
+        logoPreview.classList.remove('hidden');
+        logoImg.src = `/${logo}`;
+    }
+    
+    // Show existing signature
+    if (signature && signature !== 'null' && signature !== '') {
+        const sigLabel = document.getElementById('edit-signature-label');
+        const sigPreview = document.getElementById('edit-signature-preview');
+        const sigImg = document.getElementById('edit-signature-preview-img');
+        
+        sigLabel.classList.add('hidden');
+        sigPreview.classList.remove('hidden');
+        sigImg.src = `/${signature}`;
+    }
+    
+    clearAllErrors('edit');
+    
+    // Show modal
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEditCertificateModal() {
+    const modal = document.getElementById('editCertificateModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    
+    // Clear form
+    document.getElementById('editCertificateForm').reset();
+    clearFilePreview('edit-logo');
+    clearFilePreview('edit-signature');
+    clearAllErrors('edit');
+}
+
+// Clear all error messages
+function clearAllErrors(prefix) {
+    document.querySelectorAll(`[id^="${prefix}_"][id$="-error"]`).forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+    });
+}
+
+// Certificate preview functionality
+function previewCertificate(mode) {
+    if (typeof mode === 'number') {
+        // Preview existing certificate - for now show placeholder
+        alert('সার্টিফিকেট প্রিভিউ ফিচার শীঘ্রই আসছে!');
+        return;
+    }
+    
+    // Preview from modal form
+    const form = mode === 'add' ? document.getElementById('addCertificateForm') : document.getElementById('editCertificateForm');
+    const formData = new FormData(form);
+    
+    // Validate required fields
+    const courseId = formData.get('course_id');
+    const certificateStyle = formData.get('certificate_style');
+    
+    if (!courseId) {
+        alert('কোর্স নির্বাচন করুন');
+        return;
+    }
+    
+    if (!certificateStyle) {
+        alert('সার্টিফিকেট টেমপ্লেট নির্বাচন করুন');
+        return;
+    }
+    
     alert('সার্টিফিকেট প্রিভিউ ফিচার শীঘ্রই আসছে!');
+}
+
+// Delete experience functions
+let experienceToDelete = null;
+
+function showDeleteExperienceModal(experienceId, profession, company) {
+    experienceToDelete = experienceId;
+    document.getElementById('delete-experience-profession').textContent = profession;
+    document.getElementById('delete-experience-company').textContent = company;
+    
+    const modal = document.getElementById('deleteExperienceModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteExperienceModal() {
+    const modal = document.getElementById('deleteExperienceModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    experienceToDelete = null;
+}
+
+function deleteExperience() {
+    if (!experienceToDelete) return;
+    
+    const confirmBtn = document.getElementById('confirmDeleteExperience');
+    const originalText = confirmBtn.innerHTML;
+    
+    // Show loading state
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="w-4 h-4 animate-spin" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>মুছে ফেলা হচ্ছে...</span>';
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+    formData.append('_method', 'DELETE');
+    
+    fetch(`/instructor/profile/experiences/${experienceToDelete}`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json().catch(() => ({ success: true, message: 'অভিজ্ঞতা সফলভাবে মুছে ফেলা হয়েছে!' }));
+    })
+    .then(data => {
+        closeDeleteExperienceModal();
+        showSuccessMessage(data.message || 'অভিজ্ঞতা সফলভাবে মুছে ফেলা হয়েছে!');
+        // Reload page to show updated list
+        setTimeout(() => {
+            window.location.href = '{{ route("instructor.profile.settings") }}?tab=experience';
+        }, 1500);
+    })
+    .catch(error => {
+        console.error('Delete Experience - Error:', error);
+        showSuccessMessage('অভিজ্ঞতা মুছতে ব্যর্থ হয়েছে, আবার চেষ্টা করুন।');
+    })
+    .finally(() => {
+        // Restore button
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalText;
+    });
+}
+
+// Delete certificate functions
+let certificateToDelete = null;
+
+function showDeleteCertificateModal(certificateId, courseName) {
+    certificateToDelete = certificateId;
+    const modal = document.getElementById('deleteCertificateModal');
+    const courseNameEl = document.getElementById('delete-certificate-course');
+    
+    courseNameEl.textContent = courseName;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteCertificateModal() {
+    const modal = document.getElementById('deleteCertificateModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    certificateToDelete = null;
+}
+
+function deleteCertificate() {
+    if (!certificateToDelete) return;
+    
+    const confirmBtn = document.getElementById('confirmDeleteCertificate');
+    const originalText = confirmBtn.innerHTML;
+    
+    // Show loading state
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="w-4 h-4 animate-spin" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>মুছে ফেলা হচ্ছে...</span>';
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+    formData.append('_method', 'DELETE');
+    
+    fetch(`/instructor/certificates/${certificateToDelete}`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json().catch(() => ({ success: true, message: 'সার্টিফিকেট সফলভাবে মুছে ফেলা হয়েছে!' }));
+    })
+    .then(data => {
+        closeDeleteCertificateModal();
+        showSuccessMessage(data.message || 'সার্টিফিকেট সফলভাবে মুছে ফেলা হয়েছে!');
+        // Reload page to show updated list
+        setTimeout(() => {
+            window.location.href = '{{ route("instructor.profile.settings") }}?tab=certificate';
+        }, 1500);
+    })
+    .catch(error => {
+        console.error('Delete Certificate - Error:', error);
+        showSuccessMessage('সার্টিফিকেট মুছতে ব্যর্থ হয়েছে, আবার চেষ্টা করুন।');
+    })
+    .finally(() => {
+        // Restore button
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalText;
+    });
 }
 
 // Success message display

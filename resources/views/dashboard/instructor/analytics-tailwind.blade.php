@@ -20,29 +20,51 @@
             
             <!-- Filter Dropdown -->
             <div class="relative">
+                @php
+                    $currentDuration = request('duration');
+                    $durationTexts = [
+                        'one_month' => 'এক মাস',
+                        'three_months' => 'তিন মাস',
+                        'six_months' => 'ছয় মাস',
+                        'one_year' => 'এক বছর'
+                    ];
+                    $currentText = $currentDuration && isset($durationTexts[$currentDuration]) ? $durationTexts[$currentDuration] : 'ফিল্টার';
+                @endphp
                 <button id="filterBtn" class="inline-flex items-center gap-2 px-4 py-2 bg-primary rounded-lg text-secondary-100 anim hover:bg-orange hover:text-primary">
                     <i class="fas fa-filter"></i>
-                    <span>ফিল্টার</span>
+                    <span>{{ $currentText }}</span>
                     <i class="fas fa-chevron-down text-sm"></i>
                 </button>
                 
                 <div id="filterDropdown" class="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-1 border border-[#fff]/20 hidden z-10">
                     <div class="py-2">
-                        <a href="?duration=one_month" class="flex items-center gap-2 px-4 py-2 text-secondary-100 hover:bg-primary hover:text-white anim">
+                        <a href="?duration=one_month" class="flex items-center gap-2 px-4 py-2 text-secondary-100 hover:bg-primary hover:text-white anim {{ $currentDuration == 'one_month' ? 'bg-primary text-white' : '' }}">
                             <i class="fas fa-calendar-day text-xs"></i>
                             এক মাস
+                            @if($currentDuration == 'one_month')
+                                <i class="fas fa-check text-xs ml-auto"></i>
+                            @endif
                         </a>
-                        <a href="?duration=three_months" class="flex items-center gap-2 px-4 py-2 text-secondary-100 hover:bg-primary hover:text-white anim">
+                        <a href="?duration=three_months" class="flex items-center gap-2 px-4 py-2 text-secondary-100 hover:bg-primary hover:text-white anim {{ $currentDuration == 'three_months' ? 'bg-primary text-white' : '' }}">
                             <i class="fas fa-calendar-week text-xs"></i>
                             তিন মাস
+                            @if($currentDuration == 'three_months')
+                                <i class="fas fa-check text-xs ml-auto"></i>
+                            @endif
                         </a>
-                        <a href="?duration=six_months" class="flex items-center gap-2 px-4 py-2 text-secondary-100 hover:bg-primary hover:text-white anim">
+                        <a href="?duration=six_months" class="flex items-center gap-2 px-4 py-2 text-secondary-100 hover:bg-primary hover:text-white anim {{ $currentDuration == 'six_months' ? 'bg-primary text-white' : '' }}">
                             <i class="fas fa-calendar-alt text-xs"></i>
                             ছয় মাস
+                            @if($currentDuration == 'six_months')
+                                <i class="fas fa-check text-xs ml-auto"></i>
+                            @endif
                         </a>
-                        <a href="?duration=one_year" class="flex items-center gap-2 px-4 py-2 text-secondary-100 hover:bg-primary hover:text-white anim">
+                        <a href="?duration=one_year" class="flex items-center gap-2 px-4 py-2 text-secondary-100 hover:bg-primary hover:text-white anim {{ $currentDuration == 'one_year' ? 'bg-primary text-white' : '' }}">
                             <i class="fas fa-calendar text-xs"></i>
                             এক বছর
+                            @if($currentDuration == 'one_year')
+                                <i class="fas fa-check text-xs ml-auto"></i>
+                            @endif
                         </a>
                     </div>
                 </div>

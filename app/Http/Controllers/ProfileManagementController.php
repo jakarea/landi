@@ -71,7 +71,7 @@ class ProfileManagementController extends Controller
 
         $this->validate($request, [
             'name' => 'required|string',
-            'short_bio' => 'string',
+            'short_bio' => 'nullable|string',
             'phone' => 'required|string',
             'base64_avatar' => 'nullable|string',
             'facebook_url' => 'nullable|url',
@@ -87,7 +87,7 @@ class ProfileManagementController extends Controller
 
         $user = User::where('id', $userId)->first();
         $user->name = $request->name;
-        $user->short_bio = $request->website;
+        $user->short_bio = $request->short_bio;
         // Collect social media URLs
         $socialLinks = [];
         if ($request->facebook_url) $socialLinks[] = $request->facebook_url;
@@ -138,6 +138,11 @@ class ProfileManagementController extends Controller
         // Send email
         Mail::to($user->email)->send(new ProfileUpdated($user));
 
+        // Check if this is a social media update (has social media fields but not basic profile fields like avatar)
+        if ($request->has(['facebook_url', 'linkedin_url', 'youtube_url', 'website_url']) && !$request->has('base64_avatar')) {
+            return redirect()->route('instructor.profile.edit', config('app.subdomain'))->with(['success' => 'Social media links updated successfully!', 'tab' => 'social']);
+        }
+        
         return redirect()->route('instructor.profile', config('app.subdomain'))->with('success', 'Your Profile has been Updated successfully!');
     }
 
