@@ -1,87 +1,56 @@
 @extends('layouts/student-modern')
-@section('title', $course->title ?? 'কোর্স শিক্ষা')
-
+@section('title')
+    {{ $course->title ? $course->title : 'Course Details' }}
+@endsection
 @php
     use Illuminate\Support\Str;
 @endphp
 
-@push('styles')
+{{-- page style @S --}}
+@section('style')
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    primary: {
+                        50: '#eff6ff',
+                        100: '#dbeafe',
+                        200: '#bfdbfe',
+                        300: '#93c5fd',
+                        400: '#60a5fa',
+                        500: '#3b82f6',
+                        600: '#2563eb',
+                        700: '#1d4ed8',
+                        800: '#1e40af',
+                        900: '#1e3a8a',
+                        950: '#172554',
+                    },
+                    dark: {
+                        50: '#f8fafc',
+                        100: '#f1f5f9',
+                        200: '#e2e8f0',
+                        300: '#cbd5e1',
+                        400: '#94a3b8',
+                        500: '#64748b',
+                        600: '#475569',
+                        700: '#334155',
+                        800: '#1e293b',
+                        900: '#0f172a',
+                        950: '#020617',
+                    }
+                }
+            }
+        }
+    }
+</script>
 <style>
-    .video-player-container {
-        background: rgba(15, 23, 42, 0.9);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        backdrop-filter: blur(12px);
-        position: relative;
-        overflow: hidden;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    .font-inter { font-family: 'Inter', sans-serif; }
     
-    .lesson-item {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .lesson-item:hover {
-        background: rgba(30, 41, 59, 0.8);
-        border-color: rgba(99, 102, 241, 0.4);
-        transform: translateX(4px);
-    }
-    
-    .lesson-item.active {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-        border-color: rgba(99, 102, 241, 0.6);
-    }
-    
-    .lesson-item::before {
-        content: '';
-        position: absolute;
-        top: -100%;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
-        transform: translateX(-100%) translateY(-100%);
-        transition: transform 0.8s ease-in-out;
-    }
-    
-    .lesson-item:hover::before {
-        transform: translateX(200%) translateY(200%);
-    }
-    
-    .module-header {
-        background: rgba(15, 23, 42, 0.7);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        backdrop-filter: blur(12px);
-        transition: all 0.3s ease;
-    }
-    
-    .module-header:hover {
-        border-color: rgba(99, 102, 241, 0.4);
-    }
-    
-    .review-card {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        backdrop-filter: blur(8px);
-        transition: all 0.3s ease;
-    }
-    
-    .review-card:hover {
-        border-color: rgba(99, 102, 241, 0.4);
-        transform: translateY(-2px);
-    }
-    
-    .rating-star {
-        color: #fbbf24;
-        transition: color 0.2s;
-    }
-    
-    .rating-star:hover {
-        color: #f59e0b;
-    }
-    
+    /* Play/Pause icon control */
     .video_list_play .actv-show {
         display: none;
     }
@@ -93,8 +62,45 @@
     .video_list_play.active .actv-show {
         display: inline;
     }
+    
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dark .glass-effect {
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .glow-card {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        transition: all 0.3s ease;
+    }
+    
+    .glow-card:hover {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+        transform: translateY(-2px);
+    }
+
+    /* Custom accordion styles */
+    .accordion-button:not(.collapsed) {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+        border-radius: 0.75rem;
+    }
+
+    /* Video player styles */
+    .video-container {
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
 </style>
-@endpush
+@endsection
+{{-- page style @E --}}
 
 @section('seo')
     <meta name="keywords" content="{{ $course->categories . ', ' . $course->meta_keyword }}" />
@@ -102,188 +108,189 @@
 @endsection
 
 @section('content')
-@php
-    $i = 0;
-@endphp
+    @php
+        $i = 0;
+    @endphp
+    
+    <!-- Debug information - remove in production -->
+    @if(config('app.debug'))
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4 text-sm">
+            <strong class="font-semibold text-blue-800 dark:text-blue-200">Debug Info:</strong> 
+            <span class="text-blue-700 dark:text-blue-300">
+                Completed Lessons: {{ count($userCompletedLessons ?? []) }} | 
+                Lesson IDs: {{ implode(',', array_keys($userCompletedLessons ?? [])) }}
+            </span>
+        </div>
+    @endif
+    
+    <div class="max-w-7xl mx-auto p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Main Content Area - 3/4 width on large screens -->
+            <div class="lg:col-span-3">
+                <!-- Video Player Section -->
+                @if ($isUserEnrolled)
+                    <div class="glass-effect rounded-2xl p-6 mb-6 glow-card">
+                        <div class="video-container rounded-xl overflow-hidden bg-gray-900" id="videoPlayerContainer" style="display: block;">
+                                @if ($firstLesson)
+                                    @php
+                                        $videoLink = $firstLesson->video_link;
+                                        $isYoutube = !empty($videoLink) && (strpos($videoLink, 'youtube.com') !== false || strpos($videoLink, 'youtu.be') !== false);
+                                        $isVimeo = !empty($videoLink) && strpos($videoLink, 'vimeo.com') !== false;
+                                        $embedUrl = '';
+                                        
+                                        if ($isYoutube) {
+                                            $embedUrl = getYouTubeEmbedUrl($videoLink);
+                                        } elseif ($isVimeo) {
+                                            $embedUrl = getVimeoEmbedUrl($videoLink);
+                                        }
+                                    @endphp
+                                    
+                                    @if ($isYoutube && !empty($embedUrl))
+                                        <div class="youtube-player w-full aspect-video" id="firstLesson"
+                                            data-video-url="{{ $embedUrl }}"
+                                            data-first-lesson-id="{{ $firstLesson->id }}"
+                                            data-first-course-id="{{ $firstLesson->course_id }}"
+                                            data-first-modules-id="{{ $firstLesson->module_id }}"
+                                            data-video-type="youtube">
+                                            <iframe width="100%" height="100%" src="{{ $embedUrl }}" frameborder="0" 
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                allowfullscreen class="rounded-lg"></iframe>
+                                        </div>
+                                    @elseif ($isVimeo && !empty($embedUrl))
+                                        <div class="vimeo-player w-full aspect-video" id="firstLesson"
+                                            data-vimeo-url="{{ $embedUrl }}"
+                                            data-first-lesson-id="{{ $firstLesson->id }}"
+                                            data-first-course-id="{{ $firstLesson->course_id }}"
+                                            data-first-modules-id="{{ $firstLesson->module_id }}"
+                                            data-video-type="vimeo">
+                                            <iframe width="100%" height="100%" src="{{ $embedUrl }}" frameborder="0" 
+                                                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen class="rounded-lg"></iframe>
+                                        </div>
+                                    @elseif (!empty($videoLink))
+                                        <div class="generic-video-player w-full aspect-video" id="firstLesson"
+                                            data-first-lesson-id="{{ $firstLesson->id }}"
+                                            data-first-course-id="{{ $firstLesson->course_id }}"
+                                            data-first-modules-id="{{ $firstLesson->module_id }}"
+                                            data-video-type="generic">
+                                            <video width="100%" height="100%" controls class="rounded-lg">
+                                                <source src="{{ $videoLink }}" type="video/mp4">
+                                                আপনার ব্রাউজার এই ভিডিও ফরম্যাট সাপোর্ট করে না।
+                                            </video>
+                                        </div>
+                                    @else
+                                        <div class="no-video-placeholder w-full aspect-video bg-gray-100 dark:bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                                            <div class="text-center">
+                                                <i class="fas fa-play-circle text-4xl text-gray-400 mb-3"></i>
+                                                <p class="text-gray-500 dark:text-gray-400">প্রথম লেসনে কোনো ভিডিও নেই</p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @else
+                                    <div class="no-lesson-placeholder w-full aspect-video bg-gray-100 dark:bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                                        <div class="text-center">
+                                            <i class="fas fa-book-open text-4xl text-gray-400 mb-3"></i>
+                                            <p class="text-gray-500 dark:text-gray-400">এই কোর্সে কোনো লেসন পাওয়া যায়নি</p>
+                                        </div>
+                                    </div>
+                                @endif
+                        </div>
 
-<!-- Debug information - remove in production -->
-@if(config('app.debug'))
-    <div class="bg-blue-900/50 border border-blue-600 text-blue-200 p-3 rounded-lg mb-4 text-sm">
-        <strong>Debug Info:</strong> 
-        Completed Lessons: {{ count($userCompletedLessons ?? []) }} | 
-        Lesson IDs: {{ implode(',', array_keys($userCompletedLessons ?? [])) }}
-    </div>
-@endif
-
-<div class="p-6 space-y-6">
-    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
-        <!-- Main Content Area -->
-        <div class="xl:col-span-3 space-y-6">
-            <!-- Video Player Section -->
-            @if ($isUserEnrolled)
-                <div class="video-player-container rounded-2xl overflow-hidden" id="videoPlayerContainer">
-                    @if ($firstLesson)
-                        @php
-                            $videoLink = $firstLesson->video_link;
-                            $isYoutube = !empty($videoLink) && (strpos($videoLink, 'youtube.com') !== false || strpos($videoLink, 'youtu.be') !== false);
-                            $isVimeo = !empty($videoLink) && strpos($videoLink, 'vimeo.com') !== false;
-                            $embedUrl = '';
-                            
-                            if ($isYoutube) {
-                                $embedUrl = getYouTubeEmbedUrl($videoLink);
-                            } elseif ($isVimeo) {
-                                $embedUrl = getVimeoEmbedUrl($videoLink);
-                            }
-                        @endphp
+                        {{-- Dynamic Video Players --}}
+                        <div class="youtube-player w-full aspect-video hidden">
+                            <iframe width="100%" height="100%" src="" frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen class="rounded-lg"></iframe>
+                        </div>
                         
-                        @if ($isYoutube && !empty($embedUrl))
-                            <div class="youtube-player w-full" id="firstLesson"
-                                data-video-url="{{ $embedUrl }}"
-                                data-first-lesson-id="{{ $firstLesson->id }}"
-                                data-first-course-id="{{ $firstLesson->course_id }}"
-                                data-first-modules-id="{{ $firstLesson->module_id }}"
-                                data-video-type="youtube">
-                                <iframe class="w-full aspect-video" src="{{ $embedUrl }}" frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen></iframe>
+                        <div class="vimeo-player w-full aspect-video hidden">
+                            <iframe width="100%" height="100%" src="" frameborder="0" 
+                                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen class="rounded-lg"></iframe>
+                        </div>
+                        
+                        <div class="generic-video-player w-full aspect-video hidden">
+                            <video width="100%" height="100%" controls class="rounded-lg">
+                                <source src="" type="video/mp4">
+                                আপনার ব্রাউজার এই ভিডিও ফরম্যাট সাপোর্ট করে না।
+                            </video>
+                        </div>
+
+                        {{-- Audio Player --}}
+                        <div class="audio-iframe-box hidden bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl p-6">
+                            <div class="flex items-center justify-center mb-4">
+                                <img src="{{ asset('assets/images/audio.png') }}" alt="Audio" class="w-24 h-24 rounded-lg shadow-lg">
                             </div>
-                        @elseif ($isVimeo && !empty($embedUrl))
-                            <div class="vimeo-player w-full" id="firstLesson"
-                                data-vimeo-url="{{ $embedUrl }}"
-                                data-first-lesson-id="{{ $firstLesson->id }}"
-                                data-first-course-id="{{ $firstLesson->course_id }}"
-                                data-first-modules-id="{{ $firstLesson->module_id }}"
-                                data-video-type="vimeo">
-                                <iframe class="w-full aspect-video" src="{{ $embedUrl }}" frameborder="0" 
-                                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                            <div class="audio-controls">
+                                <audio id="audioPlayer" controls class="w-full rounded-lg bg-black/20">
+                                    <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
                             </div>
-                        @elseif (!empty($videoLink))
-                            <div class="generic-video-player w-full" id="firstLesson"
-                                data-first-lesson-id="{{ $firstLesson->id }}"
-                                data-first-course-id="{{ $firstLesson->course_id }}"
-                                data-first-modules-id="{{ $firstLesson->module_id }}"
-                                data-video-type="generic">
-                                <video class="w-full aspect-video" controls>
-                                    <source src="{{ $videoLink }}" type="video/mp4">
-                                    আপনার ব্রাউজার এই ভিডিও ফরম্যাট সাপোর্ট করে না।
-                                </video>
-                            </div>
-                        @else
-                            <div class="w-full aspect-video bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-600">
-                                <div class="text-center">
-                                    <i class="fas fa-play-circle text-4xl text-gray-500 mb-3"></i>
-                                    <p class="text-gray-400">প্রথম লেসনে কোনো ভিডিও নেই</p>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
                         @endif
-                    @else
-                        <div class="w-full aspect-video bg-gray-800 flex items-center justify-center border-2 border-dashed border-gray-600">
-                            <div class="text-center">
-                                <i class="fas fa-book-open text-4xl text-gray-500 mb-3"></i>
-                                <p class="text-gray-400">এই কোর্সে কোনো লেসন পাওয়া যায়নি</p>
-                            </div>
-                        </div>
-                    @endif
-                </div>
 
-                <!-- Dynamic Video Players (Hidden) -->
-                <div class="youtube-player w-full hidden">
-                    <iframe class="w-full aspect-video" src="" frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen></iframe>
-                </div>
-                
-                <div class="vimeo-player w-full hidden">
-                    <iframe class="w-full aspect-video" src="" frameborder="0" 
-                        allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                
-                <div class="generic-video-player w-full hidden">
-                    <video class="w-full aspect-video" controls>
-                        <source src="" type="video/mp4">
-                        আপনার ব্রাউজার এই ভিডিও ফরম্যাট সাপোর্ট করে না।
-                    </video>
-                </div>
 
-                <!-- Audio Player -->
-                <div class="audio-iframe-box hidden glass-effect rounded-2xl p-6">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-headphones text-white text-xl"></i>
-                        </div>
+                <!-- Course Header -->
+                <div class="glass-effect rounded-2xl p-6 mb-6 glow-card">
+                    <div class="flex items-start justify-between">
                         <div class="flex-1">
-                            <audio id="audioPlayer" controls class="w-full">
-                                <source src="" type="audio/mpeg">
-                                আপনার ব্রাউজার এই অডিও ফরম্যাট সাপোর্ট করে না।
-                            </audio>
+                            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $course->title }}</h1>
+                            <p class="text-gray-600 dark:text-gray-300 flex items-center">
+                                <i class="fas fa-user-tie mr-2 text-primary-500"></i>
+                                {{ $course->user->name }}
+                            </p>
                         </div>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Course Title and Actions -->
-            <div class="glass-effect rounded-2xl p-6 ray-hover glow-card">
-                <div class="flex items-start justify-between">
-                    <div class="flex-1">
-                        <h1 class="text-2xl font-bold text-white mb-3">{{ $course->title }}</h1>
-                        <div class="flex items-center space-x-4 text-gray-400">
-                            <div class="flex items-center">
-                                <i class="fas fa-user-tie mr-2"></i>
-                                <span>{{ $course->user->name }}</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-graduation-cap mr-2"></i>
-                                <span>{{ $totalModules }} মডিউল</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-play-circle mr-2"></i>
-                                <span>{{ $totalLessons }} লেসন</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center space-x-3">
-                        <!-- Like Button -->
-                        <button class="p-3 rounded-lg transition-all duration-300 {{ $liked === 'liked' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400 hover:text-red-400' }}" 
-                                id="likeBttn">
-                            <i class="fas fa-heart text-lg"></i>
-                        </button>
                         
-                        <!-- Mark as Complete Button -->
-                        @if($isUserEnrolled)
-                            <button class="px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-300 ray-hover" 
-                                    id="markCompleteBtn" 
+                        <!-- Action Buttons -->
+                        <div class="flex items-center space-x-3">
+                            <!-- Like Button -->
+                            <button class="p-3 rounded-lg transition-all duration-300 {{ $liked === 'liked' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400 hover:text-red-400' }}" 
+                                    id="likeBttn">
+                                <i class="fas fa-heart text-lg"></i>
+                            </button>
+                            
+                            {{-- Mark as Complete Button --}}
+                            @if($isUserEnrolled)
+                                <button class="px-4 py-2 rounded-lg font-medium transition-all duration-300 btn-secondary text-sm" id="markCompleteBtn" 
                                     data-course="{{ $course->id }}"
                                     data-module=""
                                     data-lesson=""
                                     data-duration="0"
                                     disabled>
-                                <i class="fas fa-check-circle mr-2"></i>
-                                সম্পন্ন
-                            </button>
-                        @else
-                            <button class="px-4 py-3 bg-gray-600 text-gray-400 rounded-lg cursor-not-allowed" disabled>
-                                <i class="fas fa-lock mr-2"></i>
-                                ভর্তি হননি
-                            </button>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
-                    <div class="content-txt-box mb-3" id="textHideShow" style="display: none;">
-                        <div class="course-desc-txt">
-                            <div id="dataTextContainer" class="my-3"></div>
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    Completed
+                                </button>
+                            @else
+                                <button class="px-4 py-2 rounded-lg font-medium bg-gray-600 text-gray-300 cursor-not-allowed text-sm" disabled>
+                                    <i class="fas fa-lock mr-1"></i>
+                                    Not Enrolled
+                                </button>
+                            @endif
                         </div>
                     </div>
+                </div>
 
-                    <hr id="textHideShowSeparator" style="display: none;">
-                    <div class="content-txt-box">
-                        <h3 id="aboutCourse">About Course</h3>
-                        <div class="course-desc-txt" id="lessonShortDesc">
+                <!-- Text Content Area (Hidden by default) -->
+                <div class="glass-effect rounded-2xl p-6 mb-6 hidden" id="textHideShow">
+                    <div class="prose dark:prose-invert max-w-none">
+                        <div id="dataTextContainer" class="text-gray-700 dark:text-gray-300"></div>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-200 dark:border-gray-700 mb-6 hidden" id="textHideShowSeparator"></div>
+                
+                <!-- About Course Section -->
+                <div class="glass-effect rounded-2xl p-6 mb-6">
+                    <h3 id="aboutCourse" class="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <i class="fas fa-info-circle mr-2 text-primary-500"></i>
+                        About Course
+                    </h3>
+                    <div class="prose dark:prose-invert max-w-none" id="lessonShortDesc">
+                        <div class="text-gray-700 dark:text-gray-300 leading-relaxed">
                             {!! $course->description !!}
                         </div>
                     </div>
+                </div>
 
                     {{-- 
                     <div class="download-files-box">
@@ -298,335 +305,391 @@
                         </div>
                     </div> 
                     --}}
-                    @if ($course->allow_review)
-                        {{-- course review --}}
-                        <div class="course-review-wrap">
-                            <h3>{{ count($course_reviews) }} Reviews</h3>
+                @if ($course->allow_review)
+                    <!-- Reviews Section -->
+                    <div class="glass-effect rounded-2xl p-6 mb-6">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                            <i class="fas fa-star mr-2 text-yellow-500"></i>
+                            {{ count($course_reviews) }} Reviews
+                        </h3>
 
-                            <div class="media course-review-input-box">
-                                @if ($course->user->avatar)
-                                    @if ($course->user->user_role == 'student')
-                                        <img src="{{ asset($course->user->avatar) }}" alt="Place" class="img-fluid">
-                                    @endif
-                                @else
-                                    <span class="avtar">{!! strtoupper($course->user->name[0]) !!}</span>
+                        <!-- Review Form -->
+                        <div class="flex items-start space-x-4 mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            @if ($course->user->avatar)
+                                @if ($course->user->user_role == 'student')
+                                    <img src="{{ asset($course->user->avatar) }}" alt="Avatar" class="w-12 h-12 rounded-full object-cover">
                                 @endif
-                                <div class="media-body">
-                                    <form
-                                        action="{{ route('student.courses.review', $course->slug) }}"
-                                        method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="form-group">
-                                            <input autocomplete="off" type="text" name="comment" id="review"
-                                                placeholder="Write a review">
-                                        </div>
-                                        <div class="form-rev">
-                                            <div id="full-stars">
-                                                <div class="rating-group">
-                                                    <label aria-label="1 star" class="rating__label" for="rating-1"><i
-                                                            class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                    <input class="rating__input" name="star" id="rating-1"
-                                                        value="1" type="radio">
-                                                    <label aria-label="2 stars" class="rating__label" for="rating-2"><i
-                                                            class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                    <input class="rating__input" name="star" id="rating-2"
-                                                        value="2" type="radio">
-                                                    <label aria-label="3 stars" class="rating__label" for="rating-3"><i
-                                                            class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                    <input class="rating__input" name="star" id="rating-3"
-                                                        value="3" type="radio" checked>
-                                                    <label aria-label="4 stars" class="rating__label" for="rating-4"><i
-                                                            class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                    <input class="rating__input" name="star" id="rating-4"
-                                                        value="4" type="radio">
-                                                    <label aria-label="5 stars" class="rating__label" for="rating-5"><i
-                                                            class="rating__icon rating__icon--star fa fa-star"></i></label>
-                                                    <input class="rating__input" name="star" id="rating-5"
-                                                        value="5" type="radio">
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="btn common-bttn">Submit</button>
-                                        </div>
-                                    </form>
+                            @else
+                                <div class="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold">
+                                    {!! strtoupper($course->user->name[0]) !!}
                                 </div>
+                            @endif
+                            
+                            <div class="flex-1">
+                                <form action="{{ route('student.courses.review', $course->slug) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-4">
+                                        <input autocomplete="off" type="text" name="comment" id="review"
+                                            placeholder="Write a review" 
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div id="full-stars" class="flex items-center space-x-1">
+                                            <div class="rating-group flex space-x-1">
+                                                <label aria-label="1 star" class="rating__label cursor-pointer" for="rating-1">
+                                                    <i class="rating__icon rating__icon--star fa fa-star text-gray-300 hover:text-yellow-400"></i>
+                                                </label>
+                                                <input class="rating__input hidden" name="star" id="rating-1" value="1" type="radio">
+                                                <label aria-label="2 stars" class="rating__label cursor-pointer" for="rating-2">
+                                                    <i class="rating__icon rating__icon--star fa fa-star text-gray-300 hover:text-yellow-400"></i>
+                                                </label>
+                                                <input class="rating__input hidden" name="star" id="rating-2" value="2" type="radio">
+                                                <label aria-label="3 stars" class="rating__label cursor-pointer" for="rating-3">
+                                                    <i class="rating__icon rating__icon--star fa fa-star text-yellow-400"></i>
+                                                </label>
+                                                <input class="rating__input hidden" name="star" id="rating-3" value="3" type="radio" checked>
+                                                <label aria-label="4 stars" class="rating__label cursor-pointer" for="rating-4">
+                                                    <i class="rating__icon rating__icon--star fa fa-star text-gray-300 hover:text-yellow-400"></i>
+                                                </label>
+                                                <input class="rating__input hidden" name="star" id="rating-4" value="4" type="radio">
+                                                <label aria-label="5 stars" class="rating__label cursor-pointer" for="rating-5">
+                                                    <i class="rating__icon rating__icon--star fa fa-star text-gray-300 hover:text-yellow-400"></i>
+                                                </label>
+                                                <input class="rating__input hidden" name="star" id="rating-5" value="5" type="radio">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
+                        </div>
 
-
-                            @if (count($course_reviews) > 0)
+                        <!-- Reviews List -->
+                        @if (count($course_reviews) > 0)
+                            <div class="space-y-4">
                                 @foreach ($course_reviews as $course_review)
-                                    <div class="media">
+                                    <div class="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
                                         @if ($course_review->user && $course_review->user->avatar)
-                                            <img src="{{ asset($course_review->user->avatar) }}" alt="Place"
-                                                class="img-fluid">
+                                            <img src="{{ asset($course_review->user->avatar) }}" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
                                         @else
-                                            <span class="user-name-avatar me-1">{!! strtoupper($course_review->user->name[0]) !!}</span>
+                                            <div class="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                                {!! strtoupper($course_review->user->name[0]) !!}
+                                            </div>
                                         @endif
 
-                                        <div class="media-body">
-                                            <h5>{{ $course_review->user->name }}</h5>
-                                            <ul>
+                                        <div class="flex-1">
+                                            <h5 class="font-semibold text-gray-900 dark:text-white mb-1">{{ $course_review->user->name }}</h5>
+                                            <div class="flex items-center mb-2">
                                                 @for ($i = 0; $i < $course_review->star; $i++)
-                                                    <li><i class="fas fa-star"></i></li>
+                                                    <i class="fas fa-star text-yellow-400 text-sm"></i>
                                                 @endfor
-                                            </ul>
-                                            <p>{{ $course_review->comment }}</p>
+                                            </div>
+                                            <p class="text-gray-600 dark:text-gray-300">{{ $course_review->comment }}</p>
                                         </div>
                                     </div>
                                 @endforeach
-                            @else
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p>No Review Found!</p>
+                            </div>
+                        @else
+                            <div class="text-center py-8">
+                                <i class="fas fa-comments text-4xl text-gray-300 mb-4"></i>
+                                <p class="text-gray-500 dark:text-gray-400">No reviews yet. Be the first to review!</p>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+            
+            <!-- Sidebar - 1/4 width on large screens -->
+            <div class="lg:col-span-1">
+                <!-- Course Modules -->
+                <div class="glass-effect rounded-2xl p-6 glow-card sticky top-6">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center">
+                            <i class="fas fa-list-ul mr-2 text-primary-500"></i>
+                            Modules
+                        </h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            {{ $totalModules }} Module • {{ $totalLessons }} Lessons
+                        </p>
+                    </div>
+                    <div class="space-y-3" id="accordionExample">
+                        @foreach ($course->modules as $module)
+                            @if ($module->status == 'published' && count($module->lessons) > 0)
+                                <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                                    <!-- Module Header -->
+                                    <div class="p-4" id="heading_{{ $module->id }}">
+                                        <button class="w-full text-left flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-lg p-2 transition-colors duration-200" 
+                                                type="button" 
+                                                onclick="toggleAccordion({{ $module->id }})"
+                                                aria-expanded="{{ $currentLesson && $currentLesson->module_id == $module->id ? 'true' : 'false' }}"
+                                                aria-controls="collapse_{{ $module->id }}">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle mr-3 text-lg {{ $module->isComplete() ? 'text-primary-500' : 'text-gray-400' }}" id="moduleCompletion_{{ $module->id }}"></i>
+                                                <div>
+                                                    <p class="font-semibold text-gray-900 dark:text-white">
+                                                        {{ $module->title }}
+                                                        @if($module->checkNumber())
+                                                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ $loop->iteration }}</span>
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <i class="fas fa-chevron-down text-gray-400 transition-transform duration-200 {{ $currentLesson && $currentLesson->module_id == $module->id ? 'rotate-180' : '' }}" id="chevron_{{ $module->id }}"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Module Content -->
+                                    <div id="collapse_{{ $module->id }}"
+                                        class="accordion-content {{ $currentLesson && $currentLesson->module_id == $module->id ? '' : 'hidden' }}"
+                                        aria-labelledby="heading_{{ $module->id }}">
+                                        <div class="px-4 pb-4">
+                                            <div class="space-y-2" id="module_{{ $module->id }}">
+                                                @foreach ($module->lessons as $lesson)
+                                                    @if ($lesson->status == 'published')
+                                                        @if (!$isUserEnrolled)
+                                                            <div class="lesson-item flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200">
+                                                                <a href="{{ url('student/checkout/' . $course->slug) }}"
+                                                                    class="video_list_play flex items-center w-full text-gray-600 dark:text-gray-400">
+                                                                    <i class="fas fa-lock mr-3 text-gray-400"></i>
+                                                                    <span class="flex-1">{{ $lesson->title }}</span>
+                                                                </a>
+                                                            </div>
+                                                        @else
+                                                            <div class="lesson-item lesson-clickable flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200 cursor-pointer {{ $currentLesson && $currentLesson->id == $lesson->id ? 'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500' : '' }}"
+                                                                    data-video-id="{{ $lesson->id }}"
+                                                                    data-lesson-id="{{ $lesson->id }}"
+                                                                    data-course-id="{{ $course->id }}"
+                                                                    data-modules-id="{{ $module->id }}"
+                                                                    data-video-url="{{ $lesson->video_link ?? '' }}"
+                                                                    data-audio-url="{{ $lesson->audio }}"
+                                                                    data-lesson-type="{{ $lesson->type }}"
+                                                                    data-lesson-duration="{{ $lesson->duration ?? 0 }}"
+                                                                    data-instructor-id="{{ $course->user_id }}">
+
+                                                                <!-- Completion Status -->
+                                                                <span class="mr-3 cursor-pointer" id="completionIcon_{{ $lesson->id }}">
+                                                                    @if (isset($userCompletedLessons[$lesson->id]))
+                                                                        <i class="fas fa-check-circle text-green-500" 
+                                                                           title="✅ Completed - Lesson ID: {{ $lesson->id }}"></i>
+                                                                    @else
+                                                                        <i class="fas fa-check-circle text-gray-500 hover:text-green-400 is_complete_lesson cursor-pointer"
+                                                                            data-course="{{ $course->id }}"
+                                                                            data-module="{{ $module->id }}"
+                                                                            data-lesson="{{ $lesson->id }}"
+                                                                            data-duration="{{ $lesson->duration ?? 0 }}"
+                                                                            data-user="{{ Auth::user()->id }}"
+                                                                            title="⭕ Not completed - Lesson ID: {{ $lesson->id }}"></i>
+                                                                    @endif
+                                                                </span>
+
+                                                                <!-- Lesson Type Icon -->
+                                                                <span class="mr-3">
+                                                                    @if ($lesson->type == 'text')
+                                                                        <i class="fa-regular fa-file-lines actv-hide text-gray-600 dark:text-gray-400"></i>
+                                                                        <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
+                                                                    @elseif($lesson->type == 'audio')
+                                                                        <i class="fa-solid fa-headphones actv-hide text-purple-600"></i>
+                                                                        <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
+                                                                    @elseif($lesson->type == 'video')
+                                                                        <i class="fas fa-play actv-hide text-red-500"></i>
+                                                                        <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
+                                                                    @endif
+                                                                </span>
+
+                                                                <!-- Lesson Title and Duration -->
+                                                                <span class="flex-1 font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">{{ $lesson->title }}</span>
+                                                                
+                                                                <!-- Duration -->
+                                                                @if($lesson->duration)
+                                                                    <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                                                                        @php
+                                                                            $minutes = floor($lesson->duration / 60);
+                                                                            $seconds = $lesson->duration % 60;
+                                                                        @endphp
+                                                                        @if($minutes > 0)
+                                                                            {{ $minutes }}{{ $seconds > 0 ? ':' . str_pad($seconds, 2, '0', STR_PAD_LEFT) : '' }} min
+                                                                        @else
+                                                                            {{ $seconds }}s
+                                                                        @endif
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                        @endif
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endif
-                        </div>
-                        {{-- course review --}}
-                    @endif
+                        @endforeach
+                    </div>
                 </div>
-                <div class="col-xl-3 col-lg-4 col-md-12 col-12">
-                    {{-- course outline --}}
-                    <div class="course-outline-wrap course-modules-lessons-redesign">
-                        <div class="header">
-                            <h3>Modules</h3>
-                            <h6>
-                                {{ $totalModules }} Module . {{ $totalLessons }} Lessons
-                            </h6>
-                        </div>
-                        <div class="accordion" id="accordionExample">
-                            @foreach ($course->modules as $module)
-                                @if ($module->status == 'published' && count($module->lessons) > 0)
-                                    <div class="accordion-item">
-                                        <div class="accordion-header" id="heading_{{ $module->id }}">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapse_{{ $module->id }}" aria-expanded="true"
-                                                aria-controls="collapseOne">
-                                                <div class="media align-items-center">
 
-                                                    <i class="fas fa-check-circle me-2 {{ $module->isComplete() ? 'text-primary' : '' }}"></i>
-                                                    <div class="media-body">
-                                                        <p class="module-title">{{ $module->title }}
-                                                            {{ $module->checkNumber() ? $loop->iteration : '' }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </button>
+                {{-- Related Courses --}}
+                <div class="glass-effect rounded-2xl p-6 mt-6 glow-card">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <i class="fas fa-graduation-cap mr-2 text-primary-500"></i>
+                        Related Courses
+                    </h3>
+                    <div class="space-y-4">
+                        @if (count($relatedCourses) > 0)
+                            @foreach ($relatedCourses as $relatedCourse)
+                                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+                                    <div class="flex">
+                                        <!-- Course Thumbnail -->
+                                        <div class="w-24 h-24 flex-shrink-0">
+                                            @if ($relatedCourse->thumbnail)
+                                                <img src="{{ asset($relatedCourse->thumbnail) }}" alt="Course Thumbnail" 
+                                                     class="w-full h-full object-cover rounded-l-xl">
+                                            @else
+                                                <img src="{{ asset('assets/images/courses/thumbnail.png') }}" alt="Course Thumbnail" 
+                                                     class="w-full h-full object-cover rounded-l-xl">
+                                            @endif
                                         </div>
-                                        <div id="collapse_{{ $module->id }}"
-                                            class="accordion-collapse collapse
-                                            {{ $currentLesson && $currentLesson->module_id == $module->id ? 'show' : '' }}"
-                                            aria-labelledby="heading_{{ $module->id }}"
-                                            data-bs-parent="#accordionExample">
-                                            <div class="accordion-body p-0">
-                                                <ul class="lesson-wrap">
-                                                    @foreach ($module->lessons as $lesson)
-                                                        @if ($lesson->status == 'published')
-                                                            <li>
-                                                                @if (!$isUserEnrolled)
-                                                                    <a href="{{ url('student/checkout/' . $course->slug) }}"
-                                                                        class="video_list_play d-inline-block">
-                                                                        <i class="fas fa-lock"></i>
-                                                                        {{ $lesson->title }}
-                                                                    </a>
-                                                                @else
-                                                                    <a href="{{ $lesson->video_link }}"
-                                                                        class="video_list_play d-inline-block {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active' : '' }}"
-                                                                        data-video-id="{{ $lesson->id }}"
-                                                                        data-lesson-id="{{ $lesson->id }}"
-                                                                        data-course-id="{{ $course->id }}"
-                                                                        data-modules-id="{{ $module->id }}"
-                                                                        data-video-url="{{ $lesson->video_link ?? '' }}"
-                                                                        data-audio-url="{{ $lesson->audio }}"
-                                                                        data-lesson-type="{{ $lesson->type }}"
-                                                                        data-lesson-duration="{{ $lesson->duration ?? 0 }}"
-                                                                        data-instructor-id="{{ $course->user_id }}">
+                                        
+                                        <!-- Course Info -->
+                                        <div class="flex-1 p-4">
+                                            <!-- Course Title -->
+                                            @if (isset($userEnrolledCourses[$relatedCourse->id]))
+                                                <a href="{{ url('student/courses/my-courses/details/' . $relatedCourse->slug) }}"
+                                                   class="font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                                                    {{ Str::limit($relatedCourse->title, 45) }}
+                                                </a>
+                                            @else
+                                                <a href="{{ url('student/courses/overview/' . $relatedCourse->slug) }}"
+                                                   class="font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                                                    {{ Str::limit($relatedCourse->title, 50) }}
+                                                </a>
+                                            @endif
 
-                                                                        <span class="mt-2 ms-1" style="cursor:pointer;">
-                                                                            @if (isset($userCompletedLessons[$lesson->id]))
-                                                                                <i class="fas fa-check-circle text-primary" 
-                                                                                   title="Completed - Lesson ID: {{ $lesson->id }}"></i>
-                                                                            @else
-                                                                                <i class="fas fa-check-circle is_complete_lesson"
-                                                                                    data-course="{{ $course->id }}"
-                                                                                    data-module="{{ $module->id }}"
-                                                                                    data-lesson="{{ $lesson->id }}"
-                                                                                    data-duration="{{ $lesson->duration ?? 0 }}"
-                                                                                    data-user="{{ Auth::user()->id }}"
-                                                                                    title="Not completed - Lesson ID: {{ $lesson->id }}"></i>
-                                                                            @endif
-                                                                        </span>
+                                            <!-- Instructor Name -->
+                                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ $relatedCourse->user->name }}</p>
 
-                                                                        @if ($lesson->type == 'text')
-                                                                            <i class="fa-regular fa-file-lines actv-hide" style="color:#2F3A4C"></i>
-                                                                            <img src="{{ asset('assets/images/icons/pause.svg') }}" alt="i" class="img-fluid actv-show" style="width:1rem;">
-                                                                        @elseif($lesson->type == 'audio')
-                                                                            <i class="fa-solid fa-headphones actv-hide" style="color:#2F3A4C"></i>
-                                                                            <img src="{{ asset('assets/images/icons/pause.svg') }}" alt="i" class="img-fluid actv-show" style="width:1rem;">
-                                                                        @elseif($lesson->type == 'video')
-                                                                            <img src="{{ asset('assets/images/icons/play-icon.svg') }}" alt="i" class="img-fluid actv-hide" style="width:0.8rem;">
-                                                                            <img src="{{ asset('assets/images/icons/pause.svg') }}" alt="i" class="img-fluid actv-show" style="width:1rem;">
-                                                                        @endif
-                                                                        {{ $lesson->title }}
-                                                                    </a>
-                                                                @endif
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                    {{-- course outline --}}
-
-                    {{-- related course --}}
-                    <div class="related-course-box">
-                        <h3>Related Courses</h3>
-                        <div class="row">
-                            @if (count($relatedCourses) > 0)
-                                @foreach ($relatedCourses as $relatedCourse)
-                                    <div class="col-md-6 col-12 col-lg-12 col-xl-12 mt-15 px-0">
-                                        {{-- item --}}
-                                        <div class="course-single-item">
-                                            <div class="course-thumb-box">
-                                                @if ($relatedCourse->thumbnail)
-                                                <img src="{{ asset($relatedCourse->thumbnail) }}" alt="Course Thumbnail" class="img-fluid">
-                                                @else
-                                                    <img src="{{ asset('assets/images/courses/thumbnail.png') }}" alt="Course Thumbnail" class="img-fluid">
-                                                @endif
-                                            </div>
-                                            <div class="course-txt-box">
-                                                @if (isset($userEnrolledCourses[$relatedCourse->id]))
-                                                    <a
-                                                        href="{{ url('student/courses/my-courses/details/' . $relatedCourse->slug) }}">
-                                                        {{ Str::limit($relatedCourse->title, 45) }}</a>
-                                                @else
-                                                    <a
-                                                        href="{{ url('student/courses/overview/' . $relatedCourse->slug) }}">
-                                                        {{ Str::limit($relatedCourse->title, 50) }}</a>
-                                                @endif
-
-                                                <p>{{ $relatedCourse->user->name }}</p>
-
-                                                @php
-                                                    $review_sum = 0;
-                                                    $review_avg = 0;
-                                                    $total = 0;
-                                                    foreach ($relatedCourse->reviews as $review) {
-                                                        $total++;
-                                                        $review_sum += $review->star;
-                                                    }
-                                                    if ($total) {
-                                                        $review_avg = $review_sum / $total;
-                                                    }
-                                                @endphp
-                                                <ul>
-                                                    <li><span>{{ $review_avg }}</span></li>
-                                                    @for ($i = 0; $i < $review_avg; $i++)
-                                                        <li><i class="fas fa-star"></i></li>
+                                            <!-- Rating and Reviews -->
+                                            @php
+                                                $review_sum = 0;
+                                                $review_avg = 0;
+                                                $total = 0;
+                                                foreach ($relatedCourse->reviews as $review) {
+                                                    $total++;
+                                                    $review_sum += $review->star;
+                                                }
+                                                if ($total) {
+                                                    $review_avg = $review_sum / $total;
+                                                }
+                                            @endphp
+                                            <div class="flex items-center mb-2">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-1">{{ number_format($review_avg, 1) }}</span>
+                                                <div class="flex items-center mr-2">
+                                                    @for ($i = 0; $i < floor($review_avg); $i++)
+                                                        <i class="fas fa-star text-yellow-400 text-xs"></i>
                                                     @endfor
-                                                    <li><span>({{ $total }})</span></li>
-                                                </ul>
+                                                </div>
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">({{ $total }})</span>
+                                            </div>
+
+                                            <!-- Price -->
+                                            <div class="flex items-center">
                                                 @if ($relatedCourse->offer_price)
-                                                    <h5>৳ {{ $relatedCourse->offer_price }} <span>৳
-                                                            {{ $relatedCourse->price }}</span>
-                                                    </h5>
+                                                    <span class="font-bold text-primary-600 dark:text-primary-400">৳ {{ $relatedCourse->offer_price }}</span>
+                                                    <span class="text-sm text-gray-500 line-through ml-2">৳ {{ $relatedCourse->price }}</span>
                                                 @elseif(!$relatedCourse->offer_price && !$relatedCourse->price)
-                                                    <h5>Free</h5>
+                                                    <span class="font-bold text-green-600 dark:text-green-400">Free</span>
                                                 @else
-                                                    <h5>৳ {{ $relatedCourse->price }}</h5>
+                                                    <span class="font-bold text-primary-600 dark:text-primary-400">৳ {{ $relatedCourse->price }}</span>
                                                 @endif
                                             </div>
                                         </div>
-                                        {{-- item --}}
                                     </div>
-                                @endforeach
-                            @else
-                                @include('partials/no-data')
-                            @endif
-                        </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="text-center py-8">
+                                <i class="fas fa-graduation-cap text-4xl text-gray-300 mb-4"></i>
+                                <p class="text-gray-500 dark:text-gray-400">No related courses found</p>
+                            </div>
+                        @endif
                     </div>
-                    {{-- related course --}}
-
                 </div>
             </div>
         </div>
-    </main>
-    <!-- course details page @E -->
-
-
+    </div>
 @endsection
 
-{{-- Additional CSS for video players --}}
+{{-- No additional styles needed - all handled by Tailwind --}}
 @section('styles')
 <style>
-    .video-container {
-        display: block !important;
-    }
-    
-    .youtube-player, .vimeo-player, .generic-video-player {
+    /* Bootstrap collapse compatibility */
+    .collapse:not(.show) {
         display: none;
     }
     
-    .youtube-player.active, .vimeo-player.active, .generic-video-player.active {
-        display: block !important;
+    .collapse.show {
+        display: block;
     }
     
     /* Video protection styles */
-    .youtube-player iframe, .vimeo-player iframe {
-        pointer-events: none;
-        position: relative;
-    }
-    
-    .video-iframe-vox {
-        position: relative;
+    .video-container iframe {
+        pointer-events: auto;
         user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
     }
     
-    .video-iframe-vox::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-        pointer-events: none;
+    /* Custom button styles for better compatibility */
+    .btn-secondary {
+        @apply bg-gray-600 text-gray-300;
     }
     
-    /* Disable right click on video area */
-    .video-iframe-vox iframe {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+    .btn-success {
+        @apply bg-green-600 text-white hover:bg-green-700;
     }
     
-    /* Mark as complete button styling */
-    #markCompleteBtn {
-        white-space: nowrap;
-        min-width: 140px;
-    }
-    
-    .liked-course-button {
-        flex-wrap: wrap;
+    /* Rating system styles */
+    .rating__input:checked ~ .rating__label .rating__icon--star,
+    .rating__label:hover .rating__icon--star,
+    .rating__label:hover ~ .rating__label .rating__icon--star {
+        color: #f59e0b !important;
     }
 </style>
 @endsection
 
 {{-- script section @S --}}
 @section('script')
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Make accordion toggle function global so onclick can access it
+        window.toggleAccordion = function(moduleId) {
+            const content = document.getElementById('collapse_' + moduleId);
+            const chevron = document.getElementById('chevron_' + moduleId);
+            const button = content.previousElementSibling.querySelector('button');
+            
+            // Toggle visibility
+            content.classList.toggle('hidden');
+            
+            // Toggle chevron rotation
+            chevron.classList.toggle('rotate-180');
+            
+            // Update aria-expanded
+            const isExpanded = !content.classList.contains('hidden');
+            button.setAttribute('aria-expanded', isExpanded);
+        }
+
+        // Basic check - Is jQuery loaded?
+        console.log('💡 jQuery loaded:', typeof $ !== 'undefined');
+        console.log('💡 Document ready state:', document.readyState);
+
         $(document).ready(function() {
-            console.log('Student view script loaded');
+            console.log('🚀 Student view script loaded');
+            console.log('🔍 Lesson items found:', $('.lesson-item').length);
+            console.log('🔍 Lesson clickable items found:', $('.lesson-item.lesson-clickable').length);
+            console.log('🔍 jQuery version:', $.fn.jquery);
+            
+            // jQuery is now loaded and working
             
             let currentURL = window.location.href;
             const baseUrl = currentURL.split('/').slice(0, 3).join('/');
@@ -649,14 +712,15 @@
                     type: '{{ $currentLesson->type }}'
                 });
 
-                // Set the current lesson as active in sidebar
-                $('a[data-lesson-id="{{ $currentLesson->id }}"]').addClass('active');
-                $('a[data-lesson-id="{{ $currentLesson->id }}"] .actv-hide').hide();
-                $('a[data-lesson-id="{{ $currentLesson->id }}"] .actv-show').show();
+                // Set the current lesson as active in sidebar using the new structure
+                $('[data-lesson-id="{{ $currentLesson->id }}"]').addClass('bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500');
+                $('[data-lesson-id="{{ $currentLesson->id }}"] .actv-hide').hide();
+                $('[data-lesson-id="{{ $currentLesson->id }}"] .actv-show').show();
 
                 @if($currentModule)
                     // Open the accordion for current module
-                    $('#collapse_{{ $currentModule->id }}').addClass('show');
+                    $('#collapse_{{ $currentModule->id }}').removeClass('hidden');
+                    $('#chevron_{{ $currentModule->id }}').addClass('rotate-180');
                 @endif
 
                 // Initialize the Mark as Complete button for current lesson
@@ -664,128 +728,134 @@
 
                 // Load the current lesson content
                 @if($currentLesson->type == 'video' && $currentLesson->video_link)
+                    console.log('🎬 Loading current lesson video:', '{{ $currentLesson->video_link }}');
+                    document.querySelector('#videoPlayerContainer').style.display = 'block';
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
+                    $('#textHideShow').hide();
+                    $('#textHideShowSeparator').hide();
                     loadVideo('{{ $currentLesson->video_link }}', {{ $currentLesson->id }});
                 @elseif($currentLesson->type == 'audio' && $currentLesson->audio)
-                    // Load audio
-                    document.querySelector('.audio-iframe-box').classList.remove('d-none');
+                    console.log('🎵 Loading current lesson audio');
+                    document.querySelector('.audio-iframe-box').classList.remove('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
                     $('#textHideShow').hide();
+                    $('#textHideShowSeparator').hide();
                     var audioSource = audioPlayer.querySelector('source');
                     audioSource.src = baseUrl + '/{{ $currentLesson->audio }}';
                     audioPlayer.load();
                 @elseif($currentLesson->type == 'text')
-                    // Load text content
+                    console.log('📖 Loading current lesson text content');
                     $('#textHideShow').show();
                     $('#textHideShowSeparator').show();
-                    document.querySelector('.audio-iframe-box').classList.add('d-none');
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
-                    // Load text content here if needed
                 @endif
             @endif
 
-            // Lesson click handler
-            $('a.video_list_play').click(function(e) {
+            // Lesson functionality is now working
+
+            // Main lesson click handler
+            $(document).on('click', '.lesson-item.lesson-clickable', function(e) {
+                // Don't prevent default for completion checkbox clicks
+                if ($(e.target).hasClass('is_complete_lesson')) {
+                    console.log('🚫 Clicked on completion checkbox - returning');
+                    return; // Let the completion handler handle this
+                }
+                
+                console.log('🎯 LESSON CLICKED!');
                 e.preventDefault();
-                console.log('🎯 Lesson clicked - icon switching should work');
+                e.stopPropagation();
                 
-                // Remove alert for production
-
-                // Reset all lesson icons - show play icons, hide pause icons
-                $('a.video_list_play').removeClass('active');
-                $('a.video_list_play .actv-hide').show(); // Show play icons
-                $('a.video_list_play .actv-show').hide(); // Hide pause icons
-                
-                // Set current lesson as active and show pause icon
-                $(this).addClass('active');
-                $(this).find('.actv-hide').hide(); // Hide play icon
-                $(this).find('.actv-show').show(); // Show pause icon
-
+                // Get lesson data
                 let type = this.getAttribute('data-lesson-type');
                 let lessonId = this.getAttribute('data-lesson-id');
                 let courseId = this.getAttribute('data-course-id');
                 let moduleId = this.getAttribute('data-modules-id');
                 let lessonDuration = this.getAttribute('data-lesson-duration') || 0;
                 let instructorId = this.getAttribute('data-instructor-id');
+                let videoUrl = this.getAttribute('data-video-url');
+                let audioUrl = this.getAttribute('data-audio-url');
 
-                console.log('Lesson data:', {
+                console.log('📊 Lesson Data:', {
                     type: type,
                     lessonId: lessonId,
                     courseId: courseId,
                     moduleId: moduleId,
-                    lessonDuration: lessonDuration,
-                    instructorId: instructorId
+                    videoUrl: videoUrl,
+                    audioUrl: audioUrl,
+                    duration: lessonDuration
                 });
 
-                if (type == 'video') {
-                    console.log('Playing video lesson');
+                // Reset all lesson items - remove active state
+                $('.lesson-item.lesson-clickable').removeClass('bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500');
+                $('.lesson-item .actv-hide').show();
+                $('.lesson-item .actv-show').hide();
+                
+                // Set current lesson as active
+                $(this).addClass('bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500');
+                $(this).find('.actv-hide').hide();
+                $(this).find('.actv-show').show();
+
+                // Handle different lesson types
+                if (type == 'video' && videoUrl) {
+                    console.log('🎬 Playing video:', videoUrl);
+                    
+                    // Show video player, hide other media
                     document.querySelector('#videoPlayerContainer').style.display = 'block';
-                    document.querySelector('.audio-iframe-box').classList.add('d-none');
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
                     $('#textHideShow').hide();
                     $('#textHideShowSeparator').hide();
                     if (audioPlayer) audioPlayer.pause();
 
-                    const videoUrl = this.getAttribute('data-video-url');
-                    if (videoUrl) {
-                        loadVideo(videoUrl, lessonId);
-                    }
+                    loadVideo(videoUrl, lessonId);
 
-                } else if (type == 'audio') {
-                    console.log('Playing audio lesson');
+                } else if (type == 'audio' && audioUrl) {
+                    console.log('🎵 Playing audio:', audioUrl);
                     if (audioPlayer) audioPlayer.pause();
-                    document.querySelector('.audio-iframe-box').classList.remove('d-none');
+                    document.querySelector('.audio-iframe-box').classList.remove('hidden');
                     $('#textHideShow').hide();
                     $('#textHideShowSeparator').hide();
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
 
-                    var laravelURL = baseUrl + '/' + this.getAttribute('data-audio-url');
+                    var fullAudioURL = baseUrl + '/' + audioUrl;
                     if (audioPlayer) {
                         let audioSource = audioPlayer.querySelector('source');
-                        audioSource.src = laravelURL;
+                        audioSource.src = fullAudioURL;
                         audioPlayer.load();
                         audioPlayer.play();
                     }
 
                 } else if (type == 'text') {
-                    console.log('Showing text lesson');
+                    console.log('📖 Showing text lesson');
                     if (audioPlayer) audioPlayer.pause();
                     
                     $('#textHideShow').show();
                     $('#textHideShowSeparator').show();
-                    document.querySelector('.audio-iframe-box').classList.add('d-none');
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
                 }
 
-                // Update Mark as Complete button for the selected lesson
+                // Update Mark as Complete button
                 updateMarkAsCompleteButton(lessonId, moduleId, instructorId, lessonDuration);
 
-                // Send request per lesson click
+                // Log course progress
                 var data = {
                     courseId: courseId,
                     lessonId: lessonId,
                     moduleId: moduleId
                 };
                 
-                console.log('Sending AJAX request to course_logs table:', data);
+                console.log('📡 Logging course progress:', data);
                 
-                // ONLY Log course progress (similar to instructor) - DO NOT mark as complete
                 $.ajax({
                     url: '{{ route('student.log.courses') }}',
                     method: 'GET',
                     data: data,
                     success: function(response) {
-                        console.log('✅ course_logs table insertion SUCCESS:', response);
-                        console.log('Data logged in course_logs:', {
-                            course_id: courseId,
-                            lesson_id: lessonId,
-                            module_id: moduleId,
-                            user_id: '{{ Auth::user()->id }}'
-                        });
+                        console.log('✅ Course progress logged successfully');
                     },
                     error: function(xhr, status, error) {
-                        console.log('❌ course_logs AJAX ERROR:', error);
-                        console.log('Response Status:', xhr.status);
-                        console.log('Response Text:', xhr.responseText);
-                        console.log('Error Details:', {status: status, error: error});
+                        console.log('❌ Course progress logging failed:', error);
                     }
                 });
             });
@@ -940,10 +1010,10 @@
                         $element.prop('disabled', true);
                         
                         // Update the lesson completion icon in the sidebar
-                        var $lessonIcon = $('a[data-lesson-id="' + lessonId + '"] .is_complete_lesson');
+                        var $lessonIcon = $('[data-lesson-id="' + lessonId + '"] .is_complete_lesson');
                         if ($lessonIcon.length) {
-                            $lessonIcon.addClass('text-primary');
-                            $lessonIcon.removeClass('is_complete_lesson');
+                            $lessonIcon.removeClass('text-gray-500 hover:text-green-400 is_complete_lesson').addClass('text-green-500');
+                            $lessonIcon.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
                         }
                         
                         // Update the module icon if all lessons in module are completed
@@ -1012,8 +1082,8 @@
                         });
                         
                         // Change icon to success checkmark
-                        $element.removeClass('spinner-border spinner-border-sm').addClass('fas fa-check-circle text-primary');
-                        $element.removeClass('is_complete_lesson'); // Remove click handler
+                        $element.removeClass('spinner-border spinner-border-sm text-gray-500 hover:text-green-400 is_complete_lesson').addClass('fas fa-check-circle text-green-500');
+                        $element.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
                         
                         // Update the module icon if all lessons in module are completed
                         updateModuleCompletionIcon(moduleId);
@@ -1035,24 +1105,25 @@
             function updateModuleCompletionIcon(moduleId) {
                 console.log('🔍 Checking module completion for module:', moduleId);
                 
-                var $moduleHeader = $('#heading_' + moduleId + ' .fas.fa-check-circle');
-                var $allLessonsInModule = $('a[data-modules-id="' + moduleId + '"] .fas.fa-check-circle');
+                var $moduleHeader = $('#moduleCompletion_' + moduleId);
+                var $allLessonsInModule = $('[data-modules-id="' + moduleId + '"] .is_complete_lesson');
                 var totalLessons = $allLessonsInModule.length;
-                var completedLessons = $allLessonsInModule.filter('.text-primary').length;
+                var completedLessons = $allLessonsInModule.filter('.text-green-500').length;
                 
                 console.log('Module completion check:', {
                     moduleId: moduleId,
                     totalLessons: totalLessons,
-                    completedLessons: completedLessons
+                    completedLessons: completedLessons,
+                    moduleHeaderElement: $moduleHeader[0]
                 });
                 
                 if (totalLessons > 0 && completedLessons === totalLessons) {
                     // All lessons completed - make module icon primary color
-                    $moduleHeader.addClass('text-primary');
+                    $moduleHeader.removeClass('text-gray-400').addClass('text-primary-500');
                     console.log('✅ Module ' + moduleId + ' marked as completed');
                 } else {
-                    // Not all lessons completed - remove primary color
-                    $moduleHeader.removeClass('text-primary');
+                    // Not all lessons completed - keep gray color
+                    $moduleHeader.removeClass('text-primary-500').addClass('text-gray-400');
                     console.log('⏳ Module ' + moduleId + ' still in progress');
                 }
             }
@@ -1064,10 +1135,7 @@
                 @endif
             @endforeach
         });
-    </script>
     
-    {{-- vimeo player ready --}}
-    <script>
         var iframe = document.getElementById('firstLesson');
         iframe.onload = function() {
             // Wait for the Vimeo player to be ready
@@ -1086,9 +1154,7 @@
             style.appendChild(playerDoc.createTextNode(customCSS));
             playerDoc.head.appendChild(style);
         };
-    </script>
-     {{-- linke bttn --}}
-     <script>
+   
         let currentURL = window.location.href;
         const baseUrl = currentURL.split('/').slice(0, 3).join('/');
         const likeBttn = document.getElementById('likeBttn');
