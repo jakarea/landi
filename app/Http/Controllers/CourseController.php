@@ -33,16 +33,20 @@ class CourseController extends Controller
 
         $queryParams = request()->except('page');
 
-        $title = isset($_GET['title']) ? $_GET['title'] : '';
-        $status = isset($_GET['status']) ? $_GET['status'] : '';
+        $title = request()->get('title', '');
+        $status = request()->get('status', '');
 
         $courses = Course::where('user_id', Auth::user()->id);
 
         if ($title) {
+            $title = trim(strip_tags($title));
             $courses->where(function ($query) use ($title) {
-                $categories = explode(',', trim($title));
+                $categories = explode(',', $title);
                 foreach ($categories as $category) {
-                    $query->orWhere('categories', 'like', '%' . trim($category) . '%');
+                    $category = trim($category);
+                    if (!empty($category)) {
+                        $query->orWhere('categories', 'like', '%' . addslashes($category) . '%');
+                    }
                 }
             });
         }

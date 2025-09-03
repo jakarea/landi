@@ -421,8 +421,7 @@
                                     <div class="p-4" id="heading_{{ $module->id }}">
                                         <button class="w-full text-left flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-lg p-2 transition-colors duration-200" 
                                                 type="button" 
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#collapse_{{ $module->id }}" 
+                                                onclick="toggleAccordion({{ $module->id }})"
                                                 aria-expanded="{{ $currentLesson && $currentLesson->module_id == $module->id ? 'true' : 'false' }}"
                                                 aria-controls="collapse_{{ $module->id }}">
                                             <div class="flex items-center">
@@ -442,9 +441,8 @@
                                     
                                     <!-- Module Content -->
                                     <div id="collapse_{{ $module->id }}"
-                                        class="collapse {{ $currentLesson && $currentLesson->module_id == $module->id ? 'show' : '' }}"
-                                        aria-labelledby="heading_{{ $module->id }}"
-                                        data-bs-parent="#accordionExample">
+                                        class="accordion-content {{ $currentLesson && $currentLesson->module_id == $module->id ? '' : 'hidden' }}"
+                                        aria-labelledby="heading_{{ $module->id }}">
                                         <div class="px-4 pb-4">
                                             <div class="space-y-2" id="module_{{ $module->id }}">
                                                 @foreach ($module->lessons as $lesson)
@@ -457,8 +455,8 @@
                                                                     <span class="flex-1">{{ $lesson->title }}</span>
                                                                 </a>
                                                             @else
-                                                                <a href="{{ $lesson->video_link }}"
-                                                                    class="video_list_play flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active text-primary-600 dark:text-primary-400' : '' }}"
+                                                                <div class="lesson-clickable flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active text-primary-600 dark:text-primary-400' : '' }}"
+                                                                    style="pointer-events: auto; position: relative; z-index: 1;"
                                                                     data-video-id="{{ $lesson->id }}"
                                                                     data-lesson-id="{{ $lesson->id }}"
                                                                     data-course-id="{{ $course->id }}"
@@ -467,7 +465,9 @@
                                                                     data-audio-url="{{ $lesson->audio }}"
                                                                     data-lesson-type="{{ $lesson->type }}"
                                                                     data-lesson-duration="{{ $lesson->duration ?? 0 }}"
-                                                                    data-instructor-id="{{ $course->user_id }}">
+                                                                    data-instructor-id="{{ $course->user_id }}"
+                                                                    onclick="handleLessonClick(this); return false;"
+                                                                    style="cursor: pointer; border: 2px solid red; margin: 2px;"
 
                                                                     <!-- Completion Status -->
                                                                     <span class="mr-3 cursor-pointer" id="completionIcon_{{ $lesson->id }}">
@@ -501,7 +501,7 @@
 
                                                                     <!-- Lesson Title -->
                                                                     <span class="flex-1 font-medium">{{ $lesson->title }}</span>
-                                                                </a>
+                                                                </div>
                                                             @endif
                                                         </div>
                                                     @endif
@@ -648,8 +648,222 @@
 {{-- script section @S --}}
 @section('script')
     <script>
+        // Lesson click handler function
+        function handleLessonClick(element) {
+            console.log('🎯 Lesson clicked!', element);
+            
+            // Get lesson data from element attributes
+            const lessonId = element.getAttribute('data-lesson-id');
+            const videoUrl = element.getAttribute('data-video-url');
+            const audioUrl = element.getAttribute('data-audio-url');
+            const lessonType = element.getAttribute('data-lesson-type');
+            const courseId = element.getAttribute('data-course-id');
+            const moduleId = element.getAttribute('data-modules-id');
+            const duration = element.getAttribute('data-lesson-duration') || 0;
+            const instructorId = element.getAttribute('data-instructor-id');
+            
+            console.log('📹 Playing lesson:', {
+                lessonId: lessonId,
+                videoUrl: videoUrl,
+                audioUrl: audioUrl,
+                type: lessonType,
+                courseId: courseId,
+                moduleId: moduleId
+            });
+            
+            // Reset all lesson items - remove active state and show play icons
+            const allLessons = document.querySelectorAll('.lesson-clickable');
+            allLessons.forEach(function(lesson) {
+                lesson.classList.remove('active', 'text-primary-600', 'dark:text-primary-400');
+                
+                // Reset icons
+                const hideIcons = lesson.querySelectorAll('.actv-hide');
+                const showIcons = lesson.querySelectorAll('.actv-show');
+                
+                hideIcons.forEach(icon => {
+                    icon.style.display = '';
+                });
+                showIcons.forEach(icon => {
+                    icon.style.display = 'none';
+                    icon.classList.add('hidden');
+                });
+            });
+            
+            // Set current lesson as active and show pause icon
+            element.classList.add('active', 'text-primary-600', 'dark:text-primary-400');
+            
+            const currentHideIcons = element.querySelectorAll('.actv-hide');
+            const currentShowIcons = element.querySelectorAll('.actv-show');
+            
+            currentHideIcons.forEach(icon => {
+                icon.style.display = 'none';
+            });
+            currentShowIcons.forEach(icon => {
+                icon.style.display = '';
+                icon.classList.remove('hidden');
+            });
+            
+            // Handle different media types
+            if (lessonType === 'video' && videoUrl) {
+                console.log('🎬 Loading video:', videoUrl);
+                
+                // Detect media type (YouTube, Vimeo, or regular video)
+                let mediaType = 'video';
+                if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                    mediaType = 'youtube';
+                } else if (videoUrl.includes('vimeo.com')) {
+                    mediaType = 'vimeo';
+                }
+                
+                console.log('📺 Media type detected:', mediaType);
+                
+                // Show video player, hide other media
+                const videoContainer = document.querySelector('#videoPlayerContainer');
+                const audioBox = document.querySelector('.audio-iframe-box');
+                const textBox = document.querySelector('#textHideShow');
+                
+                if (videoContainer) videoContainer.style.display = 'block';
+                if (audioBox) audioBox.classList.add('d-none');
+                if (textBox) textBox.style.display = 'none';
+                
+                // Load video using existing function if available
+                if (typeof loadVideo === 'function') {
+                    loadVideo(videoUrl, lessonId);
+                } else {
+                    // Fallback: create iframe directly
+                    loadVideoFallback(videoUrl, lessonId);
+                }
+                
+            } else if (lessonType === 'audio' && audioUrl) {
+                console.log('🎵 Loading audio:', audioUrl);
+                
+                const audioBox = document.querySelector('.audio-iframe-box');
+                const videoContainer = document.querySelector('#videoPlayerContainer');
+                const textBox = document.querySelector('#textHideShow');
+                const audioPlayer = document.querySelector('#audioPlayer');
+                
+                if (audioBox) audioBox.classList.remove('d-none');
+                if (videoContainer) videoContainer.style.display = 'none';
+                if (textBox) textBox.style.display = 'none';
+                
+                if (audioPlayer) {
+                    const audioSource = audioPlayer.querySelector('source');
+                    const baseUrl = window.location.origin;
+                    if (audioSource) {
+                        audioSource.src = baseUrl + '/' + audioUrl;
+                        audioPlayer.load();
+                        audioPlayer.play();
+                    }
+                }
+                
+            } else if (lessonType === 'text') {
+                console.log('📝 Showing text lesson');
+                
+                const textBox = document.querySelector('#textHideShow');
+                const textSeparator = document.querySelector('#textHideShowSeparator');
+                const audioBox = document.querySelector('.audio-iframe-box');
+                const videoContainer = document.querySelector('#videoPlayerContainer');
+                
+                if (textBox) textBox.style.display = 'block';
+                if (textSeparator) textSeparator.style.display = 'block';
+                if (audioBox) audioBox.classList.add('d-none');
+                if (videoContainer) videoContainer.style.display = 'none';
+            }
+            
+            console.log('✅ Lesson loading complete!');
+        }
+        
+        // Fallback video loading function
+        function loadVideoFallback(videoUrl, lessonId) {
+            console.log('🔄 Using fallback video loader');
+            
+            const videoContainer = document.querySelector('#videoPlayerContainer');
+            if (!videoContainer || !videoUrl) return;
+            
+            let embedUrl = '';
+            
+            // YouTube detection
+            if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                let videoId = '';
+                
+                if (videoUrl.includes('youtu.be/')) {
+                    videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                } else if (videoUrl.includes('watch?v=')) {
+                    videoId = videoUrl.split('watch?v=')[1].split('&')[0];
+                }
+                
+                if (videoId) {
+                    embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+                }
+            }
+            
+            // Vimeo detection
+            if (videoUrl.includes('vimeo.com')) {
+                const videoId = videoUrl.split('vimeo.com/')[1].split('?')[0];
+                if (videoId) {
+                    embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&portrait=0&title=0&byline=0`;
+                }
+            }
+            
+            if (embedUrl) {
+                videoContainer.innerHTML = `
+                    <iframe 
+                        src="${embedUrl}" 
+                        width="100%" 
+                        height="480" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen
+                        style="border-radius: 0.75rem;">
+                    </iframe>
+                `;
+                console.log('✅ Video embedded successfully');
+            } else {
+                console.log('❌ Could not create embed URL for:', videoUrl);
+            }
+        }
+
+        // Accordion toggle function
+        function toggleAccordion(moduleId) {
+            const content = document.getElementById('collapse_' + moduleId);
+            const chevron = document.getElementById('chevron_' + moduleId);
+            const button = content.previousElementSibling.querySelector('button');
+            
+            // Toggle visibility
+            content.classList.toggle('hidden');
+            
+            // Toggle chevron rotation
+            chevron.classList.toggle('rotate-180');
+            
+            // Update aria-expanded
+            const isExpanded = !content.classList.contains('hidden');
+            button.setAttribute('aria-expanded', isExpanded);
+            
+            // Close other accordion items (optional - for single open behavior)
+            // const allAccordions = document.querySelectorAll('.accordion-content');
+            // const allChevrons = document.querySelectorAll('[id^="chevron_"]');
+            // allAccordions.forEach((accordion, index) => {
+            //     if (accordion.id !== 'collapse_' + moduleId) {
+            //         accordion.classList.add('hidden');
+            //         allChevrons[index].classList.remove('rotate-180');
+            //     }
+            // });
+        }
+
         $(document).ready(function() {
             console.log('Student view script loaded');
+            console.log('jQuery version:', $.fn.jquery);
+            console.log('Lesson items found:', $('.lesson-clickable').length);
+            
+            // Test click binding
+            $('.lesson-clickable').each(function(index) {
+                console.log('Lesson item', index, ':', this);
+            });
+            
+            // Add a simple click test
+            $('.lesson-clickable').on('click', function() {
+                console.log('🔥 DIRECT CLICK DETECTED on:', this);
+            });
             
             let currentURL = window.location.href;
             const baseUrl = currentURL.split('/').slice(0, 3).join('/');
@@ -690,38 +904,52 @@
                     loadVideo('{{ $currentLesson->video_link }}', {{ $currentLesson->id }});
                 @elseif($currentLesson->type == 'audio' && $currentLesson->audio)
                     // Load audio
-                    document.querySelector('.audio-iframe-box').classList.remove('hidden');
+                    document.querySelector('.audio-iframe-box').classList.remove('d-none');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
-                    $('#textHideShow').addClass('hidden');
+                    $('#textHideShow').hide();
                     var audioSource = audioPlayer.querySelector('source');
                     audioSource.src = baseUrl + '/{{ $currentLesson->audio }}';
                     audioPlayer.load();
                 @elseif($currentLesson->type == 'text')
                     // Load text content
-                    $('#textHideShow').removeClass('hidden');
-                    $('#textHideShowSeparator').removeClass('hidden');
-                    document.querySelector('.audio-iframe-box').classList.add('hidden');
+                    $('#textHideShow').show();
+                    $('#textHideShowSeparator').show();
+                    document.querySelector('.audio-iframe-box').classList.add('d-none');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
                     // Load text content here if needed
                 @endif
             @endif
 
-            // Lesson click handler
-            $('a.video_list_play').click(function(e) {
-                e.preventDefault();
-                console.log('🎯 Lesson clicked - icon switching should work');
+            // Lesson click handler - Updated to handle div.lesson-clickable clicks
+            $(document).on('click', '.lesson-clickable', function(e) {
+                console.log('🚀 EVENT DELEGATION CLICK DETECTED!', this);
+                console.log('🚀 Event target:', e.target);
+                console.log('🚀 Event currentTarget:', e.currentTarget);
                 
-                // Remove alert for production
-
-                // Reset all lesson icons - show play icons, hide pause icons
-                $('a.video_list_play').removeClass('active');
-                $('a.video_list_play .actv-hide').show(); // Show play icons
-                $('a.video_list_play .actv-show').hide(); // Hide pause icons
+                // Don't prevent default for completion checkbox clicks
+                if ($(e.target).hasClass('is_complete_lesson')) {
+                    console.log('🚀 Completion checkbox clicked, returning');
+                    return; // Let the completion handler handle this
+                }
+                
+                console.log('🎯 Lesson clicked - target:', e.target);
+                console.log('🎯 This element:', this);
+                console.log('🎯 Lesson div data:', $(this).data());
+                
+                // Completely stop any navigation
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                // Reset all lesson items - remove active state and show play icons
+                $('.lesson-clickable').removeClass('active text-primary-600 dark:text-primary-400');
+                $('.lesson-clickable .actv-hide').show(); // Show play icons
+                $('.lesson-clickable .actv-show').hide().addClass('hidden'); // Hide pause icons
                 
                 // Set current lesson as active and show pause icon
-                $(this).addClass('active');
+                $(this).addClass('active text-primary-600 dark:text-primary-400');
                 $(this).find('.actv-hide').hide(); // Hide play icon
-                $(this).find('.actv-show').show(); // Show pause icon
+                $(this).find('.actv-show').show().removeClass('hidden'); // Show pause icon
 
                 let type = this.getAttribute('data-lesson-type');
                 let lessonId = this.getAttribute('data-lesson-id');
@@ -740,14 +968,27 @@
                 });
 
                 if (type == 'video') {
-                    console.log('Playing video lesson');
+                    const videoUrl = this.getAttribute('data-video-url');
+                    
+                    // Detect media type (YouTube, Vimeo, or regular video)
+                    let mediaType = 'video';
+                    if (videoUrl) {
+                        if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                            mediaType = 'youtube';
+                        } else if (videoUrl.includes('vimeo.com')) {
+                            mediaType = 'vimeo';
+                        }
+                    }
+                    
+                    console.log('Playing video lesson - Type:', mediaType, 'URL:', videoUrl);
+                    
+                    // Show video player, hide other media
                     document.querySelector('#videoPlayerContainer').style.display = 'block';
-                    document.querySelector('.audio-iframe-box').classList.add('hidden');
-                    $('#textHideShow').addClass('hidden');
-                    $('#textHideShowSeparator').addClass('hidden');
+                    document.querySelector('.audio-iframe-box').classList.add('d-none');
+                    $('#textHideShow').hide();
+                    $('#textHideShowSeparator').hide();
                     if (audioPlayer) audioPlayer.pause();
 
-                    const videoUrl = this.getAttribute('data-video-url');
                     if (videoUrl) {
                         loadVideo(videoUrl, lessonId);
                     }
@@ -755,9 +996,9 @@
                 } else if (type == 'audio') {
                     console.log('Playing audio lesson');
                     if (audioPlayer) audioPlayer.pause();
-                    document.querySelector('.audio-iframe-box').classList.remove('hidden');
-                    $('#textHideShow').addClass('hidden');
-                    $('#textHideShowSeparator').addClass('hidden');
+                    document.querySelector('.audio-iframe-box').classList.remove('d-none');
+                    $('#textHideShow').hide();
+                    $('#textHideShowSeparator').hide();
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
 
                     var laravelURL = baseUrl + '/' + this.getAttribute('data-audio-url');
@@ -772,9 +1013,9 @@
                     console.log('Showing text lesson');
                     if (audioPlayer) audioPlayer.pause();
                     
-                    $('#textHideShow').removeClass('hidden');
-                    $('#textHideShowSeparator').removeClass('hidden');
-                    document.querySelector('.audio-iframe-box').classList.add('hidden');
+                    $('#textHideShow').show();
+                    $('#textHideShowSeparator').show();
+                    document.querySelector('.audio-iframe-box').classList.add('d-none');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
                 }
 
@@ -811,6 +1052,9 @@
                         console.log('Error Details:', {status: status, error: error});
                     }
                 });
+                
+                // Ensure no navigation happens
+                return false;
             });
 
             // Video loading function with YouTube/Vimeo support
