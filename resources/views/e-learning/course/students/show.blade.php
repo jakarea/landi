@@ -447,16 +447,16 @@
                                             <div class="space-y-2" id="module_{{ $module->id }}">
                                                 @foreach ($module->lessons as $lesson)
                                                     @if ($lesson->status == 'published')
-                                                        <div class="lesson-item flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200 {{ $currentLesson && $currentLesson->id == $lesson->id ? 'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500' : '' }}">
-                                                            @if (!$isUserEnrolled)
+                                                        @if (!$isUserEnrolled)
+                                                            <div class="lesson-item flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200">
                                                                 <a href="{{ url('student/checkout/' . $course->slug) }}"
                                                                     class="video_list_play flex items-center w-full text-gray-600 dark:text-gray-400">
                                                                     <i class="fas fa-lock mr-3 text-gray-400"></i>
                                                                     <span class="flex-1">{{ $lesson->title }}</span>
                                                                 </a>
-                                                            @else
-                                                                <div class="lesson-clickable flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active text-primary-600 dark:text-primary-400' : '' }}"
-                                                                    style="pointer-events: auto; position: relative; z-index: 1;"
+                                                            </div>
+                                                        @else
+                                                            <div class="lesson-item lesson-clickable flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200 cursor-pointer {{ $currentLesson && $currentLesson->id == $lesson->id ? 'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500' : '' }}"
                                                                     data-video-id="{{ $lesson->id }}"
                                                                     data-lesson-id="{{ $lesson->id }}"
                                                                     data-course-id="{{ $course->id }}"
@@ -465,45 +465,57 @@
                                                                     data-audio-url="{{ $lesson->audio }}"
                                                                     data-lesson-type="{{ $lesson->type }}"
                                                                     data-lesson-duration="{{ $lesson->duration ?? 0 }}"
-                                                                    data-instructor-id="{{ $course->user_id }}"
-                                                                    onclick="handleLessonClick(this); return false;"
-                                                                    style="cursor: pointer; border: 2px solid red; margin: 2px;"
+                                                                    data-instructor-id="{{ $course->user_id }}">
 
-                                                                    <!-- Completion Status -->
-                                                                    <span class="mr-3 cursor-pointer" id="completionIcon_{{ $lesson->id }}">
-                                                                        @if (isset($userCompletedLessons[$lesson->id]))
-                                                                            <i class="fas fa-check-circle text-green-500" 
-                                                                               title="✅ Completed - Lesson ID: {{ $lesson->id }}"></i>
+                                                                <!-- Completion Status -->
+                                                                <span class="mr-3 cursor-pointer" id="completionIcon_{{ $lesson->id }}">
+                                                                    @if (isset($userCompletedLessons[$lesson->id]))
+                                                                        <i class="fas fa-check-circle text-green-500" 
+                                                                           title="✅ Completed - Lesson ID: {{ $lesson->id }}"></i>
+                                                                    @else
+                                                                        <i class="fas fa-check-circle text-gray-500 hover:text-green-400 is_complete_lesson cursor-pointer"
+                                                                            data-course="{{ $course->id }}"
+                                                                            data-module="{{ $module->id }}"
+                                                                            data-lesson="{{ $lesson->id }}"
+                                                                            data-duration="{{ $lesson->duration ?? 0 }}"
+                                                                            data-user="{{ Auth::user()->id }}"
+                                                                            title="⭕ Not completed - Lesson ID: {{ $lesson->id }}"></i>
+                                                                    @endif
+                                                                </span>
+
+                                                                <!-- Lesson Type Icon -->
+                                                                <span class="mr-3">
+                                                                    @if ($lesson->type == 'text')
+                                                                        <i class="fa-regular fa-file-lines actv-hide text-gray-600 dark:text-gray-400"></i>
+                                                                        <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
+                                                                    @elseif($lesson->type == 'audio')
+                                                                        <i class="fa-solid fa-headphones actv-hide text-purple-600"></i>
+                                                                        <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
+                                                                    @elseif($lesson->type == 'video')
+                                                                        <i class="fas fa-play actv-hide text-red-500"></i>
+                                                                        <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
+                                                                    @endif
+                                                                </span>
+
+                                                                <!-- Lesson Title and Duration -->
+                                                                <span class="flex-1 font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">{{ $lesson->title }}</span>
+                                                                
+                                                                <!-- Duration -->
+                                                                @if($lesson->duration)
+                                                                    <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                                                                        @php
+                                                                            $minutes = floor($lesson->duration / 60);
+                                                                            $seconds = $lesson->duration % 60;
+                                                                        @endphp
+                                                                        @if($minutes > 0)
+                                                                            {{ $minutes }}{{ $seconds > 0 ? ':' . str_pad($seconds, 2, '0', STR_PAD_LEFT) : '' }} min
                                                                         @else
-                                                                            <i class="fas fa-check-circle text-gray-500 hover:text-green-400 is_complete_lesson cursor-pointer"
-                                                                                data-course="{{ $course->id }}"
-                                                                                data-module="{{ $module->id }}"
-                                                                                data-lesson="{{ $lesson->id }}"
-                                                                                data-duration="{{ $lesson->duration ?? 0 }}"
-                                                                                data-user="{{ Auth::user()->id }}"
-                                                                                title="⭕ Not completed - Lesson ID: {{ $lesson->id }}"></i>
+                                                                            {{ $seconds }}s
                                                                         @endif
                                                                     </span>
-
-                                                                    <!-- Lesson Type Icon -->
-                                                                    <span class="mr-3">
-                                                                        @if ($lesson->type == 'text')
-                                                                            <i class="fa-regular fa-file-lines actv-hide text-gray-600 dark:text-gray-400"></i>
-                                                                            <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
-                                                                        @elseif($lesson->type == 'audio')
-                                                                            <i class="fa-solid fa-headphones actv-hide text-purple-600"></i>
-                                                                            <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
-                                                                        @elseif($lesson->type == 'video')
-                                                                            <i class="fas fa-play actv-hide text-red-500"></i>
-                                                                            <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
-                                                                        @endif
-                                                                    </span>
-
-                                                                    <!-- Lesson Title -->
-                                                                    <span class="flex-1 font-medium">{{ $lesson->title }}</span>
-                                                                </div>
-                                                            @endif
-                                                        </div>
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                 @endforeach
                                             </div>
@@ -647,184 +659,11 @@
 
 {{-- script section @S --}}
 @section('script')
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Lesson click handler function
-        function handleLessonClick(element) {
-            console.log('🎯 Lesson clicked!', element);
-            
-            // Get lesson data from element attributes
-            const lessonId = element.getAttribute('data-lesson-id');
-            const videoUrl = element.getAttribute('data-video-url');
-            const audioUrl = element.getAttribute('data-audio-url');
-            const lessonType = element.getAttribute('data-lesson-type');
-            const courseId = element.getAttribute('data-course-id');
-            const moduleId = element.getAttribute('data-modules-id');
-            const duration = element.getAttribute('data-lesson-duration') || 0;
-            const instructorId = element.getAttribute('data-instructor-id');
-            
-            console.log('📹 Playing lesson:', {
-                lessonId: lessonId,
-                videoUrl: videoUrl,
-                audioUrl: audioUrl,
-                type: lessonType,
-                courseId: courseId,
-                moduleId: moduleId
-            });
-            
-            // Reset all lesson items - remove active state and show play icons
-            const allLessons = document.querySelectorAll('.lesson-clickable');
-            allLessons.forEach(function(lesson) {
-                lesson.classList.remove('active', 'text-primary-600', 'dark:text-primary-400');
-                
-                // Reset icons
-                const hideIcons = lesson.querySelectorAll('.actv-hide');
-                const showIcons = lesson.querySelectorAll('.actv-show');
-                
-                hideIcons.forEach(icon => {
-                    icon.style.display = '';
-                });
-                showIcons.forEach(icon => {
-                    icon.style.display = 'none';
-                    icon.classList.add('hidden');
-                });
-            });
-            
-            // Set current lesson as active and show pause icon
-            element.classList.add('active', 'text-primary-600', 'dark:text-primary-400');
-            
-            const currentHideIcons = element.querySelectorAll('.actv-hide');
-            const currentShowIcons = element.querySelectorAll('.actv-show');
-            
-            currentHideIcons.forEach(icon => {
-                icon.style.display = 'none';
-            });
-            currentShowIcons.forEach(icon => {
-                icon.style.display = '';
-                icon.classList.remove('hidden');
-            });
-            
-            // Handle different media types
-            if (lessonType === 'video' && videoUrl) {
-                console.log('🎬 Loading video:', videoUrl);
-                
-                // Detect media type (YouTube, Vimeo, or regular video)
-                let mediaType = 'video';
-                if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-                    mediaType = 'youtube';
-                } else if (videoUrl.includes('vimeo.com')) {
-                    mediaType = 'vimeo';
-                }
-                
-                console.log('📺 Media type detected:', mediaType);
-                
-                // Show video player, hide other media
-                const videoContainer = document.querySelector('#videoPlayerContainer');
-                const audioBox = document.querySelector('.audio-iframe-box');
-                const textBox = document.querySelector('#textHideShow');
-                
-                if (videoContainer) videoContainer.style.display = 'block';
-                if (audioBox) audioBox.classList.add('d-none');
-                if (textBox) textBox.style.display = 'none';
-                
-                // Load video using existing function if available
-                if (typeof loadVideo === 'function') {
-                    loadVideo(videoUrl, lessonId);
-                } else {
-                    // Fallback: create iframe directly
-                    loadVideoFallback(videoUrl, lessonId);
-                }
-                
-            } else if (lessonType === 'audio' && audioUrl) {
-                console.log('🎵 Loading audio:', audioUrl);
-                
-                const audioBox = document.querySelector('.audio-iframe-box');
-                const videoContainer = document.querySelector('#videoPlayerContainer');
-                const textBox = document.querySelector('#textHideShow');
-                const audioPlayer = document.querySelector('#audioPlayer');
-                
-                if (audioBox) audioBox.classList.remove('d-none');
-                if (videoContainer) videoContainer.style.display = 'none';
-                if (textBox) textBox.style.display = 'none';
-                
-                if (audioPlayer) {
-                    const audioSource = audioPlayer.querySelector('source');
-                    const baseUrl = window.location.origin;
-                    if (audioSource) {
-                        audioSource.src = baseUrl + '/' + audioUrl;
-                        audioPlayer.load();
-                        audioPlayer.play();
-                    }
-                }
-                
-            } else if (lessonType === 'text') {
-                console.log('📝 Showing text lesson');
-                
-                const textBox = document.querySelector('#textHideShow');
-                const textSeparator = document.querySelector('#textHideShowSeparator');
-                const audioBox = document.querySelector('.audio-iframe-box');
-                const videoContainer = document.querySelector('#videoPlayerContainer');
-                
-                if (textBox) textBox.style.display = 'block';
-                if (textSeparator) textSeparator.style.display = 'block';
-                if (audioBox) audioBox.classList.add('d-none');
-                if (videoContainer) videoContainer.style.display = 'none';
-            }
-            
-            console.log('✅ Lesson loading complete!');
-        }
-        
-        // Fallback video loading function
-        function loadVideoFallback(videoUrl, lessonId) {
-            console.log('🔄 Using fallback video loader');
-            
-            const videoContainer = document.querySelector('#videoPlayerContainer');
-            if (!videoContainer || !videoUrl) return;
-            
-            let embedUrl = '';
-            
-            // YouTube detection
-            if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-                let videoId = '';
-                
-                if (videoUrl.includes('youtu.be/')) {
-                    videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
-                } else if (videoUrl.includes('watch?v=')) {
-                    videoId = videoUrl.split('watch?v=')[1].split('&')[0];
-                }
-                
-                if (videoId) {
-                    embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
-                }
-            }
-            
-            // Vimeo detection
-            if (videoUrl.includes('vimeo.com')) {
-                const videoId = videoUrl.split('vimeo.com/')[1].split('?')[0];
-                if (videoId) {
-                    embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&portrait=0&title=0&byline=0`;
-                }
-            }
-            
-            if (embedUrl) {
-                videoContainer.innerHTML = `
-                    <iframe 
-                        src="${embedUrl}" 
-                        width="100%" 
-                        height="480" 
-                        frameborder="0" 
-                        allow="autoplay; fullscreen; picture-in-picture" 
-                        allowfullscreen
-                        style="border-radius: 0.75rem;">
-                    </iframe>
-                `;
-                console.log('✅ Video embedded successfully');
-            } else {
-                console.log('❌ Could not create embed URL for:', videoUrl);
-            }
-        }
-
-        // Accordion toggle function
-        function toggleAccordion(moduleId) {
+        // Make accordion toggle function global so onclick can access it
+        window.toggleAccordion = function(moduleId) {
             const content = document.getElementById('collapse_' + moduleId);
             const chevron = document.getElementById('chevron_' + moduleId);
             const button = content.previousElementSibling.querySelector('button');
@@ -838,32 +677,19 @@
             // Update aria-expanded
             const isExpanded = !content.classList.contains('hidden');
             button.setAttribute('aria-expanded', isExpanded);
-            
-            // Close other accordion items (optional - for single open behavior)
-            // const allAccordions = document.querySelectorAll('.accordion-content');
-            // const allChevrons = document.querySelectorAll('[id^="chevron_"]');
-            // allAccordions.forEach((accordion, index) => {
-            //     if (accordion.id !== 'collapse_' + moduleId) {
-            //         accordion.classList.add('hidden');
-            //         allChevrons[index].classList.remove('rotate-180');
-            //     }
-            // });
         }
 
+        // Basic check - Is jQuery loaded?
+        console.log('💡 jQuery loaded:', typeof $ !== 'undefined');
+        console.log('💡 Document ready state:', document.readyState);
+
         $(document).ready(function() {
-            console.log('Student view script loaded');
-            console.log('jQuery version:', $.fn.jquery);
-            console.log('Lesson items found:', $('.lesson-clickable').length);
+            console.log('🚀 Student view script loaded');
+            console.log('🔍 Lesson items found:', $('.lesson-item').length);
+            console.log('🔍 Lesson clickable items found:', $('.lesson-item.lesson-clickable').length);
+            console.log('🔍 jQuery version:', $.fn.jquery);
             
-            // Test click binding
-            $('.lesson-clickable').each(function(index) {
-                console.log('Lesson item', index, ':', this);
-            });
-            
-            // Add a simple click test
-            $('.lesson-clickable').on('click', function() {
-                console.log('🔥 DIRECT CLICK DETECTED on:', this);
-            });
+            // jQuery is now loaded and working
             
             let currentURL = window.location.href;
             const baseUrl = currentURL.split('/').slice(0, 3).join('/');
@@ -886,14 +712,15 @@
                     type: '{{ $currentLesson->type }}'
                 });
 
-                // Set the current lesson as active in sidebar
-                $('a[data-lesson-id="{{ $currentLesson->id }}"]').addClass('active');
-                $('a[data-lesson-id="{{ $currentLesson->id }}"] .actv-hide').hide();
-                $('a[data-lesson-id="{{ $currentLesson->id }}"] .actv-show').show();
+                // Set the current lesson as active in sidebar using the new structure
+                $('[data-lesson-id="{{ $currentLesson->id }}"]').addClass('bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500');
+                $('[data-lesson-id="{{ $currentLesson->id }}"] .actv-hide').hide();
+                $('[data-lesson-id="{{ $currentLesson->id }}"] .actv-show').show();
 
                 @if($currentModule)
                     // Open the accordion for current module
-                    $('#collapse_{{ $currentModule->id }}').addClass('show');
+                    $('#collapse_{{ $currentModule->id }}').removeClass('hidden');
+                    $('#chevron_{{ $currentModule->id }}').addClass('rotate-180');
                 @endif
 
                 // Initialize the Mark as Complete button for current lesson
@@ -901,160 +728,136 @@
 
                 // Load the current lesson content
                 @if($currentLesson->type == 'video' && $currentLesson->video_link)
+                    console.log('🎬 Loading current lesson video:', '{{ $currentLesson->video_link }}');
+                    document.querySelector('#videoPlayerContainer').style.display = 'block';
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
+                    $('#textHideShow').hide();
+                    $('#textHideShowSeparator').hide();
                     loadVideo('{{ $currentLesson->video_link }}', {{ $currentLesson->id }});
                 @elseif($currentLesson->type == 'audio' && $currentLesson->audio)
-                    // Load audio
-                    document.querySelector('.audio-iframe-box').classList.remove('d-none');
+                    console.log('🎵 Loading current lesson audio');
+                    document.querySelector('.audio-iframe-box').classList.remove('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
                     $('#textHideShow').hide();
+                    $('#textHideShowSeparator').hide();
                     var audioSource = audioPlayer.querySelector('source');
                     audioSource.src = baseUrl + '/{{ $currentLesson->audio }}';
                     audioPlayer.load();
                 @elseif($currentLesson->type == 'text')
-                    // Load text content
+                    console.log('📖 Loading current lesson text content');
                     $('#textHideShow').show();
                     $('#textHideShowSeparator').show();
-                    document.querySelector('.audio-iframe-box').classList.add('d-none');
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
-                    // Load text content here if needed
                 @endif
             @endif
 
-            // Lesson click handler - Updated to handle div.lesson-clickable clicks
-            $(document).on('click', '.lesson-clickable', function(e) {
-                console.log('🚀 EVENT DELEGATION CLICK DETECTED!', this);
-                console.log('🚀 Event target:', e.target);
-                console.log('🚀 Event currentTarget:', e.currentTarget);
-                
+            // Lesson functionality is now working
+
+            // Main lesson click handler
+            $(document).on('click', '.lesson-item.lesson-clickable', function(e) {
                 // Don't prevent default for completion checkbox clicks
                 if ($(e.target).hasClass('is_complete_lesson')) {
-                    console.log('🚀 Completion checkbox clicked, returning');
+                    console.log('🚫 Clicked on completion checkbox - returning');
                     return; // Let the completion handler handle this
                 }
                 
-                console.log('🎯 Lesson clicked - target:', e.target);
-                console.log('🎯 This element:', this);
-                console.log('🎯 Lesson div data:', $(this).data());
-                
-                // Completely stop any navigation
+                console.log('🎯 LESSON CLICKED!');
                 e.preventDefault();
                 e.stopPropagation();
-                e.stopImmediatePropagation();
                 
-                // Reset all lesson items - remove active state and show play icons
-                $('.lesson-clickable').removeClass('active text-primary-600 dark:text-primary-400');
-                $('.lesson-clickable .actv-hide').show(); // Show play icons
-                $('.lesson-clickable .actv-show').hide().addClass('hidden'); // Hide pause icons
-                
-                // Set current lesson as active and show pause icon
-                $(this).addClass('active text-primary-600 dark:text-primary-400');
-                $(this).find('.actv-hide').hide(); // Hide play icon
-                $(this).find('.actv-show').show().removeClass('hidden'); // Show pause icon
-
+                // Get lesson data
                 let type = this.getAttribute('data-lesson-type');
                 let lessonId = this.getAttribute('data-lesson-id');
                 let courseId = this.getAttribute('data-course-id');
                 let moduleId = this.getAttribute('data-modules-id');
                 let lessonDuration = this.getAttribute('data-lesson-duration') || 0;
                 let instructorId = this.getAttribute('data-instructor-id');
+                let videoUrl = this.getAttribute('data-video-url');
+                let audioUrl = this.getAttribute('data-audio-url');
 
-                console.log('Lesson data:', {
+                console.log('📊 Lesson Data:', {
                     type: type,
                     lessonId: lessonId,
                     courseId: courseId,
                     moduleId: moduleId,
-                    lessonDuration: lessonDuration,
-                    instructorId: instructorId
+                    videoUrl: videoUrl,
+                    audioUrl: audioUrl,
+                    duration: lessonDuration
                 });
 
-                if (type == 'video') {
-                    const videoUrl = this.getAttribute('data-video-url');
-                    
-                    // Detect media type (YouTube, Vimeo, or regular video)
-                    let mediaType = 'video';
-                    if (videoUrl) {
-                        if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-                            mediaType = 'youtube';
-                        } else if (videoUrl.includes('vimeo.com')) {
-                            mediaType = 'vimeo';
-                        }
-                    }
-                    
-                    console.log('Playing video lesson - Type:', mediaType, 'URL:', videoUrl);
+                // Reset all lesson items - remove active state
+                $('.lesson-item.lesson-clickable').removeClass('bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500');
+                $('.lesson-item .actv-hide').show();
+                $('.lesson-item .actv-show').hide();
+                
+                // Set current lesson as active
+                $(this).addClass('bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500');
+                $(this).find('.actv-hide').hide();
+                $(this).find('.actv-show').show();
+
+                // Handle different lesson types
+                if (type == 'video' && videoUrl) {
+                    console.log('🎬 Playing video:', videoUrl);
                     
                     // Show video player, hide other media
                     document.querySelector('#videoPlayerContainer').style.display = 'block';
-                    document.querySelector('.audio-iframe-box').classList.add('d-none');
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
                     $('#textHideShow').hide();
                     $('#textHideShowSeparator').hide();
                     if (audioPlayer) audioPlayer.pause();
 
-                    if (videoUrl) {
-                        loadVideo(videoUrl, lessonId);
-                    }
+                    loadVideo(videoUrl, lessonId);
 
-                } else if (type == 'audio') {
-                    console.log('Playing audio lesson');
+                } else if (type == 'audio' && audioUrl) {
+                    console.log('🎵 Playing audio:', audioUrl);
                     if (audioPlayer) audioPlayer.pause();
-                    document.querySelector('.audio-iframe-box').classList.remove('d-none');
+                    document.querySelector('.audio-iframe-box').classList.remove('hidden');
                     $('#textHideShow').hide();
                     $('#textHideShowSeparator').hide();
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
 
-                    var laravelURL = baseUrl + '/' + this.getAttribute('data-audio-url');
+                    var fullAudioURL = baseUrl + '/' + audioUrl;
                     if (audioPlayer) {
                         let audioSource = audioPlayer.querySelector('source');
-                        audioSource.src = laravelURL;
+                        audioSource.src = fullAudioURL;
                         audioPlayer.load();
                         audioPlayer.play();
                     }
 
                 } else if (type == 'text') {
-                    console.log('Showing text lesson');
+                    console.log('📖 Showing text lesson');
                     if (audioPlayer) audioPlayer.pause();
                     
                     $('#textHideShow').show();
                     $('#textHideShowSeparator').show();
-                    document.querySelector('.audio-iframe-box').classList.add('d-none');
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
                 }
 
-                // Update Mark as Complete button for the selected lesson
+                // Update Mark as Complete button
                 updateMarkAsCompleteButton(lessonId, moduleId, instructorId, lessonDuration);
 
-                // Send request per lesson click
+                // Log course progress
                 var data = {
                     courseId: courseId,
                     lessonId: lessonId,
                     moduleId: moduleId
                 };
                 
-                console.log('Sending AJAX request to course_logs table:', data);
+                console.log('📡 Logging course progress:', data);
                 
-                // ONLY Log course progress (similar to instructor) - DO NOT mark as complete
                 $.ajax({
                     url: '{{ route('student.log.courses') }}',
                     method: 'GET',
                     data: data,
                     success: function(response) {
-                        console.log('✅ course_logs table insertion SUCCESS:', response);
-                        console.log('Data logged in course_logs:', {
-                            course_id: courseId,
-                            lesson_id: lessonId,
-                            module_id: moduleId,
-                            user_id: '{{ Auth::user()->id }}'
-                        });
+                        console.log('✅ Course progress logged successfully');
                     },
                     error: function(xhr, status, error) {
-                        console.log('❌ course_logs AJAX ERROR:', error);
-                        console.log('Response Status:', xhr.status);
-                        console.log('Response Text:', xhr.responseText);
-                        console.log('Error Details:', {status: status, error: error});
+                        console.log('❌ Course progress logging failed:', error);
                     }
                 });
-                
-                // Ensure no navigation happens
-                return false;
             });
 
             // Video loading function with YouTube/Vimeo support
@@ -1207,10 +1010,10 @@
                         $element.prop('disabled', true);
                         
                         // Update the lesson completion icon in the sidebar
-                        var $lessonIcon = $('a[data-lesson-id="' + lessonId + '"] .is_complete_lesson');
+                        var $lessonIcon = $('[data-lesson-id="' + lessonId + '"] .is_complete_lesson');
                         if ($lessonIcon.length) {
-                            $lessonIcon.addClass('text-primary');
-                            $lessonIcon.removeClass('is_complete_lesson');
+                            $lessonIcon.removeClass('text-gray-500 hover:text-green-400 is_complete_lesson').addClass('text-green-500');
+                            $lessonIcon.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
                         }
                         
                         // Update the module icon if all lessons in module are completed
@@ -1279,8 +1082,8 @@
                         });
                         
                         // Change icon to success checkmark
-                        $element.removeClass('spinner-border spinner-border-sm').addClass('fas fa-check-circle text-primary');
-                        $element.removeClass('is_complete_lesson'); // Remove click handler
+                        $element.removeClass('spinner-border spinner-border-sm text-gray-500 hover:text-green-400 is_complete_lesson').addClass('fas fa-check-circle text-green-500');
+                        $element.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
                         
                         // Update the module icon if all lessons in module are completed
                         updateModuleCompletionIcon(moduleId);
@@ -1302,24 +1105,25 @@
             function updateModuleCompletionIcon(moduleId) {
                 console.log('🔍 Checking module completion for module:', moduleId);
                 
-                var $moduleHeader = $('#heading_' + moduleId + ' .fas.fa-check-circle');
-                var $allLessonsInModule = $('a[data-modules-id="' + moduleId + '"] .fas.fa-check-circle');
+                var $moduleHeader = $('#moduleCompletion_' + moduleId);
+                var $allLessonsInModule = $('[data-modules-id="' + moduleId + '"] .is_complete_lesson');
                 var totalLessons = $allLessonsInModule.length;
-                var completedLessons = $allLessonsInModule.filter('.text-primary').length;
+                var completedLessons = $allLessonsInModule.filter('.text-green-500').length;
                 
                 console.log('Module completion check:', {
                     moduleId: moduleId,
                     totalLessons: totalLessons,
-                    completedLessons: completedLessons
+                    completedLessons: completedLessons,
+                    moduleHeaderElement: $moduleHeader[0]
                 });
                 
                 if (totalLessons > 0 && completedLessons === totalLessons) {
                     // All lessons completed - make module icon primary color
-                    $moduleHeader.addClass('text-primary');
+                    $moduleHeader.removeClass('text-gray-400').addClass('text-primary-500');
                     console.log('✅ Module ' + moduleId + ' marked as completed');
                 } else {
-                    // Not all lessons completed - remove primary color
-                    $moduleHeader.removeClass('text-primary');
+                    // Not all lessons completed - keep gray color
+                    $moduleHeader.removeClass('text-primary-500').addClass('text-gray-400');
                     console.log('⏳ Module ' + moduleId + ' still in progress');
                 }
             }
@@ -1331,10 +1135,7 @@
                 @endif
             @endforeach
         });
-    </script>
     
-    {{-- vimeo player ready --}}
-    <script>
         var iframe = document.getElementById('firstLesson');
         iframe.onload = function() {
             // Wait for the Vimeo player to be ready
@@ -1353,9 +1154,7 @@
             style.appendChild(playerDoc.createTextNode(customCSS));
             playerDoc.head.appendChild(style);
         };
-    </script>
-     {{-- linke bttn --}}
-     <script>
+   
         let currentURL = window.location.href;
         const baseUrl = currentURL.split('/').slice(0, 3).join('/');
         const likeBttn = document.getElementById('likeBttn');
