@@ -1334,7 +1334,7 @@ class StudentHomeController extends Controller
         $title = isset($_GET['title']) ? $_GET['title'] : '';
         $status = isset($_GET['status']) ? $_GET['status'] : '';
 
-        $enrolments = Checkout::with('course.reviews')->where('course_user.user_id', Auth::user()->id);
+        $enrolments = Checkout::with('course.reviews')->where('user_id', Auth::user()->id);
 
         if (!empty($title)) {
             $enrolments->whereHas('course', function ($query) use ($title) {

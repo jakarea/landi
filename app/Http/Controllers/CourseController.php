@@ -493,7 +493,7 @@ class CourseController extends Controller
                 // Check if the student has already purchased this course via checkout (paid courses)
                 $hasPurchasedViaCheckout = Checkout::where('user_id', Auth::id())
                                                   ->where('course_id', $courseId)
-                                                  ->where('payment_status', 'success')
+                                                  ->where('payment_status', 'completed')
                                                   ->exists();
                 
                 // Check if the student is enrolled and approved via CourseEnrollment model
