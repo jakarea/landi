@@ -194,7 +194,7 @@
                                 <!-- Screenshot -->
                                 <td class="px-6 py-4">
                                     @if($enrollment->payment_screenshot)
-                                        <button onclick="viewScreenshot('{{ asset('storage/'.$enrollment->payment_screenshot) }}')"
+                                        <button onclick="viewScreenshot('{{ asset($enrollment->payment_screenshot) }}')"
                                                 class="flex items-center gap-2 px-3 py-1 bg-blue hover:bg-blue/80 text-primary rounded-lg text-xs font-semibold anim">
                                             <i class="fas fa-image"></i>
                                             <span>দেখুন</span>

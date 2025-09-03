@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\CourseEnrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class CourseEnrollmentController extends Controller
@@ -47,6 +48,10 @@ class CourseEnrollmentController extends Controller
             'transaction_id' => 'nullable|string|max:255',
             'payment_screenshot' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB max
             'promo_code' => 'nullable|string|max:50',
+        ], [
+            'payment_screenshot.image' => 'Payment screenshot must be a valid image (JPEG, PNG, JPG, GIF).',
+            'payment_screenshot.mimes' => 'Payment screenshot must be a JPEG, PNG, JPG, or GIF file.',
+            'payment_screenshot.max' => 'Payment screenshot size must not exceed 5MB.',
         ]);
 
         // Custom validation for digital payments - require either transaction_id OR payment_screenshot
@@ -101,10 +106,60 @@ class CourseEnrollmentController extends Controller
         // Handle file upload to public/uploads folder
         $screenshotPath = null;
         if ($request->hasFile('payment_screenshot')) {
-            $file = $request->file('payment_screenshot');
-            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/enrollments'), $fileName);
-            $screenshotPath = 'uploads/enrollments/' . $fileName;
+            try {
+                $file = $request->file('payment_screenshot');
+                
+                // Validate file is actually uploaded and valid
+                if (!$file->isValid()) {
+                    $error = $file->getErrorMessage();
+                    Log::error('Invalid file upload: ' . $error);
+                    return redirect()->route('courses.enroll', $course->slug)
+                        ->withErrors(['payment_screenshot' => 'The uploaded file is corrupted: ' . $error])
+                        ->withInput();
+                }
+                
+                // Check file size (Laravel validation should catch this, but double check)
+                if ($file->getSize() > 5 * 1024 * 1024) { // 5MB
+                    return redirect()->route('courses.enroll', $course->slug)
+                        ->withErrors(['payment_screenshot' => 'File size exceeds 5MB limit.'])
+                        ->withInput();
+                }
+                
+                $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $destinationPath = public_path('uploads/enrollments');
+                
+                // Create directory if it doesn't exist
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                
+                // Move file and check if successful
+                if ($file->move($destinationPath, $fileName)) {
+                    $screenshotPath = 'uploads/enrollments/' . $fileName;
+                } else {
+                    return redirect()->route('courses.enroll', $course->slug)
+                        ->withErrors(['payment_screenshot' => 'Failed to upload payment screenshot. Please try again.'])
+                        ->withInput();
+                }
+                
+            } catch (\Exception $e) {
+                Log::error('Payment screenshot upload failed: ' . $e->getMessage(), [
+                    'file_size' => $file->getSize(),
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_mime' => $file->getMimeType(),
+                    'course_slug' => $course->slug,
+                    'user_id' => Auth::id()
+                ]);
+                return redirect()->route('courses.enroll', $course->slug)
+                    ->withErrors(['payment_screenshot' => 'Upload failed: ' . $e->getMessage() . '. Please try a smaller image or different format.'])
+                    ->withInput();
+            }
+        } else if ($request->payment_method !== 'cash') {
+            // No file uploaded but digital payment selected
+            Log::info('No payment screenshot uploaded for digital payment', [
+                'payment_method' => $request->payment_method,
+                'has_transaction_id' => !empty($request->transaction_id)
+            ]);
         }
 
         // Create enrollment

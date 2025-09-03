@@ -57,10 +57,11 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::post('/student/courses/{slug}/', [StudentHomeController::class, 'review'])->name('student.courses.review');
     Route::post('/student/courses/{slug}/like/', [StudentHomeController::class, 'courseLike'])->name('student.courses.like');
     Route::post('/student/courses/{slug}/unlike/', [StudentHomeController::class, 'courseUnLike'])->name('student.courses.unlike');
+    Route::post('/student/course-like/{course_id}/{ins_id}/', [StudentHomeController::class, 'courseLike'])->name('student.course.like');
     
     // Course logging and progress
     Route::match(['GET', 'POST'], '/student/courses/log/', [StudentHomeController::class, 'storeCourseLog'])->name('student.log.courses');
-    Route::get('/student/courses/complete-lesson', [StudentHomeController::class, 'storeActivity'])->name('student.complete.lesson');
+    Route::post('/student/courses/complete-lesson', [StudentHomeController::class, 'storeActivity'])->name('student.complete.lesson');
     
     // ========================================
     // PROFILE SECTION

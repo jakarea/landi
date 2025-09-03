@@ -1,4 +1,4 @@
-@extends('layouts/latest/students')
+@extends('layouts/student-modern')
 @section('title')
     My Courses
 @endsection
@@ -8,31 +8,156 @@
 @endphp
 {{-- page style @S --}}
 @section('style')
-    <link href="{{ asset('assets/admin-css/student-dash.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin-css/elearning.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/admin-css/user.css') }}" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    primary: {
+                        50: '#eff6ff',
+                        100: '#dbeafe',
+                        200: '#bfdbfe',
+                        300: '#93c5fd',
+                        400: '#60a5fa',
+                        500: '#3b82f6',
+                        600: '#2563eb',
+                        700: '#1d4ed8',
+                        800: '#1e40af',
+                        900: '#1e3a8a',
+                        950: '#172554',
+                    },
+                    dark: {
+                        50: '#f8fafc',
+                        100: '#f1f5f9',
+                        200: '#e2e8f0',
+                        300: '#cbd5e1',
+                        400: '#94a3b8',
+                        500: '#64748b',
+                        600: '#475569',
+                        700: '#334155',
+                        800: '#1e293b',
+                        900: '#0f172a',
+                        950: '#020617',
+                    }
+                }
+            }
+        }
+    }
+</script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    .font-inter { font-family: 'Inter', sans-serif; }
+    
+    .ray-hover {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .ray-hover::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .ray-hover:hover::before {
+        left: 100%;
+    }
+    
+    .glow-card {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        transition: all 0.3s ease;
+    }
+    
+    .glow-card:hover {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+        transform: translateY(-2px);
+    }
+    
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dark .glass-effect {
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .course-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .dark .course-card {
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .course-card:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dark .course-card:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+</style>
 @endsection
 {{-- page style @S --}}
 
 {{-- page content @S --}}
 @section('content')
-    <main class="student-courses-lists-pages">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <form action="" method="GET" id="myForm">
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-6 col-md-6 mb-3">
-                                <div class="user-search-box-wrap">
-                                    <div class="form-group">
-                                        <i class="fas fa-search"></i>
-                                        <input autocomplete="off" type="text" placeholder="কোর্স অনুসন্ধান করুন" class="form-control"
-                                            name="title" value="{{ request('title') }}">
+<div class="p-6 max-w-7xl mx-auto">
+            <!-- Page Header -->
+            <div class="mb-8">
+                <div class="glass-effect rounded-2xl p-6 ray-hover glow-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                                আমার কোর্সসমূহ
+                            </h1>
+                            <p class="text-slate-600 dark:text-slate-400 mt-2">আপনার এনরোল করা সমস্ত কোর্স এখানে দেখুন</p>
+                        </div>
+                        <div class="hidden md:flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="mb-8">
+                <div class="glass-effect rounded-2xl p-6 ray-hover glow-card">
+                    <form action="" method="GET" id="myForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                            <!-- Search Input -->
+                            <div class="xl:col-span-2">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-search text-slate-400"></i>
                                     </div>
+                                    <input autocomplete="off" type="text" placeholder="কোর্স অনুসন্ধান করুন" 
+                                           class="w-full pl-10 pr-4 py-3 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-all duration-300"
+                                           name="title" value="{{ request('title') }}">
                                 </div>
                             </div>
-                            <div class="col-xl-2 col-lg-3 col-md-6 mb-3">
-                                <select name="category" class="form-select">
+                            
+                            <!-- Category Filter -->
+                            <div>
+                                <select name="category" class="w-full py-3 px-4 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 dark:text-white transition-all duration-300">
                                     <option value="">সব ক্যাটেগরি</option>
                                     @if(isset($availableCategories))
                                         @foreach($availableCategories as $category)
@@ -43,8 +168,10 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="col-xl-2 col-lg-3 col-md-6 mb-3">
-                                <select name="instructor" class="form-select">
+                            
+                            <!-- Instructor Filter -->
+                            <div>
+                                <select name="instructor" class="w-full py-3 px-4 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 dark:text-white transition-all duration-300">
                                     <option value="">সব ইনস্ট্রাক্টর</option>
                                     @if(isset($availableInstructors))
                                         @foreach($availableInstructors as $instructorName)
@@ -55,59 +182,55 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="col-xl-2 col-lg-6 col-md-6 mb-3">
-                                <select name="progress" class="form-select">
+                            
+                            <!-- Progress Filter -->
+                            <div>
+                                <select name="progress" class="w-full py-3 px-4 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 dark:text-white transition-all duration-300">
                                     <option value="">সব অগ্রগতি</option>
                                     <option value="not_started" {{ request('progress') == 'not_started' ? 'selected' : '' }}>শুরু হয়নি</option>
                                     <option value="in_progress" {{ request('progress') == 'in_progress' ? 'selected' : '' }}>চলমান</option>
                                     <option value="completed" {{ request('progress') == 'completed' ? 'selected' : '' }}>সমাপ্ত</option>
                                 </select>
                             </div>
-                            <div class="col-xl-2 col-lg-6 col-md-6 mb-3">
-                                <div class="filter-dropdown-box">
-                                    <div class="dropdown">
-                                        <button class="btn w-100" type="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false" id="dropdownBttn">
-                                            সব
-                                        </button>
-                                        <ul class="dropdown-menu w-100">
-                                            <li><a class="dropdown-item filterItem" href="#" data-value="">সব</a></li>
-                                            <li><a class="dropdown-item filterItem" href="#"
-                                                    data-value="best_rated">সর্বোচ্চ রেটেড</a></li>
-                                            <li><a class="dropdown-item filterItem" href="#"
-                                                    data-value="most_purchased">সর্বাধিক ক্রয়</a></li>
-                                            <li><a class="dropdown-item filterItem" href="#"
-                                                    data-value="newest">সর্বশেষ</a></li>
-                                            <li><a class="dropdown-item filterItem" href="#"
-                                                    data-value="recently_accessed">সাম্প্রতিক অ্যাক্সেস</a></li>
-                                            <li><a class="dropdown-item filterItem" href="#"
-                                                    data-value="oldest">পুরাতন</a></li>
-                                        </ul>
-                                    </div>
-                                    <i class="fas fa-angle-down"></i>
-                                    <input type="hidden" name="status" id="inputField" value="{{ request('status') }}">
+                        </div>
+                        
+                        <!-- Sort Dropdown -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                            <div class="relative">
+                                <select name="status" id="statusSelect" class="w-full py-3 px-4 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 dark:text-white transition-all duration-300 appearance-none">
+                                    <option value="">সব</option>
+                                    <option value="best_rated" {{ request('status') == 'best_rated' ? 'selected' : '' }}>সর্বোচ্চ রেটেড</option>
+                                    <option value="most_purchased" {{ request('status') == 'most_purchased' ? 'selected' : '' }}>সর্বাধিক ক্রয়</option>
+                                    <option value="newest" {{ request('status') == 'newest' ? 'selected' : '' }}>সর্বশেষ</option>
+                                    <option value="recently_accessed" {{ request('status') == 'recently_accessed' ? 'selected' : '' }}>সাম্প্রতিক অ্যাক্সেস</option>
+                                    <option value="oldest" {{ request('status') == 'oldest' ? 'selected' : '' }}>পুরাতন</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <i class="fas fa-chevron-down text-slate-400"></i>
                                 </div>
+                                <input type="hidden" name="status" id="inputField" value="{{ request('status') }}">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-search me-2"></i>ফিল্টার প্রয়োগ
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex flex-wrap gap-3">
+                                <button type="submit" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ray-hover">
+                                    <i class="fas fa-search mr-2"></i>ফিল্টার প্রয়োগ
                                 </button>
-                                <a href="{{ route('student.courses') }}" class="btn btn-outline-secondary ms-2">
-                                    <i class="fas fa-refresh me-2"></i>রিসেট
+                                <a href="{{ route('student.courses') }}" class="inline-flex items-center px-6 py-3 bg-white/50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 font-medium rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ray-hover">
+                                    <i class="fas fa-refresh mr-2"></i>রিসেট
                                 </a>
                             </div>
-                            <div class="col-md-6 text-end mb-3">
-                                <a href="{{ url('student/courses-activies/list') }}" class="btn btn-outline-info">
-                                    <i class="fas fa-chart-line me-2"></i>কোর্স কার্যকলাপ
-                                </a>
-                            </div>
+                            <a href="{{ url('student/courses-activies/list') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white font-medium rounded-xl hover:from-green-600 hover:to-teal-700 transition-all duration-300 ray-hover">
+                                <i class="fas fa-chart-line mr-2"></i>কোর্স কার্যকলাপ
+                            </a>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="row">
+            <!-- Course Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
                 @if (count($enrolments) > 0)
                     @foreach ($enrolments as $enrolment)
                         {{-- course single box start --}}
@@ -124,166 +247,221 @@
                                 $review_avg = $review_sum / $total;
                             }
                         @endphp
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xxl-3 mb-4">
-                            <div class="course-single-item modern-course-card">
-                                <div class="course-card-content">
-                                    <div class="course-thumb-box">
-                                        <img src="{{ asset($enrolment->course->thumbnail) }}"
-                                            alt="{{ $enrolment->course->slug }}" class="img-fluid">
-                                        
-                                        {{-- Status Badge --}}
-                                        <div class="status-badge-overlay">
-                                            @if($enrolment->status == 'pending')
-                                                <span class="modern-badge pending-badge">
-                                                    <i class="fas fa-clock"></i> অনুমোদনের অপেক্ষায়
-                                                </span>
-                                            @elseif($enrolment->status == 'approved')
-                                                <span class="modern-badge approved-badge">
-                                                    <i class="fas fa-check-circle"></i> অনুমোদিত
-                                                </span>
-                                            @elseif($enrolment->status == 'payment_pending')
-                                                <span class="modern-badge payment-badge">
-                                                    <i class="fas fa-credit-card"></i> পেমেন্ট প্রয়োজন
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="course-txt-box">
-                                        <div class="course-meta-info mb-2">
-                                            <div class="rating-info">
-                                                <div class="star-rating">
-                                                    @for ($i = 1; $i <= 5; $i++)
-                                                        @if ($i <= $review_avg)
-                                                            <i class="fas fa-star filled"></i>
-                                                        @else
-                                                            <i class="fas fa-star"></i>
-                                                        @endif
-                                                    @endfor
-                                                </div>
-                                                <span class="rating-score">{{ number_format($review_avg, 1) }}</span>
-                                                <span class="review-count">({{ $total }})</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <h3 class="course-title">
-                                            <a href="{{ url('student/courses/' . $enrolment->course->slug) }}">
-                                                {{ Str::limit($enrolment->course->title, 50) }}
-                                            </a>
-                                        </h3>
-                                        
-                                        <p class="course-description">
-                                            {{ Str::limit(strip_tags($enrolment->course->short_description), 80, '...') }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="modern-course-footer">
-                                    @if($enrolment->status == 'approved')
-                                        {{-- Show progress for approved courses --}}
-                                        <div class="modern-progress-section">
-                                            <div class="progress-header">
-                                                <span class="progress-label">অগ্রগতি</span>
-                                                <span class="progress-percentage">{{ $enrolment->course->progress ?? 0 }}%</span>
-                                            </div>
-                                            <div class="modern-progress-bar">
-                                                <div class="progress-track">
-                                                    <div class="progress-fill {{ ($enrolment->course->progress ?? 0) == 100 ? 'completed' : '' }}"
-                                                        style="width: {{ $enrolment->course->progress ?? 0 }}%"></div>
-                                                </div>
-                                            </div>
-                                            @if (($enrolment->course->progress ?? 0) == 100)
-                                                <div class="completion-badge">
-                                                    <i class="fas fa-check-circle"></i> সম্পন্ন
-                                                </div>
-                                            @endif
-                                        </div>
-                                    @elseif($enrolment->status == 'pending')
-                                        {{-- Show pending status for pending courses --}}
-                                        <div class="modern-status-section pending">
-                                            <div class="status-content">
-                                                <i class="fas fa-hourglass-half"></i>
-                                                <div class="status-text">
-                                                    <strong>অনুমোদনের অপেক্ষায়</strong>
-                                                    <small>ইনস্ট্রাক্টর শীঘ্রই অনুমোদন করবেন</small>
-                                                </div>
-                                            </div>
-                                        </div>
+                        
+                        <div class="course-card rounded-2xl overflow-hidden ray-hover glow-card">
+                            <!-- Course Thumbnail -->
+                            <div class="relative">
+                                <img src="{{ asset($enrolment->course->thumbnail) }}"
+                                     alt="{{ $enrolment->course->slug }}" 
+                                     class="w-full h-48 object-cover">
+                                
+                                <!-- Status Badge -->
+                                <div class="absolute top-3 right-3">
+                                    @if($enrolment->status == 'pending')
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
+                                            <i class="fas fa-clock mr-1"></i> অনুমোদনের অপেক্ষায়
+                                        </span>
+                                    @elseif($enrolment->status == 'approved')
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                                            <i class="fas fa-check-circle mr-1"></i> অনুমোদিত
+                                        </span>
                                     @elseif($enrolment->status == 'payment_pending')
-                                        {{-- Show payment pending status --}}
-                                        <div class="modern-status-section payment">
-                                            <div class="status-content">
-                                                <i class="fas fa-credit-card"></i>
-                                                <div class="status-text">
-                                                    <strong>পেমেন্ট প্রয়োজন</strong>
-                                                    <small>কোর্স শুরু করতে পেমেন্ট সম্পন্ন করুন</small>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
+                                            <i class="fas fa-credit-card mr-1"></i> পেমেন্ট প্রয়োজন
+                                        </span>
                                     @endif
                                 </div>
+                                
+                                <!-- Play Button Overlay -->
+                                @if($enrolment->status == 'approved')
+                                <div class="absolute inset-0 bg-black/0 hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100">
+                                    <a href="{{ url('student/courses/' . $enrolment->course->slug) }}" 
+                                       class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center text-blue-600 hover:scale-110 transition-all duration-300">
+                                        <i class="fas fa-play ml-1"></i>
+                                    </a>
+                                </div>
+                                @endif
+                            </div>
+                            
+                            <!-- Course Content -->
+                            <div class="p-6">
+                                <!-- Rating -->
+                                <div class="flex items-center mb-3">
+                                    <div class="flex items-center space-x-1">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($i <= $review_avg)
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                            @else
+                                                <i class="fas fa-star text-slate-300 dark:text-slate-600 text-sm"></i>
+                                            @endif
+                                        @endfor
+                                    </div>
+                                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300 ml-2">{{ number_format($review_avg, 1) }}</span>
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">({{ $total }})</span>
+                                </div>
+                                
+                                <!-- Course Title -->
+                                <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    <a href="{{ url('student/courses/' . $enrolment->course->slug) }}">
+                                        {{ Str::limit($enrolment->course->title, 50) }}
+                                    </a>
+                                </h3>
+                                
+                                <!-- Course Description -->
+                                <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                                    {{ Str::limit(strip_tags($enrolment->course->short_description), 80, '...') }}
+                                </p>
+                                
+                                <!-- Course Footer -->
+                                @if($enrolment->status == 'approved')
+                                    <!-- Progress Section -->
+                                    @php
+                                        $progress = StudentActitviesProgress(auth()->user()->id, $enrolment->course->id);
+                                    @endphp
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">অগ্রগতি</span>
+                                            <span class="text-sm font-bold text-slate-800 dark:text-white">{{ $progress }}%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+                                            <div class="h-full rounded-full transition-all duration-500 {{ $progress == 100 ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-blue-500 to-purple-600' }}" 
+                                                 style="width: {{ $progress }}%"></div>
+                                        </div>
+                                        @if ($progress == 100)
+                                            <div class="flex items-center text-green-600 dark:text-green-400 text-sm font-medium">
+                                                <i class="fas fa-check-circle mr-2"></i>সম্পন্ন
+                                            </div>
+                                        @endif
+                                    </div>
+                                @elseif($enrolment->status == 'pending')
+                                    <!-- Pending Status -->
+                                    <div class="flex items-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl">
+                                        <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/40 rounded-lg flex items-center justify-center mr-3">
+                                            <i class="fas fa-hourglass-half text-yellow-600 dark:text-yellow-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-yellow-800 dark:text-yellow-300 text-sm">অনুমোদনের অপেক্ষায়</div>
+                                            <div class="text-yellow-600 dark:text-yellow-400 text-xs">ইনস্ট্রাক্টর শীঘ্রই অনুমোদন করবেন</div>
+                                        </div>
+                                    </div>
+                                @elseif($enrolment->status == 'payment_pending')
+                                    <!-- Payment Pending -->
+                                    <div class="space-y-3">
+                                        <div class="flex items-center p-3 bg-red-50 dark:bg-red-900/20 rounded-xl">
+                                            <div class="w-10 h-10 bg-red-100 dark:bg-red-900/40 rounded-lg flex items-center justify-center mr-3">
+                                                <i class="fas fa-credit-card text-red-600 dark:text-red-400"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-semibold text-red-800 dark:text-red-300 text-sm">পেমেন্ট প্রয়োজন</div>
+                                                <div class="text-red-600 dark:text-red-400 text-xs">কোর্স শুরু করতে পেমেন্ট সম্পন্ন করুন</div>
+                                            </div>
+                                        </div>
+                                        <a href="{{ url('courses/'.$enrolment->course->slug.'/enroll') }}" 
+                                           class="inline-flex items-center justify-center w-full px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 ray-hover">
+                                            <i class="fas fa-credit-card mr-2"></i>পেমেন্ট করুন
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         @endif
                         {{-- course single box end --}}
                     @endforeach
                 @else
-                    <div class="col-12">
-                        @include('partials/no-data')
+                    <div class="col-span-full text-center py-16">
+                        <div class="w-24 h-24 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-graduation-cap text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-slate-600 dark:text-slate-400 mb-3">কোন কোর্সে নথিভুক্ত নেই</h3>
+                        <p class="text-slate-500 dark:text-slate-500 mb-6 max-w-md mx-auto">আপনার প্রথম কোর্সে নথিভুক্ত হয়ে শেখার যাত্রা শুরু করুন</p>
+                        <a href="{{ url('/courses/') }}" 
+                           class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ray-hover">
+                            <i class="fas fa-search mr-2"></i>কোর্স খুঁজুন
+                        </a>
                     </div>
                 @endif
             </div>
-            <div class="row">
-                <div class="col-12">
-                    {{-- pagginate --}}
-                    <div class="paggination-wrap">
-                        {{ $enrolments->links('pagination::bootstrap-5') }}
-                    </div>
-                    {{-- pagginate --}}
+            <!-- Pagination -->
+            @if (count($enrolments) > 0)
+            <div class="flex justify-center">
+                <div class="glass-effect rounded-2xl p-4 ray-hover glow-card">
+                    {{ $enrolments->links('pagination::bootstrap-5') }}
                 </div>
             </div>
+            @endif
         </div>
-    </main>
+</div>
 @endsection
 {{-- page content @E --}}
 
-
 {{-- page script @S --}}
 @section('script')
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let inputField = document.getElementById("inputField");
-            let dropbtn = document.getElementById("dropdownBttn");
-            let form = document.getElementById("myForm");
-            let queryString = window.location.search;
-            let urlParams = new URLSearchParams(queryString);
-            let title = urlParams.get('title');
-            let status = urlParams.get('status');
-            let dropdownItems = document.querySelectorAll(".filterItem");
+<script>
+    // Initialize dark mode - default is dark mode as per instructions
+    document.documentElement.classList.add('dark');
+    
+    // Dark mode toggle functionality
+    function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+    }
+    
+    // Initialize from localStorage or default to dark
+    if (localStorage.getItem('darkMode') === null) {
+        localStorage.setItem('darkMode', 'true');
+    }
+    
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        let inputField = document.getElementById("inputField");
+        let statusSelect = document.getElementById("statusSelect");
+        let form = document.getElementById("myForm");
+        let queryString = window.location.search;
+        let urlParams = new URLSearchParams(queryString);
+        let status = urlParams.get('status');
 
-            if (status == "best_rated") {
-                dropbtn.innerText = 'Best Rated';
-            }
-            if (status == "most_purchased") {
-                dropbtn.innerText = 'Most Purchased';
-            }
-            if (status == "newest") {
-                dropbtn.innerText = 'Newest';
-            }
-            if (status == "oldest") {
-                dropbtn.innerText = 'Oldest';
-            }
-
+        // Set initial value
+        if (status) {
             inputField.value = status;
+            statusSelect.value = status;
+        }
 
-            dropdownItems.forEach(item => {
-                item.addEventListener("click", function(e) {
+        // Handle status select change
+        statusSelect.addEventListener("change", function() {
+            inputField.value = this.value;
+            form.submit();
+        });
+        
+        // Confirmation prompts for delete buttons
+        const deleteButtons = document.querySelectorAll('button[type="submit"]');
+        deleteButtons.forEach(button => {
+            const buttonText = button.textContent.trim();
+            if (buttonText.includes('অপছন্দ') || buttonText.includes('Delete') || buttonText.includes('delete')) {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    inputField.value = this.getAttribute("data-value");
-                    dropbtn.innerText = item.innerText;
-                    form.submit();
+                    if (confirm('আপনি কি নিশ্চিত যে এই কার্যক্রমটি সম্পাদন করতে চান?')) {
+                        this.closest('form').submit();
+                    }
                 });
+            }
+        });
+        
+        // Add smooth hover animations to all ray-hover elements
+        const rayHoverElements = document.querySelectorAll('.ray-hover');
+        rayHoverElements.forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px) scale(1.02)';
+            });
+            element.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
             });
         });
-    </script>
+    });
+</script>
 @endsection
 {{-- page script @E --}}

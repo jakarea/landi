@@ -1,398 +1,457 @@
-@extends('layouts.latest.students')
-@section('title') My Profile Settings @endsection
+@extends('layouts/student-modern')
+@section('title', 'প্রোফাইল সেটিংস')
 
-{{-- page style @S --}}
-@section('style')
-<link href="{{ asset('assets/admin-css/user.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('assets/admin-css/elearning.css') }}" rel="stylesheet" type="text/css" />
+@push('styles')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" rel="stylesheet" type="text/css" />
-@endsection
-{{-- page style @S --}}
+<style>
+    .profile-tab-button {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        backdrop-filter: blur(12px);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .profile-tab-button.active {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        border-color: rgba(99, 102, 241, 0.4);
+    }
+    .profile-tab-button:hover {
+        border-color: rgba(99, 102, 241, 0.4);
+        transform: translateY(-2px);
+    }
+    .profile-tab-button::before {
+        content: '';
+        position: absolute;
+        top: -100%;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+        transform: translateX(-100%) translateY(-100%);
+        transition: transform 0.8s ease-in-out;
+    }
+    .profile-tab-button:hover::before {
+        transform: translateX(200%) translateY(200%);
+    }
+    .form-floating {
+        position: relative;
+    }
+    .form-floating input, .form-floating textarea {
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        color: white;
+    }
+    .form-floating input:focus, .form-floating textarea:focus {
+        background: rgba(30, 41, 59, 0.7);
+        border-color: rgba(99, 102, 241, 0.4);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    .form-floating label {
+        color: rgba(148, 163, 184, 0.8);
+    }
+    .form-floating input:focus ~ label, .form-floating textarea:focus ~ label {
+        color: rgba(99, 102, 241, 1);
+    }
+    .avatar-upload {
+        background: rgba(15, 23, 42, 0.7);
+        border: 2px dashed rgba(148, 163, 184, 0.3);
+        transition: all 0.3s ease;
+    }
+    .avatar-upload:hover {
+        border-color: rgba(99, 102, 241, 0.4);
+        background: rgba(99, 102, 241, 0.1);
+    }
+</style>
+@endpush
 
-{{-- page content @S --}}
 @section('content')
-{{-- student update page @S --}}
-<main class="student-profile-update-page">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="own-profile-box">
-                    <div class="header">
-                        <ul class="nav nav-pills main-navigator" id="pills-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active tab-link" id="pills-home-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                    aria-selected="true" data-param="home">My Profile</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link tab-link" id="pills-profile-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-profile" type="button" role="tab"
-                                    aria-controls="pills-profile" aria-selected="false" data-param="profile">Password</button>
-                            </li>
-                        </ul>
-                    </div>
+<div class="p-6 space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold text-white mb-2">প্রোফাইল সেটিংস</h1>
+            <p class="text-gray-400">আপনার ব্যক্তিগত তথ্য এবং পাসওয়ার্ড পরিবর্তন করুন</p>
+        </div>
+    </div>
 
-                    <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active tab-link" id="pills-home" role="tabpanel"
-                            aria-labelledby="pills-home-tab" tabindex="0">
-                            {{-- profile edit form start --}}
-                            <form action="{{ route('students.profile.update',['subdomain' => config('app.subdomain')] ) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="row custom-padding">
-                                    <div class="col-xl-3 col-lg-4">
-                                        <div class="profile-picture-box ">
+    <div class="glass-effect rounded-2xl overflow-hidden">
+        <div class="flex border-b border-gray-600">
+            <button class="profile-tab-button active flex-1 px-6 py-4 text-left font-medium text-white rounded-none" 
+                    onclick="switchTab('profile')" id="profile-tab">
+                <i class="fas fa-user mr-2"></i>
+                আমার প্রোফাইল
+            </button>
+            <button class="profile-tab-button flex-1 px-6 py-4 text-left font-medium text-gray-400 rounded-none" 
+                    onclick="switchTab('password')" id="password-tab">
+                <i class="fas fa-lock mr-2"></i>
+                পাসওয়ার্ড পরিবর্তন
+            </button>
+        </div>
 
-                                            <div class="userEditeBtn position-relative">
-                                                <a href="javascript:;" id="image-container" class="drop-container">
-                                                    <input type="file" name="avatar" value="" accept="image/*" id="avatar" class="item-img file center-block filepreviewprofile "> 
-    
-                                                    <label for="avatar" class="img-upload">
-                                                        <img src="{{asset('assets/images/icons/camera-plus-w.svg')}}" alt="Upload" class="img-fluid">
-                                                        <p>Update photo</p>
-                                                        <div class="ol">
-                                                            @if ($user->avatar)
-                                                            <img src="{{asset($user->avatar)}}" alt="Avatar" id="item-img-output" class="imgpreviewPrf img-fluid">
-                                                            @else
-                                                            <img src="" alt="" id="item-img-output" class="imgpreviewPrf img-fluid position-absolute" style="left: 0; z-index: 9;">
-                                                            <span class="avatar-box position-absolute" style="color: #3D5CFF;left: 0;">{!!
-                                                                strtoupper($user->name[0]) !!}</span>
-                                                            @endif
-                                                        </div>
-                                                    </label>
-                                                </a>
-                                                <input type="hidden" name="base64_avatar" id="base64_avatar" value="">
-    
-                                                 <span class="invalid-feedback">@error('avatar'){{ $message }}@enderror</span>
-    
-                                                <h6>Allowed *.jpeg, *.jpg, *.png, *.gif <br>
-                                                    Max size of 3.1 MB</h6>
+        <div class="p-6">
+            <div id="profile-content" class="tab-content">
+                <form action="{{ route('student.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <div class="lg:col-span-1">
+                            <div class="space-y-6">
+                                <div class="text-center">
+                                    <div class="relative inline-block">
+                                        <div class="avatar-upload w-32 h-32 rounded-full flex items-center justify-center cursor-pointer relative overflow-hidden">
+                                            @if ($user->avatar)
+                                                <img src="{{ asset($user->avatar) }}" alt="Avatar" id="item-img-output" 
+                                                     class="w-32 h-32 rounded-full object-cover">
+                                            @else
+                                                <div class="w-32 h-32 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+                                                    <span class="text-white text-2xl font-bold" id="avatar-initials">{{ strtoupper($user->name[0]) }}</span>
+                                                </div>
+                                            @endif
+                                            
+                                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-full">
+                                                <i class="fas fa-camera text-white text-xl"></i>
                                             </div>
-
-                                            <div class="form-check form-switch ps-0">
-                                                <label class="form-check-label" for="recivingMessage">Receiving
-                                                    Messages</label>
-
-                                                <input class="form-check-input" id="recivingMessage" type="checkbox" name="recivingMessage"
-                                                    value="1" {{ old('recivingMessage', $user->recivingMessage) == 1 ?
-                                                'checked' : '' }}>
-
-                                            </div>
+                                            
+                                            <input type="file" name="avatar" accept="image/*" id="avatar" class="absolute inset-0 opacity-0 cursor-pointer">
+                                            <input type="hidden" name="base64_avatar" id="base64_avatar" value="">
                                         </div>
-                                    </div>
-                                    <div class="col-xl-9 col-lg-8">
-                                        <div class="content-settings-form-wrap profile-text-box-2 mt-0" style="box-shadow: none">
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="form-group mt-0">
-                                                        <input autocomplete="off" type="text" class="form-control" id="name" name="name"
-                                                            value="{{ $user->name }}" required>
-                                                        <label for="name">Name</label>
-                                                        <span class="invalid-feedback">@error('name'){{ $message }}
-                                                            @enderror</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input autocomplete="off" type="text" class="form-control" id="email" name="email"
-                                                            value="{{ $user->email }}" required>
-                                                        <label for="email">Email</label>
-                                                        <span class="invalid-feedback">@error('email'){{ $message }}
-                                                            @enderror</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input autocomplete="off" type="text" class="form-control" id="phone" name="phone"
-                                                            value="{{ $user->phone }}" required>
-                                                        <label for="phone">Phone Number</label>
-                                                        <span class="invalid-feedback">@error('phone'){{ $message }}
-                                                            @enderror</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input autocomplete="off" type="text" class="form-control" id="company_name"
-                                                            name="company_name" value="{{ $user->company_name }}" required>
-                                                        <label for="company_name">Company Name</label>
-                                                        <span class="invalid-feedback">@error('company_name'){{ $message }}
-                                                            @enderror</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input autocomplete="off" type="text" class="form-control" id="website"
-                                                            name="website" value="{{ $user->short_bio }}" required>
-                                                        <label for="website">Website</label>
-                                                        <span class="invalid-feedback">@error('website'){{ $message }}
-                                                            @enderror</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    @php  $socialLinks = explode(',',$user->social_links) @endphp
-                                                   <div class="form-group">
-                                                    <label for="social_links" class="social-label">Social Media</label>
-                                                   </div>
-                                                    @foreach ($socialLinks as $socialLink)
-                                                    <div class="social-extra-field">
-                                                        <div class="form-group">
-                                                            <input autocomplete="off" type="url" class="form-control" id="social_links"
-                                                                name="social_links[]" value="{{ $socialLink }}" >
-
-                                                            <span class="invalid-feedback">@error('social_links'){{ $message }}  @enderror</span>
-                                                        </div>
-                                                    </div>
-                                                    @endforeach
-                                                    <div class="text-end mt-3">
-                                                        <a href="javascript:void(0)" id="social_increment"><i class="fas fa-plus"></i>
-                                                            Add</a>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <textarea name="description" id="description"
-                                                            class="form-control @error('description') is-invalid @enderror"
-                                                            required>{!! $user->description !!}</textarea>
-
-                                                        <label for="description" style="top: -1rem!important;">About</label>
-                                                        <span class="invalid-feedback">@error('description'){{ $message }} @enderror</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="mt-4">
+                                            <p class="text-sm text-gray-400">JPG, PNG, GIF সমর্থিত</p>
+                                            <p class="text-sm text-gray-400">সর্বোচ্চ সাইজ: 3MB</p>
                                         </div>
-                                        <div class="form-submit-bttns mt-5">
-                                            <button type="button" onclick="history.go(-1)" class="btn btn-cancel">Cancel</button>
-                                            <button type="submit" class="btn btn-submit">Save Changes</button>
-                                        </div>
+                                        @error('avatar')
+                                            <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
-                                {{-- profile edit form end --}}
-                            </form>
-                        </div>
-                        <div class="tab-pane fade tab-link" id="pills-profile" role="tabpanel"
-                            aria-labelledby="pills-profile-tab" tabindex="0">
-                            {{-- password tab start --}}
-                            <div class="row  user-add-form-wrap user-add-form-wrap-2">
-                                <div class="col-12">
-                                    <form action="{{ route('students.password.update',['subdomain' => config('app.subdomain')]) }}" method="POST">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="col-lg-4">
-                                                <div class="form-group">
-                                                    <label for="">Email</label>
-                                                    <input autocomplete="off" type="text" placeholder="Email" class="form-control"
-                                                        value="{{ $user->email}}" disabled>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <div class="form-group">
-                                                    <label for="">New Password<sup class="text-danger">*</sup></label>
-                                                    <input autocomplete="off"  type="password" name="password" placeholder="Enter Password"
-                                                        class="form-control @error('password') is-invalid @enderror"
-                                                        id="password">
-                                                    <span class="invalid-feedback">@error('password'){{ $message }}
-                                                        @enderror</span>
-                                                    <i class="fa-regular fa-eye" onclick="changeType()" id="eye-click"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <div class="form-group">
-                                                    <label for="">Confirm New Password<sup class="text-danger">*</sup></label>
-                                                    <input autocomplete="off"  type="password" name="password_confirmation" placeholder="Enter Password"
-                                                        class="form-control @error('password_confirmation') is-invalid @enderror"
-                                                        id="password_confirmation">
-                                                    <span class="invalid-feedback">@error('password_confirmation'){{ $message }}
-                                                        @enderror</span>
-                                                    <i class="fa-regular fa-eye" onclick="changeType2()" id="eye-click2"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-submit-bttns text-start">
-                                                    <button type="submit" class="btn btn-submit me-3 ms-0">Save Changes</button>
-                                                    <button type="button" onclick="history.go(-1)" class="btn btn-cancel">Cancel</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
+                                
+                                <div class="space-y-3">
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" name="recivingMessage" value="1" 
+                                               {{ old('recivingMessage', $user->recivingMessage) == 1 ? 'checked' : '' }}
+                                               class="w-5 h-5 text-purple-600 rounded focus:ring-purple-500 focus:ring-2 bg-gray-700 border-gray-600">
+                                        <span class="text-white">বার্তা গ্রহণ করুন</span>
+                                    </label>
                                 </div>
                             </div>
-                            {{-- password tab end --}}
+                        </div>
+                        
+                        <div class="lg:col-span-3 space-y-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="lg:col-span-2">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control w-full px-4 py-3 rounded-lg" 
+                                               id="name" name="name" value="{{ $user->name }}" 
+                                               placeholder="আপনার নাম" required>
+                                        <label for="name">পুরো নাম</label>
+                                        @error('name')
+                                            <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control w-full px-4 py-3 rounded-lg" 
+                                               id="email" name="email" value="{{ $user->email }}" 
+                                               placeholder="ইমেইল" required>
+                                        <label for="email">ইমেইল ঠিকানা</label>
+                                        @error('email')
+                                            <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control w-full px-4 py-3 rounded-lg" 
+                                               id="phone" name="phone" value="{{ $user->phone }}" 
+                                               placeholder="ফোন নম্বর" required>
+                                        <label for="phone">ফোন নম্বর</label>
+                                        @error('phone')
+                                            <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control w-full px-4 py-3 rounded-lg" 
+                                               id="company_name" name="company_name" value="{{ $user->company_name }}" 
+                                               placeholder="কোম্পানির নাম">
+                                        <label for="company_name">কোম্পানির নাম</label>
+                                        @error('company_name')
+                                            <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="form-floating">
+                                        <input type="url" class="form-control w-full px-4 py-3 rounded-lg" 
+                                               id="website" name="website" value="{{ $user->short_bio }}" 
+                                               placeholder="ওয়েবসাইট">
+                                        <label for="website">ওয়েবসাইট</label>
+                                        @error('website')
+                                            <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <label class="text-white font-medium">সামাজিক মাধ্যমের লিংক</label>
+                                    <button type="button" id="social_increment" 
+                                            class="text-purple-400 hover:text-purple-300 transition-colors">
+                                        <i class="fas fa-plus mr-1"></i>
+                                        যোগ করুন
+                                    </button>
+                                </div>
+                                
+                                <div id="social-links-container" class="space-y-3">
+                                    @php $socialLinks = $user->social_links ? explode(',', $user->social_links) : [''] @endphp
+                                    @foreach ($socialLinks as $index => $socialLink)
+                                    <div class="social-link-item flex items-center space-x-2">
+                                        <div class="form-floating flex-1">
+                                            <input type="url" class="form-control w-full px-4 py-3 rounded-lg" 
+                                                   name="social_links[]" value="{{ trim($socialLink) }}" 
+                                                   placeholder="https://facebook.com/username">
+                                            <label>সামাজিক মাধ্যমের লিংক</label>
+                                        </div>
+                                        @if($index > 0 || count($socialLinks) > 1)
+                                        <button type="button" onclick="removeSocialLink(this)" 
+                                                class="text-red-400 hover:text-red-300 p-2 transition-colors">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        @endif
+                                    </div>
+                                    @endforeach
+                                </div>
+                                @error('social_links')
+                                    <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            
+                            <div>
+                                <div class="form-floating">
+                                    <textarea class="form-control w-full px-4 py-3 rounded-lg h-32 resize-none" 
+                                              id="description" name="description" 
+                                              placeholder="নিজের সম্পর্কে লিখুন..." required>{{ $user->description }}</textarea>
+                                    <label for="description">আমার সম্পর্কে</label>
+                                    @error('description')
+                                        <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4 pt-4">
+                                <button type="submit" 
+                                        class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 ray-hover">
+                                    <i class="fas fa-save mr-2"></i>
+                                    পরিবর্তন সংরক্ষণ করুন
+                                </button>
+                                <button type="button" onclick="history.back()" 
+                                        class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    বাতিল
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
+            
+            <div id="password-content" class="tab-content hidden">
+                <form action="{{ route('student.profile.password.update') }}" method="POST" class="space-y-6">
+                    @csrf
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div>
+                            <div class="form-floating">
+                                <input type="email" class="form-control w-full px-4 py-3 rounded-lg" 
+                                       id="current-email" value="{{ $user->email }}" disabled>
+                                <label for="current-email">বর্তমান ইমেইল</label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="form-floating relative">
+                                <input type="password" class="form-control w-full px-4 py-3 rounded-lg pr-12" 
+                                       id="password" name="password" placeholder="নতুন পাসওয়ার্ড" required>
+                                <label for="password">নতুন পাসওয়ার্ড</label>
+                                <button type="button" onclick="togglePassword('password', 'eye-click')" 
+                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white">
+                                    <i class="fas fa-eye" id="eye-click"></i>
+                                </button>
+                                @error('password')
+                                    <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="form-floating relative">
+                                <input type="password" class="form-control w-full px-4 py-3 rounded-lg pr-12" 
+                                       id="password_confirmation" name="password_confirmation" placeholder="পাসওয়ার্ড নিশ্চিত করুন" required>
+                                <label for="password_confirmation">পাসওয়ার্ড নিশ্চিত করুন</label>
+                                <button type="button" onclick="togglePassword('password_confirmation', 'eye-click2')" 
+                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white">
+                                    <i class="fas fa-eye" id="eye-click2"></i>
+                                </button>
+                                @error('password_confirmation')
+                                    <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 pt-4">
+                        <button type="submit" 
+                                class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 ray-hover">
+                            <i class="fas fa-save mr-2"></i>
+                            পাসওয়ার্ড পরিবর্তন করুন
+                        </button>
+                        <button type="button" onclick="history.back()" 
+                                class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            বাতিল
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</main>
+</div>
 
 {{-- image crop modal start --}}
 @include('modals/image-resize')
 {{-- image crop modal end --}}
 
-{{-- student update page @e --}}
-@endsection
-{{-- page content @E --}}
-
-{{-- page script @S --}}
-@section('script')
+@push('scripts')
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 <script src="{{ asset('assets/js/crop-image.js') }}"></script>
-
-{{-- form save js --}}
 <script src="{{ asset('assets/js/form-change.js') }}"></script>
 
-
-{{-- add extra filed js --}}
 <script>
-    const urlBttn = document.querySelector('#social_increment');
-    let extraFields = document.querySelector('.social-extra-field');
-
-    const createField = () => {
-        let div = document.createElement("div");
-        let node = document.createElement("input");
-        node.setAttribute("class",
-            "form-control @error('social_links') is-invalid @enderror"
-            );
-        node.setAttribute("multiple", "");
-        node.setAttribute("type", "url");
-        node.setAttribute("placeholder", "Enter URL");
-        node.setAttribute("name", "social_links[]");
-
-        let link = document.createElement("a");
-        link.innerHTML = "<i class='fas fa-minus'></i>";
-        link.addEventListener("click", () => removeField(div));
-
-        div.appendChild(node);
-        div.appendChild(link);
-
-        extraFields.appendChild(div);
+// Tab switching functionality
+function switchTab(tabName) {
+    const profileTab = document.getElementById('profile-tab');
+    const passwordTab = document.getElementById('password-tab');
+    const profileContent = document.getElementById('profile-content');
+    const passwordContent = document.getElementById('password-content');
+    
+    if (tabName === 'profile') {
+        profileTab.classList.add('active', 'text-white');
+        profileTab.classList.remove('text-gray-400');
+        passwordTab.classList.remove('active', 'text-white');
+        passwordTab.classList.add('text-gray-400');
+        
+        profileContent.classList.remove('hidden');
+        passwordContent.classList.add('hidden');
+        
+        updateURL('profile');
+    } else if (tabName === 'password') {
+        passwordTab.classList.add('active', 'text-white');
+        passwordTab.classList.remove('text-gray-400');
+        profileTab.classList.remove('active', 'text-white');
+        profileTab.classList.add('text-gray-400');
+        
+        passwordContent.classList.remove('hidden');
+        profileContent.classList.add('hidden');
+        
+        updateURL('password');
     }
+}
 
-    const removeField = (element) => {
-        extraFields.removeChild(element);
-    }
+function updateURL(tab) {
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tab);
+    window.history.pushState(null, '', url);
+}
 
-    urlBttn.addEventListener('click', createField, true);
-
-    // Show the minus icon for the existing input fields in the loop
-    const existingInputs = document.querySelectorAll('.social-extra-field input');
-    for (const input of existingInputs) {
-        let div = document.createElement("div");
-        div.appendChild(input);
-
-        let link = document.createElement("a");
-        link.innerHTML = "<i class='fas fa-minus'></i>";
-        link.addEventListener("click", () => removeField(div));
-
-        div.appendChild(link);
-
-        extraFields.appendChild(div);
-    }
-</script>
-
-{{-- password toggle view js --}}
-<script>
-
-  function changeType() {
-    let field = document.getElementById("password");
-    let clickk = document.getElementById("eye-click");
-
-    if (field.type === "password") {
-      field.type = "text";
-      clickk.classList.add('fa-eye-slash');
-      clickk.classList.remove('fa-eye');
+// Password visibility toggle
+function togglePassword(fieldId, iconId) {
+    const field = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+    
+    if (field.type === 'password') {
+        field.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
     } else {
-      field.type = "password";
-      clickk.classList.remove('fa-eye-slash');
-      clickk.classList.add('fa-eye');
+        field.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
     }
+}
 
-  }
+// Social links management
+function addSocialLink() {
+    const container = document.getElementById('social-links-container');
+    const newItem = document.createElement('div');
+    newItem.className = 'social-link-item flex items-center space-x-2';
+    
+    newItem.innerHTML = `
+        <div class="form-floating flex-1">
+            <input type="url" class="form-control w-full px-4 py-3 rounded-lg" 
+                   name="social_links[]" value="" placeholder="https://facebook.com/username">
+            <label>সামাজিক মাধ্যমের লিংক</label>
+        </div>
+        <button type="button" onclick="removeSocialLink(this)" 
+                class="text-red-400 hover:text-red-300 p-2 transition-colors">
+            <i class="fas fa-minus"></i>
+        </button>
+    `;
+    
+    container.appendChild(newItem);
+}
 
-  function changeType2() {
-    let field = document.getElementById("password_confirmation");
-    let clickk = document.getElementById("eye-click2");
-
-    if (field.type === "password") {
-      field.type = "text";
-      clickk.classList.add('fa-eye-slash');
-      clickk.classList.remove('fa-eye');
-    } else {
-      field.type = "password";
-      clickk.classList.remove('fa-eye-slash');
-      clickk.classList.add('fa-eye');
+function removeSocialLink(button) {
+    const container = document.getElementById('social-links-container');
+    const item = button.closest('.social-link-item');
+    
+    // Don't remove if it's the only item
+    if (container.children.length > 1) {
+        container.removeChild(item);
     }
+}
 
-  }
-
-  document.addEventListener("DOMContentLoaded", function() {
-    const avatarInput = document.getElementById("avatar");
-    const avatarPreview = document.querySelector(".avatar-preview");
-
-    avatarInput.addEventListener("change", function(event) {
-        const file = event.target.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                avatarPreview.src = e.target.result;
+// Avatar preview
+function previewAvatar(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('item-img-output');
+    const initials = document.getElementById('avatar-initials');
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            if (preview) {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
             }
+            if (initials) {
+                initials.style.display = 'none';
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
-            reader.readAsDataURL(file);
-        }
-    });
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle URL tab parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabToOpen = urlParams.get('tab');
+    
+    if (tabToOpen === 'password') {
+        switchTab('password');
+    } else {
+        switchTab('profile');
+    }
+    
+    // Add event listeners
+    document.getElementById('social_increment').addEventListener('click', addSocialLink);
+    document.getElementById('avatar').addEventListener('change', previewAvatar);
 });
 </script>
-
-{{-- tab open js --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const tabToOpen = urlParams.get('tab');
-            const tabPanes = document.querySelectorAll('.tab-con');
-            const tabLinks = document.querySelectorAll('.tab-link');
-
-            const homeTabLink = document.getElementById('pills-home-tab');
-            const homeTabContent = document.getElementById('pills-home');
-
-            const profileTabLink = document.getElementById('pills-profile-tab');
-            const profileTabContent = document.getElementById('pills-profile');
-
-            if (tabToOpen == 'profile') {
-                tabPanes.forEach(tab => tab.classList.remove('show', 'active'));
-                tabLinks.forEach(tab => tab.classList.remove('active'));
-
-                profileTabLink.classList.add('active');
-                profileTabContent.classList.add('show', 'active');
-
-            } else if(tabToOpen == 'home') {
-               tabPanes.forEach(tab => tab.classList.remove('show', 'active'));
-                tabLinks.forEach(tab => tab.classList.remove('active'));
-
-                homeTabLink.classList.add('active');
-                homeTabContent.classList.add('show', 'active');
-            }
-        });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-          var tabLinks = document.querySelectorAll('.main-navigator .nav-link');
-          var currentParam = '';
-
-          tabLinks.forEach(function(tabLink) {
-            tabLink.addEventListener('click', function(event) {
-              event.preventDefault();
-              var param = tabLink.getAttribute('data-param');
-              if (param !== currentParam) {
-                var currentURL = window.location.href;
-                var newURL = currentURL.replace(/(\?|&)tab=[^&]*/, '') + (currentURL.includes('?') ? '?' : '?') + 'tab=' + param;
-                window.history.pushState(null, '', newURL);
-                currentParam = param;
-              }
-            });
-          });
-        });
-</script>
+@endpush
 @endsection
-{{-- page script @E --}}

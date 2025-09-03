@@ -12,7 +12,7 @@ class Checkout extends Model
 {
     use HasFactory;
 
-    protected $table = 'course_user';
+    protected $table = 'checkouts';
 
     protected $fillable = [
         'user_id',
@@ -36,8 +36,9 @@ class Checkout extends Model
     protected $casts = [
         'payment_details' => 'array',
         'payment_date' => 'datetime',
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'is_manual' => 'boolean',
     ];
 
     /**
@@ -111,7 +112,7 @@ class Checkout extends Model
     
     public function scopeCompletedPayments($query)
     {
-        return $query->whereIn('payment_status', ['completed', 'Paid']);
+        return $query->where('payment_status', 'completed');
     }
     
     // Helper methods

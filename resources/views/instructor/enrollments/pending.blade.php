@@ -338,7 +338,7 @@
                                             </td>
                                             <td>
                                                 @if($enrollment->payment_screenshot)
-                                                    <button class="btn btn-modern btn-screenshot btn-sm" onclick="viewScreenshot('{{ asset('storage/'.$enrollment->payment_screenshot) }}')">
+                                                    <button class="btn btn-modern btn-screenshot btn-sm" onclick="viewScreenshot('{{ asset($enrollment->payment_screenshot) }}')">
                                                         <i class="fas fa-image"></i> দেখুন
                                                     </button>
                                                 @else

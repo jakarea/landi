@@ -1026,7 +1026,7 @@ class DashboardController extends Controller
             $checkout->sender_number = $request->sender_number;
             $checkout->payment_date = $request->payment_date ? $request->payment_date : now();
             $checkout->payment_status = 'completed';
-            $checkout->status = 'completed';
+            $checkout->status = 'active';
             $checkout->is_manual = true;
             $checkout->notes = $request->notes;
             $checkout->start_date = $start_date;

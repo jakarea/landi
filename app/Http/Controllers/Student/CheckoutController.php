@@ -186,7 +186,7 @@ class CheckoutController extends Controller
                     'payment_method' => $paymentMethod,
                     'payment_status' => 'completed',
                     'payment_id' => $payment_id,
-                    'status' => 'completed',
+                    'status' => 'active',
                     'amount' => $amount,
                     'start_date' => $start_date,
                     'end_date' => $end_date,

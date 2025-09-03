@@ -46,7 +46,7 @@ class StudentProfileController extends Controller
                     'instructor' => $purchase->course->user,
                     'date' => $purchase->created_at,
                     'amount' => $purchase->amount,
-                    'status' => $purchase->payment_status,
+                    'status' => $purchase->payment_status === 'completed' ? 'Paid' : $purchase->payment_status,
                     'original' => $purchase
                 ]);
             }
