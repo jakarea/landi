@@ -12,7 +12,7 @@ class Checkout extends Model
 {
     use HasFactory;
 
-    protected $table = 'checkouts';
+    protected $table = 'course_user';
 
     protected $fillable = [
         'user_id',

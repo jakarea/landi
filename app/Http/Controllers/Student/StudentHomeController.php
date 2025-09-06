@@ -1354,8 +1354,6 @@ class StudentHomeController extends Controller
 
         $enrolments = $enrolments->paginate(12)->appends($queryParams);
 
-        // dd($enrolments);
-
         return view('e-learning/course/students/enrolled', compact('enrolments'));
     }
 
