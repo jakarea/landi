@@ -6,8 +6,8 @@ use Illuminate\Support\Str;
 @endphp
 
 @push('styles')
-<link rel='stylesheet' href='https://foliotek.github.io/Croppie/croppie.css'>
 <style>
+/* Cover Photo Upload Styling */
     .profile-cover {
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
         border: 1px solid rgba(148, 163, 184, 0.2);
@@ -48,10 +48,8 @@ use Illuminate\Support\Str;
         content: '';
         position: absolute;
         top: -100%;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+    }
+    .contact-card::before {
         transform: translateX(-100%) translateY(-100%);
         transition: transform 0.8s ease-in-out;
     }
@@ -63,46 +61,95 @@ use Illuminate\Support\Str;
         border: 1px solid rgba(148, 163, 184, 0.2);
         backdrop-filter: blur(12px);
     }
-    .upload-overlay {
-        background: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .profile-cover:hover .upload-overlay {
-        opacity: 1;
-    }
+.cover-upload-area {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, rgba(90, 234, 244, 0.1) 0%, rgba(203, 251, 144, 0.1) 100%);
+    object-fit: cover;
+    object-position: center;
+    max-height: 250px;
+}
+
+.cover-upload-area:hover .upload-overlay {
+    opacity: 1;
+    backdrop-filter: blur(8px);
+}
+
+.upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-btn {
+    background: linear-gradient(135deg, #5AEAF4 0%, #CBFB90 100%);
+    color: #091D3D;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(90, 234, 244, 0.4);
+}
 </style>
 @endpush
 
 @section('content')
 <div class="p-6 space-y-6">
-    <div class="profile-cover rounded-2xl overflow-hidden relative" id="coverImgContainer">
-        <div class="h-48 bg-cover bg-center relative">
+
+    <div class="bg-card rounded-xl border border-[#fff]/20 overflow-hidden">
+        <!-- Cover Photo Section -->
+        <div class="cover-upload-area relative max-h-64">
             @if ($user->cover_photo)
                 <img src="{{ asset($user->cover_photo) }}" alt="Cover Photo" 
-                     class="w-full h-48 object-cover" id="item-img-output">
+                     class="w-full h-full object-cover" id="item-img-output">
             @else
-                <div class="w-full h-48 bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center" id="item-img-output">
-                    <i class="fas fa-image text-white text-4xl opacity-50"></i>
+                <div class="w-full h-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center" style="min-height: 200px;">
+                    <div class="text-center">
+                        <i class="fas fa-image text-6xl text-white opacity-70 mb-4"></i>
+                        <p class="text-white opacity-80">কোনো কভার ফটো আপলোড করা হয়নি</p>
+                    </div>
                 </div>
             @endif
+            
+            <div class="upload-overlay">
+                <button class="upload-btn" onclick="document.getElementById('coverImage').click()">
+                    <i class="fas fa-camera mr-2"></i>
+                    কভার ফটো পরিবর্তন করুন
+                </button>
+            </div>
             
             <input type="file" class="hidden" id="coverImage"
                    accept="image/png, image/jpeg, image/svg+xml" name="cover_photo">
             <input type="hidden" name="coverImgBase64" id="coverImgBase64">
             
-            <div class="upload-overlay absolute inset-0 flex items-center justify-center">
-                <label class="cursor-pointer bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg hover:bg-opacity-70 transition-all duration-300" for="coverImage">
-                    <i class="fas fa-camera mr-2"></i>
-                    কভার ফটো পরিবর্তন করুন
-                </label>
-            </div>
-            
-            <div class="absolute bottom-4 right-4 space-x-2">
-                <button id="cancelBtn" class="hidden px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors" type="button">বাতিল</button>
-                <button id="uploadBtn" class="hidden px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors" type="button">সংরক্ষণ</button>
+            <!-- Upload Action Buttons -->
+            <div class="absolute top-4 right-4 hidden" id="uploadActions">
+                <div class="flex gap-2">
+                    <button id="cancelBtn" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg">
+                        বাতিল
+                    </button>
+                    <button id="uploadBtn" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold">
+                        সেভ করুন
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
         
         <div class="relative -mt-16 px-6 pb-6">
             <div class="flex items-end space-x-6">
@@ -316,23 +363,45 @@ use Illuminate\Support\Str;
     </div>
 </div>
 
-{{-- upload banner modal start --}}
-@include('modals/banner-resize')
-{{-- upload banner modal end --}}
-
 @push('scripts')
-<script src='https://foliotek.github.io/Croppie/croppie.js'></script>
-{{-- crop banenr image js --}}
-<script src="{{ asset('assets/js/banner-crop.js') }}"></script>
-{{-- set user cover photo js --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const coverImgOutput = document.getElementById('item-img-output');
+    const coverImgBase64 = document.getElementById('coverImgBase64');
+    const uploadActions = document.getElementById('uploadActions');
     const uploadBtn = document.getElementById('uploadBtn');
     const cancelBtn = document.getElementById('cancelBtn');
+    const coverImageInput = document.getElementById('coverImage');
+
+    // Handle file selection
+    coverImageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Show preview
+                if (coverImgOutput) {
+                    coverImgOutput.src = e.target.result;
+                } else {
+                    // Create new img element if it doesn't exist
+                    const newImg = document.createElement('img');
+                    newImg.src = e.target.result;
+                    newImg.className = 'w-full h-full object-cover';
+                    newImg.id = 'item-img-output';
+                    document.querySelector('.cover-upload-area').prepend(newImg);
+                }
+                
+                // Store base64 data
+                coverImgBase64.value = e.target.result;
+                
+                // Show action buttons
+                uploadActions.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
     // Handle upload button click
-    const coverImgBase64 = document.getElementById('coverImgBase64');
     uploadBtn.addEventListener('click', function () {
         let fileBase64 = coverImgBase64.value;
         uploadFile(fileBase64);
@@ -382,17 +451,29 @@ use Illuminate\Support\Str;
     }
 
     // Function to handle cancel button click
-        function cancelUpload() {
-            const userCoverPhoto = "{{ $user->cover_photo ?? null }}";
-            if (userCoverPhoto) {
+    function cancelUpload() {
+        const userCoverPhoto = "{{ $user->cover_photo ?? null }}";
+        
+        if (userCoverPhoto) {
+            // Restore original image
+            if (coverImgOutput) {
                 coverImgOutput.src = "{{ asset('') }}" + userCoverPhoto;
-            } else {
-                coverImgOutput.innerHTML = '<div class="w-full h-48 bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center"><i class="fas fa-image text-white text-4xl opacity-50"></i></div>';
             }
-            coverImgBase64.value = '';
-            uploadBtn.classList.add('hidden');
-            cancelBtn.classList.add('hidden');
+        } else {
+            // Remove preview and show placeholder
+            if (coverImgOutput) {
+                coverImgOutput.remove();
+            }
         }
+        
+        // Clear base64 data and hide buttons
+        coverImgBase64.value = '';
+        uploadActions.classList.add('hidden');
+        
+        // Reset upload button
+        uploadBtn.innerHTML = 'সংরক্ষণ';
+        uploadBtn.disabled = false;
+    }
     });
 </script>
 @endpush
