@@ -143,6 +143,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    user-select: none;
 }
 
 .upload-dropzone.dragover {
@@ -733,7 +734,7 @@
                 </h2>
 
                 <!-- Current Thumbnail Display -->
-                @if ($course->thumbnail)
+                @if ($course->thumbnail && file_exists(public_path($course->thumbnail)))
                 <div class="current-image-container">
                     <div class="current-image-label">
                         <i class="fas fa-check-circle mr-1"></i>
@@ -742,7 +743,8 @@
                     <img src="{{ asset($course->thumbnail) }}" 
                          alt="Current Thumbnail" 
                          class="image-preview"
-                         id="currentThumbnail">
+                         id="currentThumbnail"
+                         onerror="this.parentElement.style.display='none';">
                     <div class="image-overlay">
                         <div class="image-actions">
                             <button type="button" class="image-action-btn btn-change" onclick="triggerFileInput()">
@@ -753,8 +755,16 @@
                 </div>
                 @endif
 
-                <!-- Upload/Drop Zone -->
-                <div class="upload-dropzone" id="dropZone">
+                <!-- Upload/Drop Zone with label for reliable file selection -->
+                <label for="thumbnailInput" class="upload-dropzone" id="dropZone">
+                    <!-- Hidden file input -->
+                    <input 
+                        type="file" 
+                        id="thumbnailInput" 
+                        name="thumbnail" 
+                        accept="image/*"
+                        style="position: absolute; left: -9999px; opacity: 0;">
+                        
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
@@ -764,20 +774,12 @@
                         SVG, PNG, JPG, WebP, GIF (সর্বোচ্চ ৫ MB)
                     </div>
                     
-                    <!-- Hidden file input -->
-                    <input 
-                        type="file" 
-                        id="thumbnailInput" 
-                        name="thumbnail" 
-                        accept="image/*"
-                        class="hidden">
-                    
                     <!-- Loading overlay -->
                     <div class="loading-overlay" id="loadingOverlay">
                         <div class="loading-spinner"></div>
                         <div class="loading-text">আপলোড প্রস্তুতি...</div>
                     </div>
-                </div>
+                </label>
 
                 <!-- Image Preview Container (hidden by default) -->
                 <div class="image-preview-container" id="previewContainer" style="display: none;">
@@ -833,14 +835,17 @@ document.addEventListener('DOMContentLoaded', function() {
     let hasNewImage = false;
     let droppedFile = null;
 
+    // Check if all required elements exist
+    if (!dropZone || !thumbnailInput) {
+        return;
+    }
+
     // Drag and drop functionality
     dropZone.addEventListener('dragover', handleDragOver);
     dropZone.addEventListener('dragleave', handleDragLeave);
     dropZone.addEventListener('drop', handleDrop);
-    dropZone.addEventListener('click', function(e) {
-        e.preventDefault();
-        thumbnailInput.click();
-    });
+    
+    // Note: Click handling is now automatic via the label element - no JavaScript needed!
 
     thumbnailInput.addEventListener('change', handleFileSelect);
 
@@ -886,8 +891,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleFile(file) {
-        console.log('Handling file:', file.name, 'Size:', file.size, 'Type:', file.type);
-        
         // Show loading
         showLoading();
 
@@ -905,22 +908,20 @@ document.addEventListener('DOMContentLoaded', function() {
             hideLoading();
             showValidationFeedback('ফাইল সফলভাবে লোড হয়েছে!', 'success');
             hasNewImage = true;
-            console.log('File successfully loaded and preview set');
         };
         reader.onerror = function() {
             hideLoading();
             showValidationFeedback('ফাইল লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।', 'error');
-            console.error('FileReader error occurred');
         };
         reader.readAsDataURL(file);
     }
 
     function validateFile(file) {
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
         const maxSize = 5 * 1024 * 1024; // 5MB
 
         if (!allowedTypes.includes(file.type)) {
-            showValidationFeedback('অসমর্থিত ফাইল ফরম্যাট। অনুগ্রহ করে JPG, PNG, GIF, WebP বা SVG ফাইল ব্যবহার করুন।', 'error');
+            showValidationFeedback('অসমর্থিত ফাইল ফরম্যাট। অনুগ্রহ করে JPEG, JPG, PNG, GIF, WebP বা SVG ফাইল ব্যবহার করুন।', 'error');
             return false;
         }
 
@@ -961,7 +962,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Global functions for button clicks
     window.triggerFileInput = function() {
-        thumbnailInput.click();
+        if (thumbnailInput) {
+            thumbnailInput.click();
+        }
     };
 
     window.removeImage = function() {
@@ -1003,10 +1006,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form submission
     document.getElementById('designForm').addEventListener('submit', function(e) {
-        console.log('Form submitting...');
-        console.log('Thumbnail input files:', thumbnailInput.files.length);
-        console.log('Dropped file:', droppedFile ? droppedFile.name : 'none');
-        console.log('Promo video value:', promoVideoInput.value);
         
         const promoUrl = promoVideoInput.value.trim();
         
@@ -1080,7 +1079,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Upload error:', error);
             showNotification('আপলোড করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।', 'error');
         })
         .finally(() => {

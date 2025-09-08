@@ -942,10 +942,11 @@ class CourseCreateStepController extends Controller
         $course = Course::where('id', $id)->where('instructor_id', Auth::user()->id)->firstOrFail();
 
         $request->validate([
-            'thumbnail' => 'nullable|file|mimes:jpg,png,jpg,webp,gif,svg|max:5121',
+            'thumbnail' => 'nullable|file|mimes:jpeg,jpg,png,webp,gif,svg|max:5121',
         ],
         [
-            'thumbnail' => 'Max file size is 5 MB!'
+            'thumbnail.mimes' => 'Please upload a valid image file (JPEG, JPG, PNG, WebP, GIF, or SVG).',
+            'thumbnail.max' => 'Max file size is 5 MB!'
         ]);
 
         $slugg = Str::slug(Auth::user()->name);
