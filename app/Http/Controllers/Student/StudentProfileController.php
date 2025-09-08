@@ -92,11 +92,10 @@ class StudentProfileController extends Controller
             'name' => 'required|string',
             'short_bio' => 'string',
             'phone' => 'required|string',
-            'base64_avatar' => 'nullable|string',
-            // 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5000',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3072', // 3MB
         ],
         [
-            'base64_avatar' => 'Max file size is 5 MB!',
+            // 'base64_avatar' => 'Max file size is 5 MB!',
              'phone' => 'Phone Number is required'
         ]);
 
@@ -116,8 +115,8 @@ class StudentProfileController extends Controller
             $user->password = $user->password;
         }
 
-        if ($request->base64_avatar != NULL) {
-            $base64Image = $request->input('base64_avatar');
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar
             if ($user->avatar) {
                 $oldFile = public_path($user->avatar);
                 if (file_exists($oldFile)) {
@@ -125,23 +124,19 @@ class StudentProfileController extends Controller
                 }
             }
             
-            // Create uploads/users directory if it doesn't exist
-            $uploadPath = public_path('uploads/users');
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
+            // Upload new avatar
+            $uploadPath = 'uploads/users';
+            if (!file_exists(public_path($uploadPath))) {
+                mkdir(public_path($uploadPath), 0755, true);
             }
             
-            list($type, $data) = explode(';', $base64Image);
-            list(, $data) = explode(',', $data);
-            $decodedImage = base64_decode($data);
             $slugg = Str::slug($request->name);
-            $uniqueFileName = $slugg . '-' . uniqid() . '.png';
-            $fullPath = $uploadPath . '/' . $uniqueFileName;
+            $extension = $request->file('avatar')->getClientOriginalExtension();
+            $uniqueFileName = $slugg . '-' . uniqid() . '.' . $extension;
             
-            // Save directly to public/uploads/users
-            file_put_contents($fullPath, $decodedImage);
-            $user->avatar = 'uploads/users/' . $uniqueFileName;
-         }
+            $request->file('avatar')->move(public_path($uploadPath), $uniqueFileName);
+            $user->avatar = $uploadPath . '/' . $uniqueFileName;
+        }
 
         $user->save();
 
