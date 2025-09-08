@@ -148,7 +148,7 @@ class StudentProfileController extends Controller
         // Send email
         Mail::to($user->email)->send(new ProfileUpdated($user));
 
-        return redirect()->route('students.profile')->with('success', 'Your Profile has been Updated successfully!');
+        return redirect()->route('student.profile')->with('success', 'Your Profile has been Updated successfully!');
     }
 
     // password update
@@ -176,7 +176,7 @@ class StudentProfileController extends Controller
          // Send email
          Mail::to($user->email)->send(new PasswordChanged($user));
 
-        return redirect()->route('students.profile')->with('success', 'Your password has been changed successfully!');
+        return redirect()->route('student.profile')->with('success', 'Your password has been changed successfully!');
     }
 
     public function coverUpload(Request $request)
