@@ -142,6 +142,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    user-select: none;
 }
 
 .certificate-dropzone.highlight {
@@ -206,7 +207,6 @@
     overflow: hidden;
     background: #091D3D;
     border: 2px solid rgba(90, 234, 244, 0.3);
-    margin-bottom: 2rem;
 }
 
 .certificate-preview {
@@ -586,8 +586,8 @@
                 </h2>
 
                 <!-- Current Certificate Display -->
-                @if ($course->sample_certificates)
-                <div class="certificate-preview-container" id="currentCertificateContainer">
+                @if ($course->sample_certificates && file_exists(public_path($course->sample_certificates)))
+                <div class="certificate-preview-container mb-8" id="currentCertificateContainer">
                     <div class="current-certificate-label absolute top-4 left-4 bg-gradient-to-r from-green-500 to-green-400 text-white px-3 py-1 rounded-full text-xs font-semibold z-10">
                         <i class="fas fa-check-circle mr-1"></i>
                         বর্তমান সার্টিফিকেট
@@ -595,7 +595,8 @@
                     <img src="{{ asset($course->sample_certificates) }}" 
                          alt="Current Certificate" 
                          class="certificate-preview"
-                         id="currentCertificate">
+                         id="currentCertificate"
+                         onerror="this.parentElement.style.display='none';">
                     <div class="certificate-overlay">
                         <div class="certificate-actions">
                             <button type="button" class="certificate-action-btn btn-change" onclick="triggerCertificateInput()">
@@ -609,8 +610,16 @@
                 </div>
                 @endif
 
-                <!-- Upload/Drop Zone -->
-                <div class="certificate-dropzone {{ $course->sample_certificates ? 'hidden' : '' }}" id="certificateDropZone">
+                <!-- Upload/Drop Zone with label for reliable file selection -->
+                <label for="certificateInput" class="certificate-dropzone {{ $course->sample_certificates ? 'hidden' : '' }}" id="certificateDropZone">
+                    <!-- Hidden file input -->
+                    <input 
+                        type="file" 
+                        id="certificateInput" 
+                        name="sample_certificates" 
+                        accept="image/*,.pdf"
+                        style="position: absolute; left: -9999px; opacity: 0;">
+                        
                     <div class="certificate-upload-icon">
                         <i class="fas fa-certificate"></i>
                     </div>
@@ -619,18 +628,10 @@
                     <div class="certificate-upload-formats">
                         SVG, PNG, JPG, PDF (সর্বোচ্চ ৫ MB)
                     </div>
-                    
-                    <!-- Hidden file input -->
-                    <input 
-                        type="file" 
-                        id="certificateInput" 
-                        name="sample_certificates" 
-                        accept="image/*,.pdf"
-                        class="hidden">
-                </div>
+                </label>
 
                 <!-- Certificate Preview Container (hidden by default) -->
-                <div class="certificate-preview-container hidden" id="previewContainer">
+                <div class="certificate-preview-container hidden mt-8" id="previewContainer">
                     <img src="" alt="Certificate Preview" class="certificate-preview" id="previewImage">
                     <div class="certificate-overlay">
                         <div class="certificate-actions">
@@ -725,10 +726,7 @@ document.addEventListener('DOMContentLoaded', function() {
         certificateDropZone.addEventListener('dragover', handleDragOver);
         certificateDropZone.addEventListener('dragleave', handleDragLeave);
         certificateDropZone.addEventListener('drop', handleDrop);
-        certificateDropZone.addEventListener('click', function(e) {
-            e.preventDefault();
-            certificateInput.click();
-        });
+        // Note: Click handling is now automatic via the label element - no JavaScript needed!
     }
 
     certificateInput.addEventListener('change', handleFileSelect);
@@ -759,7 +757,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 dt.items.add(files[0]);
                 certificateInput.files = dt.files;
             } catch (error) {
-                console.log('DataTransfer not supported, will use FormData instead');
+                // DataTransfer not supported, will use FormData instead
             }
             
             handleFile(files[0]);
@@ -775,8 +773,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleFile(file) {
-        console.log('Handling certificate file:', file.name, 'Size:', file.size, 'Type:', file.type);
-        
         // Validate file
         if (!validateFile(file)) {
             return;
@@ -790,7 +786,6 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             reader.onerror = function() {
                 showNotification('ফাইল লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।', 'error');
-                console.error('FileReader error occurred');
             };
             reader.readAsDataURL(file);
         } else if (file.type === 'application/pdf') {
@@ -895,7 +890,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 showNotification('সার্টিফিকেট মুছে ফেলতে সমস্যা হয়েছে: ' + error.message, 'error');
             });
         }
@@ -903,9 +897,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form submission
     document.getElementById('certificateForm').addEventListener('submit', function(e) {
-        console.log('Form submitting...');
-        console.log('Certificate input files:', certificateInput.files.length);
-        console.log('Dropped file:', droppedFile ? droppedFile.name : 'none');
         
         // Handle dropped file submission with AJAX if needed
         if (droppedFile && certificateInput.files.length === 0) {
@@ -969,7 +960,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Upload error:', error);
             showNotification('আপলোড করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।', 'error');
         })
         .finally(() => {
