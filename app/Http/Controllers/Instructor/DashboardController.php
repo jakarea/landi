@@ -912,7 +912,7 @@ class DashboardController extends Controller
         $checkoutEarnings = Checkout::whereHas('course', function($query) use ($instructorId) {
                 $query->where('user_id', $instructorId);
             })
-            ->where('payment_status', 'completed')
+            ->where('status', 'completed')
             ->sum('amount');
             
         $pivotEarnings = DB::table('course_user')

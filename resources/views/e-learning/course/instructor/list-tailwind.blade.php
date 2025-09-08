@@ -278,7 +278,7 @@
             $lessonCount = \App\Models\Lesson::where('course_id', $course->id)->count();
             $revenueCount = \App\Models\Checkout::where('course_id', $course->id)
                 ->whereIn('payment_method', ['bkash', 'nogod', 'rocket', 'manual'])
-                ->whereIn('payment_status', ['completed', 'Paid'])
+                ->whereIn('status', ['completed', 'Paid'])
                 ->sum('amount');
         @endphp
         
