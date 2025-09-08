@@ -196,12 +196,21 @@ class StudentProfileController extends Controller
             list($type, $data) = explode(';', $base64ImageCover);
             list(, $data) = explode(',', $data);
             $decodedImage = base64_decode($data);
-            $slugg = Str::slug($request->name);
+            $slugg = Str::slug($user->name ?? 'user');
             $uniqueFileName = $slugg . '-' . uniqid() . '.png';
-            $path = 'public/uploads/users/' . $uniqueFileName;
-            $path2 = 'storage/uploads/users/' . $uniqueFileName;
-            Storage::put($path, $decodedImage);
-            $user->cover_photo = $path2;
+            
+            // Create directory if it doesn't exist
+            $uploadDir = public_path('uploads/users/');
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            
+            // Save directly to public/uploads/users/
+            $filePath = $uploadDir . $uniqueFileName;
+            file_put_contents($filePath, $decodedImage);
+            
+            // Store relative path in database
+            $user->cover_photo = 'uploads/users/' . $uniqueFileName;
 
             $user->save();
             return response()->json(['message' => "UPLOADED"]);

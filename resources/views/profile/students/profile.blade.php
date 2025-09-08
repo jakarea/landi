@@ -86,7 +86,7 @@ use Illuminate\Support\Str;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
+    opacity: 0.8 !important;
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -105,51 +105,64 @@ use Illuminate\Support\Str;
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(90, 234, 244, 0.4);
 }
+
+.cover-container:hover .upload-overlay {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure the overlay stays visible when hovering over the button itself */
+.upload-overlay:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
 </style>
 @endpush
 
 @section('content')
 <div class="p-6 space-y-6">
 
-    <div class="bg-card rounded-xl border border-[#fff]/20 overflow-hidden">
-        <!-- Cover Photo Section -->
-        <div class="cover-upload-area relative max-h-64">
-            @if ($user->cover_photo)
-                <img src="{{ asset($user->cover_photo) }}" alt="Cover Photo" 
-                     class="w-full h-full object-cover" id="item-img-output">
-            @else
-                <div class="w-full h-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center" style="min-height: 200px;">
-                    <div class="text-center">
-                        <i class="fas fa-image text-6xl text-white opacity-70 mb-4"></i>
-                        <p class="text-white opacity-80">কোনো কভার ফটো আপলোড করা হয়নি</p>
-                    </div>
-                </div>
-            @endif
-            
-            <div class="upload-overlay">
-                <button class="upload-btn" onclick="document.getElementById('coverImage').click()">
-                    <i class="fas fa-camera mr-2"></i>
-                    কভার ফটো পরিবর্তন করুন
-                </button>
-            </div>
-            
-            <input type="file" class="hidden" id="coverImage"
-                   accept="image/png, image/jpeg, image/svg+xml" name="cover_photo">
-            <input type="hidden" name="coverImgBase64" id="coverImgBase64">
-            
-            <!-- Upload Action Buttons -->
-            <div class="absolute top-4 right-4 hidden" id="uploadActions">
-                <div class="flex gap-2">
-                    <button id="cancelBtn" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg">
-                        বাতিল
-                    </button>
-                    <button id="uploadBtn" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold">
-                        সেভ করুন
-                    </button>
+
+    <!-- Cover Photo Section - SIMPLIFIED -->
+    <div class="cover-container" style="position: relative; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 16px; overflow: hidden; height: 200px;">
+        @if ($user->cover_photo)
+            <img src="{{ asset($user->cover_photo) }}" alt="Cover Photo" 
+                 style="width: 100%; height: 100%; object-fit: cover;" id="item-img-output">
+        @else
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white;">
+                <div style="text-align: center;">
+                    <i class="fas fa-image" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.7;"></i>
+                    <p style="opacity: 0.8;">কোনো কভার ফটো আপলোড করা হয়নি</p>
                 </div>
             </div>
+        @endif
+        
+        <!-- Upload Overlay - HOVER ONLY -->
+        <div class="upload-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6) !important; display: flex !important; align-items: center; justify-content: center; opacity: 0 !important; transition: all 0.3s ease; z-index: 10; pointer-events: none;">
+            <!-- Make file input look like a button -->
+            <label for="coverImage" style="background: linear-gradient(135deg, #10b981, #059669) !important; color: white !important; border: none !important; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex !important; align-items: center; z-index: 11; pointer-events: auto;">
+                <i class="fas fa-camera" style="margin-right: 8px; color: white !important;"></i>
+                <span style="color: white !important;">কভার ফটো পরিবর্তন করুন</span>
+            </label>
+        </div>
+        
+        <input type="file" id="coverImage" accept="image/png, image/jpeg, image/svg+xml" name="cover_photo" style="position: absolute; opacity: 0; width: 0; height: 0; overflow: hidden;"
+        
+        <!-- Upload Action Buttons -->
+        <div style="position: absolute; top: 16px; right: 16px; display: none; z-index: 20;" id="uploadActions">
+            <button id="cancelBtn" style="padding: 8px 16px; background: #6b7280; color: white; border: none; border-radius: 6px; margin-right: 8px; cursor: pointer;">
+                বাতিল
+            </button>
+            <button id="uploadBtn" style="padding: 8px 16px; background: #8b5cf6; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
+                সেভ করুন
+            </button>
         </div>
     </div>
+
+    <!-- Hidden input for base64 data -->
+    <input type="hidden" name="coverImgBase64" id="coverImgBase64">
         
         <div class="relative -mt-16 px-6 pb-6">
             <div class="flex items-end space-x-6">
@@ -364,47 +377,122 @@ use Illuminate\Support\Str;
 </div>
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+@endpush
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+console.log('🟢 SCRIPT LOADED: Cover photo script is running!');
+
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('🔧 DOM loaded, initializing cover photo upload...');
+    
     const coverImgOutput = document.getElementById('item-img-output');
-    const coverImgBase64 = document.getElementById('coverImgBase64');
-    const uploadActions = document.getElementById('uploadActions');
     const uploadBtn = document.getElementById('uploadBtn');
     const cancelBtn = document.getElementById('cancelBtn');
+    const uploadActions = document.getElementById('uploadActions');
+    const coverImgBase64 = document.getElementById('coverImgBase64');
     const coverImageInput = document.getElementById('coverImage');
+    
+    console.log('📋 Element check:');
+    console.log('- coverImgOutput:', coverImgOutput);
+    console.log('- uploadBtn:', uploadBtn);
+    console.log('- cancelBtn:', cancelBtn);
+    console.log('- uploadActions:', uploadActions);
+    console.log('- coverImgBase64:', coverImgBase64);
+    console.log('- coverImageInput:', coverImageInput);
+    
+    if (!coverImageInput) {
+        console.error('❌ CRITICAL: coverImageInput element not found!');
+        return;
+    }
+    
+    if (!uploadActions) {
+        console.error('❌ CRITICAL: uploadActions element not found!');
+        return;
+    }
+    
+    console.log('✅ All critical elements found, setting up event listeners...');
 
     // Handle file selection
+    console.log('🔗 Adding change event listener to:', coverImageInput);
     coverImageInput.addEventListener('change', function(e) {
+        console.log('🎯 STEP 1: File input change event triggered');
+        console.log('Files selected:', e.target.files);
+        
         const file = e.target.files[0];
         if (file) {
+            console.log('✅ STEP 2: File found:', file.name, 'Size:', file.size, 'Type:', file.type);
+            
             const reader = new FileReader();
             reader.onload = function(e) {
+                console.log('✅ STEP 3: FileReader loaded successfully');
+                console.log('Base64 length:', e.target.result.length);
+                
                 // Show preview
                 if (coverImgOutput) {
+                    console.log('✅ STEP 4A: Updating existing image element');
                     coverImgOutput.src = e.target.result;
                 } else {
+                    console.log('✅ STEP 4B: Creating new image element');
                     // Create new img element if it doesn't exist
                     const newImg = document.createElement('img');
                     newImg.src = e.target.result;
-                    newImg.className = 'w-full h-full object-cover';
+                    newImg.style.width = '100%';
+                    newImg.style.height = '100%';
+                    newImg.style.objectFit = 'cover';
                     newImg.id = 'item-img-output';
-                    document.querySelector('.cover-upload-area').prepend(newImg);
+                    
+                    // Find the cover photo container and add the image
+                    const coverContainer = document.querySelector('input[id="coverImage"]').closest('div');
+                    console.log('Cover container found:', coverContainer);
+                    if (coverContainer) {
+                        coverContainer.prepend(newImg);
+                        console.log('New image element created and added');
+                    } else {
+                        console.log('❌ Could not find cover container');
+                    }
                 }
                 
                 // Store base64 data
-                coverImgBase64.value = e.target.result;
+                console.log('coverImgBase64 element:', coverImgBase64);
+                if (coverImgBase64) {
+                    coverImgBase64.value = e.target.result;
+                    console.log('✅ STEP 5: Base64 data stored in hidden input');
+                } else {
+                    console.log('❌ STEP 5: coverImgBase64 element not found!');
+                }
                 
                 // Show action buttons
-                uploadActions.classList.remove('hidden');
+                console.log('uploadActions element:', uploadActions);
+                if (uploadActions) {
+                    uploadActions.classList.remove('hidden');
+                    uploadActions.style.display = 'block';
+                    console.log('✅ STEP 6: Upload action buttons shown');
+                } else {
+                    console.log('❌ STEP 6: uploadActions element not found!');
+                }
             };
+            
+            console.log('📖 Starting FileReader.readAsDataURL...');
             reader.readAsDataURL(file);
+        } else {
+            console.log('❌ No file selected');
         }
     });
 
     // Handle upload button click
     uploadBtn.addEventListener('click', function () {
-        let fileBase64 = coverImgBase64.value;
-        uploadFile(fileBase64);
+        console.log('🔴 STEP 7: Upload button clicked');
+        const fileBase64 = coverImgBase64.value;
+        console.log('Base64 data available:', fileBase64 ? 'YES' : 'NO');
+        console.log('Base64 length:', fileBase64.length);
+        
+        if (fileBase64) {
+            console.log('✅ STEP 8: Starting upload process...');
+            uploadFile(fileBase64);
+        } else {
+            console.log('❌ No base64 data available for upload');
+        }
     });
 
     // Handle cancel button click
@@ -414,67 +502,135 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to handle file upload
     function uploadFile(fileBase64) {
-
-        let currentURL = window.location.href;
+        console.log('🚀 STEP 9: Upload function called');
+        
+        const currentURL = window.location.href;
         const baseUrl = currentURL.split('/').slice(0, 3).join('/');
+        console.log('Current URL:', currentURL);
+        console.log('Base URL:', baseUrl);
 
-        if (fileBase64) {
-            const userId = "{{ $user->id }}";
-            const requestData = {
-                cover_photo: fileBase64,
-                userId: userId,
-            };
-            cancelBtn.classList.add('hidden');
-            uploadBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin-pulse"></i> Uploading`;
+        const userId = "{{ $user->id }}";
+        const requestData = {
+            cover_photo: fileBase64,
+            userId: userId,
+        };
+        console.log('User ID:', userId);
+        console.log('Request data prepared (base64 length):', fileBase64.length);
 
-            fetch(`${baseUrl}/student/profile/cover`, {
-                    method: 'POST',
-                    body: JSON.stringify(requestData),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === 'UPLOADED') {
-                        uploadBtn.innerHTML = `সংরক্ষণ`;
-                        uploadBtn.classList.add('hidden');
-                        cancelBtn.classList.add('hidden');
-                        location.reload();
-                    }
-                })
-                .catch(error => {
-                    uploadBtn.innerHTML = `ব্যর্থ`;
-                });
-        }
+        // Update button state
+        uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>আপলোড হচ্ছে...';
+        uploadBtn.disabled = true;
+        cancelBtn.style.display = 'none';
+        console.log('✅ STEP 10: Button state updated to loading');
+
+        const uploadURL = `${baseUrl}/student/profile/cover`;
+        console.log('📡 STEP 11: Making fetch request to:', uploadURL);
+
+        fetch(uploadURL, {
+            method: 'POST',
+            body: JSON.stringify(requestData),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+        })
+        .then(response => {
+            console.log('📥 STEP 12: Response received');
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+            console.log('Response headers:', response.headers);
+            
+            return response.json();
+        })
+        .then(data => {
+            console.log('📊 STEP 13: Response data parsed');
+            console.log('Response data:', data);
+            
+            if (data.message === 'UPLOADED') {
+                console.log('✅ STEP 14: Upload successful!');
+                // Success
+                uploadBtn.innerHTML = '<i class="fas fa-check mr-2"></i>সফল হয়েছে';
+                uploadBtn.className = 'px-4 py-2 bg-green-500 text-white rounded-lg font-semibold';
+                
+                setTimeout(() => {
+                    uploadActions.classList.add('hidden');
+                    uploadBtn.innerHTML = 'সেভ করুন';
+                    uploadBtn.className = 'px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold';
+                    uploadBtn.disabled = false;
+                    cancelBtn.style.display = 'block';
+                    
+                    showAlert('কভার ফটো সফলভাবে আপলোড হয়েছে!', 'success');
+                    console.log('✅ STEP 15: Success message shown, resetting UI');
+                }, 2000);
+            } else {
+                console.log('❌ Upload failed - unexpected response:', data);
+                throw new Error('Upload failed - unexpected response: ' + JSON.stringify(data));
+            }
+        })
+        .catch(error => {
+            console.log('❌ STEP ERROR: Upload failed');
+            console.log('Error:', error);
+            console.log('Error message:', error.message);
+            
+            uploadBtn.innerHTML = '<i class="fas fa-times mr-2"></i>ব্যর্থ';
+            uploadBtn.className = 'px-4 py-2 bg-red-500 text-white rounded-lg font-semibold';
+            cancelBtn.style.display = 'block';
+            uploadBtn.disabled = false;
+            
+            showAlert('কভার ফটো আপলোড করতে সমস্যা হয়েছে: ' + error.message, 'error');
+            
+            setTimeout(() => {
+                uploadBtn.innerHTML = 'সেভ করুন';
+                uploadBtn.className = 'px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold';
+            }, 3000);
+        });
     }
 
     // Function to handle cancel button click
     function cancelUpload() {
         const userCoverPhoto = "{{ $user->cover_photo ?? null }}";
         
-        if (userCoverPhoto) {
-            // Restore original image
-            if (coverImgOutput) {
+        if (coverImgOutput) {
+            if (userCoverPhoto) {
                 coverImgOutput.src = "{{ asset('') }}" + userCoverPhoto;
-            }
-        } else {
-            // Remove preview and show placeholder
-            if (coverImgOutput) {
+            } else {
+                // Remove the image and show placeholder
                 coverImgOutput.remove();
             }
         }
         
-        // Clear base64 data and hide buttons
         coverImgBase64.value = '';
+        coverImageInput.value = '';
         uploadActions.classList.add('hidden');
-        
-        // Reset upload button
-        uploadBtn.innerHTML = 'সংরক্ষণ';
-        uploadBtn.disabled = false;
     }
-    });
+    
+    // Alert function
+    function showAlert(message, type = 'info') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `fixed top-4 right-4 z-50 p-4 rounded-lg border max-w-sm ${
+            type === 'error' ? 'bg-red-500/20 border-red-500 text-red-500' : 
+            type === 'success' ? 'bg-green-500/20 border-green-500 text-green-500' :
+            'bg-blue-500/20 border-blue-500 text-blue-500'
+        }`;
+        
+        alertDiv.innerHTML = `
+            <div class="flex items-start gap-3">
+                <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : 'info-circle'} mt-0.5"></i>
+                <div class="flex-1">${message}</div>
+                <button onclick="this.parentElement.parentElement.remove()" class="ml-2 hover:opacity-70">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            if (alertDiv.parentElement) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+});
 </script>
-@endpush
 @endsection
