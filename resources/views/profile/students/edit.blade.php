@@ -2,6 +2,7 @@
 @section('title', 'প্রোফাইল সেটিংস')
 
 @push('styles')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" rel="stylesheet" type="text/css" />
 <style>
     .profile-tab-button {
@@ -98,20 +99,17 @@
                                 <div class="text-center">
                                     <div class="relative inline-block">
                                         <div class="avatar-upload w-32 h-32 rounded-full flex items-center justify-center cursor-pointer relative overflow-hidden">
-                                            @if ($user->avatar)
-                                                <img src="{{ asset($user->avatar) }}" alt="Avatar" id="item-img-output" 
-                                                     class="w-32 h-32 rounded-full object-cover">
-                                            @else
-                                                <div class="w-32 h-32 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-                                                    <span class="text-white text-2xl font-bold" id="avatar-initials">{{ strtoupper($user->name[0]) }}</span>
-                                                </div>
-                                            @endif
+                                            <img src="{{ $user->avatar ? asset($user->avatar) : '' }}" alt="Avatar" id="item-img-output" 
+                                                 class="w-32 h-32 rounded-full object-cover {{ !$user->avatar ? 'hidden' : '' }}">
+                                            <div class="w-32 h-32 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center {{ $user->avatar ? 'hidden' : '' }}" id="avatar-placeholder">
+                                                <span class="text-white text-2xl font-bold" id="avatar-initials">{{ strtoupper($user->name[0]) }}</span>
+                                            </div>
                                             
                                             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-full">
                                                 <i class="fas fa-camera text-white text-xl"></i>
                                             </div>
                                             
-                                            <input type="file" name="avatar" accept="image/*" id="avatar" class="absolute inset-0 opacity-0 cursor-pointer">
+                                            <input type="file" name="avatar" accept="image/*" id="avatar" class="item-img absolute inset-0 opacity-0 cursor-pointer">
                                             <input type="hidden" name="base64_avatar" id="base64_avatar" value="">
                                         </div>
                                         <div class="mt-4">
@@ -327,6 +325,7 @@
 
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 <script src="{{ asset('assets/js/crop-image.js') }}"></script>
 <script src="{{ asset('assets/js/form-change.js') }}"></script>
@@ -334,29 +333,54 @@
 <script>
 // Tab switching functionality
 function switchTab(tabName) {
-    const profileTab = document.getElementById('profile-tab');
-    const passwordTab = document.getElementById('password-tab');
-    const profileContent = document.getElementById('profile-content');
-    const passwordContent = document.getElementById('password-content');
+    console.log('Switching to tab:', tabName); // Debug log
+    
+    // Get all tabs and content
+    const tabs = document.querySelectorAll('.profile-tab-button');
+    const contents = document.querySelectorAll('.tab-content');
+    
+    // Reset all tabs
+    tabs.forEach(tab => {
+        tab.classList.remove('active', 'text-white');
+        tab.classList.add('text-gray-400');
+    });
+    
+    // Hide all content
+    contents.forEach(content => {
+        content.classList.add('hidden');
+        content.style.display = 'none';
+    });
     
     if (tabName === 'profile') {
-        profileTab.classList.add('active', 'text-white');
-        profileTab.classList.remove('text-gray-400');
-        passwordTab.classList.remove('active', 'text-white');
-        passwordTab.classList.add('text-gray-400');
+        // Activate profile tab
+        const profileTab = document.getElementById('profile-tab');
+        const profileContent = document.getElementById('profile-content');
         
-        profileContent.classList.remove('hidden');
-        passwordContent.classList.add('hidden');
+        if (profileTab) {
+            profileTab.classList.add('active', 'text-white');
+            profileTab.classList.remove('text-gray-400');
+        }
+        
+        if (profileContent) {
+            profileContent.classList.remove('hidden');
+            profileContent.style.display = 'block';
+        }
         
         updateURL('profile');
     } else if (tabName === 'password') {
-        passwordTab.classList.add('active', 'text-white');
-        passwordTab.classList.remove('text-gray-400');
-        profileTab.classList.remove('active', 'text-white');
-        profileTab.classList.add('text-gray-400');
+        // Activate password tab  
+        const passwordTab = document.getElementById('password-tab');
+        const passwordContent = document.getElementById('password-content');
         
-        passwordContent.classList.remove('hidden');
-        profileContent.classList.add('hidden');
+        if (passwordTab) {
+            passwordTab.classList.add('active', 'text-white');
+            passwordTab.classList.remove('text-gray-400');
+        }
+        
+        if (passwordContent) {
+            passwordContent.classList.remove('hidden');
+            passwordContent.style.display = 'block';
+        }
         
         updateURL('password');
     }
@@ -415,34 +439,43 @@ function removeSocialLink(button) {
     }
 }
 
-// Avatar preview
-function previewAvatar(event) {
-    const file = event.target.files[0];
-    const preview = document.getElementById('item-img-output');
-    const initials = document.getElementById('avatar-initials');
-    
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            if (preview) {
-                preview.src = e.target.result;
-                preview.classList.remove('hidden');
-            }
-            if (initials) {
-                initials.style.display = 'none';
-            }
-        };
-        reader.readAsDataURL(file);
-    }
-}
+// Override the crop-image.js cropImageBtn handler to also handle our placeholder
+$(document).off('click', '#cropImageBtn').on('click', '#cropImageBtn', function (ev) {
+    $uploadCrop.croppie('result', {
+        type: 'base64',
+        backgroundColor: "#000000",
+        format: 'png',
+        size: { width: 260, height: 260 }
+    }).then(function (resp) {
+        $('#item-img-output').attr('src', resp);
+        $('#base64_avatar').attr('value', resp);
+        
+        // Show preview and hide placeholder
+        const preview = document.getElementById('item-img-output');
+        const placeholder = document.getElementById('avatar-placeholder');
+        if (preview) {
+            preview.classList.remove('hidden');
+        }
+        if (placeholder) {
+            placeholder.classList.add('hidden');
+        }
+        
+        $('#cropImagePop').modal('hide');
+        $('.item-img').val('');
+    });
+});
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Check for password validation errors by looking for actual error elements
+    const passwordErrors = document.querySelector('#password-content .text-red-400') !== null;
+    
     // Handle URL tab parameter
     const urlParams = new URLSearchParams(window.location.search);
     const tabToOpen = urlParams.get('tab');
     
-    if (tabToOpen === 'password') {
+    // Auto-switch to password tab if there are password validation errors
+    if (passwordErrors || tabToOpen === 'password') {
         switchTab('password');
     } else {
         switchTab('profile');
@@ -450,7 +483,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add event listeners
     document.getElementById('social_increment').addEventListener('click', addSocialLink);
-    document.getElementById('avatar').addEventListener('change', previewAvatar);
+    
+    // Add tab click event listeners
+    const profileTabBtn = document.getElementById('profile-tab');
+    const passwordTabBtn = document.getElementById('password-tab');
+    
+    if (profileTabBtn) {
+        profileTabBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Profile tab clicked');
+            switchTab('profile');
+        });
+    }
+    
+    if (passwordTabBtn) {
+        passwordTabBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Password tab clicked');
+            switchTab('password');
+        });
+    }
 });
 </script>
 @endpush
