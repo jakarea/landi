@@ -129,6 +129,28 @@
         border-color: rgba(99, 102, 241, 0.4);
         background: rgba(99, 102, 241, 0.1);
     }
+    .profile-upload-area {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(90, 234, 244, 0.1) 0%, rgba(203, 251, 144, 0.1) 100%);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .avatar-upload {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
+        border-radius: 50%;
+        border: 4px solid rgba(90, 234, 244, 0.3);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    /* if avatarpic has image or value then hide text-powder-blue */
+    #avatarpic.has-image + .text-powder-blue {
+        display: none;
+    }
 </style>
 @endpush
 
@@ -182,19 +204,20 @@
                             <div class="space-y-6">
                                 <div class="text-center">
                                     <div class="relative inline-block">
-                                        <div class="avatar-upload w-32 h-32 rounded-full flex items-center justify-center cursor-pointer relative overflow-hidden">
-                                            <img src="{{ $user->avatar ? asset($user->avatar) : '' }}" alt="Avatar" id="item-img-output" 
-                                                 class="w-32 h-32 rounded-full object-cover {{ !$user->avatar ? 'hidden' : '' }}">
-                                            <div class="w-32 h-32 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center {{ $user->avatar ? 'hidden' : '' }}" id="avatar-placeholder">
-                                                <span class="text-white text-2xl font-bold" id="avatar-initials">{{ strtoupper($user->name[0]) }}</span>
-                                            </div>
+                                        <div class="avatar-upload profile-upload-container w-40 h-40 rounded-full flex items-center justify-center cursor-pointer relative overflow-hidden">
+                                            <input type="file" name="avatar" accept="image/*" id="avatar" class="hidden" onchange="document.getElementById('avatarpic').src = window.URL.createObjectURL(this.files[0])">
                                             
-                                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-full">
-                                                <i class="fas fa-camera text-white text-xl"></i>
-                                            </div>
-                                            
-                                            <input type="file" name="avatar" accept="image/*" id="avatar" class="item-img absolute inset-0 opacity-0 cursor-pointer">
-                                            <input type="hidden" name="base64_avatar" id="base64_avatar" value="">
+                                            <label for="avatar" class="profile-upload-area">
+                                                @if($user->avatar)
+                                                    <img src="{{ asset($user->avatar) }}" alt="Profile" class="profile-preview" id="profile-preview">
+                                                @else
+                                                <img id="avatarpic" />
+                                                    <div class="text-center text-gray-400 mt-[35px]">
+                                                        <i class="fas fa-camera text-4xl mb-2"></i>
+                                                        <p class="text-gray-400 text-sm">ছবি আপলোড করুন</p>
+                                                    </div>
+                                                @endif
+                                            </label>                                            
                                         </div>
                                         <div class="mt-4">
                                             <p class="text-sm text-gray-400">JPG, PNG, GIF সমর্থিত</p>
@@ -403,10 +426,6 @@
     </div>
 </div>
 
-{{-- image crop modal start --}}
-@include('modals/image-resize')
-{{-- image crop modal end --}}
-
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -497,30 +516,30 @@ function removeSocialLink(button) {
 }
 
 // Override the crop-image.js cropImageBtn handler to also handle our placeholder
-$(document).off('click', '#cropImageBtn').on('click', '#cropImageBtn', function (ev) {
-    $uploadCrop.croppie('result', {
-        type: 'base64',
-        backgroundColor: "#000000",
-        format: 'png',
-        size: { width: 260, height: 260 }
-    }).then(function (resp) {
-        $('#item-img-output').attr('src', resp);
-        $('#base64_avatar').attr('value', resp);
+// $(document).off('click', '#cropImageBtn').on('click', '#cropImageBtn', function (ev) {
+//     $uploadCrop.croppie('result', {
+//         type: 'base64',
+//         backgroundColor: "#000000",
+//         format: 'png',
+//         size: { width: 260, height: 260 }
+//     }).then(function (resp) {
+//         $('#item-img-output').attr('src', resp);
+//         $('#base64_avatar').attr('value', resp);
         
-        // Show preview and hide placeholder
-        const preview = document.getElementById('item-img-output');
-        const placeholder = document.getElementById('avatar-placeholder');
-        if (preview) {
-            preview.classList.remove('hidden');
-        }
-        if (placeholder) {
-            placeholder.classList.add('hidden');
-        }
+//         // Show preview and hide placeholder
+//         const preview = document.getElementById('item-img-output');
+//         const placeholder = document.getElementById('avatar-placeholder');
+//         if (preview) {
+//             preview.classList.remove('hidden');
+//         }
+//         if (placeholder) {
+//             placeholder.classList.add('hidden');
+//         }
         
-        $('#cropImagePop').modal('hide');
-        $('.item-img').val('');
-    });
-});
+//         $('#cropImagePop').modal('hide');
+//         $('.item-img').val('');
+//     });
+// });
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {

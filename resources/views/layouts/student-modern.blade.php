@@ -128,6 +128,7 @@
     </style>
     
     @yield('style')
+    @stack('styles')
 </head>
 
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 dark:from-dark-950 dark:to-dark-900 font-inter antialiased">
