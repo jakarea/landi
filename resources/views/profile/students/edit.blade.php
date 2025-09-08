@@ -2,9 +2,75 @@
 @section('title', 'প্রোফাইল সেটিংস')
 
 @push('styles')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" rel="stylesheet" type="text/css" />
 <style>
+    /* Minimal Bootstrap modal styles */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1055;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal.fade {
+        opacity: 0;
+        transition: opacity 0.15s linear;
+    }
+    .modal.show {
+        opacity: 1;
+    }
+    .modal-dialog {
+        position: relative;
+        width: auto;
+        margin: 1.75rem;
+        pointer-events: none;
+    }
+    .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+    .modal-body {
+        position: relative;
+        flex: 1 1 auto;
+        padding: 1rem;
+    }
+    .btn {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        margin-bottom: 0;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+        text-decoration: none;
+    }
+    .btn-submit {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-cancel {
+        color: #6c757d;
+        background-color: transparent;
+        border-color: #6c757d;
+    }
     .profile-tab-button {
         background: rgba(15, 23, 42, 0.7);
         border: 1px solid rgba(148, 163, 184, 0.2);
@@ -75,15 +141,33 @@
         </div>
     </div>
 
+    @if(session('success'))
+        <div class="bg-green-800 bg-opacity-50 border border-green-600 text-green-200 px-4 py-3 rounded-lg mb-4">
+            <div class="flex items-center">
+                <i class="fas fa-check-circle mr-3"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-800 bg-opacity-50 border border-red-600 text-red-200 px-4 py-3 rounded-lg mb-4">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-circle mr-3"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        </div>
+    @endif
+
     <div class="glass-effect rounded-2xl overflow-hidden">
         <div class="flex border-b border-gray-600">
             <button class="profile-tab-button active flex-1 px-6 py-4 text-left font-medium text-white rounded-none" 
-                    onclick="switchTab('profile')" id="profile-tab">
+                    id="profile-tab" data-tab="profile">
                 <i class="fas fa-user mr-2"></i>
                 আমার প্রোফাইল
             </button>
             <button class="profile-tab-button flex-1 px-6 py-4 text-left font-medium text-gray-400 rounded-none" 
-                    onclick="switchTab('password')" id="password-tab">
+                    id="password-tab" data-tab="password">
                 <i class="fas fa-lock mr-2"></i>
                 পাসওয়ার্ড পরিবর্তন
             </button>
@@ -331,59 +415,32 @@
 <script src="{{ asset('assets/js/form-change.js') }}"></script>
 
 <script>
-// Tab switching functionality
+// Simple tab switching functionality
 function switchTab(tabName) {
-    console.log('Switching to tab:', tabName); // Debug log
-    
-    // Get all tabs and content
-    const tabs = document.querySelectorAll('.profile-tab-button');
-    const contents = document.querySelectorAll('.tab-content');
+    console.log('Switching to tab:', tabName);
     
     // Reset all tabs
-    tabs.forEach(tab => {
-        tab.classList.remove('active', 'text-white');
-        tab.classList.add('text-gray-400');
-    });
+    document.getElementById('profile-tab').classList.remove('active', 'text-white');
+    document.getElementById('profile-tab').classList.add('text-gray-400');
+    document.getElementById('password-tab').classList.remove('active', 'text-white'); 
+    document.getElementById('password-tab').classList.add('text-gray-400');
     
     // Hide all content
-    contents.forEach(content => {
-        content.classList.add('hidden');
-        content.style.display = 'none';
-    });
+    document.getElementById('profile-content').classList.add('hidden');
+    document.getElementById('password-content').classList.add('hidden');
     
+    // Show selected tab
     if (tabName === 'profile') {
-        // Activate profile tab
-        const profileTab = document.getElementById('profile-tab');
-        const profileContent = document.getElementById('profile-content');
-        
-        if (profileTab) {
-            profileTab.classList.add('active', 'text-white');
-            profileTab.classList.remove('text-gray-400');
-        }
-        
-        if (profileContent) {
-            profileContent.classList.remove('hidden');
-            profileContent.style.display = 'block';
-        }
-        
-        updateURL('profile');
+        document.getElementById('profile-tab').classList.add('active', 'text-white');
+        document.getElementById('profile-tab').classList.remove('text-gray-400');
+        document.getElementById('profile-content').classList.remove('hidden');
     } else if (tabName === 'password') {
-        // Activate password tab  
-        const passwordTab = document.getElementById('password-tab');
-        const passwordContent = document.getElementById('password-content');
-        
-        if (passwordTab) {
-            passwordTab.classList.add('active', 'text-white');
-            passwordTab.classList.remove('text-gray-400');
-        }
-        
-        if (passwordContent) {
-            passwordContent.classList.remove('hidden');
-            passwordContent.style.display = 'block';
-        }
-        
-        updateURL('password');
+        document.getElementById('password-tab').classList.add('active', 'text-white');
+        document.getElementById('password-tab').classList.remove('text-gray-400');
+        document.getElementById('password-content').classList.remove('hidden');
     }
+    
+    updateURL(tabName);
 }
 
 function updateURL(tab) {
@@ -474,35 +531,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const tabToOpen = urlParams.get('tab');
     
-    // Auto-switch to password tab if there are password validation errors
+    // Auto-switch to password tab if there are password validation errors or tab parameter
     if (passwordErrors || tabToOpen === 'password') {
+        console.log('Opening password tab due to:', passwordErrors ? 'validation errors' : 'URL parameter');
         switchTab('password');
     } else {
+        console.log('Opening profile tab (default)');
         switchTab('profile');
     }
     
     // Add event listeners
     document.getElementById('social_increment').addEventListener('click', addSocialLink);
     
-    // Add tab click event listeners
-    const profileTabBtn = document.getElementById('profile-tab');
-    const passwordTabBtn = document.getElementById('password-tab');
+    // Simple tab event listeners
+    document.getElementById('profile-tab').onclick = function() {
+        switchTab('profile');
+    };
     
-    if (profileTabBtn) {
-        profileTabBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Profile tab clicked');
-            switchTab('profile');
-        });
-    }
-    
-    if (passwordTabBtn) {
-        passwordTabBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Password tab clicked');
-            switchTab('password');
-        });
-    }
+    document.getElementById('password-tab').onclick = function() {
+        switchTab('password');
+    };
 });
 </script>
 @endpush

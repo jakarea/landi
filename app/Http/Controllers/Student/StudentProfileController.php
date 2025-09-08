@@ -148,15 +148,14 @@ class StudentProfileController extends Controller
         // Send email
         Mail::to($user->email)->send(new ProfileUpdated($user));
 
-        return redirect()->route('student.profile')->with('success', 'Your Profile has been Updated successfully!');
+        return redirect()->route('student.profile.edit', ['tab' => 'profile'])->with('success', 'Your Profile has been Updated successfully!');
     }
 
     // password update
     public function passwordUpdate()
     {
-        $userId = Auth()->user()->id;
-        $user = User::find($userId);
-        return view('profile/students/password-change',compact('user'));
+        // Redirect to edit page with password tab active
+        return redirect()->route('student.profile.edit', ['tab' => 'password']);
     }
 
     public function postChangePassword(Request $request)
@@ -176,7 +175,7 @@ class StudentProfileController extends Controller
          // Send email
          Mail::to($user->email)->send(new PasswordChanged($user));
 
-        return redirect()->route('student.profile')->with('success', 'Your password has been changed successfully!');
+        return redirect()->route('student.profile.edit', ['tab' => 'password'])->with('success', 'Your password has been changed successfully!');
     }
 
     public function coverUpload(Request $request)

@@ -1,6 +1,6 @@
 <div class="modal fade cropImageModal" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
-    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i
+    <button type="button" class="close-modal-custom" data-bs-dismiss="modal" aria-label="Close"><i
             class="feather icon-x"></i></button>
     <div class="modal-dialog">
         <div class="modal-content">

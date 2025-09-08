@@ -187,18 +187,11 @@
                         প্রোফাইল
                     </a>
 
-                    <!-- Edit Profile -->
+                    <!-- Profile Settings (Edit Profile + Password) -->
                     <a href="{{ route('student.profile.edit') }}" 
-                       class="flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 ray-hover {{ Request::is('student/profile/edit*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-slate-700 dark:text-slate-300 hover:bg-white/10 dark:hover:bg-slate-800/50' }}">
-                        <i class="fas fa-edit mr-3"></i>
-                        প্রোফাইল আপডেট
-                    </a>
-
-                    <!-- Change Password -->
-                    <a href="{{ route('student.profile.password') }}" 
-                       class="flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 ray-hover {{ Request::is('student/profile/password*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-slate-700 dark:text-slate-300 hover:bg-white/10 dark:hover:bg-slate-800/50' }}">
-                        <i class="fas fa-lock mr-3"></i>
-                        পাসওয়ার্ড পরিবর্তন
+                       class="flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 ray-hover {{ Request::is('student/profile/edit*') || Request::is('student/profile/password*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-slate-700 dark:text-slate-300 hover:bg-white/10 dark:hover:bg-slate-800/50' }}">
+                        <i class="fas fa-cog mr-3"></i>
+                        প্রোফাইল সেটিংস
                     </a>
                 </nav>
 
@@ -273,7 +266,7 @@
                                 </a>
                                 <a href="{{ route('student.profile.edit') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-white/10 dark:hover:bg-slate-800/50 transition-colors">
                                     <i class="fas fa-cog mr-3"></i>
-                                    সেটিংস
+                                    প্রোফাইল সেটিংস
                                 </a>
                                 <hr class="border-white/10 my-2">
                                 <form method="POST" action="{{ route('logout') }}">
