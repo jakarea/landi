@@ -505,7 +505,10 @@ class StudentHomeController extends Controller
         }
 
         $course_reviews = CourseReview::where('course_id', $course->id)->with('user')->get();
-        $course_like = course_like::where('course_id', $course->id)->where('user_id', Auth::user()->id)->first();
+        $course_like = course_like::where('course_id', $course->id)
+                                  ->where('user_id', Auth::user()->id)
+                                  ->where('instructor_id', $course->user_id)
+                                  ->first();
         $liked = '';
         if ($course_like ) {
             $liked = 'active';
@@ -1242,8 +1245,11 @@ class StudentHomeController extends Controller
 
     public function courseLike($course_id, $ins_id)
     {
-
-        $course_liked = course_like::where('course_id', $course_id)->where('instructor_id', $ins_id)->first();
+        // Check if the current user has liked this course
+        $course_liked = course_like::where('course_id', $course_id)
+                                  ->where('instructor_id', $ins_id)
+                                  ->where('user_id', Auth::user()->id)
+                                  ->first();
 
         if ($course_liked) {
              $course_liked->delete();
@@ -1265,8 +1271,11 @@ class StudentHomeController extends Controller
 
     public function courseUnLike($course_id, $ins_id)
     {
-
-        $course_liked = course_like::where('course_id', $course_id)->where('instructor_id', $ins_id)->first();
+        // Check if the current user has liked this course
+        $course_liked = course_like::where('course_id', $course_id)
+                                  ->where('instructor_id', $ins_id)
+                                  ->where('user_id', Auth::user()->id)
+                                  ->first();
 
         if ($course_liked) {
              $course_liked->delete();
