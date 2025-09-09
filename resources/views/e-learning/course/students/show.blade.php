@@ -243,7 +243,7 @@
                         <!-- Action Buttons -->
                         <div class="flex items-center space-x-3">
                             <!-- Like Button -->
-                            <button class="p-3 rounded-lg transition-all duration-300 {{ $liked === 'liked' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400 hover:text-red-400' }}" 
+                            <button class="p-3 rounded-lg transition-all duration-300 {{ $liked === 'active' ? 'bg-red-600 text-white active' : 'bg-gray-700 text-gray-400 hover:text-red-400' }}" 
                                     id="likeBttn">
                                 <i class="fas fa-heart text-lg"></i>
                             </button>
@@ -652,6 +652,16 @@
     .rating__label:hover .rating__icon--star,
     .rating__label:hover ~ .rating__label .rating__icon--star {
         color: #f59e0b !important;
+    }
+    
+    /* Like button active state */
+    #likeBttn.active {
+        background-color: #dc2626 !important;
+        color: white !important;
+    }
+    
+    #likeBttn.active:hover {
+        background-color: #b91c1c !important;
     }
 </style>
 @endsection
@@ -1076,9 +1086,12 @@
         const likeBttn = document.getElementById('likeBttn');
 
         likeBttn.addEventListener('click', (e) => {
-
+            console.log('❤️ Like button clicked');
+            
             const course_id = {{ $course->id }};
             const ins_id = {{ $course->user_id }};
+            
+            console.log('📊 Like request data:', {course_id: course_id, instructor_id: ins_id});
 
             fetch(`${baseUrl}/student/course-like/${course_id}/${ins_id}`, {
                     method: 'POST',
@@ -1087,17 +1100,27 @@
                         'Content-Type': 'application/json',
                     },
                 })
-                .then(response => response.json())
+                .then(response => {
+                    console.log('📡 Response status:', response.status);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('📨 Response data:', data);
+                    
                     if (data.message === 'liked') {
                         likeBttn.classList.add('active');
-
+                        likeBttn.classList.remove('bg-gray-700', 'text-gray-400');
+                        likeBttn.classList.add('bg-red-600', 'text-white');
+                        console.log('❤️ Course liked - heart is now red');
                     } else {
                         likeBttn.classList.remove('active');
+                        likeBttn.classList.remove('bg-red-600', 'text-white');
+                        likeBttn.classList.add('bg-gray-700', 'text-gray-400');
+                        console.log('💔 Course unliked - heart is now gray');
                     }
                 })
                 .catch(error => {
-                    // console.error(error);
+                    console.error('❌ Like request failed:', error);
                     likeBttn.classList.remove('active');
                 });
 
