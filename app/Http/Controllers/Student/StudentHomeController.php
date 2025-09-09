@@ -1225,7 +1225,7 @@ class StudentHomeController extends Controller
                 $notify->save();
         }
 
-        return redirect()->route('students.show.courses', ['slug' => $slug] )->with('message', 'comment submitted successfully!');
+        return redirect()->route('student.courses.learn', ['slug' => $slug] )->with('message', 'comment submitted successfully!');
     }
 
     public function certificate()
