@@ -344,7 +344,7 @@
                                                 </label>
                                                 <input class="rating__input hidden" name="star" id="rating-2" value="2" type="radio">
                                                 <label aria-label="3 stars" class="rating__label cursor-pointer" for="rating-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star text-yellow-400"></i>
+                                                    <i class="rating__icon rating__icon--star fa fa-star text-gray-300 hover:text-yellow-400"></i>
                                                 </label>
                                                 <input class="rating__input hidden" name="star" id="rating-3" value="3" type="radio" checked>
                                                 <label aria-label="4 stars" class="rating__label cursor-pointer" for="rating-4">
@@ -650,19 +650,23 @@
     /* Rating system styles */
     .rating__input:checked ~ .rating__label .rating__icon--star,
     .rating__label:hover .rating__icon--star,
-    .rating__label:hover ~ .rating__label .rating__icon--star {
+    .rating__label:hover ~ .rating__label .rating__icon--star,
+    .rating-group :hover ~ .rating__icon--star {
         color: #f59e0b !important;
     }
-    
-    /* Like button active state */
-    #likeBttn.active {
-        background-color: #dc2626 !important;
-        color: white !important;
-    }
-    
-    #likeBttn.active:hover {
-        background-color: #b91c1c !important;
-    }
+
+
+    /* Show selected stars (all stars before and including checked input) */
+.rating__input:checked ~ .rating__label .rating__icon--star {
+    color: #f59e0b !important; /* yellow-400 */
+}
+
+/* Show hover effect - highlight current and previous stars */
+.rating__label:hover .rating__icon--star,
+.rating__label:hover ~ .rating__label .rating__icon--star {
+    color: #f59e0b !important;
+}
+
 </style>
 @endsection
 
