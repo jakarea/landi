@@ -205,6 +205,15 @@
                         <span class="dark:hidden">ডার্ক মোড</span>
                         <span class="hidden dark:inline">লাইট মোড</span>
                     </button>
+                    
+                    <!-- Logout -->
+                    <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300">
+                            <i class="fas fa-sign-out-alt mr-3"></i>
+                            লগআউট
+                        </button>
+                    </form>
                 </div>
             </div>
         </aside>
@@ -236,10 +245,12 @@
                     <!-- Right Side -->
                     <div class="flex items-center space-x-4">
                         <!-- Notifications -->
-                        <button class="relative p-2 rounded-lg hover:bg-white/10 dark:hover:bg-slate-800/50 transition-colors">
+                        <a href="{{ route('student.notifications') }}" class="relative p-2 rounded-lg hover:bg-white/10 dark:hover:bg-slate-800/50 transition-colors">
                             <i class="fas fa-bell text-slate-700 dark:text-slate-300"></i>
-                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
+                            @if (Auth::check() && function_exists('unseenNotification') && unseenNotification() >= 1)
+                                <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                            @endif
+                        </a>
 
                         <!-- Profile Dropdown -->
                         <div class="relative">
@@ -371,5 +382,6 @@
     </script>
     
     @yield('script')
+    @stack('scripts')
 </body>
 </html>

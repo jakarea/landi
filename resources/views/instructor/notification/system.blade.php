@@ -96,7 +96,7 @@ $layoutName = "layouts.latest.admin";
                                         </div>
                                     </div>
                                     <div class="delete-item">
-                                        <form action="{{ route('notification.destroy',$today['id']) }}" method="POST">
+                                        <form action="{{ route('student.notifications.destroy',$today['id']) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn"><img
                                                     src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"
@@ -151,7 +151,7 @@ $layoutName = "layouts.latest.admin";
                                     </div>
 
                                     <div class="delete-item">
-                                        <form action="{{ route('notification.destroy',$yestarday['id']) }}" method="POST">
+                                        <form action="{{ route('student.notifications.destroy',$yestarday['id']) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn"><img
                                                     src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"
@@ -205,7 +205,7 @@ $layoutName = "layouts.latest.admin";
                                     </div>
 
                                     <div class="delete-item">
-                                        <form action="{{ route('notification.destroy',$sevenDay['id']) }}" method="POST">
+                                        <form action="{{ route('student.notifications.destroy',$sevenDay['id']) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn"><img
                                                     src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"
@@ -258,7 +258,7 @@ $layoutName = "layouts.latest.admin";
                                     </div>
 
                                     <div class="delete-item">
-                                        <form action="{{ route('notification.destroy',$thirtyDay['id']) }}" method="POST">
+                                        <form action="{{ route('student.notifications.destroy',$thirtyDay['id']) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn"><img
                                                     src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"
@@ -313,7 +313,7 @@ $layoutName = "layouts.latest.admin";
                                     </div>
 
                                     <div class="delete-item">
-                                        <form action="{{ route('notification.destroy',$lastOneYear['id']) }}" method="POST">
+                                        <form action="{{ route('student.notifications.destroy',$lastOneYear['id']) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn"><img
                                                     src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"

@@ -1,7 +1,7 @@
 @php use Illuminate\Support\Facades\Request; @endphp
 <nav class="navbar navbar-expand-xl header-area">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a class="navbar-brand" href="{{ route('student.dashboard') }}">
             <i class="fas fa-graduation-cap me-2"></i>
             <span style="font-weight: 700; color: #667eea;">শিখুন</span>
             <small class="text-muted ms-2" style="font-size: 0.75rem;">শিক্ষার্থী</small>
@@ -22,7 +22,7 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle {{ Request::is('student/courses*') ? ' active' : '' }}" data-bs-toggle="dropdown">
                             <i class="fas fa-graduation-cap me-1"></i>
-                            কোর্স
+                            কোর্স পরিচালনা
                         </a>
                         <ul class="dropdown-menu">
                             <li>
@@ -39,13 +39,15 @@
                                    নতুন কোর্স খুঁজুন
                                 </a>
                             </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item {{ Request::is('student/activities*') ? ' active' : '' }}" 
+                                   href="{{ route('student.activities') }}">
+                                   <i class="fas fa-chart-line me-2"></i>
+                                   কার্যকলাপ ও অগ্রগতি
+                                </a>
+                            </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('student.activities') }}" class="{{ Request::is('student/activities*') ? ' active' : '' }} nav-link">
-                            <i class="fas fa-trophy me-1"></i>
-                            কার্যকলাপ
-                        </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('student.certificates') }}" class="{{ Request::is('student/certificates*') ? ' active' : '' }} nav-link">
@@ -67,7 +69,7 @@
                             <li><a class="dropdown-item {{ Request::is('student/profile/edit*') ? ' active' : '' }}" 
                                    href="{{ route('student.profile.edit') }}">
                                    <i class="fas fa-cog me-2"></i>
-                                   প্রোফাইল এডিট
+                                   একাউন্ট সেটিং
                                </a></li>
                             <li><a class="dropdown-item {{ Request::is('student/profile/password*') ? ' active' : '' }}" 
                                    href="{{ route('student.profile.password') }}">
@@ -95,23 +97,24 @@
                 </a>
                 <a href="{{ route('student.notifications') }}"
                    class="bttn {{ Request::is('student/notifications*') ? ' active' : '' }}" 
-                   title="নোটিফিকেশন">
+                   title="নোটিফিকেশন"
+                   style="cursor: pointer; text-decoration: none;">
                     <i class="fas fa-bell"></i>
-                    @if (Auth::user() && function_exists('unseenNotification') && unseenNotification() >= 1)
+                    @if (Auth::check() && function_exists('unseenNotification') && unseenNotification() >= 1)
                         <span>{{ unseenNotification() }}</span>
                     @endif
                 </a>
                 <div class="dropdown">
                     <button class="btn avatar" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        @if (Auth::user() && auth()->user()->avatar)
+                        @if (auth()->user()->avatar)
                             <img src="{{ asset(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="img-fluid">
                         @else
-                            <span class="avatar-user">{!! Auth::user() && strtoupper(auth()->user()->name) !!}</span>
+                            <span class="avatar-user">{!! strtoupper(auth()->user()->name[0]) !!}</span>
                         @endif
                     </button>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">
-                            <strong>{{ Auth::user() && auth()->user()->name }}</strong><br>
+                            <strong>{{ auth()->user()->name }}</strong><br>
                             <small class="text-muted">শিক্ষার্থী</small>
                         </li>
                         <li><hr class="dropdown-divider"></li>

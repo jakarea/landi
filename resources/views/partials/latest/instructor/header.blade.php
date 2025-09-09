@@ -165,9 +165,13 @@
                 </a>
                 <a href="{{ route('instructor.notifications') }}" 
                    class="bttn {{ Request::is('instructor/notifications') ? ' active' : '' }}" 
-                   title="নোটিফিকেশন">
+                   title="নোটিফিকেশন"
+                   style="cursor: pointer; text-decoration: none; position: relative; z-index: 1000;"
+                   onclick="console.log('Notification bell clicked!'); return true;">
                     <i class="fas fa-bell"></i>
-                    {{-- <span>0</span> --}}
+                    @if (Auth::check() && function_exists('instructorUnseenNotification') && instructorUnseenNotification() >= 1)
+                        <span>{{ instructorUnseenNotification() }}</span>
+                    @endif
                 </a>
                 <div class="dropdown">
                     <button class="btn avatar" type="button" data-bs-toggle="dropdown" aria-expanded="false">

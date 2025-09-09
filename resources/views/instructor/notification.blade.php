@@ -85,7 +85,7 @@
                                     </div>
                                 </div>
                                 <div class="delete-item">
-                                    <form action="{{ route('instructor.notify.destroy', ['id' => $today->id, 'subdomain' => config('app.subdomain') ]) }}" method="POST">
+                                    <form action="{{ route('instructor.notify.destroy', $today->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn"><img
                                                 src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"
@@ -141,7 +141,7 @@
                                 </div>
 
                                 <div class="delete-item">
-                                    <form action="{{ route('instructor.notify.destroy',['id' => $yestarday->id, config('app.subdomain') ]) }}" method="POST">
+                                    <form action="{{ route('instructor.notify.destroy', $yestarday->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn"><img
                                                 src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"
@@ -196,7 +196,7 @@
                                 </div>
 
                                 <div class="delete-item">
-                                    <form action="{{ route('instructor.notify.destroy', ['id' => $sevenDay->id, 'subdomain' => config('app.subdomain') ]) }}" method="POST">
+                                    <form action="{{ route('instructor.notify.destroy', $sevenDay->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn"><img
                                                 src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"
@@ -250,7 +250,7 @@
                                 </div>
 
                                 <div class="delete-item">
-                                    <form action="{{ route('instructor.notify.destroy', ['id' => $thirtyDay->id, 'subdomain' => config('app.subdomain') ] ) }}" method="POST">
+                                    <form action="{{ route('instructor.notify.destroy', $thirtyDay->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn"><img
                                                 src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"
@@ -306,7 +306,7 @@
                                 </div>
 
                                 <div class="delete-item">
-                                    <form action="{{ route('instructor.notify.destroy', ['id' => $lastOneYear->id, 'subdomain' => config('app.subdomain') ]) }}" method="POST">
+                                    <form action="{{ route('instructor.notify.destroy', $lastOneYear->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn"><img
                                                 src="{{asset('assets/images/icons/trash-bin.svg')}}" alt="Delete"

@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
     
     Route::get('/instructor/', [DashboardController::class, 'index'])->name('instructor.dashboard');
     Route::get('/instructor/notifications/', [DashboardController::class, 'notifications'])->name('instructor.notifications');
+    Route::post('/instructor/notifications/{id}/destroy', [DashboardController::class, 'notifyRemove'])->name('instructor.notify.destroy');
     
     // ========================================
     // PROFILE SECTION
