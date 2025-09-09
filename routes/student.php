@@ -34,6 +34,9 @@ use App\Http\Controllers\Student\StudentProfileController;
 Route::get('/student/notifications/', [NotificationController::class, 'notificationDetails'])->name('student.notifications');
 Route::post('/student/notifications/{id}/destroy', [NotificationController::class, 'destroy'])->name('student.notifications.destroy');
 
+// Mark as complete functionality - Removed from auth middleware
+Route::post('/student/courses/complete-lesson', [StudentHomeController::class, 'storeActivity'])->name('student.complete.lesson');
+
 // ========================================
 // AUTHENTICATED STUDENT ROUTES
 // ========================================
@@ -61,7 +64,9 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     
     // Course logging and progress
     Route::match(['GET', 'POST'], '/student/courses/log/', [StudentHomeController::class, 'storeCourseLog'])->name('student.log.courses');
-    Route::post('/student/courses/complete-lesson', [StudentHomeController::class, 'storeActivity'])->name('student.complete.lesson');
+    Route::post('/student/test-auth', function() {
+        return response()->json(['status' => 'success', 'user_id' => Auth::user()->id, 'message' => 'Authentication test passed']);
+    })->name('student.test.auth');
     
     // ========================================
     // PROFILE SECTION

@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'page.access' => \App\Http\Middleware\PageAccessMiddleware::class,
         ]);
+        
+        // Exclude specific routes from CSRF verification
+        $middleware->validateCsrfTokens(except: [
+            '/student/courses/complete-lesson',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
