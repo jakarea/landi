@@ -174,10 +174,12 @@
                         
                         <!-- Notifications -->
                         <div class="relative">
-                            <button class="p-2 text-secondary-100 hover:text-blue anim relative">
+                            <a href="{{ route('instructor.notifications') }}" class="p-2 text-secondary-100 hover:text-blue anim relative inline-block cursor-pointer">
                                 <i class="fas fa-bell text-lg"></i>
-                                <span class="absolute -top-1 -right-1 w-5 h-5 bg-orange rounded-full text-primary text-xs flex items-center justify-center font-semibold">3</span>
-                            </button>
+                                @if (Auth::check() && function_exists('instructorUnseenNotification') && instructorUnseenNotification() >= 1)
+                                    <span class="absolute -top-1 -right-1 w-5 h-5 bg-orange rounded-full text-primary text-xs flex items-center justify-center font-semibold">{{ instructorUnseenNotification() }}</span>
+                                @endif
+                            </a>
                         </div>
                         
                         <!-- User Profile -->

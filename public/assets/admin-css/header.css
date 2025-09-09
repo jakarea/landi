@@ -113,14 +113,26 @@
   border-radius: 0.75rem;
   border: 1px solid var(--neutral-color-neutral-30, #E5ECF6);
   background: var(--neutral-white, #FFF);
-  display: inline-block;
+  display: inline-flex;
   width: 2.5rem;
   height: 2.5rem;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-right: 1.5rem;
   position: relative;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  z-index: 100;
+  pointer-events: auto !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.header-area .d-flex a.bttn * {
+  pointer-events: none;
+}
+.header-area .d-flex a.bttn:hover {
+  background: var(--neutral-color-neutral-20, #F1F4F9);
+  transform: scale(1.05);
 }
 .header-area .d-flex a.bttn span {
   position: absolute;

@@ -472,6 +472,15 @@ class DashboardController extends Controller
     // instructor notification
     public function notifications()
     {
+        // Mark all unseen notifications as seen for this instructor
+        $unseens = Notification::where('instructor_id', Auth::user()->id)
+            ->where('type', 'instructor')
+            ->where('status', 'unseen')
+            ->get();
+            
+        foreach ($unseens as $unseen) {
+            $unseen->update(['status' => 'seen']);
+        }
 
         $currentYear = Carbon::now()->subDays(365);
         $today = Carbon::now();
@@ -526,11 +535,14 @@ class DashboardController extends Controller
     }
 
     // instructor notification delete
-    public function notifyRemove($domain, $id)
+    public function notifyRemove($id)
     {
         $notify = Notification::find($id);
-        $notify->delete();
-        return redirect()->back()->with('success','Notification deleted successfully');
+        if ($notify) {
+            $notify->delete();
+            return redirect()->back()->with('success','Notification deleted successfully');
+        }
+        return redirect()->back()->with('error','Notification not found');
     }
 
     private function getActiveInActiveStudents($data)

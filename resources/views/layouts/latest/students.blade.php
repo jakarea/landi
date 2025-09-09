@@ -65,14 +65,13 @@
         }
 
         .header-area .navbar-nav .nav-item .submenu-box li a:hover,
-        .header-area .navbar-nav .nav-item .submenu-box,
-        .header-area{
-            background: #fcc111
+        .header-area .navbar-nav .nav-item .submenu-box li a.active{
+            background: var(--neutral-color-neutral-20, #F1F4F9);
         }
-
-        .header-area .navbar-nav .nav-item .nav-link,
-        .header-area .navbar-nav .nav-item .submenu-box li a{
-            color: #daa222
+        
+        .header-area .navbar-nav .nav-item .nav-link.active {
+            color: #000000;
+            font-weight: 500;
         }
 
     </style>
@@ -80,25 +79,21 @@
     @yield('seo')
 </head>
 
-<body class="{{ session('darkModePreference') == 'dark-mode' ? 'dark-mode' : '' }}">
-
+<body class="bg-body {{ session('darkModePreference') == 'dark-mode' ? 'dark-mode' : '' }}">
 
     {{-- Main Root Wrapper @S --}}
-    <div class="main-page-wrapper">
 
-        {{-- header start --}}
-        @if (Auth::user() && Auth::user()->user_role == 'instructor')
+    {{-- header start --}}
+    @if (Auth::user() && Auth::user()->user_role == 'instructor')
         @include('partials/latest/instructor/header')
-        @elseif(Auth::user() && Auth::user()->user_role == 'admin')
+    @elseif(Auth::user() && Auth::user()->user_role == 'admin')
         @include('partials/latest/dashboard/header')
-        @else
+    @else
         @include('partials/latest/students/header')
-        @endif
+    @endif
+    {{-- header end --}}
 
-        {{-- header end --}}
-
-        @yield('content')
-    </div>
+    @yield('content')
     {{-- Main Root Wrapper @E --}}
 
     {{-- dark mode button start --}}

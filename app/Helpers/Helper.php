@@ -387,7 +387,38 @@ if (!function_exists('studentRadarChart')) {
 if (!function_exists('unseenNotification')) {
     function unseenNotification()
     {
-        return \App\Models\Notification::where('status', 'unseen')->where('user_id',Auth::user()->id)->count();
+        if (!Auth::check()) {
+            return 0;
+        }
+        
+        try {
+            return \App\Models\Notification::where('status', 'unseen')
+                ->where('user_id', Auth::user()->id)
+                ->count();
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+}
+
+/**
+ * Helper function to get instructor unseenNotification
+ */
+if (!function_exists('instructorUnseenNotification')) {
+    function instructorUnseenNotification()
+    {
+        if (!Auth::check()) {
+            return 0;
+        }
+        
+        try {
+            return \App\Models\Notification::where('status', 'unseen')
+                ->where('instructor_id', Auth::user()->id)
+                ->where('type', 'instructor')
+                ->count();
+        } catch (\Exception $e) {
+            return 0;
+        }
     }
 }
 
