@@ -118,6 +118,16 @@ use Illuminate\Support\Str;
     visibility: visible !important;
     pointer-events: auto !important;
 }
+
+/* Like button styles */
+.like-btn.active {
+    background-color: #dc2626 !important;
+    color: white !important;
+}
+
+.like-btn.active:hover {
+    background-color: #b91c1c !important;
+}
 </style>
 @endpush
 
@@ -224,6 +234,7 @@ use Illuminate\Support\Str;
                                 <th class="text-left p-3">পেমেন্টের তারিখ</th>
                                 <th class="text-left p-3">পরিমাণ</th>
                                 <th class="text-left p-3">অবস্থা</th>
+                                <th class="text-left p-3">পছন্দ</th>
                                 <th class="text-left p-3">কার্যক্রম</th>
                             </tr>
                         </thead>
@@ -266,6 +277,15 @@ use Illuminate\Support\Str;
                                             ব্যর্থ
                                         </span>
                                     @endif
+                                </td>
+                                <td class="p-3">
+                                    <!-- Like Button -->
+                                    <button class="like-btn p-2 rounded-lg transition-all duration-300 {{ in_array($enrollment['course']->id, $userLikes) ? 'bg-red-600 text-white active' : 'bg-gray-700 text-gray-400 hover:text-red-400' }}" 
+                                            data-course-id="{{ $enrollment['course']->id }}"
+                                            data-instructor-id="{{ $enrollment['instructor']->id }}"
+                                            onclick="toggleCourseLike(this)">
+                                        <i class="fas fa-heart text-sm"></i>
+                                    </button>
                                 </td>
                                 <td class="p-3">
                                     <a href="{{ url('student/courses/'.$enrollment['course']->slug.'/learn') }}" 
@@ -632,5 +652,52 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 5000);
     }
 });
+
+// Like functionality for profile page
+function toggleCourseLike(button) {
+    const courseId = button.getAttribute('data-course-id');
+    const instructorId = button.getAttribute('data-instructor-id');
+    
+    const currentURL = window.location.href;
+    const baseUrl = currentURL.split('/').slice(0, 3).join('/');
+    
+    // Disable button during request
+    button.disabled = true;
+    
+    fetch(`${baseUrl}/student/course-like/${courseId}/${instructorId}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+    })
+    .then(response => {
+        if (response.status === 302 || response.status === 401) {
+            window.location.href = '/login';
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data) return; // Prevent errors if redirected
+        
+        if (data.message === 'liked') {
+            button.classList.add('active');
+            button.classList.remove('bg-gray-700', 'text-gray-400');
+            button.classList.add('bg-red-600', 'text-white');
+        } else {
+            button.classList.remove('active');
+            button.classList.remove('bg-red-600', 'text-white');
+            button.classList.add('bg-gray-700', 'text-gray-400');
+        }
+    })
+    .catch(error => {
+        // Handle error silently
+    })
+    .finally(() => {
+        button.disabled = false;
+    });
+}
 </script>
 @endsection

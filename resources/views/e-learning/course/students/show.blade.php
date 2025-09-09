@@ -858,17 +858,22 @@
                     moduleId: moduleId
                 };
                 
-                console.log('📡 Logging course progress:', data);
-                
                 $.ajax({
                     url: '{{ route('student.log.courses') }}',
                     method: 'GET',
                     data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
                     success: function(response) {
-                        console.log('✅ Course progress logged successfully');
+                        // Course progress logged successfully
                     },
                     error: function(xhr, status, error) {
-                        console.log('❌ Course progress logging failed:', error);
+                        if (xhr.status === 302 || xhr.status === 401) {
+                            // Authentication issue - redirect to login
+                            window.location.href = '/login';
+                        }
                     }
                 });
             });
@@ -1090,41 +1095,38 @@
         const likeBttn = document.getElementById('likeBttn');
 
         likeBttn.addEventListener('click', (e) => {
-            console.log('❤️ Like button clicked');
-            
             const course_id = {{ $course->id }};
             const ins_id = {{ $course->user_id }};
-            
-            console.log('📊 Like request data:', {course_id: course_id, instructor_id: ins_id});
 
             fetch(`${baseUrl}/student/course-like/${course_id}/${ins_id}`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     },
                 })
                 .then(response => {
-                    console.log('📡 Response status:', response.status);
+                    if (response.status === 302 || response.status === 401) {
+                        window.location.href = '/login';
+                        return;
+                    }
                     return response.json();
                 })
                 .then(data => {
-                    console.log('📨 Response data:', data);
+                    if (!data) return; // Prevent errors if redirected
                     
                     if (data.message === 'liked') {
                         likeBttn.classList.add('active');
                         likeBttn.classList.remove('bg-gray-700', 'text-gray-400');
                         likeBttn.classList.add('bg-red-600', 'text-white');
-                        console.log('❤️ Course liked - heart is now red');
                     } else {
                         likeBttn.classList.remove('active');
                         likeBttn.classList.remove('bg-red-600', 'text-white');
                         likeBttn.classList.add('bg-gray-700', 'text-gray-400');
-                        console.log('💔 Course unliked - heart is now gray');
                     }
                 })
                 .catch(error => {
-                    console.error('❌ Like request failed:', error);
                     likeBttn.classList.remove('active');
                 });
 
@@ -1133,12 +1135,35 @@
         $(document).on('click', '#markCompleteBtn', function(e) {
                 e.preventDefault();
                 
-                // console.log('🎯 Mark Complete button clicked!');
+                // Debug: Check authentication status
+                console.log('🔍 Debug Info:');
+                console.log('- Auth User ID: {{ Auth::check() ? Auth::user()->id : "NOT AUTHENTICATED" }}');
+                console.log('- CSRF Token:', $('meta[name="csrf-token"]').attr('content'));
+                console.log('- Current URL:', window.location.href);
+                console.log('- Base URL:', baseUrl);
+                console.log('- Complete URL:', baseUrl + '/student/courses/complete-lesson');
+                console.log('- Laravel Route URL:', '{{ route("student.complete.lesson") }}');
                 
-                // Check if lesson is already completed - if so, don't proceed
-                // if ($(this).hasClass('btn-secondary') && $(this).text().includes('Completed')) {
-                //     return false;
-                // }
+                // Test simple auth endpoint first
+                console.log('🧪 Testing simple auth endpoint...');
+                $.ajax({
+                    url: '{{ route("student.test.auth") }}',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                        console.log('✅ Auth test SUCCESS:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('❌ Auth test FAILED:', {
+                            status: xhr.status,
+                            statusText: xhr.statusText,
+                            responseText: xhr.responseText
+                        });
+                    }
+                });
                 
                 var lessonId = $(this).data('lesson');
                 var courseId = $(this).data('course');
@@ -1151,18 +1176,99 @@
                     moduleId: moduleId,
                     instructorId: {{ $course->user_id }},
                     duration: duration,
+                    userId: {{ Auth::check() ? Auth::user()->id : 'null' }},
                     is_completed: true
                 };
 
                 var $element = $(this);
                 
-                // console.log('🎯 MAIN Mark as Complete button clicked');
-                // console.log('Inserting into course_activities table:', data);
-
+                // Try fetch instead of jQuery AJAX
+                console.log('🚀 Using fetch instead of jQuery AJAX...');
+                
+                // Update button state to loading
+                $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
+                $element.prop('disabled', true);
+                
+                // Try with form data instead of JSON
+                const formData = new FormData();
+                Object.keys(data).forEach(key => {
+                    formData.append(key, data[key]);
+                });
+                
+                fetch('{{ route("student.complete.lesson") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                        // Don't set Content-Type, let browser set it for FormData
+                    },
+                    body: formData,
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    console.log('📡 Fetch response:', response);
+                    console.log('- Status:', response.status);
+                    console.log('- Status Text:', response.statusText);
+                    console.log('- Redirected:', response.redirected);
+                    console.log('- URL:', response.url);
+                    console.log('- Headers:', [...response.headers.entries()]);
+                    
+                    if (response.status === 302) {
+                        console.log('🚫 Got 302 redirect');
+                        throw new Error('Session expired - 302 redirect');
+                    }
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    // Check if response is actually JSON
+                    const contentType = response.headers.get('content-type');
+                    console.log('- Content-Type:', contentType);
+                    
+                    if (!contentType || !contentType.includes('application/json')) {
+                        console.log('⚠️ Response is not JSON, likely redirected to HTML page');
+                        // Get the text to see what page we're getting
+                        return response.text().then(text => {
+                            console.log('📄 Response text (first 500 chars):', text.substring(0, 500));
+                            throw new Error('Expected JSON response but got HTML page');
+                        });
+                    }
+                    
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('✅ Fetch SUCCESS:', data);
+                    $element.html('<i class="fas fa-check-circle me-1"></i>Completed');
+                    $element.removeClass('btn-success').addClass('btn-secondary');
+                    $element.prop('disabled', true);
+                })
+                .catch(error => {
+                    console.log('❌ Fetch ERROR:', error);
+                    
+                    // Reset button on error
+                    $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
+                    $element.removeClass('btn-secondary').addClass('btn-success');
+                    $element.prop('disabled', false);
+                    
+                    if (error.message.includes('302') || error.message.includes('Session expired')) {
+                        alert('আপনার সেশন শেষ হয়ে গেছে। অনুগ্রহ করে পুনরায় লগইন করুন।');
+                        window.location.href = '/login';
+                    }
+                });
+                
+                return; // Skip the old jQuery AJAX code
+                
+                // OLD JQUERY AJAX CODE (commented out)
+                /*
                 $.ajax({
-                    url: '/student/courses/complete-lesson',
+                    url: '{{ route("student.complete.lesson") }}',
                     method: 'POST',
                     data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
                     beforeSend: function() {
                         $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
                         $element.prop('disabled', true);
@@ -1198,10 +1304,28 @@
                         // console.log('✅ Main completion button updated');
                     },
                     error: function(xhr, status, error) {
-                        console.log('❌ MAIN completion ERROR:', error);
-                        console.log('Response Status:', xhr.status);
-                        console.log('Response Text:', xhr.responseText);
-                        console.log('Error Details:', {status: status, error: error});
+                        console.log('❌ AJAX Error Details:');
+                        console.log('- Status:', xhr.status);
+                        console.log('- Status Text:', xhr.statusText);
+                        console.log('- Response Text:', xhr.responseText);
+                        console.log('- Error:', error);
+                        console.log('- Headers:', xhr.getAllResponseHeaders());
+                        
+                        // Handle 302 redirect (authentication issue)
+                        if (xhr.status === 302) {
+                            console.log('🚫 302 Redirect - Session expired');
+                            alert('আপনার সেশন শেষ হয়ে গেছে। অনুগ্রহ করে পুনরায় লগইন করুন।');
+                            window.location.href = '/login';
+                            return;
+                        }
+                        
+                        // Handle other errors
+                        if (xhr.status === 401) {
+                            console.log('🚫 401 Unauthorized');
+                            alert('অননুমোদিত প্রবেশ। অনুগ্রহ করে পুনরায় লগইন করুন।');
+                            window.location.href = '/login';
+                            return;
+                        }
                         
                         // Reset button on error
                         $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
@@ -1209,6 +1333,7 @@
                         $element.prop('disabled', false);
                     }
                 });
+                */
             });
     </script>
 @endsection

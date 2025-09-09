@@ -71,9 +71,14 @@ class StudentProfileController extends Controller
         // Sort by date (newest first)
         $allEnrollments = $allEnrollments->sortByDesc('date');
         
+        // Get course likes for the current user
+        $userLikes = \App\Models\course_like::where('user_id', $id)
+            ->pluck('course_id')
+            ->toArray();
+        
         $totalTimeSpend = CourseActivity::where('user_id', $id)->where('is_completed',1)->sum('duration');
         
-        return view('profile/students/profile',compact('user','checkout','allEnrollments','totalTimeSpend'));
+        return view('profile/students/profile',compact('user','checkout','allEnrollments','totalTimeSpend','userLikes'));
     }
 
     // profile edit

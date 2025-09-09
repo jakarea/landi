@@ -1015,17 +1015,21 @@ class StudentHomeController extends Controller
      */
     public function storeActivity(Request $request)
     {
-
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-        
         $courseId = (int)$request->input('courseId');
         $lessonId = (int)$request->input('lessonId');
         $moduleId = (int)$request->input('moduleId');
         $duration = (int)$request->input('duration', 0);
         $instructorId = (int)$request->input('instructorId');
-        $userId = auth()->user()->id;
+        $userId = (int)$request->input('userId');
+        
+        // If userId is not provided in request, try to get from auth
+        if (!$userId && Auth::check()) {
+            $userId = Auth::user()->id;
+        }
+        
+        if (!$userId) {
+            return response()->json(['error' => 'User ID is required'], 400);
+        }
 
 
         if (!$courseId || !$lessonId || !$moduleId) {
@@ -1080,7 +1084,14 @@ class StudentHomeController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to save activity'], 500);
+            \Log::error('Course Activity Save Error: ' . $e->getMessage(), [
+                'courseId' => $courseId,
+                'lessonId' => $lessonId,
+                'moduleId' => $moduleId,
+                'userId' => $userId,
+                'instructorId' => $instructorId
+            ]);
+            return response()->json(['error' => 'Failed to save activity: ' . $e->getMessage()], 500);
         }
     }
 
@@ -1197,10 +1208,19 @@ class StudentHomeController extends Controller
     }
 
     public function review(Request $request, $slug){
-        $userId = Auth()->user()->id;
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        
+        $userId = Auth::user()->id;
         $lessons = Lesson::orderby('id', 'desc')->paginate(10);
         $modules = Module::orderby('id', 'desc')->paginate(10);
         $course = Course::where('slug', $slug)->with('user')->first();
+        
+        if (!$course) {
+            return redirect()->back()->with('error', 'Course not found!');
+        }
+        
         $course_reviews = CourseReview::where('course_id', $course->id)->where('user_id',$userId)->first();
         if($course_reviews){
             $course_reviews->comment = $request->comment;
@@ -1245,10 +1265,19 @@ class StudentHomeController extends Controller
 
     public function courseLike($course_id, $ins_id)
     {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
+        
         // Check if the current user has liked this course
         $course_liked = course_like::where('course_id', $course_id)
                                   ->where('instructor_id', $ins_id)
-                                  ->where('user_id', Auth::user()->id)
+                                  ->where('user_id', $user->id)
                                   ->first();
 
         if ($course_liked) {
@@ -1258,7 +1287,7 @@ class StudentHomeController extends Controller
             $course_like = new course_like([
                 'course_id' => $course_id,
                 'instructor_id' => $ins_id,
-                'user_id' => Auth::user()->id,
+                'user_id' => $user->id,
                 'status' => 1,
             ]);
             $course_like->save();
@@ -1271,10 +1300,19 @@ class StudentHomeController extends Controller
 
     public function courseUnLike($course_id, $ins_id)
     {
+        if (!Auth::check()) {
+            return redirect()->back()->with('error', 'Unauthorized');
+        }
+        
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not authenticated');
+        }
+        
         // Check if the current user has liked this course
         $course_liked = course_like::where('course_id', $course_id)
                                   ->where('instructor_id', $ins_id)
-                                  ->where('user_id', Auth::user()->id)
+                                  ->where('user_id', $user->id)
                                   ->first();
 
         if ($course_liked) {
