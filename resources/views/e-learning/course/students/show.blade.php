@@ -114,7 +114,7 @@
     
     <!-- Debug information - remove in production -->
     @if(config('app.debug'))
-        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4 text-sm">
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4 text-sm hidden">
             <strong class="font-semibold text-blue-800 dark:text-blue-200">Debug Info:</strong> 
             <span class="text-blue-700 dark:text-blue-300">
                 Completed Lessons: {{ count($userCompletedLessons ?? []) }} | 
@@ -123,10 +123,10 @@
         </div>
     @endif
     
-    <div class="max-w-7xl mx-auto p-6">
+    <div class="max-w-full mx-auto p-6">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
             <!-- Main Content Area - 3/4 width on large screens -->
-            <div class="lg:col-span-3">
+            <div class="lg:col-span-3 px-6">
                 <!-- Video Player Section -->
                 @if ($isUserEnrolled)
                     <div class="glass-effect rounded-2xl p-6 mb-6 glow-card">
@@ -227,8 +227,7 @@
                             </div>
                         </div>
                     </div>
-                        @endif
-
+                @endif
 
                 <!-- Course Header -->
                 <div class="glass-effect rounded-2xl p-6 mb-6 glow-card">
@@ -251,7 +250,7 @@
                             
                             {{-- Mark as Complete Button --}}
                             @if($isUserEnrolled)
-                                <button class="px-4 py-2 rounded-lg font-medium transition-all duration-300 btn-secondary text-sm" id="markCompleteBtn" 
+                                <button class="px-4 py-2 text-gray-600 rounded-lg font-medium transition-all duration-300 btn-secondary text-sm" id="markCompleteBtn" 
                                     data-course="{{ $course->id }}"
                                     data-module=""
                                     data-lesson=""
@@ -261,7 +260,7 @@
                                     Completed
                                 </button>
                             @else
-                                <button class="px-4 py-2 rounded-lg font-medium bg-gray-600 text-gray-300 cursor-not-allowed text-sm" disabled>
+                                <button class="px-4 text-gray-600 py-2 rounded-lg font-medium bg-gray-600 text-gray-300 cursor-not-allowed text-sm" disabled>
                                     <i class="fas fa-lock mr-1"></i>
                                     Not Enrolled
                                 </button>
@@ -399,7 +398,7 @@
                         @endif
                     </div>
                 @endif
-            
+            </div>
             <!-- Sidebar - 1/4 width on large screens -->
             <div class="lg:col-span-1">
                 <!-- Course Modules -->
@@ -758,7 +757,7 @@
             $(document).on('click', '.lesson-item.lesson-clickable', function(e) {
                 // Don't prevent default for completion checkbox clicks
                 if ($(e.target).hasClass('is_complete_lesson')) {
-                    console.log('🚫 Clicked on completion checkbox - returning');
+                    // console.log('🚫 Clicked on completion checkbox - returning');
                     return; // Let the completion handler handle this
                 }
                 
@@ -914,7 +913,7 @@
 
             // Function to update the Mark as Complete button based on selected lesson
             function updateMarkAsCompleteButton(lessonId, moduleId, instructorId, duration) {
-                console.log('🔄 Updating Mark as Complete button for lesson:', lessonId);
+                // console.log('🔄 Updating Mark as Complete button for lesson:', lessonId);
                 
                 var $button = $('#markCompleteBtn');
                 
@@ -922,22 +921,22 @@
                 var completedLessons = @json(array_keys($userCompletedLessons ?? []));
                 var isCompleted = completedLessons.includes(parseInt(lessonId));
                 
-                console.log('Lesson completion status from server:', {
-                    lessonId: lessonId,
-                    completedLessons: completedLessons,
-                    isCompleted: isCompleted
-                });
+                // console.log('Lesson completion status from server:', {
+                //     lessonId: lessonId,
+                //     completedLessons: completedLessons,
+                //     isCompleted: isCompleted
+                // });
                 
                 if (isCompleted) {
                     // Lesson is already completed - show Completed and disable
                     $button.removeClass('btn-success').addClass('btn-secondary');
-                    $button.html('<i class="fas fa-check-circle me-1"></i>Completed');
+                    $button.html('<i class="fas fa-check-circle me-1 text-gray-600"></i><span class="text-gray-600">Completed</span>');
                     $button.prop('disabled', true);
                     console.log('✅ Button set to Completed state');
                 } else {
                     // Lesson not completed yet
                     $button.removeClass('btn-secondary').addClass('btn-success');
-                    $button.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
+                    $button.html('<i class="fas fa-check-circle me-1 text-gray-600"></i><span class="text-gray-600">Mark as Complete</span>');
                     $button.prop('disabled', false);
                     
                     // Update button data attributes
@@ -952,154 +951,71 @@
                 }
             }
 
-            // Handle main "Mark as Complete" button click (beside heart icon)
-            $(document).on('click', '#markCompleteBtn', function(e) {
-                e.preventDefault();
-                
-                console.log('🎯 Mark Complete button clicked!');
-                
-                // Check if lesson is already completed - if so, don't proceed
-                if ($(this).hasClass('btn-secondary') && $(this).text().includes('Completed')) {
-                    console.log('🚫 Button is in Completed state - no AJAX call');
-                    return false;
-                }
-                
-                var lessonId = $(this).data('lesson');
-                var courseId = $(this).data('course');
-                var moduleId = $(this).data('module');
-                var duration = $(this).data('duration') || 0;
-                
-                var data = {
-                    courseId: courseId,
-                    lessonId: lessonId,
-                    moduleId: moduleId,
-                    instructorId: {{ $course->user_id }},
-                    duration: duration,
-                    is_completed: true
-                };
-
-                var $element = $(this);
-                
-                console.log('🎯 MAIN Mark as Complete button clicked');
-                console.log('Inserting into course_activities table:', data);
-
-                $.ajax({
-                    url: '{{ route('student.complete.lesson') }}',
-                    method: 'GET',
-                    data: data,
-                    beforeSend: function() {
-                        $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
-                        $element.prop('disabled', true);
-                        console.log('⏳ Processing main completion...');
-                    },
-                    success: function(response) {
-                        console.log('✅ MAIN completion SUCCESS:', response);
-                        console.log('Data inserted into course_activities:', {
-                            course_id: courseId,
-                            instructor_id: {{ $course->user_id }},
-                            module_id: moduleId,
-                            lesson_id: lessonId,
-                            user_id: '{{ Auth::user()->id }}',
-                            is_completed: true,
-                            duration: duration
-                        });
-                        
-                        // Change button to completed state
-                        $element.html('<i class="fas fa-check-circle me-1"></i>Completed');
-                        $element.removeClass('btn-success').addClass('btn-secondary');
-                        $element.prop('disabled', true);
-                        
-                        // Update the lesson completion icon in the sidebar
-                        var $lessonIcon = $('[data-lesson-id="' + lessonId + '"] .is_complete_lesson');
-                        if ($lessonIcon.length) {
-                            $lessonIcon.removeClass('text-gray-500 hover:text-green-400 is_complete_lesson').addClass('text-green-500');
-                            $lessonIcon.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
-                        }
-                        
-                        // Update the module icon if all lessons in module are completed
-                        updateModuleCompletionIcon(moduleId);
-                        
-                        console.log('✅ Main completion button updated');
-                    },
-                    error: function(xhr, status, error) {
-                        console.log('❌ MAIN completion ERROR:', error);
-                        console.log('Response Status:', xhr.status);
-                        console.log('Response Text:', xhr.responseText);
-                        console.log('Error Details:', {status: status, error: error});
-                        
-                        // Reset button on error
-                        $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
-                        $element.removeClass('btn-secondary').addClass('btn-success');
-                        $element.prop('disabled', false);
-                    }
-                });
-            });
-
             // Handle manual lesson completion clicks
-            $(document).on('click', '.is_complete_lesson', function(e) {
-                e.preventDefault();
-                e.stopPropagation(); // Prevent lesson click event
+            // $(document).on('click', '.is_complete_lesson', function(e) {
+            //     e.preventDefault();
+            //     e.stopPropagation(); // Prevent lesson click event
                 
-                var lessonId = $(this).data('lesson');
-                var courseId = $(this).data('course');
-                var moduleId = $(this).data('module');
-                var duration = $(this).data('duration') || 0;
-                var userId = $(this).data('user');
+            //     var lessonId = $(this).data('lesson');
+            //     var courseId = $(this).data('course');
+            //     var moduleId = $(this).data('module');
+            //     var duration = $(this).data('duration') || 0;
+            //     var userId = $(this).data('user');
                 
-                var data = {
-                    courseId: courseId,
-                    lessonId: lessonId,
-                    moduleId: moduleId,
-                    instructorId: {{ $course->user_id }},
-                    duration: duration,
-                    is_completed: true
-                };
+            //     var data = {
+            //         courseId: courseId,
+            //         lessonId: lessonId,
+            //         moduleId: moduleId,
+            //         instructorId: {{ $course->user_id }},
+            //         duration: duration,
+            //         is_completed: true
+            //     };
 
-                var $element = $(this);
+            //     var $element = $(this);
                 
-                console.log('📝 MANUAL lesson completion clicked');
-                console.log('Inserting into course_activities table:', data);
+            //     // console.log('📝 MANUAL lesson completion clicked');
+            //     // console.log('Inserting into course_activities table:', data);
 
-                $.ajax({
-                    url: '{{ route('student.complete.lesson') }}',
-                    method: 'GET',
-                    data: data,
-                    beforeSend: function() {
-                        // Change class to spinner
-                        $element.removeClass('fas fa-check-circle').addClass('spinner-border spinner-border-sm');
-                        console.log('⏳ Processing manual completion...');
-                    },
-                    success: function(response) {
-                        console.log('✅ MANUAL completion SUCCESS:', response);
-                        console.log('Data inserted into course_activities:', {
-                            course_id: courseId,
-                            instructor_id: {{ $course->user_id }},
-                            module_id: moduleId,
-                            lesson_id: lessonId,
-                            user_id: userId,
-                            is_completed: true,
-                            duration: duration
-                        });
+            //     $.ajax({
+            //         url: '{{ route('student.complete.lesson') }}',
+            //         method: 'POST',
+            //         data: data,
+            //         beforeSend: function() {
+            //             // Change class to spinner
+            //             $element.removeClass('fas fa-check-circle').addClass('spinner-border spinner-border-sm');
+            //             console.log('⏳ Processing manual completion...');
+            //         },
+            //         success: function(response) {
+            //             // console.log('✅ MANUAL completion SUCCESS:', response);
+            //             // console.log('Data inserted into course_activities:', {
+            //             //     course_id: courseId,
+            //             //     instructor_id: {{ $course->user_id }},
+            //             //     module_id: moduleId,
+            //             //     lesson_id: lessonId,
+            //             //     user_id: userId,
+            //             //     is_completed: true,
+            //             //     duration: duration
+            //             // });
                         
-                        // Change icon to success checkmark
-                        $element.removeClass('spinner-border spinner-border-sm text-gray-500 hover:text-green-400 is_complete_lesson').addClass('fas fa-check-circle text-green-500');
-                        $element.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
+            //             // Change icon to success checkmark
+            //             $element.removeClass('spinner-border spinner-border-sm text-gray-500 hover:text-green-400 is_complete_lesson').addClass('fas fa-check-circle text-green-500');
+            //             $element.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
                         
-                        // Update the module icon if all lessons in module are completed
-                        updateModuleCompletionIcon(moduleId);
+            //             // Update the module icon if all lessons in module are completed
+            //             // updateModuleCompletionIcon(moduleId);
                         
-                        console.log('✅ Manual completion icon updated');
-                    },
-                    error: function(xhr, status, error) {
-                        console.log('❌ MANUAL completion ERROR:', error);
-                        console.log('Response Status:', xhr.status);
-                        console.log('Response Text:', xhr.responseText);
-                        console.log('Error Details:', {status: status, error: error});
-                        // Reset on error
-                        $element.removeClass('spinner-border spinner-border-sm').addClass('fas fa-check-circle');
-                    }
-                });
-            });
+            //             console.log('✅ Manual completion icon updated');
+            //         },
+            //         error: function(xhr, status, error) {
+            //             console.log('❌ MANUAL completion ERROR:', error);
+            //             console.log('Response Status:', xhr.status);
+            //             console.log('Response Text:', xhr.responseText);
+            //             console.log('Error Details:', {status: status, error: error});
+            //             // Reset on error
+            //             $element.removeClass('spinner-border spinner-border-sm').addClass('fas fa-check-circle');
+            //         }
+            //     });
+            // });
 
             // Function to update module completion icon when all lessons are completed
             function updateModuleCompletionIcon(moduleId) {
@@ -1186,6 +1102,87 @@
                 });
 
         });
+
+        $(document).on('click', '#markCompleteBtn', function(e) {
+                e.preventDefault();
+                
+                // console.log('🎯 Mark Complete button clicked!');
+                
+                // Check if lesson is already completed - if so, don't proceed
+                // if ($(this).hasClass('btn-secondary') && $(this).text().includes('Completed')) {
+                //     return false;
+                // }
+                
+                var lessonId = $(this).data('lesson');
+                var courseId = $(this).data('course');
+                var moduleId = $(this).data('module');
+                var duration = $(this).data('duration') || 0;
+                
+                var data = {
+                    courseId: courseId,
+                    lessonId: lessonId,
+                    moduleId: moduleId,
+                    instructorId: {{ $course->user_id }},
+                    duration: duration,
+                    is_completed: true
+                };
+
+                var $element = $(this);
+                
+                // console.log('🎯 MAIN Mark as Complete button clicked');
+                // console.log('Inserting into course_activities table:', data);
+
+                $.ajax({
+                    url: '/student/courses/complete-lesson',
+                    method: 'POST',
+                    data: data,
+                    beforeSend: function() {
+                        $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
+                        $element.prop('disabled', true);
+                        // console.log('⏳ Processing main completion...');
+                    },
+                    success: function(response) {
+                        // console.log('✅ MAIN completion SUCCESS:', response);
+                        // console.log('Data inserted into course_activities:', {
+                        //     course_id: courseId,
+                        //     instructor_id: {{ $course->user_id }},
+                        //     module_id: moduleId,
+                        //     lesson_id: lessonId,
+                        //     user_id: '{{ Auth::user()->id }}',
+                        //     is_completed: true,
+                        //     duration: duration
+                        // });
+                        
+                        // Change button to completed state
+                        // $element.html('<i class="fas fa-check-circle me-1"></i>Completed');
+                        // $element.removeClass('btn-success').addClass('btn-secondary');
+                        // $element.prop('disabled', true);
+                        
+                        // Update the lesson completion icon in the sidebar
+                        // var $lessonIcon = $('[data-lesson-id="' + lessonId + '"] .is_complete_lesson');
+                        // if ($lessonIcon.length) {
+                        //     $lessonIcon.removeClass('text-gray-500 hover:text-green-400 is_complete_lesson').addClass('text-green-500');
+                        //     $lessonIcon.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
+                        // }
+                        
+                        // Update the module icon if all lessons in module are completed
+                        // updateModuleCompletionIcon(moduleId);
+                        
+                        // console.log('✅ Main completion button updated');
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('❌ MAIN completion ERROR:', error);
+                        console.log('Response Status:', xhr.status);
+                        console.log('Response Text:', xhr.responseText);
+                        console.log('Error Details:', {status: status, error: error});
+                        
+                        // Reset button on error
+                        $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
+                        $element.removeClass('btn-secondary').addClass('btn-success');
+                        $element.prop('disabled', false);
+                    }
+                });
+            });
     </script>
 @endsection
 {{-- script section @E --}}

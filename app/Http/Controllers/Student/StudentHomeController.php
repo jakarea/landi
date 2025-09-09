@@ -1,36 +1,36 @@
 <?php
 
 namespace App\Http\Controllers\Student;
-use Auth;
-use File;
-use ZipArchive;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
+use App\Models\BundleCourse;
 use App\Models\Cart;
-use App\Models\User;
+use App\Models\Certificate;
+use App\Models\Checkout;
 use App\Models\Course;
+use App\Models\course_like;
+use App\Models\CourseActivity;
+use App\Models\CourseEnrollment;
+use App\Models\CourseLog;
+use App\Models\CourseReview;
 use App\Models\Lesson;
 use App\Models\Module;
-use App\Models\Checkout;
-use App\Models\CourseLog;
-use App\Models\CourseEnrollment;
-use Carbon\CarbonInterval;
-use App\Models\Certificate;
-use Illuminate\Support\Facades\DB;
-use App\Models\course_like;
-use App\Models\BundleCourse;
-use App\Models\CourseReview;
-use Illuminate\Http\Request;
-use App\Models\CourseActivity;
-use RecursiveIteratorIterator;
 use App\Models\Notification;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
-use RecursiveDirectoryIterator;
-use App\Http\Controllers\Controller;
-use Intervention\Image\Facades\Image;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
+use File;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ZipArchive;
 
 class StudentHomeController extends Controller
 {
@@ -1022,7 +1022,8 @@ class StudentHomeController extends Controller
         $moduleId = (int)$request->input('moduleId');
         $duration = (int)$request->input('duration', 0);
         $instructorId = (int)$request->input('instructorId');
-        $userId = auth()->id();
+        $userId = auth()->user()->id;
+
 
         if (!$courseId || !$lessonId || !$moduleId) {
             return response()->json(['error' => 'Missing required parameters'], 400);
