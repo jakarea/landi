@@ -243,14 +243,14 @@
                         <!-- Action Buttons -->
                         <div class="flex items-center space-x-3">
                             <!-- Like Button -->
-                            <button class="p-3 rounded-lg transition-all duration-300 {{ $liked === 'active' ? 'bg-red-600 text-white active' : 'bg-gray-700 text-gray-400 hover:text-red-400' }}" 
+                            <button class="p-3 rounded-lg transition-all duration-300 {{ $liked === 'active' ? 'text-red-400 active' : 'text-gray-400' }}" 
                                     id="likeBttn">
                                 <i class="fas fa-heart text-lg"></i>
                             </button>
                             
                             {{-- Mark as Complete Button --}}
                             @if($isUserEnrolled)
-                                <button class="px-4 py-2 text-gray-600 rounded-lg font-medium transition-all duration-300 btn-secondary text-sm" id="markCompleteBtn" 
+                                <button class="px-4 py-2 text-gray-600 rounded-lg font-medium transition-all duration-300 btn-secondary text-sm text-green-500" id="markCompleteBtn" 
                                     data-course="{{ $course->id }}"
                                     data-module=""
                                     data-lesson=""
@@ -260,7 +260,7 @@
                                     Completed
                                 </button>
                             @else
-                                <button class="px-4 text-gray-600 py-2 rounded-lg font-medium bg-gray-600 text-gray-300 cursor-not-allowed text-sm" disabled>
+                                <button class="px-4  transition-all duration-300 text-gray-600 py-2 rounded-lg font-medium bg-gray-600 text-gray-300 cursor-not-allowed text-sm" disabled>
                                     <i class="fas fa-lock mr-1"></i>
                                     Not Enrolled
                                 </button>
@@ -949,7 +949,7 @@
                 if (isCompleted) {
                     // Lesson is already completed - show Completed and disable
                     $button.removeClass('btn-success').addClass('btn-secondary');
-                    $button.html('<i class="fas fa-check-circle me-1 text-gray-600"></i><span class="text-gray-600">Completed</span>');
+                    $button.html('<i class="fas fa-check-circle me-1 text-green-500"></i><span class="text-green-500">Completed</span>');
                     $button.prop('disabled', true);
                     console.log('✅ Button set to Completed state');
                 } else {
@@ -1118,12 +1118,12 @@
                     
                     if (data.message === 'liked') {
                         likeBttn.classList.add('active');
-                        likeBttn.classList.remove('bg-gray-700', 'text-gray-400');
-                        likeBttn.classList.add('bg-red-600', 'text-white');
+                        likeBttn.classList.remove('text-gray-400');
+                        likeBttn.classList.add('text-red-600');
                     } else {
                         likeBttn.classList.remove('active');
-                        likeBttn.classList.remove('bg-red-600', 'text-white');
-                        likeBttn.classList.add('bg-gray-700', 'text-gray-400');
+                        likeBttn.classList.remove('text-red-600');
+                        likeBttn.classList.add('text-gray-400');
                     }
                 })
                 .catch(error => {
@@ -1239,7 +1239,7 @@
                 })
                 .then(data => {
                     console.log('✅ Fetch SUCCESS:', data);
-                    $element.html('<i class="fas fa-check-circle me-1"></i>Completed');
+                    $element.html('<i class="fas fa-check-circle me-1 text-green-500"></i><span class="text-green-500">Completed</span>');
                     $element.removeClass('btn-success').addClass('btn-secondary');
                     $element.prop('disabled', true);
                 })
