@@ -655,7 +655,10 @@
         color: #f59e0b !important;
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8d9465a (course review error page fixed)
     /* Show selected stars (all stars before and including checked input) */
 .rating__input:checked ~ .rating__label .rating__icon--star {
     color: #f59e0b !important; /* yellow-400 */
@@ -666,7 +669,10 @@
 .rating__label:hover ~ .rating__label .rating__icon--star {
     color: #f59e0b !important;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8d9465a (course review error page fixed)
 </style>
 @endsection
 
