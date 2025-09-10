@@ -86,7 +86,7 @@
                             <h6>Overall Progress</h6>
                             <div class="circle-prog-big">
                                 <div class="cards">
-                                    <div class="percent">
+                                    <div class="percent flex items-center align-items-center mx-auto">
 
                                         @php
                                         $totalLessons = 0;
@@ -112,17 +112,17 @@
                                         @php
                                             $percentage = $totalLessons > 0 ? ($completedLessons / $totalLessons) * 100 : 0;
                                         @endphp
-                                        <svg>
+                                        <svg class="mx-auto">
                                             <circle cx="73" cy="73" r="65"></circle>
                                             <circle cx="73" cy="73" r="65"
-                                                style="--percent: {{ $percentage }}">
+                                                style="--percent: {{ round($percentage) }}">
                                             </circle>
                                         </svg>
 
 
 
                                         <div class="number">
-                                            <h5>{{ $percentage }}<span>%</span>
+                                            <h5>{{ round($percentage) }}<span>%</span>
                                             </h5>
                                             <p>{{ $completedLessons }}/{{ $totalLessons }}</p>
                                         </div>
@@ -216,7 +216,7 @@
                                                     style="--percent: {{ $percentage }}"></circle>
                                             </svg>
                                             <div class="number">
-                                                <h6>{{ $percentage }}<span>%</span></h6>
+                                                <h6>{{ round($percentage) }}<span>%</span></h6>
                                             </div>
                                         </div>
                                     </div>
