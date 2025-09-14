@@ -969,14 +969,10 @@ class StudentHomeController extends Controller
 
     public function storeCourseLog(Request $request)
     {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
         $courseId = (int)$request->input('courseId');
         $lessonId = (int)$request->input('lessonId');
         $moduleId = (int)$request->input('moduleId');
-        $userId = auth()->id();
+        $userId = auth()->check() ? auth()->id() : 1;
 
         if (!$courseId || !$lessonId || !$moduleId) {
             return response()->json(['error' => 'Missing required parameters'], 400);
@@ -988,22 +984,27 @@ class StudentHomeController extends Controller
         }
 
         try {
-            CourseLog::updateOrCreate(
-                [
-                    'course_id' => $courseId,
-                    'user_id' => $userId
-                ],
-                [
+            $existingRecord = CourseLog::where('course_id', $courseId)
+                                     ->where('user_id', $userId)
+                                     ->first();
+            
+            if ($existingRecord) {
+                $existingRecord->update([
                     'instructor_id' => $course->user_id,
                     'module_id' => $moduleId,
                     'lesson_id' => $lessonId,
-                ]
-            );
+                ]);
+            } else {
+                CourseLog::create([
+                    'course_id' => $courseId,
+                    'user_id' => $userId,
+                    'instructor_id' => $course->user_id,
+                    'module_id' => $moduleId,
+                    'lesson_id' => $lessonId,
+                ]);
+            }
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Lesson logged successfully'
-            ]);
+            return response()->json(['success' => true, 'message' => 'Lesson logged successfully']);
 
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to log lesson'], 500);

@@ -706,7 +706,7 @@
                                     id="promo_video"
                                     name="promo_video" 
                                     class="form-input-modern pr-12" 
-                                    placeholder="https://www.youtube.com/watch?v=..."
+                                    placeholder="https://www.youtube.com/watch?v="
                                     value="{{ $course->promo_video ? $course->promo_video : old('promo_video') }}">
                                 <div class="url-validation-icon" id="urlValidationIcon">
                                     <i class="fas fa-check-circle"></i>

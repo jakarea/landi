@@ -1066,11 +1066,12 @@ input:checked + .slider:before {
 <div class="modal-overlay" id="moduleModal">
     <div class="modal-content-modern">
         <div class="modal-header">
-            <h3>নতুন মডিউল যোগ করুন</h3>
+            <h3 id="moduleModalTitle">নতুন মডিউল যোগ করুন</h3>
         </div>
         <div class="modal-body">
-            <form action="{{ route('instructor.modules.create', ['course_id' => request()->route('id')]) }}" method="post">
+            <form id="moduleForm" method="post">
                 @csrf
+                <input type="hidden" name="_method" id="moduleFormMethod" value="POST">
                 <input type="hidden" name="module_id" id="editModuleId" value="">
                 
                 <div class="form-group-modern">
@@ -1082,6 +1083,9 @@ input:checked + .slider:before {
                     <label class="form-label-modern">প্রকাশের সময়</label>
                     <input type="datetime-local" name="publish_at" id="modulePublishAt" class="form-input-modern">
                     <p class="text-secondary-200 text-sm mt-2">খালি রাখলে তৎক্ষণাৎ প্রকাশিত হবে</p>
+                    <div id="publishAtError" class="text-red-500 text-sm mt-1" style="display: none;">
+                        ভবিষ্যতের সময় নির্বাচন করুন
+                    </div>
                 </div>
                 
                 <div class="modal-actions">
@@ -1102,6 +1106,7 @@ input:checked + .slider:before {
         <div class="modal-body">
             <form id="lessonForm" method="post">
                 @csrf
+                <input type="hidden" name="_method" id="lessonFormMethod" value="POST">
                 <input type="hidden" name="course_id" id="lessonCourseId" value="">
                 <input type="hidden" name="module_id" id="lessonModuleId" value="">
                 <input type="hidden" name="lesson_id" id="editLessonId" value="">
@@ -1199,17 +1204,29 @@ function toggleModule(button) {
 
 // Modal functionality
 function showAddModuleModal() {
-    document.getElementById('moduleModalTitle') ? document.getElementById('moduleModalTitle').textContent = 'নতুন মডিউল যোগ করুন' : null;
+    document.getElementById('moduleModalTitle').textContent = 'নতুন মডিউল যোগ করুন';
     document.getElementById('editModuleId').value = '';
     document.getElementById('moduleNameInput').value = '';
     document.getElementById('modulePublishAt').value = '';
+    
+    // Set form action and method for creating new module
+    const courseId = {{ request()->route('id') }};
+    document.getElementById('moduleForm').action = `/instructor/modules/create/${courseId}/`;
+    document.getElementById('moduleFormMethod').value = 'POST';
+    
     showModal('moduleModal');
 }
 
 function editModule(moduleId, title, publishAt) {
+    document.getElementById('moduleModalTitle').textContent = 'মডিউল সম্পাদনা করুন';
     document.getElementById('editModuleId').value = moduleId;
     document.getElementById('moduleNameInput').value = title;
     document.getElementById('modulePublishAt').value = publishAt;
+    
+    // Set form action and method for updating existing module
+    document.getElementById('moduleForm').action = `/instructor/modules/${moduleId}/`;
+    document.getElementById('moduleFormMethod').value = 'PUT';
+    
     showModal('moduleModal');
 }
 
@@ -1228,8 +1245,9 @@ function showAddLessonModal(moduleId, courseId) {
     });
     document.querySelector('.lesson-type-option:nth-child(3)').classList.add('active'); // Video option
     
-    // Set form action
+    // Set form action and method
     document.getElementById('lessonForm').action = `/instructor/lessons/create/${courseId}/${moduleId}`;
+    document.getElementById('lessonFormMethod').value = 'POST';
     
     showModal('lessonModal');
 }
@@ -1247,10 +1265,16 @@ function editLesson(lessonId, courseId, moduleId, title, type, isPublic) {
     document.querySelectorAll('.lesson-type-option').forEach(option => {
         option.classList.remove('active');
     });
-    selectLessonType(type, document.querySelector(`[onclick*="${type}"]`));
     
-    // Set form action
-    document.getElementById('lessonForm').action = `/instructor/lessons/update/${lessonId}`;
+    // Find the correct lesson type element and activate it
+    const lessonTypeElement = document.querySelector(`[onclick="selectLessonType('${type}', this)"]`);
+    if (lessonTypeElement) {
+        lessonTypeElement.classList.add('active');
+    }
+    
+    // Set form action and method
+    document.getElementById('lessonForm').action = `/instructor/lessons/${lessonId}/`;
+    document.getElementById('lessonFormMethod').value = 'PUT';
     
     showModal('lessonModal');
 }
@@ -1400,6 +1424,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    
+    // Add form validation for publish_at field
+    const moduleForm = document.querySelector('form[action*="modules/create"]');
+    if (moduleForm) {
+        moduleForm.addEventListener('submit', function(e) {
+            const publishAtField = document.getElementById('modulePublishAt');
+            const publishAtError = document.getElementById('publishAtError');
+            
+            if (publishAtField && publishAtField.value.trim() !== '') {
+                const selectedDateTime = new Date(publishAtField.value);
+                const currentDateTime = new Date();
+                
+                if (selectedDateTime <= currentDateTime) {
+                    e.preventDefault();
+                    publishAtError.style.display = 'block';
+                    publishAtField.focus();
+                    showNotification('প্রকাশের জন্য ভবিষ্যতের সময় নির্বাচন করুন', 'error');
+                    return false;
+                } else {
+                    publishAtError.style.display = 'none';
+                }
+            } else {
+                publishAtError.style.display = 'none';
+            }
+        });
+    }
+    
+    // Real-time validation when user changes the datetime
+    const publishAtField = document.getElementById('modulePublishAt');
+    if (publishAtField) {
+        publishAtField.addEventListener('change', function() {
+            const publishAtError = document.getElementById('publishAtError');
+            
+            if (this.value.trim() !== '') {
+                const selectedDateTime = new Date(this.value);
+                const currentDateTime = new Date();
+                
+                if (selectedDateTime <= currentDateTime) {
+                    publishAtError.style.display = 'block';
+                    this.style.borderColor = '#ef4444';
+                } else {
+                    publishAtError.style.display = 'none';
+                    this.style.borderColor = '';
+                }
+            } else {
+                publishAtError.style.display = 'none';
+                this.style.borderColor = '';
+            }
+        });
+    }
 });
 </script>
 @endsection

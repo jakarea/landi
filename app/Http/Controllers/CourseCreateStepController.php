@@ -92,10 +92,13 @@ class CourseCreateStepController extends Controller
     public function step1c(Request $request){
 
         $request->validate([
-            'module_name' => 'required|string'
+            'module_name' => 'required|string',
+            'publish_at' => 'nullable|date|after:now'
         ],
         [
             'module_name' => 'Module Name is Required',
+            'publish_at.after' => 'প্রকাশের সময় অবশ্যই ভবিষ্যতের হতে হবে',
+            'publish_at.date' => 'সঠিক তারিখ ও সময় প্রবেশ করান'
         ]);
 
         $course = new Course();
@@ -259,10 +262,13 @@ class CourseCreateStepController extends Controller
         }
 
         $request->validate([
-            'module_name' => 'required|string'
+            'module_name' => 'required|string',
+            'publish_at' => 'nullable|date|after:now'
         ],
         [
             'module_name' => 'Module Name is Required',
+            'publish_at.after' => 'প্রকাশের সময় অবশ্যই ভবিষ্যতের হতে হবে',
+            'publish_at.date' => 'সঠিক তারিখ ও সময় প্রবেশ করান'
         ]);
 
         // Check if module_id is present to determine if this is an update operation
@@ -276,7 +282,8 @@ class CourseCreateStepController extends Controller
             $module->publish_at = $request->input('publish_at') ? $request->input('publish_at') : null;
             $module->save();
             
-            return redirect()->back()->with('success', 'Module Updated successfully');
+            return redirect()->route('instructor.courses.create.content', ['id' => $module->course_id])
+                             ->with('success', 'Module Updated successfully');
         } else {
             // Create new module
             $slug = $this->makeUniqueSlug($request->input('module_name'), 'Module');
@@ -288,7 +295,8 @@ class CourseCreateStepController extends Controller
             $module->publish_at = $request->input('publish_at') ? $request->input('publish_at') : null;
             $module->save();
             
-            return redirect()->back()->with('success', 'Module Created successfully');
+            return redirect()->route('instructor.courses.create.content', ['id' => $id])
+                             ->with('success', 'Module Created successfully');
         }
     }
 
@@ -299,10 +307,13 @@ class CourseCreateStepController extends Controller
         }
 
         $request->validate([
-            'module_name' => 'required'
+            'module_name' => 'required',
+            'publish_at' => 'nullable|date|after:now'
         ],
         [
             'module_name' => 'Module Name is Required',
+            'publish_at.after' => 'প্রকাশের সময় অবশ্যই ভবিষ্যতের হতে হবে',
+            'publish_at.date' => 'সঠিক তারিখ ও সময় প্রবেশ করান'
         ]);
 
         $module_id = $request->input('module_id');
@@ -318,7 +329,8 @@ class CourseCreateStepController extends Controller
         $module->publish_at = $request->input('publish_at') ? $request->input('publish_at') : null;
         $module->save();
 
-        return redirect()->back()->with('success', 'Module Updated successfully');
+        return redirect()->route('instructor.courses.create.content', ['id' => $module->course_id])
+                         ->with('success', 'Module Updated successfully');
     }
 
     public function step3d(Request $request, $id){
@@ -335,7 +347,7 @@ class CourseCreateStepController extends Controller
             'lesson_name' => 'Lesson Name is Required',
         ]);
 
-        $lesson_id = $request->input('lesson_id');
+        $lesson_id = $id; // Use route parameter as lesson ID
         $lesson = Lesson::where('id', $lesson_id)->where('instructor_id', Auth::user()->id)->firstOrFail();
 
         $slug = $this->makeUniqueSlug($request->input('lesson_name'), 'Lesson', $lesson->slug);
@@ -366,7 +378,9 @@ class CourseCreateStepController extends Controller
 
         $lesson->save();
 
-        return redirect()->back()->with('success', 'Lesson Updated successfully');
+        // Redirect to the course content page instead of back to the update URL
+        return redirect()->route('instructor.courses.create.content', ['id' => $lesson->course_id])
+                         ->with('success', 'Lesson Updated successfully');
     }
 
     public function stepLessonText($course_id,$module_id,$lesson_id){

@@ -37,6 +37,7 @@ Route::post('/student/notifications/{id}/destroy', [NotificationController::clas
 // Mark as complete functionality - Removed from auth middleware
 Route::post('/student/courses/complete-lesson', [StudentHomeController::class, 'storeActivity'])->name('student.complete.lesson');
 
+Route::match(['GET', 'POST'], '/student/courses/log/', [StudentHomeController::class, 'storeCourseLog'])->name('student.log.courses');
 // ========================================
 // AUTHENTICATED STUDENT ROUTES
 // ========================================
@@ -46,7 +47,8 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     // MAIN DASHBOARD
     // ========================================
     
-    Route::get('student/', [StudentHomeController::class, 'dashboard'])->name('student.dashboard');
+    // Route::get('student/', [StudentHomeController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('student/', [StudentHomeController::class, 'activities'])->name('student.dashboard');
     
     // ========================================
     // COURSES SECTION
@@ -63,8 +65,7 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::post('/student/course-like/{course_id}/{ins_id}/', [StudentHomeController::class, 'courseLike'])->name('student.course.like');
     
     // Course logging and progress
-    Route::match(['GET', 'POST'], '/student/courses/log/', [StudentHomeController::class, 'storeCourseLog'])->name('student.log.courses');
-    Route::post('/student/test-auth', function() {
+     Route::post('/student/test-auth', function() {
         return response()->json(['status' => 'success', 'user_id' => Auth::user()->id, 'message' => 'Authentication test passed']);
     })->name('student.test.auth');
     

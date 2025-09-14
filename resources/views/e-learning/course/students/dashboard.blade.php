@@ -300,7 +300,7 @@
                             
                             <div class="flex-grow ml-4">
                                 <h5 class="font-semibold text-slate-800 dark:text-white mb-1 hover:text-blue-600 transition-colors">
-                                    <a href="{{ url('student/courses/overview/' . $likeCourse->course->slug) }}">
+                                    <a href="{{ url('/courses/' . $likeCourse->course->slug) }}">
                                         {{ optional($likeCourse->course)->title }}
                                     </a>
                                 </h5>
@@ -328,7 +328,7 @@
                                             <i class="fas fa-heart-broken mr-2"></i>অপছন্দ
                                         </button>
                                     </form>
-                                    <a href="{{ url('student/courses/'.$likeCourse->course->slug) }}" class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                                    <a href="{{ url('courses/'.$likeCourse->course->slug) }}" class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
                                         <i class="fas fa-play mr-2"></i>শুরু করুন
                                     </a>
                                 </div>
@@ -408,7 +408,7 @@
                                         class="w-12 h-12 rounded-lg object-cover">
                                     <div>
                                         <h5 class="font-semibold text-slate-800 dark:text-white text-sm mb-1">
-                                            <a href="{{ url('student/courses/my-courses/details/' . $enrolment->course->slug) }}" 
+                                            <a href="{{ url('courses/' . $enrolment->course->slug) }}" 
                                                class="hover:text-blue-600 transition-colors">
                                                 {{$enrolment->course->title}}
                                             </a>
@@ -455,7 +455,7 @@
                             </td>
                             <td class="py-4 px-4 text-right">
                                 @if($enrolment->status == 'approved')
-                                    <a href="{{ url('student/courses/'.$enrolment->course->slug) }}" 
+                                    <a href="{{ url('courses/'.$enrolment->course->slug) }}" 
                                        class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ray-hover">
                                         <i class="fas fa-play mr-2"></i>শুরু করুন
                                     </a>

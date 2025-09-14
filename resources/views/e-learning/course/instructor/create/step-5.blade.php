@@ -647,7 +647,7 @@
                                id="youtube_url" 
                                name="youtube_url" 
                                class="form-input-modern" 
-                               placeholder="https://www.youtube.com/watch?v=..."
+                               placeholder="https://www.youtube.com/watch?v="
                                value="{{ old('youtube_url', $lesson->video_type == 'youtube' ? $lesson->video_link : '') }}"
                                pattern="^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/)[\w-]+(&[\w=]*)*$">
                         <p class="form-help">
@@ -879,7 +879,7 @@ function initializeFormHandling() {
             const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/)[\w-]+(&[\w=]*)*$/;
             if (!youtubeRegex.test(youtubeUrl.value.trim())) {
                 e.preventDefault();
-                showError('youtubeErrorMessage', 'বৈধ YouTube URL প্রবেশ করান (যেমন: https://www.youtube.com/watch?v=...)');
+                showError('youtubeErrorMessage', 'বৈধ YouTube URL প্রবেশ করান (যেমন: https://www.youtube.com/watch?v=)');
                 return false;
             }
             
