@@ -141,12 +141,12 @@
                       <img 
                         src="{{ url('assets/images/roufai-logo-light.png') }}" 
                         alt="Logo" 
-                        class="h-10 w-auto p-2 m-2 hidden dark:block"
+                        class="h-10 w-auto p-2 hidden dark:block"
                     >
                     <img 
                         src="{{ url('assets/images/roufai-logo-dark.png') }}" 
                         alt="Logo" 
-                        class="h-10 w-auto p-2 m-2 block dark:hidden"
+                        class="h-10 w-auto p-2 block dark:hidden"
                     >
                    
                 </div>

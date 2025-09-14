@@ -1066,11 +1066,12 @@ input:checked + .slider:before {
 <div class="modal-overlay" id="moduleModal">
     <div class="modal-content-modern">
         <div class="modal-header">
-            <h3>নতুন মডিউল যোগ করুন</h3>
+            <h3 id="moduleModalTitle">নতুন মডিউল যোগ করুন</h3>
         </div>
         <div class="modal-body">
-            <form action="{{ route('instructor.modules.create', ['course_id' => request()->route('id')]) }}" method="post">
+            <form id="moduleForm" method="post">
                 @csrf
+                <input type="hidden" name="_method" id="moduleFormMethod" value="POST">
                 <input type="hidden" name="module_id" id="editModuleId" value="">
                 
                 <div class="form-group-modern">
@@ -1203,17 +1204,29 @@ function toggleModule(button) {
 
 // Modal functionality
 function showAddModuleModal() {
-    document.getElementById('moduleModalTitle') ? document.getElementById('moduleModalTitle').textContent = 'নতুন মডিউল যোগ করুন' : null;
+    document.getElementById('moduleModalTitle').textContent = 'নতুন মডিউল যোগ করুন';
     document.getElementById('editModuleId').value = '';
     document.getElementById('moduleNameInput').value = '';
     document.getElementById('modulePublishAt').value = '';
+    
+    // Set form action and method for creating new module
+    const courseId = {{ request()->route('id') }};
+    document.getElementById('moduleForm').action = `/instructor/modules/create/${courseId}/`;
+    document.getElementById('moduleFormMethod').value = 'POST';
+    
     showModal('moduleModal');
 }
 
 function editModule(moduleId, title, publishAt) {
+    document.getElementById('moduleModalTitle').textContent = 'মডিউল সম্পাদনা করুন';
     document.getElementById('editModuleId').value = moduleId;
     document.getElementById('moduleNameInput').value = title;
     document.getElementById('modulePublishAt').value = publishAt;
+    
+    // Set form action and method for updating existing module
+    document.getElementById('moduleForm').action = `/instructor/modules/${moduleId}/`;
+    document.getElementById('moduleFormMethod').value = 'PUT';
+    
     showModal('moduleModal');
 }
 
@@ -1252,10 +1265,15 @@ function editLesson(lessonId, courseId, moduleId, title, type, isPublic) {
     document.querySelectorAll('.lesson-type-option').forEach(option => {
         option.classList.remove('active');
     });
-    selectLessonType(type, document.querySelector(`[onclick*="${type}"]`));
+    
+    // Find the correct lesson type element and activate it
+    const lessonTypeElement = document.querySelector(`[onclick="selectLessonType('${type}', this)"]`);
+    if (lessonTypeElement) {
+        lessonTypeElement.classList.add('active');
+    }
     
     // Set form action and method
-    document.getElementById('lessonForm').action = `/instructor/lessons/update/${lessonId}`;
+    document.getElementById('lessonForm').action = `/instructor/lessons/${lessonId}/`;
     document.getElementById('lessonFormMethod').value = 'PUT';
     
     showModal('lessonModal');
