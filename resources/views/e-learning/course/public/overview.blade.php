@@ -120,7 +120,7 @@
                             @auth
                                 @if(auth()->user()->user_role === 'student')
                                     @if(isEnrolled($course->id))
-                                        <a href="{{ url('student/courses/' . $course->slug) }}" class="common-bttn"
+                                        <a href="{{ url('courses/' . $course->slug) }}" class="common-bttn"
                                             style="border-radius: 6.25rem; margin-top: 2rem"><img
                                                 src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="a"
                                                 class="img-fluid me-1">Start Course</a>

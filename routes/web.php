@@ -148,6 +148,16 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 });
 
 // ========================================
+// DEVICE MANAGEMENT ROUTES (STUDENT ONLY)
+// ========================================
+
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/devices', [App\Http\Controllers\DeviceController::class, 'index'])->name('devices.index');
+    Route::delete('/devices/{sessionId}', [App\Http\Controllers\DeviceController::class, 'revoke'])->name('devices.revoke');
+    Route::delete('/devices-revoke-all', [App\Http\Controllers\DeviceController::class, 'revokeAll'])->name('devices.revoke.all');
+});
+
+// ========================================
 // SYSTEM UTILITIES (Hidden from guests)
 // ========================================
 

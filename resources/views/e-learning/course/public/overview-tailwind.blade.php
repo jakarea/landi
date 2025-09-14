@@ -159,7 +159,7 @@
                         @auth
                             @if(auth()->user()->user_role === 'student')
                                 @if(isEnrolled($course->id))
-                                    <a href="{{ url('student/courses/' . $course->slug) }}" 
+                                    <a href="{{ url('courses/' . $course->slug) }}" 
                                        class="inline-flex items-center justify-center bg-gradient-to-r from-orange to-red-500 hover:from-red-500 hover:to-orange rounded-full px-6 py-3 font-semibold text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M8 5v14l11-7z"/>

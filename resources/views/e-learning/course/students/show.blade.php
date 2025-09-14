@@ -123,13 +123,13 @@
         </div>
     @endif
     
-    <div class="max-w-full mx-auto p-6">
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <!-- Main Content Area - 3/4 width on large screens -->
-            <div class="lg:col-span-3 px-6">
+    <div class="max-w-full mx-auto p-3">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <!-- Main Content Area - 2/3 width on large screens -->
+            <div class="lg:col-span-8 px-3">
                 <!-- Video Player Section -->
                 @if ($isUserEnrolled)
-                    <div class="glass-effect rounded-2xl p-6 mb-6 glow-card">
+                    <div class="glass-effect rounded-2xl mb-6 glow-card">
                         <div class="video-container rounded-xl overflow-hidden bg-gray-900" id="videoPlayerContainer" style="display: block;">
                                 @if ($firstLesson)
                                     @php
@@ -304,6 +304,90 @@
                         </div>
                     </div> 
                     --}}
+                <!-- Related Courses Section -->
+                @if (count($relatedCourses) > 0)
+                    <div class="glass-effect rounded-2xl p-6 mb-6">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                            <i class="fas fa-graduation-cap mr-2 text-primary-500"></i>
+                            Related Courses
+                        </h3>
+                        
+                        <!-- Related Courses Grid - Max 2 items side by side -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @foreach ($relatedCourses->take(2) as $relatedCourse)
+                                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+                                    <!-- Course Thumbnail -->
+                                    <div class="aspect-video w-full">
+                                        @if ($relatedCourse->thumbnail)
+                                            <img src="{{ asset($relatedCourse->thumbnail) }}" alt="Course Thumbnail" 
+                                                 class="w-full h-full object-cover">
+                                        @else
+                                            <img src="{{ asset('assets/images/courses/thumbnail.png') }}" alt="Course Thumbnail" 
+                                                 class="w-full h-full object-cover">
+                                        @endif
+                                    </div>
+                                    
+                                    <!-- Course Info -->
+                                    <div class="p-4">
+                                        <!-- Course Title -->
+                                        @if (isset($userEnrolledCourses[$relatedCourse->id]))
+                                            <a href="{{ url('student/courses/my-courses/details/' . $relatedCourse->slug) }}"
+                                               class="font-semibold text-lg text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+                                                {{ $relatedCourse->title }}
+                                            </a>
+                                        @else
+                                            <a href="{{ url('student/courses/overview/' . $relatedCourse->slug) }}"
+                                               class="font-semibold text-lg text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+                                                {{ $relatedCourse->title }}
+                                            </a>
+                                        @endif
+
+                                        <!-- Instructor Name -->
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2 mb-3">{{ $relatedCourse->user->name }}</p>
+
+                                        <!-- Rating and Reviews -->
+                                        @php
+                                            $review_sum = 0;
+                                            $review_avg = 0;
+                                            $total = 0;
+                                            foreach ($relatedCourse->reviews as $review) {
+                                                $total++;
+                                                $review_sum += $review->star;
+                                            }
+                                            if ($total) {
+                                                $review_avg = $review_sum / $total;
+                                            }
+                                        @endphp
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-1">{{ number_format($review_avg, 1) }}</span>
+                                                <div class="flex items-center mr-2">
+                                                    @for ($i = 0; $i < floor($review_avg); $i++)
+                                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                    @endfor
+                                                </div>
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">({{ $total }})</span>
+                                            </div>
+
+                                            <!-- Price -->
+                                            <div class="flex items-center">
+                                                @if ($relatedCourse->offer_price)
+                                                    <span class="font-bold text-lg text-primary-600 dark:text-primary-400">৳ {{ $relatedCourse->offer_price }}</span>
+                                                    <span class="text-sm text-gray-500 line-through ml-2">৳ {{ $relatedCourse->price }}</span>
+                                                @elseif(!$relatedCourse->offer_price && !$relatedCourse->price)
+                                                    <span class="font-bold text-lg text-green-600 dark:text-green-400">Free</span>
+                                                @else
+                                                    <span class="font-bold text-lg text-primary-600 dark:text-primary-400">৳ {{ $relatedCourse->price }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 @if ($course->allow_review)
                     <!-- Reviews Section -->
                     <div class="glass-effect rounded-2xl p-6 mb-6">
@@ -399,10 +483,10 @@
                     </div>
                 @endif
             </div>
-            <!-- Sidebar - 1/4 width on large screens -->
-            <div class="lg:col-span-1">
+            <!-- Sidebar - 1/3 width on large screens -->
+            <div class="lg:col-span-4">
                 <!-- Course Modules -->
-                <div class="glass-effect rounded-2xl p-6 glow-card sticky top-6">
+                <div class="glass-effect rounded-2xl p-4 glow-card sticky top-4">
                     <div class="mb-6">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center">
                             <i class="fas fa-list-ul mr-2 text-primary-500"></i>
@@ -411,13 +495,43 @@
                         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                             {{ $totalModules }} Module • {{ $totalLessons }} Lessons
                         </p>
+                        
+                        <!-- Real-time Lesson Search -->
+                        <div class="mt-4 relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="lessonSearchInput" 
+                                placeholder="Search lessons..." 
+                                class="w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                                autocomplete="off"
+                                oninput="searchLessons(this.value)"
+                            >
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <button 
+                                    type="button" 
+                                    id="clearSearchBtn" 
+                                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 hidden"
+                                    onclick="clearLessonSearch()"
+                                >
+                                    <i class="fas fa-times text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Search Results Counter -->
+                        <div id="searchResultsInfo" class="mt-2 text-xs text-gray-500 dark:text-gray-400 hidden">
+                            <span id="searchResultsCount"></span>
+                        </div>
                     </div>
-                    <div class="space-y-3" id="accordionExample">
+                    <div class="space-y-2" id="accordionExample">
                         @foreach ($course->modules as $module)
                             @if ($module->status == 'published' && count($module->lessons) > 0)
                                 <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
                                     <!-- Module Header -->
-                                    <div class="p-4" id="heading_{{ $module->id }}">
+                                    <div class="p-3" id="heading_{{ $module->id }}">
                                         <button class="w-full text-left flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-lg p-2 transition-colors duration-200" 
                                                 type="button" 
                                                 onclick="toggleAccordion({{ $module->id }})"
@@ -442,12 +556,15 @@
                                     <div id="collapse_{{ $module->id }}"
                                         class="accordion-content {{ $currentLesson && $currentLesson->module_id == $module->id ? '' : 'hidden' }}"
                                         aria-labelledby="heading_{{ $module->id }}">
-                                        <div class="px-4 pb-4">
+                                        <div class="px-3 pb-3">
                                             <div class="space-y-2" id="module_{{ $module->id }}">
                                                 @foreach ($module->lessons as $lesson)
                                                     @if ($lesson->status == 'published')
                                                         @if (!$isUserEnrolled)
-                                                            <div class="lesson-item flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200">
+                                                            <div class="lesson-item flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200" 
+                                                                 data-lesson-title="{{ $lesson->title }}"
+                                                                 data-lesson-slug="{{ $lesson->slug ?? '' }}"
+                                                                 data-search-text="{{ strtolower($lesson->title . ' ' . ($lesson->slug ?? '')) }}">
                                                                 <a href="{{ url('student/checkout/' . $course->slug) }}"
                                                                     class="video_list_play flex items-center w-full text-gray-600 dark:text-gray-400">
                                                                     <i class="fas fa-lock mr-3 text-gray-400"></i>
@@ -455,7 +572,7 @@
                                                                 </a>
                                                             </div>
                                                         @else
-                                                            <div class="lesson-item lesson-clickable flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200 cursor-pointer {{ $currentLesson && $currentLesson->id == $lesson->id ? 'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500' : '' }}"
+                                                            <div class="lesson-item lesson-clickable flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/30 transition-colors duration-200 cursor-pointer {{ $currentLesson && $currentLesson->id == $lesson->id ? 'bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500' : '' }}"
                                                                     data-video-id="{{ $lesson->id }}"
                                                                     data-lesson-id="{{ $lesson->id }}"
                                                                     data-course-id="{{ $course->id }}"
@@ -464,7 +581,10 @@
                                                                     data-audio-url="{{ $lesson->audio }}"
                                                                     data-lesson-type="{{ $lesson->type }}"
                                                                     data-lesson-duration="{{ $lesson->duration ?? 0 }}"
-                                                                    data-instructor-id="{{ $course->user_id }}">
+                                                                    data-instructor-id="{{ $course->user_id }}"
+                                                                    data-lesson-title="{{ $lesson->title }}"
+                                                                    data-lesson-slug="{{ $lesson->slug ?? '' }}"
+                                                                    data-search-text="{{ strtolower($lesson->title . ' ' . ($lesson->slug ?? '')) }}">
 
                                                                 <!-- Completion Status -->
                                                                 <span class="mr-3 cursor-pointer" id="completionIcon_{{ $lesson->id }}">
@@ -526,92 +646,6 @@
                     </div>
                 </div>
 
-                {{-- Related Courses --}}
-                <div class="glass-effect rounded-2xl p-6 mt-6 glow-card">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                        <i class="fas fa-graduation-cap mr-2 text-primary-500"></i>
-                        Related Courses
-                    </h3>
-                    <div class="space-y-4">
-                        @if (count($relatedCourses) > 0)
-                            @foreach ($relatedCourses as $relatedCourse)
-                                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
-                                    <div class="flex">
-                                        <!-- Course Thumbnail -->
-                                        <div class="w-24 h-24 flex-shrink-0">
-                                            @if ($relatedCourse->thumbnail)
-                                                <img src="{{ asset($relatedCourse->thumbnail) }}" alt="Course Thumbnail" 
-                                                     class="w-full h-full object-cover rounded-l-xl">
-                                            @else
-                                                <img src="{{ asset('assets/images/courses/thumbnail.png') }}" alt="Course Thumbnail" 
-                                                     class="w-full h-full object-cover rounded-l-xl">
-                                            @endif
-                                        </div>
-                                        
-                                        <!-- Course Info -->
-                                        <div class="flex-1 p-4">
-                                            <!-- Course Title -->
-                                            @if (isset($userEnrolledCourses[$relatedCourse->id]))
-                                                <a href="{{ url('student/courses/my-courses/details/' . $relatedCourse->slug) }}"
-                                                   class="font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                                                    {{ Str::limit($relatedCourse->title, 45) }}
-                                                </a>
-                                            @else
-                                                <a href="{{ url('student/courses/overview/' . $relatedCourse->slug) }}"
-                                                   class="font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                                                    {{ Str::limit($relatedCourse->title, 50) }}
-                                                </a>
-                                            @endif
-
-                                            <!-- Instructor Name -->
-                                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ $relatedCourse->user->name }}</p>
-
-                                            <!-- Rating and Reviews -->
-                                            @php
-                                                $review_sum = 0;
-                                                $review_avg = 0;
-                                                $total = 0;
-                                                foreach ($relatedCourse->reviews as $review) {
-                                                    $total++;
-                                                    $review_sum += $review->star;
-                                                }
-                                                if ($total) {
-                                                    $review_avg = $review_sum / $total;
-                                                }
-                                            @endphp
-                                            <div class="flex items-center mb-2">
-                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-1">{{ number_format($review_avg, 1) }}</span>
-                                                <div class="flex items-center mr-2">
-                                                    @for ($i = 0; $i < floor($review_avg); $i++)
-                                                        <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                                    @endfor
-                                                </div>
-                                                <span class="text-xs text-gray-500 dark:text-gray-400">({{ $total }})</span>
-                                            </div>
-
-                                            <!-- Price -->
-                                            <div class="flex items-center">
-                                                @if ($relatedCourse->offer_price)
-                                                    <span class="font-bold text-primary-600 dark:text-primary-400">৳ {{ $relatedCourse->offer_price }}</span>
-                                                    <span class="text-sm text-gray-500 line-through ml-2">৳ {{ $relatedCourse->price }}</span>
-                                                @elseif(!$relatedCourse->offer_price && !$relatedCourse->price)
-                                                    <span class="font-bold text-green-600 dark:text-green-400">Free</span>
-                                                @else
-                                                    <span class="font-bold text-primary-600 dark:text-primary-400">৳ {{ $relatedCourse->price }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="text-center py-8">
-                                <i class="fas fa-graduation-cap text-4xl text-gray-300 mb-4"></i>
-                                <p class="text-gray-500 dark:text-gray-400">No related courses found</p>
-                            </div>
-                        @endif
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -645,6 +679,51 @@
     
     .btn-success {
         @apply bg-green-600 text-white hover:bg-green-700;
+    }
+    
+    /* Line clamp for course titles */
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    /* Enhanced search highlighting styles */
+    mark {
+        background-color: #fef08a !important;
+        color: #854d0e !important;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-weight: 600;
+        animation: highlight-pulse 0.6s ease-out;
+    }
+    
+    .dark-mode mark {
+        background-color: #a16207 !important;
+        color: #fef3c7 !important;
+    }
+    
+    @keyframes highlight-pulse {
+        0% { 
+            background-color: #fbbf24;
+            transform: scale(1.05);
+        }
+        100% { 
+            background-color: #fef08a;
+            transform: scale(1);
+        }
+    }
+    
+    /* Search input enhancements */
+    #lessonSearchInput:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        border-color: #3b82f6;
+    }
+    
+    .dark-mode #lessonSearchInput:focus {
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        border-color: #60a5fa;
     }
     
     /* Rating system styles */
@@ -804,6 +883,9 @@
                     audioUrl: audioUrl,
                     duration: lessonDuration
                 });
+
+                // Log course progress - track last played lesson
+                logCourseProgress(courseId, lessonId, moduleId);
 
                 // Reset all lesson items - remove active state
                 $('.lesson-item.lesson-clickable').removeClass('bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500');
@@ -1341,6 +1423,184 @@
                 });
                 */
             });
+            
+        // Simple and Effective Lesson Search Filter
+        window.searchLessons = function(searchTerm) {
+            const search = searchTerm.trim().toLowerCase();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const searchInfo = document.getElementById('searchResultsInfo');
+            const searchCount = document.getElementById('searchResultsCount');
+            
+            // Show/hide clear button
+            if (search.length > 0) {
+                clearBtn.classList.remove('hidden');
+                searchInfo.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+                searchInfo.classList.add('hidden');
+            }
+            
+            let visibleLessons = 0;
+            let visibleModules = 0;
+            
+            // Get all modules and lessons
+            const modules = document.querySelectorAll('#accordionExample > div');
+            
+            modules.forEach(moduleDiv => {
+                let moduleHasVisibleLessons = false;
+                const lessons = moduleDiv.querySelectorAll('.lesson-item');
+                
+                lessons.forEach(lesson => {
+                    let isVisible = false;
+                    
+                    if (search === '') {
+                        // Show all lessons when search is empty
+                        isVisible = true;
+                    } else {
+                        // Get lesson data
+                        const lessonTitle = (lesson.getAttribute('data-lesson-title') || '').toLowerCase();
+                        const lessonSlug = (lesson.getAttribute('data-lesson-slug') || '').toLowerCase();
+                        
+                        // Check if search term matches title OR slug
+                        isVisible = lessonTitle.includes(search) || lessonSlug.includes(search);
+                    }
+                    
+                    if (isVisible) {
+                        lesson.style.display = 'flex';
+                        moduleHasVisibleLessons = true;
+                        visibleLessons++;
+                        
+                        // Highlight matching text
+                        if (search !== '') {
+                            highlightMatchingText(lesson, search);
+                        } else {
+                            removeHighlights(lesson);
+                        }
+                    } else {
+                        lesson.style.display = 'none';
+                        removeHighlights(lesson);
+                    }
+                });
+                
+                // Show/hide entire module based on whether it has visible lessons
+                if (search === '' || moduleHasVisibleLessons) {
+                    moduleDiv.style.display = 'block';
+                    if (moduleHasVisibleLessons) visibleModules++;
+                    
+                    // Auto-expand modules with matching lessons when searching
+                    if (search !== '' && moduleHasVisibleLessons) {
+                        const moduleId = moduleDiv.querySelector('[id^="heading_"]')?.id.replace('heading_', '');
+                        if (moduleId) {
+                            const content = document.getElementById('collapse_' + moduleId);
+                            const chevron = document.getElementById('chevron_' + moduleId);
+                            
+                            if (content && content.classList.contains('hidden')) {
+                                content.classList.remove('hidden');
+                                if (chevron) chevron.classList.add('rotate-180');
+                            }
+                        }
+                    }
+                } else {
+                    moduleDiv.style.display = 'none';
+                }
+            });
+            
+            // Update search results counter
+            if (search !== '') {
+                if (visibleLessons === 0) {
+                    searchCount.textContent = 'No lessons found';
+                    searchCount.className = 'text-red-500 dark:text-red-400';
+                } else if (visibleLessons === 1) {
+                    searchCount.textContent = '1 lesson found';
+                    searchCount.className = 'text-green-600 dark:text-green-400';
+                } else {
+                    searchCount.textContent = `${visibleLessons} lessons found in ${visibleModules} modules`;
+                    searchCount.className = 'text-green-600 dark:text-green-400';
+                }
+            }
+        }
+        
+        // Function to highlight matching text in lesson titles
+        function highlightMatchingText(lesson, searchTerm) {
+            if (!searchTerm || searchTerm.length < 1) return;
+            
+            const titleElement = lesson.querySelector('.font-medium');
+            if (!titleElement) return;
+            
+            const originalText = titleElement.getAttribute('data-original-text') || titleElement.textContent;
+            if (!titleElement.hasAttribute('data-original-text')) {
+                titleElement.setAttribute('data-original-text', originalText);
+            }
+            
+            // Escape special regex characters
+            const escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
+            const highlightedText = originalText.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-700 px-1 rounded">$1</mark>');
+            
+            titleElement.innerHTML = highlightedText;
+        }
+        
+        // Function to remove highlights
+        function removeHighlights(lesson) {
+            const titleElement = lesson.querySelector('.font-medium');
+            if (!titleElement) return;
+            
+            const originalText = titleElement.getAttribute('data-original-text');
+            if (originalText) {
+                titleElement.textContent = originalText;
+            }
+        }
+        
+        // Enhanced Clear search function
+        window.clearLessonSearch = function() {
+            const searchInput = document.getElementById('lessonSearchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const searchInfo = document.getElementById('searchResultsInfo');
+            
+            searchInput.value = '';
+            clearBtn.classList.add('hidden');
+            searchInfo.classList.add('hidden');
+            
+            // Reset all lessons and modules visibility
+            const modules = document.querySelectorAll('#accordionExample > div');
+            const lessons = document.querySelectorAll('.lesson-item');
+            
+            modules.forEach(module => module.style.display = 'block');
+            lessons.forEach(lesson => {
+                lesson.style.display = 'flex';
+                // Remove any highlights
+                removeHighlights(lesson);
+            });
+            
+            // Focus back to search input for better UX
+            searchInput.focus();
+        }
+        
+        // Course Progress Logging Function
+        function logCourseProgress(courseId, lessonId, moduleId) {
+            if (!courseId || !lessonId) {
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route("student.log.courses") }}',
+                type: 'POST',
+                data: {
+                    courseId: courseId,
+                    lessonId: lessonId,
+                    moduleId: moduleId,
+                    _token: '{{ csrf_token() }}'
+                }
+            });
+        }
+
+        // Add keyboard shortcut for search (Ctrl/Cmd + K)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('lessonSearchInput').focus();
+            }
+        });
     </script>
 @endsection
 {{-- script section @E --}}

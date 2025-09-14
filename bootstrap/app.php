@@ -14,6 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'page.access' => \App\Http\Middleware\PageAccessMiddleware::class,
+            'track.session' => \App\Http\Middleware\TrackUserSession::class,
+        ]);
+        
+        // Add session tracking to web middleware group
+        $middleware->web(append: [
+            \App\Http\Middleware\TrackUserSession::class,
         ]);
         
         // Exclude specific routes from CSRF verification

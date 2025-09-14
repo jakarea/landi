@@ -98,7 +98,7 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <h3 class="text-lg font-semibold text-white mb-2 line-clamp-2">
-                                <a href="{{ url('student/courses/' . $certificateCourse->slug) }}" 
+                                <a href="{{ url('courses/' . $certificateCourse->slug) }}" 
                                    class="hover:text-purple-400 transition-colors">
                                     {{ $certificateCourse->title }}
                                 </a>
@@ -190,7 +190,7 @@
                         <div class="pt-4 border-t border-gray-600">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-sm text-gray-400">সম্পূর্ণ করার জন্য {{ 100 - $totalPorgressPercent }}% বাকি</span>
-                                <a href="{{ url('student/courses/' . $certificateCourse->slug . '/learn') }}" 
+                                <a href="{{ url('courses/' . $certificateCourse->slug . '/learn') }}" 
                                    class="text-sm text-purple-400 hover:text-purple-300 transition-colors">
                                     কোর্স চালিয়ে যান →
                                 </a>

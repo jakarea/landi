@@ -1082,6 +1082,9 @@ input:checked + .slider:before {
                     <label class="form-label-modern">প্রকাশের সময়</label>
                     <input type="datetime-local" name="publish_at" id="modulePublishAt" class="form-input-modern">
                     <p class="text-secondary-200 text-sm mt-2">খালি রাখলে তৎক্ষণাৎ প্রকাশিত হবে</p>
+                    <div id="publishAtError" class="text-red-500 text-sm mt-1" style="display: none;">
+                        ভবিষ্যতের সময় নির্বাচন করুন
+                    </div>
                 </div>
                 
                 <div class="modal-actions">
@@ -1102,6 +1105,7 @@ input:checked + .slider:before {
         <div class="modal-body">
             <form id="lessonForm" method="post">
                 @csrf
+                <input type="hidden" name="_method" id="lessonFormMethod" value="POST">
                 <input type="hidden" name="course_id" id="lessonCourseId" value="">
                 <input type="hidden" name="module_id" id="lessonModuleId" value="">
                 <input type="hidden" name="lesson_id" id="editLessonId" value="">
@@ -1228,8 +1232,9 @@ function showAddLessonModal(moduleId, courseId) {
     });
     document.querySelector('.lesson-type-option:nth-child(3)').classList.add('active'); // Video option
     
-    // Set form action
+    // Set form action and method
     document.getElementById('lessonForm').action = `/instructor/lessons/create/${courseId}/${moduleId}`;
+    document.getElementById('lessonFormMethod').value = 'POST';
     
     showModal('lessonModal');
 }
@@ -1249,8 +1254,9 @@ function editLesson(lessonId, courseId, moduleId, title, type, isPublic) {
     });
     selectLessonType(type, document.querySelector(`[onclick*="${type}"]`));
     
-    // Set form action
+    // Set form action and method
     document.getElementById('lessonForm').action = `/instructor/lessons/update/${lessonId}`;
+    document.getElementById('lessonFormMethod').value = 'PUT';
     
     showModal('lessonModal');
 }
@@ -1400,6 +1406,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    
+    // Add form validation for publish_at field
+    const moduleForm = document.querySelector('form[action*="modules/create"]');
+    if (moduleForm) {
+        moduleForm.addEventListener('submit', function(e) {
+            const publishAtField = document.getElementById('modulePublishAt');
+            const publishAtError = document.getElementById('publishAtError');
+            
+            if (publishAtField && publishAtField.value.trim() !== '') {
+                const selectedDateTime = new Date(publishAtField.value);
+                const currentDateTime = new Date();
+                
+                if (selectedDateTime <= currentDateTime) {
+                    e.preventDefault();
+                    publishAtError.style.display = 'block';
+                    publishAtField.focus();
+                    showNotification('প্রকাশের জন্য ভবিষ্যতের সময় নির্বাচন করুন', 'error');
+                    return false;
+                } else {
+                    publishAtError.style.display = 'none';
+                }
+            } else {
+                publishAtError.style.display = 'none';
+            }
+        });
+    }
+    
+    // Real-time validation when user changes the datetime
+    const publishAtField = document.getElementById('modulePublishAt');
+    if (publishAtField) {
+        publishAtField.addEventListener('change', function() {
+            const publishAtError = document.getElementById('publishAtError');
+            
+            if (this.value.trim() !== '') {
+                const selectedDateTime = new Date(this.value);
+                const currentDateTime = new Date();
+                
+                if (selectedDateTime <= currentDateTime) {
+                    publishAtError.style.display = 'block';
+                    this.style.borderColor = '#ef4444';
+                } else {
+                    publishAtError.style.display = 'none';
+                    this.style.borderColor = '';
+                }
+            } else {
+                publishAtError.style.display = 'none';
+                this.style.borderColor = '';
+            }
+        });
+    }
 });
 </script>
 @endsection

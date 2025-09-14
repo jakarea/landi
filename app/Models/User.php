@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Course;
 use App\Models\CourseEnrollment;
 use App\Models\Subscription;
+use App\Models\UserSession;
 use App\Models\VimeoData;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -114,6 +115,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function enrollments()
     {
         return $this->hasMany(CourseEnrollment::class, 'user_id');
+    }
+
+    public function sessions()
+    {
+        return $this->hasMany(UserSession::class, 'user_id');
     }
 
 }

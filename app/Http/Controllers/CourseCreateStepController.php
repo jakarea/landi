@@ -92,10 +92,13 @@ class CourseCreateStepController extends Controller
     public function step1c(Request $request){
 
         $request->validate([
-            'module_name' => 'required|string'
+            'module_name' => 'required|string',
+            'publish_at' => 'nullable|date|after:now'
         ],
         [
             'module_name' => 'Module Name is Required',
+            'publish_at.after' => 'প্রকাশের সময় অবশ্যই ভবিষ্যতের হতে হবে',
+            'publish_at.date' => 'সঠিক তারিখ ও সময় প্রবেশ করান'
         ]);
 
         $course = new Course();
@@ -259,10 +262,13 @@ class CourseCreateStepController extends Controller
         }
 
         $request->validate([
-            'module_name' => 'required|string'
+            'module_name' => 'required|string',
+            'publish_at' => 'nullable|date|after:now'
         ],
         [
             'module_name' => 'Module Name is Required',
+            'publish_at.after' => 'প্রকাশের সময় অবশ্যই ভবিষ্যতের হতে হবে',
+            'publish_at.date' => 'সঠিক তারিখ ও সময় প্রবেশ করান'
         ]);
 
         // Check if module_id is present to determine if this is an update operation
@@ -299,10 +305,13 @@ class CourseCreateStepController extends Controller
         }
 
         $request->validate([
-            'module_name' => 'required'
+            'module_name' => 'required',
+            'publish_at' => 'nullable|date|after:now'
         ],
         [
             'module_name' => 'Module Name is Required',
+            'publish_at.after' => 'প্রকাশের সময় অবশ্যই ভবিষ্যতের হতে হবে',
+            'publish_at.date' => 'সঠিক তারিখ ও সময় প্রবেশ করান'
         ]);
 
         $module_id = $request->input('module_id');

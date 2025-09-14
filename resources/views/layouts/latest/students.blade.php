@@ -33,9 +33,9 @@
     <link href="{{ asset('assets/admin-css/admin-dark.css') }}" rel="stylesheet" type="text/css" />
 
     {{-- Light box image popup --}}
-    <link href="{{ asset('magnify-popup/css/lightbox.min.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link href="{{ asset('magnify-popup/css/lightbox.min.css') }}" rel="stylesheet" type="text/css" /> --}}
     {{-- Emoji --}}
-    <link href="{{ asset('emoji/emojionearea.min.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link href="{{ asset('emoji/emojionearea.min.css') }}" rel="stylesheet" type="text/css" /> --}}
 
     {{-- Toaster notification css --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -119,7 +119,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     {{-- Lightbox --}}
-    <script src="{{ asset('magnify-popup/js/lightbox.min.js') }}"></script>
+    {{-- <script src="{{ asset('magnify-popup/js/lightbox.min.js') }}"></script> --}}
     {{-- Toaster js --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
@@ -164,6 +164,18 @@
         if (storedMode === 'dark-mode') {
             htmlBody.classList.add('dark-mode');
         }
+        
+        // Define dark mode functions
+        function darkFunction() {
+            // Dark mode specific functionality
+            console.log('Dark mode activated');
+        }
+        
+        function lightFunction() {
+            // Light mode specific functionality  
+            console.log('Light mode activated');
+        }
+        
         modeBttn.addEventListener('change', toggleMode);
     </script>
 

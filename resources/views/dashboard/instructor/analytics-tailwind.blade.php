@@ -8,6 +8,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 
+@php
+    use Illuminate\Support\Str;
+@endphp
 @section('content')
 <div class="space-y-6">
     <!-- Filter Section -->
@@ -552,4 +555,208 @@
     }
     document.getElementById("legend").innerHTML = legendHtml;
 </script>
+
+    <!-- Course Analytics Table -->
+    <div class="bg-card rounded-xl p-6 shadow-2 mt-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="text-white font-semibold text-xl mb-1">কোর্স বিক্রয় বিশ্লেষণ</h2>
+                <p class="text-secondary-200">আপনার কোর্সগুলির বিক্রয় ও গুরুত্বপূর্ণ তথ্য</p>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+                <i class="fas fa-chart-bar text-primary"></i>
+                <span class="text-secondary-200">মোট {{ count($courses) }} টি কোর্স</span>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="border-b border-[#fff]/20">
+                    <tr class="text-gray-300">
+                        <th class="text-left p-3 font-semibold text-white">কোর্স</th>
+                        <th class="text-center p-3 font-semibold text-white">বিক্রয়</th>
+                        <th class="text-center p-3 font-semibold text-white">আয়</th>
+                        <th class="text-center p-3 font-semibold text-white">মডিউল</th>
+                        <th class="text-center p-3 font-semibold text-white">লেসন</th>
+                        <th class="text-center p-3 font-semibold text-white">সময়কাল</th>
+                        <th class="text-center p-3 font-semibold text-white">শেষ আপডেট</th>
+                        <th class="text-center p-3 font-semibold text-white">অবস্থা</th>
+                        <th class="text-center p-3 font-semibold text-white">কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-[#fff]/10">
+                    @forelse($courses as $course)
+                        @php
+                            // Calculate sales count
+                            $salesCount = $enrolments->where('course_id', $course->id)->count();
+                            
+                            // Calculate total earnings
+                            $totalEarnings = $enrolments->where('course_id', $course->id)->sum('amount');
+                            
+                            // Get modules count
+                            $modulesCount = $course->modules ? $course->modules->count() : 0;
+                            
+                            // Get lessons count
+                            $lessonsCount = 0;
+                            if ($course->modules) {
+                                foreach ($course->modules as $module) {
+                                    $lessonsCount += $module->lessons ? $module->lessons->count() : 0;
+                                }
+                            }
+                            
+                            // Calculate total duration (assuming duration is stored in lessons)
+                            $totalDuration = 0;
+                            if ($course->modules) {
+                                foreach ($course->modules as $module) {
+                                    if ($module->lessons) {
+                                        foreach ($module->lessons as $lesson) {
+                                            $totalDuration += (int) $lesson->duration;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Convert duration to hours and minutes
+                            $hours = floor($totalDuration / 60);
+                            $minutes = $totalDuration % 60;
+                            $durationText = $hours > 0 ? $hours . 'ঘ ' . $minutes . 'মি' : $minutes . 'মি';
+                            
+                            // Format last update
+                            $lastUpdate = $course->updated_at->diffForHumans();
+                        @endphp
+                        <tr class="hover:bg-[#fff]/10 anim group border-[#fff]/5">
+                            <td class="p-3">
+                                <div class="flex items-center gap-3">
+                                    @if($course->thumbnail)
+                                        <img src="{{ asset($course->thumbnail) }}" alt="{{ $course->title }}" 
+                                             class="w-12 h-12 rounded-lg object-cover bg-primary/20">
+                                    @else
+                                        <div class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
+                                            <i class="fas fa-book text-primary text-lg"></i>
+                                        </div>
+                                    @endif
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="text-white font-medium text-sm group-hover:text-primary anim truncate" 
+                                            title="{{ $course->title }}">
+                                            {{ Str::limit($course->title, 40) }}
+                                        </h3>
+                                        <p class="text-gray-400 text-xs mt-1">
+                                            ৳{{ number_format($course->offer_price ?: $course->price) }}
+                                            @if($course->offer_price && $course->price > $course->offer_price)
+                                                <span class="line-through text-gray-500 ml-1">৳{{ number_format($course->price) }}</span>
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-white font-semibold">{{ $salesCount }}</span>
+                                    <span class="text-gray-400 text-xs">বিক্রয়</span>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-primary font-semibold">৳{{ number_format($totalEarnings) }}</span>
+                                    <span class="text-gray-400 text-xs">আয়</span>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-white font-medium">{{ $modulesCount }}</span>
+                                    <span class="text-gray-400 text-xs">মডিউল</span>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-white font-medium">{{ $lessonsCount }}</span>
+                                    <span class="text-gray-400 text-xs">লেসন</span>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-white font-medium">{{ $durationText }}</span>
+                                    <span class="text-gray-400 text-xs">সময়কাল</span>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-gray-200 text-xs">{{ $course->updated_at->format('d M Y') }}</span>
+                                    <span class="text-gray-400 text-xs">{{ $lastUpdate }}</span>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                @if($course->status == 'active')
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">
+                                        <i class="fas fa-check-circle"></i>
+                                        সক্রিয়
+                                    </span>
+                                @elseif($course->status == 'draft')
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs">
+                                        <i class="fas fa-clock"></i>
+                                        খসড়া
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 rounded-full text-xs">
+                                        <i class="fas fa-pause-circle"></i>
+                                        বন্ধ
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="p-3 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <a href="{{ route('instructor.courses.show', $course->slug) }}" 
+                                       class="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary hover:text-white anim"
+                                       title="বিস্তারিত দেখুন">
+                                        <i class="fas fa-eye text-xs"></i>
+                                    </a>
+                                    <a href="{{ route('instructor.courses.create.content', ['id' => $course->id]) }}" 
+                                       class="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white anim"
+                                       title="কন্টেন্ট সম্পাদনা">
+                                        <i class="fas fa-edit text-xs"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="p-8 text-center">
+                                <div class="flex flex-col items-center gap-3">
+                                    <i class="fas fa-book-open text-gray-500 text-3xl"></i>
+                                    <div>
+                                        <h3 class="text-gray-300 font-medium">কোন কোর্স পাওয়া যায়নি</h3>
+                                        <p class="text-gray-400 text-sm mt-1">এখনও কোন কোর্স তৈরি করা হয়নি।</p>
+                                    </div>
+                                    <a href="{{ route('instructor.courses.create') }}" 
+                                       class="inline-flex items-center gap-2 px-4 py-2 bg-primary rounded-lg text-white hover:bg-orange anim">
+                                        <i class="fas fa-plus text-sm"></i>
+                                        নতুন কোর্স তৈরি করুন
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        
+        @if(count($courses) > 0)
+            <div class="flex items-center justify-between mt-6 pt-4 border-t border-[#fff]/20">
+                <div class="text-gray-400 text-sm">
+                    মোট {{ count($courses) }} টি কোর্স দেখানো হচ্ছে
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <span class="text-gray-300">সক্রিয় কোর্স: {{ $activeCourses }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <span class="text-gray-300">খসড়া কোর্স: {{ $draftCourses }}</span>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+</div>
 @endsection
