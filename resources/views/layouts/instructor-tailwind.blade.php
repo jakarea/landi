@@ -138,16 +138,17 @@
             <div class="flex items-center justify-center h-16 px-4 border-b border-white/20 flex-shrink-0">
                 <div class="flex items-center gap-3 p-2">
                     <!-- Logo with dark/light mode -->
+                      <img 
+                        src="{{ url('assets/images/roufai-logo-light.png') }}" 
+                        alt="Logo" 
+                        class="h-10 w-auto p-2 m-2 hidden dark:block"
+                    >
                     <img 
                         src="{{ url('assets/images/roufai-logo-dark.png') }}" 
                         alt="Logo" 
                         class="h-10 w-auto p-2 m-2 block dark:hidden"
                     >
-                    <img 
-                        src="{{ url('assets/images/roufai-logo-light.png') }}" 
-                        alt="Logo" 
-                        class="h-10 w-auto p-2 m-2 hidden dark:block"
-                    >
+                   
                 </div>
             </div>
 
