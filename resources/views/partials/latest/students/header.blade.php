@@ -104,17 +104,20 @@
                         <span>{{ unseenNotification() }}</span>
                     @endif
                 </a>
+                @auth
                 <div class="dropdown">
                     <button class="btn avatar" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        @if (auth()->user()->avatar)
+                        @if (auth()->user() && auth()->user()->avatar)
                             <img src="{{ asset(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="img-fluid">
-                        @else
+                        @elseif (auth()->user())
                             <span class="avatar-user">{!! strtoupper(auth()->user()->name[0]) !!}</span>
+                        @else
+                            <span class="avatar-user">?</span>
                         @endif
                     </button>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">
-                            <strong>{{ auth()->user()->name }}</strong><br>
+                            <strong>{{ auth()->user() ? auth()->user()->name : 'অতিথি' }}</strong><br>
                             <small class="text-muted">শিক্ষার্থী</small>
                         </li>
                         <li><hr class="dropdown-divider"></li>
@@ -151,6 +154,17 @@
                         </li>
                     </ul>
                 </div>
+                @else
+                <!-- Show login/register buttons for guest users -->
+                <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-sign-in-alt me-1"></i>
+                    লগইন
+                </a>
+                <a href="{{ route('register') }}" class="btn btn-primary">
+                    <i class="fas fa-user-plus me-1"></i>
+                    রেজিস্টার
+                </a>
+                @endauth
             </div>
         </div>
     </div>

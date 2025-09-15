@@ -57,6 +57,7 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/student/courses/', [StudentHomeController::class, 'enrolledCourses'])->name('student.courses');
     Route::get('/student/courses/{slug}/', [StudentHomeController::class, 'courseOverview'])->name('student.courses.overview');
     Route::get('/student/courses/{slug}/learn/', [StudentHomeController::class, 'show'])->name('student.courses.learn');
+    Route::post('/student/courses/reset/', [StudentHomeController::class, 'resetCourse'])->name('student.courses.reset');
     
     // Course interactions
     Route::post('/student/courses/{slug}/', [StudentHomeController::class, 'review'])->name('student.courses.review');

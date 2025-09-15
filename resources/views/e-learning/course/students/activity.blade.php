@@ -10,6 +10,37 @@
     margin-bottom: 2rem;
 }
 
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.preloader.hidden {
+    display: none;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .stats-card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 15px;
@@ -246,6 +277,11 @@
 
 {{-- page content @S --}}
 @section('content')
+<!-- Preloader -->
+<div id="preloader" class="preloader">
+    <div class="spinner"></div>
+</div>
+
 <div class="p-6 max-w-7xl mx-auto">
     <!-- Page Header -->
     <div class="mb-8">
@@ -325,37 +361,98 @@
             </div>
         </div>
 
-        <!-- Course Progress Bars -->
+        <!-- Top Selling Courses -->
         <div class="glass-effect rounded-2xl p-6 ray-hover glow-card">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-slate-800 dark:text-white">কোর্সওয়ার অগ্রগতি</h3>
-                <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-chart-bar text-white text-sm"></i>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 dark:text-white">জনপ্রিয় কোর্সসমূহ</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">সর্বাধিক জনপ্রিয় শীর্ষ ৫টি কোর্স</p>
+                </div>
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-fire text-white text-sm"></i>
                 </div>
             </div>
-            <div class="space-y-4">
-                @foreach($courseCompletionData as $index => $course)
-                @if($index < 5)
-                <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ Str::limit($course['course_name'], 30) }}</span>
-                        <span class="text-sm font-bold text-slate-800 dark:text-white">{{ $course['progress'] }}%</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @foreach($allCourses as $index => $course)
+                <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-4 hover:bg-white/70 dark:hover:bg-slate-800/70 transition-all duration-300 relative">
+                    <!-- Ranking Badge -->
+                    <div class="absolute -top-2 -left-2 w-6 h-6 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                        {{ $index + 1 }}
                     </div>
-                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
-                        <div class="h-full rounded-full transition-all duration-1000 bg-gradient-to-r from-blue-500 to-purple-600" 
-                             data-progress="{{ $course['progress'] }}" style="width: 0%"></div>
+                    <div class="flex items-start space-x-3">
+                        <img src="{{ asset($course->thumbnail) }}" alt="{{ $course->title }}" 
+                             class="w-16 h-12 object-cover rounded-lg flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-sm font-semibold text-slate-800 dark:text-white mb-1 truncate">
+                                {{ Str::limit($course->title, 40) }}
+                            </h4>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-xs text-slate-600 dark:text-slate-400">
+                                    {{ $course->user->name ?? 'Unknown' }}
+                                </p>
+                                <span class="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                                    <i class="fas fa-users mr-1"></i>{{ $course->total_enrollments ?? 0 }} শিক্ষার্থী
+                                </span>
+                            </div>
+                            
+                            <!-- Status Badge -->
+                            <div class="flex items-center justify-between">
+                                @if($course->is_enrolled)
+                                    @if($course->enrollment_status == 'approved')
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                                            <i class="fas fa-check-circle mr-1"></i>এনরোলড ({{ $course->progress }}%)
+                                        </span>
+                                        @if($course->progress > 0)
+                                            <a href="{{ url('student/courses/'.$course->slug.'/learn') }}" 
+                                               class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium">
+                                                চালিয়ে যান →
+                                            </a>
+                                        @else
+                                            <a href="{{ url('student/courses/'.$course->slug.'/learn') }}" 
+                                               class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium">
+                                                শুরু করুন →
+                                            </a>
+                                        @endif
+                                    @elseif($course->enrollment_status == 'pending')
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
+                                            <i class="fas fa-clock mr-1"></i>অপেক্ষমান
+                                        </span>
+                                    @elseif($course->enrollment_status == 'payment_pending')
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
+                                            <i class="fas fa-credit-card mr-1"></i>পেমেন্ট প্রয়োজন
+                                        </span>
+                                    @endif
+                                @else
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400">
+                                        <i class="fas fa-eye mr-1"></i>উপলব্ধ
+                                    </span>
+                                    <a href="{{ url('courses/'.$course->slug) }}" 
+                                       class="text-xs text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium">
+                                        দেখুন →
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
-                @endif
                 @endforeach
-                @if(count($courseCompletionData) == 0)
-                <div class="text-center py-8">
+                
+                @if(count($allCourses) == 0)
+                <div class="col-span-2 text-center py-8">
                     <div class="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-chart-bar text-white text-xl"></i>
+                        <i class="fas fa-fire text-white text-xl"></i>
                     </div>
-                    <p class="text-slate-500 dark:text-slate-400">কোন কোর্স ডেটা পাওয়া যায়নি</p>
+                    <p class="text-slate-500 dark:text-slate-400">কোন জনপ্রিয় কোর্স পাওয়া যায়নি</p>
                 </div>
                 @endif
+                
+                <!-- View All Courses Link -->
+                <div class="col-span-full mt-4 text-center">
+                    <a href="{{ url('/courses') }}" 
+                       class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-medium rounded-lg hover:from-amber-600 hover:to-orange-700 transition-all duration-300 ray-hover">
+                        <i class="fas fa-fire mr-2"></i>আরও বেস্ট সেলার কোর্স দেখুন
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -444,11 +541,23 @@
                                 <span class="text-sm font-bold text-slate-800 dark:text-white min-w-[3rem]">{{ $totalProgressPercent }}%</span>
                             </div>
                         </td>
-                        <td class="py-4 px-4 text-center">
-                            <a href="{{ url('student/courses/'.$course->slug.'/learn') }}" 
-                               class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ray-hover">
-                                <i class="fas fa-play mr-2"></i>শিখুন
-                            </a>
+                        <td class="py-4 px-4">
+                            <div class="flex items-center justify-center space-x-2 min-h-[2.5rem]">
+                                <a href="{{ url('student/courses/'.$course->slug.'/learn') }}" 
+                                   class="inline-flex items-center justify-center px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-medium rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 ray-hover whitespace-nowrap min-w-[4rem]">
+                                    <i class="fas fa-play mr-1"></i>শিখুন
+                                </a>
+                                @if($totalProgressPercent > 0)
+                                    <button onclick="resetCourse({{ $course->id }}, '{{ $course->title }}')" 
+                                            class="inline-flex items-center justify-center px-3 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-medium rounded-lg transition-all duration-300 ray-hover whitespace-nowrap min-w-[4rem]"
+                                            title="কোর্স রিসেট করুন">
+                                        <i class="fas fa-redo mr-1"></i>রিসেট
+                                    </button>
+                                @else
+                                    <!-- Empty space to maintain alignment -->
+                                    <div class="w-[4rem]"></div>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -484,7 +593,116 @@
 
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+// Hide preloader when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Hide preloader after a short delay to ensure content is ready
+    setTimeout(function() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.classList.add('hidden');
+        }
+    }, 500);
+});
+
+// Show preloader on navigation
+window.addEventListener('beforeunload', function() {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.classList.remove('hidden');
+    }
+});
+</script>
+<script>
+// Course Reset Function
+function resetCourse(courseId, courseTitle) {
+    Swal.fire({
+        title: 'কোর্স রিসেট করুন',
+        html: `<div class="text-center">
+            <p class="mb-3">আপনি কি নিশ্চিত যে আপনি <strong>"${courseTitle}"</strong> কোর্সটি রিসেট করতে চান?</p>
+            <div class="bg-yellow-50 p-3 rounded-lg mb-3">
+                <p class="text-yellow-800 text-sm font-medium">⚠️ সতর্কতা:</p>
+                <p class="text-yellow-700 text-sm mt-1">এই কার্যক্রমটি সমস্ত কোর্স অগ্রগতি, লগ এবং কার্যকলাপ স্থায়ীভাবে মুছে ফেলবে।</p>
+            </div>
+            <p class="text-gray-600 text-sm">আপনি কোর্সটি নতুন করে শুরু করতে পারবেন।</p>
+        </div>`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f59e0b',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: '<i class="fas fa-redo mr-2"></i>হ্যাঁ, রিসেট করুন',
+        cancelButtonText: '<i class="fas fa-times mr-2"></i>বাতিল করুন',
+        reverseButtons: true,
+        customClass: {
+            popup: 'swal2-popup-custom',
+            title: 'text-xl font-bold text-gray-800',
+            confirmButton: 'px-6 py-3 text-white font-medium rounded-lg',
+            cancelButton: 'px-6 py-3 text-white font-medium rounded-lg'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            Swal.fire({
+                title: 'রিসেট করা হচ্ছে...',
+                text: 'অনুগ্রহ করে অপেক্ষা করুন',
+                icon: 'info',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Send AJAX request
+            fetch('{{ route("student.courses.reset") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    course_id: courseId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: 'সফল!',
+                        text: 'কোর্সটি সফলভাবে রিসেট করা হয়েছে।',
+                        icon: 'success',
+                        confirmButtonColor: '#10b981',
+                        confirmButtonText: 'ঠিক আছে'
+                    }).then(() => {
+                        // Reload the page to show updated progress
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'ত্রুটি!',
+                        text: data.message || 'কোর্স রিসেট করতে সমস্যা হয়েছে।',
+                        icon: 'error',
+                        confirmButtonColor: '#ef4444',
+                        confirmButtonText: 'ঠিক আছে'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'ত্রুটি!',
+                    text: 'কোর্স রিসেট করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
+                    icon: 'error',
+                    confirmButtonColor: '#ef4444',
+                    confirmButtonText: 'ঠিক আছে'
+                });
+            });
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Animate counter numbers
     const counters = document.querySelectorAll('[data-count]');

@@ -221,7 +221,6 @@
                         <span class="font-medium">আমার কোর্স</span>
                     </a>
 
-                   
 
                     <!-- Certificates -->
                     <a href="{{ route('student.certificates') }}" 

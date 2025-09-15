@@ -339,6 +339,9 @@
 .lesson-type-text {
     background: linear-gradient(135deg, #3B82F6, #60A5FA);
 }
+.lesson-type-live {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+}
 
 .lesson-type-icon i {
     color: #FFFFFF;
@@ -953,6 +956,8 @@ input:checked + .slider:before {
                                                 <i class="fas fa-play"></i>
                                             @elseif ($lesson->type == 'audio')
                                                 <i class="fas fa-volume-up"></i>
+                                            @elseif ($lesson->type == 'live')
+                                                <i class="fas fa-video"></i>
                                             @endif
                                         </div>
                                         <div class="lesson-details">
@@ -989,6 +994,11 @@ input:checked + .slider:before {
                                                 <a class="dropdown-item-modern" href="{{ url('instructor/courses/create/'.$lesson->course_id.'/text/'.$lesson->module_id.'/content/'.$lesson->id) }}">
                                                     <i class="fas fa-plus"></i>
                                                     কন্টেন্ট যোগ করুন
+                                                </a>
+                                            @elseif($lesson->type == 'live')
+                                                <a class="dropdown-item-modern" href="{{ url('instructor/courses/create/'.$lesson->course_id.'/live/'.$lesson->module_id.'/content/'.$lesson->id) }}">
+                                                    <i class="fas fa-video"></i>
+                                                    লাইভ ক্লাস সেটআপ
                                                 </a>
                                             @endif
                                             <button class="dropdown-item-modern" onclick="editLesson('{{ $lesson->id }}', '{{ $module->course_id }}', '{{ $module->id }}', '{{ $lesson->title }}', '{{ $lesson->type }}', {{ $lesson->is_public ? 'true' : 'false' }})">
@@ -1130,6 +1140,10 @@ input:checked + .slider:before {
                         <div class="lesson-type-option active" onclick="selectLessonType('video', this)">
                             <i class="fas fa-play"></i>
                             <span>ভিডিও</span>
+                        </div>
+                        <div class="lesson-type-option" onclick="selectLessonType('live', this)">
+                            <i class="fas fa-video"></i>
+                            <span>লাইভ ক্লাস</span>
                         </div>
                     </div>
                     <input type="hidden" name="lesson_type" id="selectedLessonType" value="video">
