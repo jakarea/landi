@@ -249,6 +249,8 @@ class CourseCreateStepController extends Controller
 
         }elseif($lesson->type == 'text'){
             return redirect('instructor/courses/create/'.$lesson->course_id.'/text/'.$lesson->module_id.'/content/'.$lesson->id)->with('info', 'Set The Text to complete this Lesson');
+        }elseif($lesson->type == 'live'){
+            return redirect('instructor/courses/create/'.$lesson->course_id.'/live/'.$lesson->module_id.'/content/'.$lesson->id)->with('info', 'Setup Live Class details to complete this Lesson');
         }else{
             return redirect()->back()->with('error', 'Failed to Create Lesson');
         }
@@ -1370,5 +1372,91 @@ class CourseCreateStepController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred while deleting'], 500);
         }
+    }
+
+    // Live Lesson Methods
+    public function stepLessonLive($id, $module_id, $lesson_id)
+    {
+        if(!$id){
+            return redirect('instructor/courses');
+        }
+        
+        // session set
+        if (!session()->has('course_id')) {
+            session(['course_id' => $id]);
+        }
+        
+        // Check if course exists and belongs to instructor
+        $course = Course::where('id', $id)->where('instructor_id', Auth::user()->id)->first();
+        if (!$course) {
+            return redirect('instructor/courses')->with('error', 'কোর্সটি পাওয়া যায়নি বা আপনার অধিকার নেই');
+        }
+        
+        // Check if lesson exists
+        $lesson = Lesson::where('id', $lesson_id)->first();
+        if (!$lesson) {
+            return redirect('instructor/courses/create/' . $id . '/content?tab=' . $module_id)
+                     ->with('error', 'লেসনটি পাওয়া যায়নি');
+        }
+        
+        // Check if lesson belongs to instructor
+        if ($lesson->instructor_id != Auth::user()->id) {
+            return redirect('instructor/courses/create/' . $id . '/content?tab=' . $module_id)
+                     ->with('error', 'এই লেসনে আপনার অধিকার নেই');
+        }
+        
+        // Check if lesson belongs to the specified course
+        if ($lesson->course_id != $id) {
+            return redirect('instructor/courses/create/' . $id . '/content?tab=' . $module_id)
+                     ->with('error', 'লেসনটি এই কোর্সের অন্তর্গত নয়');
+        }
+        
+        return view('e-learning.course.instructor.create.step-4-live', compact('course', 'lesson'));
+    }
+
+    public function stepLessonLiveSet(Request $request, $id, $module_id, $lesson_id)
+    {
+        // Check if lesson exists and belongs to instructor
+        $lesson = Lesson::where('id', $lesson_id)->where('instructor_id', Auth::user()->id)->first();
+        if (!$lesson) {
+            return redirect('instructor/courses/create/' . $id . '/content?tab=' . $module_id)
+                     ->with('error', 'লেসনটি পাওয়া যায়নি বা আপনার অধিকার নেই');
+        }
+        
+        $request->validate([
+            'live_start_time' => 'required|date|after:now',
+            'live_duration_minutes' => 'required|integer|min:15|max:300',
+            'zoom_meeting_id' => 'required|string|max:255',
+            'zoom_join_url' => 'required|url|max:500',
+            'zoom_password' => 'nullable|string|max:100'
+        ], [
+            'live_start_time.required' => 'শুরুর সময় প্রয়োজন',
+            'live_start_time.after' => 'ভবিষ্যতের সময় নির্বাচন করুন',
+            'live_duration_minutes.required' => 'সময়কাল প্রয়োজন',
+            'live_duration_minutes.min' => 'সর্বনিম্ন ১৫ মিনিট',
+            'live_duration_minutes.max' => 'সর্বোচ্চ ৫ ঘন্টা',
+            'zoom_meeting_id.required' => 'Zoom মিটিং ID প্রয়োজন',
+            'zoom_join_url.required' => 'Zoom যোগদান লিংক প্রয়োজন',
+            'zoom_join_url.url' => 'বৈধ URL দিন'
+        ]);
+
+        // Update lesson with live class data
+        $lesson->update([
+            'live_start_time' => $request->live_start_time,
+            'live_duration_minutes' => $request->live_duration_minutes,
+            'zoom_meeting_id' => $request->zoom_meeting_id,
+            'zoom_join_url' => $request->zoom_join_url,
+            'zoom_password' => $request->zoom_password,
+            'status' => 'published' // Mark as complete since all required fields are filled
+        ]);
+
+        $action = $request->input('action', 'save_continue');
+        
+        if ($action === 'save_next') {
+            return redirect('instructor/courses/create/' . $lesson->course_id . '/content?tab=' . $lesson->module_id)
+                         ->with('success', 'লাইভ ক্লাস সফলভাবে সেটআপ হয়েছে');
+        }
+        
+        return redirect()->back()->with('success', 'লাইভ ক্লাসের তথ্য সংরক্ষিত হয়েছে');
     }
 }

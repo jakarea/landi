@@ -417,6 +417,7 @@
         document.documentElement.classList.remove('dark');
     }
     
+    
     document.addEventListener("DOMContentLoaded", function() {
         let inputField = document.getElementById("inputField");
         let statusSelect = document.getElementById("statusSelect");

@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileManagementController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\CourseEnrollmentController;
 use App\Http\Controllers\Builder\LandingPageBuilderController;
+use App\Http\Controllers\Instructor;
 
 /*
 |--------------------------------------------------------------------------
@@ -156,6 +157,10 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
             Route::post('/video/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonVideoSet'])->name('instructor.courses.create.lesson.video.store');
             Route::get('/audio/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonAudio'])->name('instructor.courses.create.lesson.audio.content');
             Route::post('/audio/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonAudioSet'])->name('instructor.courses.create.lesson.audio.store');
+            
+            // Live lesson routes
+            Route::get('/live/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonLive'])->name('instructor.courses.create.lesson.live.content');
+            Route::post('/live/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonLiveSet'])->name('instructor.courses.create.lesson.live.store');
             Route::get('/text/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonText'])->name('instructor.courses.create.lesson.text.content');
             Route::post('/text/{module_id}/content/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonContent'])->name('instructor.courses.create.lesson.text.store');
             Route::get('/lesson/{module_id}/institute/{lesson_id}/', [CourseCreateStepController::class, 'stepLessonInstitue'])->name('instructor.courses.create.lesson.institute');

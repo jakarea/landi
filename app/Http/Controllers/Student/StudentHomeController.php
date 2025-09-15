@@ -18,14 +18,15 @@ use App\Models\Notification;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Carbon\CarbonInterval;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use RecursiveDirectoryIterator;
@@ -558,10 +559,8 @@ class StudentHomeController extends Controller
         }
         
         // Calculate course metrics
-        $totalModules = $course->modules->where('status', 'published')->count();
-        $totalLessons = $course->modules->filter(function ($module) {
-            return $module->status === 'published';
-        })->map(function ($module) {
+        $totalModules = $course->modules->count();
+        $totalLessons = $course->modules->map(function ($module) {
             return $module->lessons()->where('status', 'published')->count();
         })->sum();
 
@@ -1100,52 +1099,116 @@ class StudentHomeController extends Controller
     {
         $userId = Auth::id();
         
-        // Get enrolled courses from multiple sources like in the courses method
-        $enrolledCourseIds = collect();
+        // Enable query logging for performance monitoring
+        if (config('app.debug')) {
+            DB::enableQueryLog();
+        }
         
-        // From CourseEnrollment model
-        $courseEnrollments = CourseEnrollment::where('user_id', $userId)
-            ->where('status', 'approved')
-            ->pluck('course_id');
-        $enrolledCourseIds = $enrolledCourseIds->merge($courseEnrollments);
+        // Cache all dashboard data together
+        $dashboardData = Cache::remember("dashboard_data_user_{$userId}", 180, function() use ($userId) {
+            // Get enrolled courses from multiple sources  
+            $enrolledCourseIds = collect();
+            
+            // From CourseEnrollment model
+            $courseEnrollments = CourseEnrollment::where('user_id', $userId)
+                ->where('status', 'approved')
+                ->pluck('course_id');
+            $enrolledCourseIds = $enrolledCourseIds->merge($courseEnrollments);
+            
+            // From Checkout model
+            $checkoutEnrollments = Checkout::where('user_id', $userId)
+                ->whereNotNull('course_id')
+                ->pluck('course_id');
+            $enrolledCourseIds = $enrolledCourseIds->merge($checkoutEnrollments);
+            
+            // Remove duplicates
+            $enrolledCourseIds = $enrolledCourseIds->unique();
+            
+            // Get all course activities for this user in one query
+            $allUserActivities = CourseActivity::where('user_id', $userId)
+                ->select('course_id', 'lesson_id', 'is_completed', 'duration', 'created_at')
+                ->get()
+                ->groupBy('course_id');
+            
+            // Get all activity stats in one query
+            $activityStats = CourseActivity::where('user_id', $userId)
+                ->where('is_completed', 1)
+                ->selectRaw('COUNT(*) as lessons_completed, SUM(duration) as time_spent')
+                ->first();
+            
+            return [
+                'enrolledCourseIds' => $enrolledCourseIds,
+                'allUserActivities' => $allUserActivities,
+                'activityStats' => $activityStats
+            ];
+        });
         
-        // From Checkout model
-        $checkoutEnrollments = Checkout::where('user_id', $userId)
-            ->whereNotNull('course_id')
-            ->pluck('course_id');
-        $enrolledCourseIds = $enrolledCourseIds->merge($checkoutEnrollments);
+        $enrolledCourseIds = $dashboardData['enrolledCourseIds'];
+        $allUserActivities = $dashboardData['allUserActivities'];
+        $activityStats = $dashboardData['activityStats'];
         
-        // Remove duplicates
-        $enrolledCourseIds = $enrolledCourseIds->unique();
-        
-        // Get courses with detailed activity data
+        // Get courses with optimized eager loading
         $courseActivities = Course::whereIn('id', $enrolledCourseIds)
-            ->with(['modules.lessons'])
+            ->with([
+                'modules' => function($query) {
+                    $query->where('status', 'published')
+                          ->with(['lessons' => function($lessonQuery) {
+                              $lessonQuery->where('status', 'published')
+                                          ->select('id', 'module_id', 'course_id', 'status');
+                          }]);
+                }
+            ])
+            ->select('id', 'title', 'slug', 'user_id')
             ->orderby('id', 'desc')
             ->paginate(12);
         
-        // Calculate activity statistics
+        // Calculate activity statistics efficiently
         $totalEnrolledCourses = $enrolledCourseIds->count();
         $completedCourses = 0;
         $inProgressCourses = 0;
         $notStartedCourses = 0;
-        $totalTimeSpent = 0;
-        $totalLessonsCompleted = 0;
         $totalLessons = 0;
         
-        // Monthly progress data for chart
-        $monthlyProgressData = CourseActivity::where('user_id', $userId)
-            ->where('is_completed', 1)
-            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, COUNT(*) as completed_lessons, SUM(duration) as total_duration')
-            ->groupBy('month', 'year')
-            ->orderBy('year', 'asc')
-            ->orderBy('month', 'asc')
-            ->get();
+        // Get chart data from cache
+        $chartData = Cache::remember("chart_data_user_{$userId}", 300, function() use ($userId) {
+            // Monthly progress data for chart
+            $monthlyProgressData = CourseActivity::where('user_id', $userId)
+                ->where('is_completed', 1)
+                ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, COUNT(*) as completed_lessons, SUM(duration) as total_duration')
+                ->groupBy('month', 'year')
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->get();
+            
+            // Weekly activity data for line chart (last 8 weeks)
+            $weeklyActivityData = CourseActivity::where('user_id', $userId)
+                ->where('is_completed', 1)
+                ->where('created_at', '>=', now()->subWeeks(8))
+                ->selectRaw('WEEK(created_at) as week, YEAR(created_at) as year, COUNT(*) as lessons_count, SUM(duration) as duration')
+                ->groupBy('week', 'year')
+                ->orderBy('year', 'asc')
+                ->orderBy('week', 'asc')
+                ->get();
+                
+            return [
+                'monthlyProgressData' => $monthlyProgressData,
+                'weeklyActivityData' => $weeklyActivityData
+            ];
+        });
         
-        // Course completion data for pie chart
+        // Course completion data calculation - optimized
         $courseCompletionData = [];
         foreach ($courseActivities as $course) {
-            $progress = StudentActitviesProgress($userId, $course->id);
+            // Calculate total lessons for this course efficiently
+            $courseLessons = $course->modules->sum(function($module) {
+                return $module->lessons->count(); // Already filtered in eager loading
+            });
+            $totalLessons += $courseLessons;
+            
+            // Calculate progress efficiently using pre-loaded data
+            $courseActivitiesData = $allUserActivities->get($course->id, collect());
+            $completedLessons = $courseActivitiesData->where('is_completed', 1)->count();
+            $progress = $courseLessons > 0 ? round(($completedLessons / $courseLessons) * 100, 2) : 0;
             
             if ($progress >= 100) {
                 $completedCourses++;
@@ -1155,12 +1218,6 @@ class StudentHomeController extends Controller
                 $notStartedCourses++;
             }
             
-            // Calculate total lessons for this course
-            $courseLessons = $course->modules->sum(function($module) {
-                return $module->lessons->where('status', 'published')->count();
-            });
-            $totalLessons += $courseLessons;
-            
             $courseCompletionData[] = [
                 'course_name' => $course->title,
                 'progress' => $progress,
@@ -1168,12 +1225,7 @@ class StudentHomeController extends Controller
             ];
         }
         
-        // Get total time spent and lessons completed
-        $activityStats = CourseActivity::where('user_id', $userId)
-            ->where('is_completed', 1)
-            ->selectRaw('COUNT(*) as lessons_completed, SUM(duration) as time_spent')
-            ->first();
-            
+        // Use cached activity stats
         $totalLessonsCompleted = $activityStats->lessons_completed ?? 0;
         $totalTimeSpent = $activityStats->time_spent ?? 0;
         
@@ -1181,15 +1233,59 @@ class StudentHomeController extends Controller
         $totalHours = floor($totalTimeSpent / 3600);
         $totalMinutes = floor(($totalTimeSpent % 3600) / 60);
         
-        // Weekly activity data for line chart (last 8 weeks)
-        $weeklyActivityData = CourseActivity::where('user_id', $userId)
-            ->where('is_completed', 1)
-            ->where('created_at', '>=', now()->subWeeks(8))
-            ->selectRaw('WEEK(created_at) as week, YEAR(created_at) as year, COUNT(*) as lessons_count, SUM(duration) as duration')
-            ->groupBy('week', 'year')
-            ->orderBy('year', 'asc')
-            ->orderBy('week', 'asc')
-            ->get();
+        // Extract chart data from cache
+        $monthlyProgressData = $chartData['monthlyProgressData'];
+        $weeklyActivityData = $chartData['weeklyActivityData'];
+
+        // Get top popular courses with static caching (user-specific data added after)
+        $topCourses = Cache::remember('popular_courses_base_v3', 600, function() {
+            return Course::with(['user'])
+                ->where('status', 'approved')
+                ->withCount(['checkouts as total_enrollments' => function($query) {
+                    $query->whereNotNull('course_id');
+                }])
+                ->orderBy('total_enrollments', 'desc')
+                ->limit(5)
+                ->get();
+        });
+        
+        // Add user-specific data efficiently
+        $courseIds = $topCourses->pluck('id');
+        $userEnrollments = CourseEnrollment::where('user_id', $userId)
+            ->whereIn('course_id', $courseIds)
+            ->select('course_id', 'status')
+            ->get()
+            ->keyBy('course_id');
+        
+        $allCourses = $topCourses->map(function ($course) use ($enrolledCourseIds, $userEnrollments, $allUserActivities) {
+            $isEnrolled = $enrolledCourseIds->contains($course->id);
+            $enrollment = $userEnrollments->get($course->id);
+            
+            // Calculate progress efficiently using pre-loaded data
+            $progress = 0;
+            if ($isEnrolled && $allUserActivities->has($course->id)) {
+                $courseActivitiesData = $allUserActivities->get($course->id);
+                $completedCount = $courseActivitiesData->where('is_completed', 1)->count();
+                // Simple progress calculation - can be enhanced if needed
+                $progress = min($completedCount * 10, 100); // Rough estimate
+            }
+            
+            $course->is_enrolled = $isEnrolled;
+            $course->enrollment_status = $enrollment ? $enrollment->status : null;
+            $course->progress = $progress;
+            
+            return $course;
+        });
+        
+        // Log query count for performance monitoring
+        if (config('app.debug')) {
+            $queries = DB::getQueryLog();
+            Log::info('Dashboard queries executed', [
+                'user_id' => $userId,
+                'query_count' => count($queries),
+                'queries' => $queries
+            ]);
+        }
         
         return view('e-learning/course/students/activity', compact(
             'courseActivities',
@@ -1204,7 +1300,8 @@ class StudentHomeController extends Controller
             'totalLessons',
             'monthlyProgressData',
             'courseCompletionData',
-            'weeklyActivityData'
+            'weeklyActivityData',
+            'allCourses'
         ));
     }
 
@@ -1652,6 +1749,94 @@ class StudentHomeController extends Controller
     public function completeActivity(Request $request)
     {
         return $this->storeActivities($request);
+    }
+
+    /**
+     * Reset course progress for a student
+     */
+    public function resetCourse(Request $request)
+    {
+        try {
+            $request->validate([
+                'course_id' => 'required|integer|exists:courses,id'
+            ]);
+
+            $courseId = $request->course_id;
+            $userId = Auth::id();
+
+            // Verify that the user is enrolled in this course
+            $enrollment = CourseEnrollment::where('user_id', $userId)
+                                        ->where('course_id', $courseId)
+                                        ->where('status', 'approved')
+                                        ->first();
+
+            if (!$enrollment) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'আপনি এই কোর্সে এনরোল নেই বা কোর্সটি অনুমোদিত নয়।'
+                ], 403);
+            }
+
+            DB::beginTransaction();
+
+            try {
+                // Delete all course logs for this user and course
+                CourseLog::where('user_id', $userId)
+                         ->where('course_id', $courseId)
+                         ->delete();
+
+                // Delete all course activities for this user and course
+                CourseActivity::where('user_id', $userId)
+                              ->where('course_id', $courseId)
+                              ->delete();
+
+                DB::commit();
+
+                Log::info('Course reset successful', [
+                    'user_id' => $userId,
+                    'course_id' => $courseId,
+                    'timestamp' => now()
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'কোর্সটি সফলভাবে রিসেট করা হয়েছে। আপনি এখন নতুন করে শুরু করতে পারেন।'
+                ]);
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                
+                Log::error('Course reset failed during database operation', [
+                    'user_id' => $userId,
+                    'course_id' => $courseId,
+                    'error' => $e->getMessage(),
+                    'timestamp' => now()
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'ডেটাবেস অপারেশনে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।'
+                ], 500);
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'অবৈধ ডেটা প্রদান করা হয়েছে।'
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Course reset failed', [
+                'user_id' => Auth::id(),
+                'course_id' => $request->course_id ?? null,
+                'error' => $e->getMessage(),
+                'timestamp' => now()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'কোর্স রিসেট করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।'
+            ], 500);
+        }
     }
 
 }

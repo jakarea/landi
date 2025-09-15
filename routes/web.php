@@ -148,6 +148,13 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 });
 
 // ========================================
+// LIVE CLASSES ROUTES (STUDENT ONLY)
+// ========================================
+
+// Live classes functionality has been integrated into the course system
+// Students can access live lessons through their enrolled courses
+
+// ========================================
 // DEVICE MANAGEMENT ROUTES (STUDENT ONLY)
 // ========================================
 

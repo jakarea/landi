@@ -13,7 +13,6 @@ function readFile(input) {
         reader.readAsDataURL(input.files[0]);
     }
     else {
-        console.log("Sorry - you're browser doesn't support the FileReader API");
     }
 }
 

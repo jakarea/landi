@@ -277,6 +277,120 @@
                 </div>
 
                 <div class="border-t border-gray-200 dark:border-gray-700 mb-6 hidden" id="textHideShowSeparator"></div>
+
+                <!-- Live Lesson Content Area (Hidden by default) -->
+                <div class="glass-effect rounded-2xl p-6 mb-6 hidden" id="liveLessonContent">
+                    <div class="text-center">
+                        <!-- Live Lesson Status Icon -->
+                        <div class="mb-4" id="liveLessonStatus">
+                            <i class="fas fa-video text-4xl text-primary-500 mb-3"></i>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="liveLessonTitle">Live Lesson</h3>
+                        </div>
+                        
+                        <!-- Live Lesson Info -->
+                        <div class="mb-6" id="liveLessonInfo">
+                            <p class="text-gray-600 dark:text-gray-400 mb-2" id="liveLessonTime">Starting time will appear here</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-500" id="liveLessonDuration">Duration: 60 minutes</p>
+                        </div>
+                        
+                        <!-- Countdown or Action Area -->
+                        <div class="mb-4" id="liveLessonAction">
+                            <!-- Countdown will be shown here for upcoming lessons -->
+                            <div id="countdownDisplay" class="hidden">
+                                <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-4 mb-4">
+                                    <div class="flex items-center justify-center space-x-4">
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold" id="countdownDays">00</div>
+                                            <div class="text-xs">Days</div>
+                                        </div>
+                                        <div class="text-xl">:</div>
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold" id="countdownHours">00</div>
+                                            <div class="text-xs">Hours</div>
+                                        </div>
+                                        <div class="text-xl">:</div>
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold" id="countdownMinutes">00</div>
+                                            <div class="text-xs">Minutes</div>
+                                        </div>
+                                        <div class="text-xl">:</div>
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold" id="countdownSeconds">00</div>
+                                            <div class="text-xs">Seconds</div>
+                                        </div>
+                                    </div>
+                                    <p class="text-center mt-2 text-sm">Live class starts in</p>
+                                </div>
+                                
+                                <!-- Zoom Download Info -->
+                                <div id="zoomDownloadInfo" class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                                    <div class="flex items-center mb-2">
+                                        <i class="fas fa-download text-blue-600 mr-2"></i>
+                                        <h4 class="text-blue-800 dark:text-blue-200 font-semibold">Zoom অ্যাপ ডাউনলোড করুন</h4>
+                                    </div>
+                                    <p class="text-blue-700 dark:text-blue-300 text-sm mb-3">
+                                        লাইভ ক্লাসে অংশগ্রহণের জন্য আপনার ডিভাইসে Zoom অ্যাপ ইনস্টল করুন:
+                                    </p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="https://zoom.us/download" target="_blank" 
+                                           class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-md transition-colors">
+                                            <i class="fas fa-desktop mr-1"></i>
+                                            Desktop
+                                        </a>
+                                        <a href="https://apps.apple.com/app/zoom/id546505307" target="_blank" 
+                                           class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-md transition-colors">
+                                            <i class="fab fa-apple mr-1"></i>
+                                            iOS
+                                        </a>
+                                        <a href="https://play.google.com/store/apps/details?id=us.zoom.videomeetings" target="_blank" 
+                                           class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-md transition-colors">
+                                            <i class="fab fa-google-play mr-1"></i>
+                                            Android
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Zoom Meeting Details (shown when live) -->
+                            <div id="zoomMeetingDetails" class="hidden mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-video text-red-600 mr-2"></i>
+                                    <h4 class="text-red-800 dark:text-red-200 font-semibold">Zoom Meeting Details</h4>
+                                </div>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded border">
+                                        <span class="text-gray-600 dark:text-gray-400">Meeting ID:</span>
+                                        <span id="zoomMeetingId" class="font-mono text-gray-900 dark:text-white font-semibold">--</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded border">
+                                        <span class="text-gray-600 dark:text-gray-400">Password:</span>
+                                        <span id="zoomPassword" class="font-mono text-gray-900 dark:text-white font-semibold">--</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded border">
+                                        <span class="text-gray-600 dark:text-gray-400">Join URL:</span>
+                                        <a id="zoomJoinUrl" href="#" target="_blank" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold text-xs break-all">--</a>
+                                    </div>
+                                </div>
+                                <p class="text-red-700 dark:text-red-300 text-xs mt-3">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    You can copy these details to join manually if the button doesn't work
+                                </p>
+                            </div>
+                            
+                            <!-- Join Button for live lessons -->
+                            <button id="joinLiveBtn" class="hidden bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 animate-pulse">
+                                <i class="fas fa-video mr-2"></i>
+                                Join Live Class
+                            </button>
+                            
+                            <!-- Expired message -->
+                            <div id="expiredMessage" class="hidden bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-6 py-3 rounded-lg">
+                                <i class="fas fa-history mr-2"></i>
+                                This live class has ended
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- About Course Section -->
                 <div class="glass-effect rounded-2xl p-6 mb-6">
@@ -528,7 +642,7 @@
                     </div>
                     <div class="space-y-2" id="accordionExample">
                         @foreach ($course->modules as $module)
-                            @if ($module->status == 'published' && count($module->lessons) > 0)
+                            @if (count($module->lessons->where('status', 'published')) > 0)
                                 <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
                                     <!-- Module Header -->
                                     <div class="p-3" id="heading_{{ $module->id }}">
@@ -584,7 +698,14 @@
                                                                     data-instructor-id="{{ $course->user_id }}"
                                                                     data-lesson-title="{{ $lesson->title }}"
                                                                     data-lesson-slug="{{ $lesson->slug ?? '' }}"
-                                                                    data-search-text="{{ strtolower($lesson->title . ' ' . ($lesson->slug ?? '')) }}">
+                                                                    data-search-text="{{ strtolower($lesson->title . ' ' . ($lesson->slug ?? '')) }}"
+                                                                    @if($lesson->type == 'live')
+                                                                        data-live-start-time="{{ $lesson->live_start_time ? $lesson->live_start_time->toISOString() : '' }}"
+                                                                        data-live-duration="{{ $lesson->live_duration_minutes ?? 60 }}"
+                                                                        data-zoom-url="{{ $lesson->zoom_join_url ?? '' }}"
+                                                                        data-zoom-meeting-id="{{ $lesson->zoom_meeting_id ?? '' }}"
+                                                                        data-zoom-password="{{ $lesson->zoom_password ?? '' }}"
+                                                                    @endif>
 
                                                                 <!-- Completion Status -->
                                                                 <span class="mr-3 cursor-pointer" id="completionIcon_{{ $lesson->id }}">
@@ -613,6 +734,16 @@
                                                                     @elseif($lesson->type == 'video')
                                                                         <i class="fas fa-play actv-hide text-red-500"></i>
                                                                         <i class="fas fa-pause actv-show text-primary-500 hidden"></i>
+                                                                    @elseif($lesson->type == 'live')
+                                                                        @if($lesson->isLive())
+                                                                            <i class="fas fa-video text-red-500 animate-pulse" title="Live Now"></i>
+                                                                        @elseif($lesson->isUpcoming())
+                                                                            <i class="fas fa-clock text-blue-500" title="Scheduled"></i>
+                                                                        @elseif($lesson->isExpired())
+                                                                            <i class="fas fa-history text-gray-500" title="Expired"></i>
+                                                                        @else
+                                                                            <i class="fas fa-video text-gray-500"></i>
+                                                                        @endif
                                                                     @endif
                                                                 </span>
 
@@ -778,14 +909,8 @@
         }
 
         // Basic check - Is jQuery loaded?
-        console.log('💡 jQuery loaded:', typeof $ !== 'undefined');
-        console.log('💡 Document ready state:', document.readyState);
 
         $(document).ready(function() {
-            console.log('🚀 Student view script loaded');
-            console.log('🔍 Lesson items found:', $('.lesson-item').length);
-            console.log('🔍 Lesson clickable items found:', $('.lesson-item.lesson-clickable').length);
-            console.log('🔍 jQuery version:', $.fn.jquery);
             
             // jQuery is now loaded and working
             
@@ -804,11 +929,6 @@
 
             // Initialize with last lesson from course_logs
             @if($currentLesson)
-                console.log('🎬 Initializing with last lesson from course_logs:', {
-                    lessonId: {{ $currentLesson->id }},
-                    moduleId: {{ $currentLesson->module_id }},
-                    type: '{{ $currentLesson->type }}'
-                });
 
                 // Set the current lesson as active in sidebar using the new structure
                 $('[data-lesson-id="{{ $currentLesson->id }}"]').addClass('bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500');
@@ -826,14 +946,12 @@
 
                 // Load the current lesson content
                 @if($currentLesson->type == 'video' && $currentLesson->video_link)
-                    console.log('🎬 Loading current lesson video:', '{{ $currentLesson->video_link }}');
                     document.querySelector('#videoPlayerContainer').style.display = 'block';
                     document.querySelector('.audio-iframe-box').classList.add('hidden');
                     $('#textHideShow').hide();
                     $('#textHideShowSeparator').hide();
                     loadVideo('{{ $currentLesson->video_link }}', {{ $currentLesson->id }});
                 @elseif($currentLesson->type == 'audio' && $currentLesson->audio)
-                    console.log('🎵 Loading current lesson audio');
                     document.querySelector('.audio-iframe-box').classList.remove('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
                     $('#textHideShow').hide();
@@ -841,12 +959,30 @@
                     var audioSource = audioPlayer.querySelector('source');
                     audioSource.src = baseUrl + '/{{ $currentLesson->audio }}';
                     audioPlayer.load();
+                    // Show Mark as Complete button for audio lessons
+                    $('#markCompleteBtn').show();
                 @elseif($currentLesson->type == 'text')
-                    console.log('📖 Loading current lesson text content');
                     $('#textHideShow').show();
                     $('#textHideShowSeparator').show();
                     document.querySelector('.audio-iframe-box').classList.add('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
+                    // Show Mark as Complete button for text lessons
+                    $('#markCompleteBtn').show();
+                @elseif($currentLesson->type == 'live')
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
+                    document.querySelector('#videoPlayerContainer').style.display = 'none';
+                    $('#textHideShow').hide();
+                    $('#textHideShowSeparator').hide();
+                    
+                    // Show live lesson content with current lesson data
+                    showLiveLessonContent(
+                        {{ $currentLesson->id }},
+                        '{{ $currentLesson->live_start_time ? $currentLesson->live_start_time->toISOString() : '' }}',
+                        {{ $currentLesson->live_duration_minutes ?? 60 }},
+                        '{{ $currentLesson->zoom_join_url ?? '' }}',
+                        '{{ $currentLesson->zoom_meeting_id ?? '' }}',
+                        '{{ $currentLesson->zoom_password ?? '' }}'
+                    );
                 @endif
             @endif
 
@@ -856,11 +992,9 @@
             $(document).on('click', '.lesson-item.lesson-clickable', function(e) {
                 // Don't prevent default for completion checkbox clicks
                 if ($(e.target).hasClass('is_complete_lesson')) {
-                    // console.log('🚫 Clicked on completion checkbox - returning');
                     return; // Let the completion handler handle this
                 }
                 
-                console.log('🎯 LESSON CLICKED!');
                 e.preventDefault();
                 e.stopPropagation();
                 
@@ -874,15 +1008,6 @@
                 let videoUrl = this.getAttribute('data-video-url');
                 let audioUrl = this.getAttribute('data-audio-url');
 
-                console.log('📊 Lesson Data:', {
-                    type: type,
-                    lessonId: lessonId,
-                    courseId: courseId,
-                    moduleId: moduleId,
-                    videoUrl: videoUrl,
-                    audioUrl: audioUrl,
-                    duration: lessonDuration
-                });
 
                 // Log course progress - track last played lesson
                 logCourseProgress(courseId, lessonId, moduleId);
@@ -899,7 +1024,6 @@
 
                 // Handle different lesson types
                 if (type == 'video' && videoUrl) {
-                    console.log('🎬 Playing video:', videoUrl);
                     
                     // Show video player, hide other media
                     document.querySelector('#videoPlayerContainer').style.display = 'block';
@@ -911,7 +1035,6 @@
                     loadVideo(videoUrl, lessonId);
 
                 } else if (type == 'audio' && audioUrl) {
-                    console.log('🎵 Playing audio:', audioUrl);
                     if (audioPlayer) audioPlayer.pause();
                     document.querySelector('.audio-iframe-box').classList.remove('hidden');
                     $('#textHideShow').hide();
@@ -925,15 +1048,39 @@
                         audioPlayer.load();
                         audioPlayer.play();
                     }
+                    
+                    // Show Mark as Complete button for audio lessons
+                    $('#markCompleteBtn').show();
 
                 } else if (type == 'text') {
-                    console.log('📖 Showing text lesson');
                     if (audioPlayer) audioPlayer.pause();
                     
                     $('#textHideShow').show();
                     $('#textHideShowSeparator').show();
                     document.querySelector('.audio-iframe-box').classList.add('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
+                    
+                    // Show Mark as Complete button for text lessons
+                    $('#markCompleteBtn').show();
+                    
+                } else if (type == 'live') {
+                    if (audioPlayer) audioPlayer.pause();
+                    
+                    // Hide other media players
+                    document.querySelector('.audio-iframe-box').classList.add('hidden');
+                    document.querySelector('#videoPlayerContainer').style.display = 'none';
+                    $('#textHideShow').hide();
+                    $('#textHideShowSeparator').hide();
+                    
+                    // Get live lesson data attributes
+                    let startTime = this.getAttribute('data-live-start-time');
+                    let duration = this.getAttribute('data-live-duration');
+                    let zoomUrl = this.getAttribute('data-zoom-url');
+                    let zoomMeetingId = this.getAttribute('data-zoom-meeting-id');
+                    let zoomPassword = this.getAttribute('data-zoom-password');
+                    
+                    // Show live lesson content area
+                    showLiveLessonContent(lessonId, startTime, duration, zoomUrl, zoomMeetingId, zoomPassword);
                 }
 
                 // Update Mark as Complete button
@@ -968,7 +1115,6 @@
 
             // Video loading function with YouTube/Vimeo support
             function loadVideo(videoUrl, lessonId) {
-                console.log('Loading video:', videoUrl);
                 const videoContainer = document.getElementById('videoPlayerContainer');
                 if (!videoContainer || !videoUrl) return;
 
@@ -1012,15 +1158,190 @@
                             disablepictureinpicture>
                         </iframe>
                     `;
-                    console.log('Video loaded successfully');
+                    
+                    // Show Mark as Complete button for regular video lessons
+                    $('#markCompleteBtn').show();
                 } else {
-                    console.log('Invalid video URL');
                 }
+            }
+
+            // Function to show live lesson content with countdown, redirect, etc.
+            function showLiveLessonContent(lessonId, startTime, duration, zoomUrl, zoomMeetingId, zoomPassword) {
+                
+                // Hide Mark as Complete button for live sessions
+                $('#markCompleteBtn').hide();
+                
+                // Show the live lesson content area
+                $('#liveLessonContent').show();
+                
+                // Hide all action elements first
+                $('#countdownDisplay').addClass('hidden');
+                $('#joinLiveBtn').addClass('hidden');
+                $('#expiredMessage').addClass('hidden');
+                $('#zoomDownloadInfo').addClass('hidden');
+                $('#zoomMeetingDetails').addClass('hidden');
+                
+                if (!startTime) {
+                    // No start time set - show as unavailable
+                    $('#liveLessonTitle').text('Live Lesson - Not Scheduled');
+                    $('#liveLessonTime').text('This live lesson has not been scheduled yet');
+                    $('#liveLessonDuration').text('Duration: ' + duration + ' minutes');
+                    return;
+                }
+                
+                const now = new Date();
+                const startDateTime = new Date(startTime);
+                const endDateTime = new Date(startDateTime.getTime() + duration * 60000);
+                
+                // Format start time for display
+                const formatOptions = { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                };
+                $('#liveLessonTime').text('Starts: ' + startDateTime.toLocaleDateString('en-US', formatOptions));
+                $('#liveLessonDuration').text('Duration: ' + duration + ' minutes');
+                
+                // Determine lesson status and show appropriate content
+                if (now >= startDateTime && now <= endDateTime) {
+                    // Lesson is currently live
+                    showLiveLessonLive(lessonId, zoomUrl, zoomMeetingId, zoomPassword);
+                } else if (now < startDateTime) {
+                    // Lesson is upcoming - show countdown
+                    showLiveLessonCountdown(lessonId, startDateTime, zoomUrl, zoomMeetingId, zoomPassword);
+                } else {
+                    // Lesson has expired
+                    showLiveLessonExpired(lessonId);
+                }
+            }
+            
+            // Function to show live lesson when it's currently live
+            function showLiveLessonLive(lessonId, zoomUrl, zoomMeetingId, zoomPassword) {
+                $('#liveLessonTitle').text('Live Lesson - Now Live!');
+                $('#liveLessonStatus i').removeClass().addClass('fas fa-video text-4xl text-red-500 mb-3 animate-pulse');
+                $('#liveLessonTime').text('🔴 Live session is currently running');
+                
+                // Show Zoom meeting details
+                if (zoomMeetingId || zoomUrl) {
+                    $('#zoomMeetingDetails').removeClass('hidden');
+                    $('#zoomMeetingId').text(zoomMeetingId || 'Not provided');
+                    $('#zoomPassword').text(zoomPassword || 'No password required');
+                    if (zoomUrl) {
+                        $('#zoomJoinUrl').attr('href', zoomUrl).text(zoomUrl);
+                    } else {
+                        $('#zoomJoinUrl').attr('href', '#').text('Not provided');
+                    }
+                }
+                
+                if (zoomUrl) {
+                    $('#joinLiveBtn').removeClass('hidden').off('click').on('click', function() {
+                        // Mark lesson as completed when joining
+                        markLessonCompleted(lessonId);
+                        // Open Zoom URL
+                        window.open(zoomUrl, '_blank');
+                        
+                        // Update button text after joining
+                        $(this).html('<i class="fas fa-check mr-2"></i>Joined - Lesson Completed').prop('disabled', true);
+                        
+                        // Update the mark as complete button to show completed state
+                        setTimeout(function() {
+                            const $button = $('#markCompleteBtn');
+                            $button.removeClass('btn-success').addClass('btn-secondary');
+                            $button.html('<i class="fas fa-check-circle me-1 text-green-500"></i><span class="text-green-500">Completed</span>');
+                            $button.prop('disabled', true);
+                        }, 1000);
+                    });
+                } else {
+                    $('#joinLiveBtn').text('No Zoom URL Available').removeClass('hidden').prop('disabled', true);
+                }
+            }
+            
+            // Function to show countdown for upcoming live lesson
+            function showLiveLessonCountdown(lessonId, startDateTime, zoomUrl, zoomMeetingId, zoomPassword) {
+                $('#liveLessonTitle').text('Live Lesson - Coming Soon');
+                $('#liveLessonStatus i').removeClass().addClass('fas fa-clock text-4xl text-blue-500 mb-3');
+                $('#countdownDisplay').removeClass('hidden');
+                $('#zoomDownloadInfo').removeClass('hidden');
+                
+                // Start countdown timer
+                const countdownInterval = setInterval(function() {
+                    const now = new Date().getTime();
+                    const distance = startDateTime.getTime() - now;
+                    
+                    if (distance < 0) {
+                        clearInterval(countdownInterval);
+                        // Lesson has started - refresh the live lesson content
+                        showLiveLessonContent(lessonId, startDateTime.toISOString(), 
+                            parseInt($('#liveLessonDuration').text().match(/\d+/)[0]), zoomUrl, zoomMeetingId, zoomPassword);
+                        return;
+                    }
+                    
+                    // Calculate time units
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
+                    // Update countdown display
+                    $('#countdownDays').text(days.toString().padStart(2, '0'));
+                    $('#countdownHours').text(hours.toString().padStart(2, '0'));
+                    $('#countdownMinutes').text(minutes.toString().padStart(2, '0'));
+                    $('#countdownSeconds').text(seconds.toString().padStart(2, '0'));
+                }, 1000);
+            }
+            
+            // Function to show expired live lesson
+            function showLiveLessonExpired(lessonId) {
+                $('#liveLessonTitle').text('Live Lesson - Ended');
+                $('#liveLessonStatus i').removeClass().addClass('fas fa-history text-4xl text-gray-500 mb-3');
+                $('#expiredMessage').removeClass('hidden');
+                
+                // Automatically mark expired live lesson as completed
+                markLessonCompleted(lessonId);
+                
+                // Update the mark as complete button to show completed state
+                setTimeout(function() {
+                    const $button = $('#markCompleteBtn');
+                    $button.removeClass('btn-success').addClass('btn-secondary');
+                    $button.html('<i class="fas fa-check-circle me-1 text-green-500"></i><span class="text-green-500">Completed</span>');
+                    $button.prop('disabled', true);
+                }, 500);
+            }
+            
+            // Function to mark lesson as completed (for live lessons)
+            function markLessonCompleted(lessonId) {
+                const data = {
+                    courseId: {{ $course->id }},
+                    moduleId: $('.lesson-item[data-lesson-id="' + lessonId + '"]').attr('data-modules-id'),
+                    lessonId: lessonId,
+                    duration: 0, // Always 0 for live sessions - duration not calculated
+                    instructorId: {{ $course->user_id }},
+                    userId: {{ Auth::user()->id }},
+                    is_completed: true
+                };
+                
+                $.ajax({
+                    url: '{{ route('student.complete.lesson') }}',
+                    method: 'POST',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                        // Update completion icon in sidebar
+                        $('#completionIcon_' + lessonId + ' i').removeClass('text-gray-500 hover:text-green-400')
+                            .addClass('text-green-500').removeClass('is_complete_lesson');
+                    },
+                    error: function(xhr, status, error) {
+                    }
+                });
             }
 
             // Function to update the Mark as Complete button based on selected lesson
             function updateMarkAsCompleteButton(lessonId, moduleId, instructorId, duration) {
-                // console.log('🔄 Updating Mark as Complete button for lesson:', lessonId);
                 
                 var $button = $('#markCompleteBtn');
                 
@@ -1028,7 +1349,6 @@
                 var completedLessons = @json(array_keys($userCompletedLessons ?? []));
                 var isCompleted = completedLessons.includes(parseInt(lessonId));
                 
-                // console.log('Lesson completion status from server:', {
                 //     lessonId: lessonId,
                 //     completedLessons: completedLessons,
                 //     isCompleted: isCompleted
@@ -1039,7 +1359,6 @@
                     $button.removeClass('btn-success').addClass('btn-secondary');
                     $button.html('<i class="fas fa-check-circle me-1 text-green-500"></i><span class="text-green-500">Completed</span>');
                     $button.prop('disabled', true);
-                    console.log('✅ Button set to Completed state');
                 } else {
                     // Lesson not completed yet
                     $button.removeClass('btn-secondary').addClass('btn-success');
@@ -1054,7 +1373,6 @@
                     $button.attr('data-module', moduleId);
                     $button.attr('data-duration', duration);
                     
-                    console.log('🎯 Button set to Mark as Complete state for lesson:', lessonId);
                 }
             }
 
@@ -1080,8 +1398,6 @@
 
             //     var $element = $(this);
                 
-            //     // console.log('📝 MANUAL lesson completion clicked');
-            //     // console.log('Inserting into course_activities table:', data);
 
             //     $.ajax({
             //         url: '{{ route('student.complete.lesson') }}',
@@ -1090,11 +1406,8 @@
             //         beforeSend: function() {
             //             // Change class to spinner
             //             $element.removeClass('fas fa-check-circle').addClass('spinner-border spinner-border-sm');
-            //             console.log('⏳ Processing manual completion...');
             //         },
             //         success: function(response) {
-            //             // console.log('✅ MANUAL completion SUCCESS:', response);
-            //             // console.log('Data inserted into course_activities:', {
             //             //     course_id: courseId,
             //             //     instructor_id: {{ $course->user_id }},
             //             //     module_id: moduleId,
@@ -1111,13 +1424,8 @@
             //             // Update the module icon if all lessons in module are completed
             //             // updateModuleCompletionIcon(moduleId);
                         
-            //             console.log('✅ Manual completion icon updated');
             //         },
             //         error: function(xhr, status, error) {
-            //             console.log('❌ MANUAL completion ERROR:', error);
-            //             console.log('Response Status:', xhr.status);
-            //             console.log('Response Text:', xhr.responseText);
-            //             console.log('Error Details:', {status: status, error: error});
             //             // Reset on error
             //             $element.removeClass('spinner-border spinner-border-sm').addClass('fas fa-check-circle');
             //         }
@@ -1126,7 +1434,6 @@
 
             // Function to update module completion icon when all lessons are completed
             function updateModuleCompletionIcon(moduleId) {
-                console.log('🔍 Checking module completion for module:', moduleId);
                 
                 var $moduleHeader = $('#moduleCompletion_' + moduleId);
                 var $allLessonsInModule = $('[data-modules-id="' + moduleId + '"] .is_complete_lesson');
@@ -1143,24 +1450,221 @@
                 if (totalLessons > 0 && completedLessons === totalLessons) {
                     // All lessons completed - make module icon primary color
                     $moduleHeader.removeClass('text-gray-400').addClass('text-primary-500');
-                    console.log('✅ Module ' + moduleId + ' marked as completed');
                 } else {
                     // Not all lessons completed - keep gray color
                     $moduleHeader.removeClass('text-primary-500').addClass('text-gray-400');
-                    console.log('⏳ Module ' + moduleId + ' still in progress');
                 }
             }
 
             // Initialize module completion status on page load
             @foreach($course->modules as $module)
-                @if($module->status == 'published' && count($module->lessons) > 0)
+                @if(count($module->lessons->where('status', 'published')) > 0)
                     updateModuleCompletionIcon({{ $module->id }});
                 @endif
             @endforeach
+            
+            // Like button handler (moved inside document ready)
+            const likeBttn = document.getElementById('likeBttn');
+            if (likeBttn) {
+                likeBttn.addEventListener('click', (e) => {
+                    const course_id = {{ $course->id }};
+                    const ins_id = {{ $course->user_id }};
+
+                    fetch(`${baseUrl}/student/course-like/${course_id}/${ins_id}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                        })
+                        .then(response => {
+                            if (response.status === 302 || response.status === 401) {
+                                window.location.href = '/login';
+                                return;
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (!data) return; // Prevent errors if redirected
+                            
+                            if (data.message === 'liked') {
+                                likeBttn.classList.add('active');
+                                likeBttn.classList.remove('text-gray-400');
+                                likeBttn.classList.add('text-red-600');
+                            } else {
+                                likeBttn.classList.remove('active');
+                                likeBttn.classList.remove('text-red-600');
+                                likeBttn.classList.add('text-gray-400');
+                            }
+                        })
+                        .catch(error => {
+                            likeBttn.classList.remove('active');
+                        });
+                });
+            }
+            
+            // Mark as Complete functionality - moved inside document ready
+            // Try multiple selectors to catch the button
+            $(document).on('click', '#markCompleteBtn, .markCompleteBtn, button[data-lesson]', function(e) {
+                    
+                    e.preventDefault();
+                    
+                    // Debug: Check authentication status
+                    console.log('- Auth User ID: {{ Auth::check() ? Auth::user()->id : "NOT AUTHENTICATED" }}');
+                    console.log('- CSRF Token:', $('meta[name="csrf-token"]').attr('content'));
+                    console.log('- Current URL:', window.location.href);
+                    console.log('- Base URL:', baseUrl);
+                    console.log('- Complete URL:', baseUrl + '/student/courses/complete-lesson');
+                    console.log('- Laravel Route URL:', '{{ route("student.complete.lesson") }}');
+                    
+                    // Test simple auth endpoint first
+                    console.log('🧪 Testing simple auth endpoint...');
+                    $.ajax({
+                        url: '{{ route("student.test.auth") }}',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        success: function(response) {
+                            console.log('✅ Auth test SUCCESS:', response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('❌ Auth test FAILED:', {
+                                status: xhr.status,
+                                statusText: xhr.statusText,
+                                responseText: xhr.responseText
+                            });
+                        }
+                    });
+                    
+                    console.log('🎯 STEP 9: Extracting data attributes...');
+                    var lessonId = $(this).data('lesson');
+                    var courseId = $(this).data('course');
+                    var moduleId = $(this).data('module');
+                    var duration = $(this).data('duration') || 0;
+                    
+                    console.log('🎯 STEP 10: Data attributes extracted:');
+                    console.log('- lessonId:', lessonId);
+                    console.log('- courseId:', courseId);
+                    console.log('- moduleId:', moduleId);
+                    console.log('- duration:', duration);
+                    
+                    var data = {
+                        courseId: courseId,
+                        lessonId: lessonId,
+                        moduleId: moduleId,
+                        instructorId: {{ $course->user_id }},
+                        duration: duration,
+                        userId: {{ Auth::check() ? Auth::user()->id : 'null' }},
+                        is_completed: true
+                    };
+
+                    console.log('🎯 STEP 11: Final data object:', data);
+                    var $element = $(this);
+                    console.log('🎯 STEP 12: Button element stored as $element');
+                    
+                    // Try fetch instead of jQuery AJAX
+                    console.log('🎯 STEP 13: Starting fetch request...');
+                    
+                    // Update button state to loading
+                    console.log('🎯 STEP 14: Updating button to loading state...');
+                    $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
+                    $element.prop('disabled', true);
+                    console.log('🎯 STEP 15: Button updated successfully');
+                    
+                    // Try with form data instead of JSON
+                    console.log('🎯 STEP 16: Creating FormData...');
+                    const formData = new FormData();
+                    Object.keys(data).forEach(key => {
+                        console.log(`🎯 STEP 17: Adding to FormData - ${key}:`, data[key]);
+                        formData.append(key, data[key]);
+                    });
+                    console.log('🎯 STEP 18: FormData created, entries:');
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`  - ${key}: ${value}`);
+                    }
+                    
+                    console.log('🎯 STEP 19: About to call fetch with URL:', '{{ route("student.complete.lesson") }}');
+                    console.log('🎯 STEP 20: Fetch headers will be:');
+                    console.log('  - X-CSRF-TOKEN:', $('meta[name="csrf-token"]').attr('content'));
+                    console.log('  - X-Requested-With: XMLHttpRequest');
+                    
+                    fetch('{{ route("student.complete.lesson") }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                            // Don't set Content-Type, let browser set it for FormData
+                        },
+                        body: formData,
+                        credentials: 'same-origin'
+                    })
+                    .then(response => {
+                        console.log('🎯 STEP 21: Fetch .then() block reached!');
+                        console.log('📡 Fetch response:', response);
+                        console.log('- Status:', response.status);
+                        console.log('- Status Text:', response.statusText);
+                        console.log('- Redirected:', response.redirected);
+                        console.log('- URL:', response.url);
+                        console.log('- Headers:', [...response.headers.entries()]);
+                        
+                        if (response.status === 302) {
+                            console.log('🚫 Got 302 redirect');
+                            throw new Error('Session expired - 302 redirect');
+                        }
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        // Check if response is actually JSON
+                        const contentType = response.headers.get('content-type');
+                        console.log('- Content-Type:', contentType);
+                        
+                        if (!contentType || !contentType.includes('application/json')) {
+                            console.log('⚠️ Response is not JSON, likely redirected to HTML page');
+                            // Get the text to see what page we're getting
+                            return response.text().then(text => {
+                                console.log('📄 Response text (first 500 chars):', text.substring(0, 500));
+                                throw new Error('Expected JSON response but got HTML page');
+                            });
+                        }
+                        
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('🎯 STEP 22: Second .then() block reached - JSON parsed successfully!');
+                        console.log('✅ Fetch SUCCESS:', data);
+                        $element.html('<i class="fas fa-check-circle me-1 text-green-500"></i><span class="text-green-500">Completed</span>');
+                        $element.removeClass('btn-success').addClass('btn-secondary');
+                        $element.prop('disabled', true);
+                    })
+                    .catch(error => {
+                        console.log('🎯 STEP 23: .catch() block reached - An error occurred!');
+                        console.log('❌ Fetch ERROR:', error);
+                        
+                        // Reset button on error
+                        $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
+                        $element.removeClass('btn-secondary').addClass('btn-success');
+                        $element.prop('disabled', false);
+                        
+                        if (error.message.includes('302') || error.message.includes('Session expired')) {
+                            alert('আপনার সেশন শেষ হয়ে গেছে। অনুগ্রহ করে পুনরায় লগইন করুন।');
+                            window.location.href = '/login';
+                        }
+                    });
+                    
+                    console.log('🎯 STEP 24: Fetch request initiated, waiting for response...');
+                    return; // Skip the old jQuery AJAX code
+            });
+            
         });
     
         var iframe = document.getElementById('firstLesson');
-        iframe.onload = function() {
+        if (iframe) {
+            iframe.onload = function() {
             // Wait for the Vimeo player to be ready
             var playerDoc = iframe.contentDocument || iframe.contentWindow.document;
 
@@ -1177,252 +1681,9 @@
             style.appendChild(playerDoc.createTextNode(customCSS));
             playerDoc.head.appendChild(style);
         };
-   
-        let currentURL = window.location.href;
-        const baseUrl = currentURL.split('/').slice(0, 3).join('/');
-        const likeBttn = document.getElementById('likeBttn');
+        }
 
-        likeBttn.addEventListener('click', (e) => {
-            const course_id = {{ $course->id }};
-            const ins_id = {{ $course->user_id }};
-
-            fetch(`${baseUrl}/student/course-like/${course_id}/${ins_id}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                })
-                .then(response => {
-                    if (response.status === 302 || response.status === 401) {
-                        window.location.href = '/login';
-                        return;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (!data) return; // Prevent errors if redirected
-                    
-                    if (data.message === 'liked') {
-                        likeBttn.classList.add('active');
-                        likeBttn.classList.remove('text-gray-400');
-                        likeBttn.classList.add('text-red-600');
-                    } else {
-                        likeBttn.classList.remove('active');
-                        likeBttn.classList.remove('text-red-600');
-                        likeBttn.classList.add('text-gray-400');
-                    }
-                })
-                .catch(error => {
-                    likeBttn.classList.remove('active');
-                });
-
-        });
-
-        $(document).on('click', '#markCompleteBtn', function(e) {
-                e.preventDefault();
-                
-                // Debug: Check authentication status
-                console.log('🔍 Debug Info:');
-                console.log('- Auth User ID: {{ Auth::check() ? Auth::user()->id : "NOT AUTHENTICATED" }}');
-                console.log('- CSRF Token:', $('meta[name="csrf-token"]').attr('content'));
-                console.log('- Current URL:', window.location.href);
-                console.log('- Base URL:', baseUrl);
-                console.log('- Complete URL:', baseUrl + '/student/courses/complete-lesson');
-                console.log('- Laravel Route URL:', '{{ route("student.complete.lesson") }}');
-                
-                // Test simple auth endpoint first
-                console.log('🧪 Testing simple auth endpoint...');
-                $.ajax({
-                    url: '{{ route("student.test.auth") }}',
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(response) {
-                        console.log('✅ Auth test SUCCESS:', response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.log('❌ Auth test FAILED:', {
-                            status: xhr.status,
-                            statusText: xhr.statusText,
-                            responseText: xhr.responseText
-                        });
-                    }
-                });
-                
-                var lessonId = $(this).data('lesson');
-                var courseId = $(this).data('course');
-                var moduleId = $(this).data('module');
-                var duration = $(this).data('duration') || 0;
-                
-                var data = {
-                    courseId: courseId,
-                    lessonId: lessonId,
-                    moduleId: moduleId,
-                    instructorId: {{ $course->user_id }},
-                    duration: duration,
-                    userId: {{ Auth::check() ? Auth::user()->id : 'null' }},
-                    is_completed: true
-                };
-
-                var $element = $(this);
-                
-                // Try fetch instead of jQuery AJAX
-                console.log('🚀 Using fetch instead of jQuery AJAX...');
-                
-                // Update button state to loading
-                $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
-                $element.prop('disabled', true);
-                
-                // Try with form data instead of JSON
-                const formData = new FormData();
-                Object.keys(data).forEach(key => {
-                    formData.append(key, data[key]);
-                });
-                
-                fetch('{{ route("student.complete.lesson") }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        'X-Requested-With': 'XMLHttpRequest'
-                        // Don't set Content-Type, let browser set it for FormData
-                    },
-                    body: formData,
-                    credentials: 'same-origin'
-                })
-                .then(response => {
-                    console.log('📡 Fetch response:', response);
-                    console.log('- Status:', response.status);
-                    console.log('- Status Text:', response.statusText);
-                    console.log('- Redirected:', response.redirected);
-                    console.log('- URL:', response.url);
-                    console.log('- Headers:', [...response.headers.entries()]);
-                    
-                    if (response.status === 302) {
-                        console.log('🚫 Got 302 redirect');
-                        throw new Error('Session expired - 302 redirect');
-                    }
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    // Check if response is actually JSON
-                    const contentType = response.headers.get('content-type');
-                    console.log('- Content-Type:', contentType);
-                    
-                    if (!contentType || !contentType.includes('application/json')) {
-                        console.log('⚠️ Response is not JSON, likely redirected to HTML page');
-                        // Get the text to see what page we're getting
-                        return response.text().then(text => {
-                            console.log('📄 Response text (first 500 chars):', text.substring(0, 500));
-                            throw new Error('Expected JSON response but got HTML page');
-                        });
-                    }
-                    
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('✅ Fetch SUCCESS:', data);
-                    $element.html('<i class="fas fa-check-circle me-1 text-green-500"></i><span class="text-green-500">Completed</span>');
-                    $element.removeClass('btn-success').addClass('btn-secondary');
-                    $element.prop('disabled', true);
-                })
-                .catch(error => {
-                    console.log('❌ Fetch ERROR:', error);
-                    
-                    // Reset button on error
-                    $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
-                    $element.removeClass('btn-secondary').addClass('btn-success');
-                    $element.prop('disabled', false);
-                    
-                    if (error.message.includes('302') || error.message.includes('Session expired')) {
-                        alert('আপনার সেশন শেষ হয়ে গেছে। অনুগ্রহ করে পুনরায় লগইন করুন।');
-                        window.location.href = '/login';
-                    }
-                });
-                
-                return; // Skip the old jQuery AJAX code
-                
-                // OLD JQUERY AJAX CODE (commented out)
-                /*
-                $.ajax({
-                    url: '{{ route("student.complete.lesson") }}',
-                    method: 'POST',
-                    data: data,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    beforeSend: function() {
-                        $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
-                        $element.prop('disabled', true);
-                        // console.log('⏳ Processing main completion...');
-                    },
-                    success: function(response) {
-                        // console.log('✅ MAIN completion SUCCESS:', response);
-                        // console.log('Data inserted into course_activities:', {
-                        //     course_id: courseId,
-                        //     instructor_id: {{ $course->user_id }},
-                        //     module_id: moduleId,
-                        //     lesson_id: lessonId,
-                        //     user_id: '{{ Auth::user()->id }}',
-                        //     is_completed: true,
-                        //     duration: duration
-                        // });
-                        
-                        // Change button to completed state
-                        // $element.html('<i class="fas fa-check-circle me-1"></i>Completed');
-                        // $element.removeClass('btn-success').addClass('btn-secondary');
-                        // $element.prop('disabled', true);
-                        
-                        // Update the lesson completion icon in the sidebar
-                        // var $lessonIcon = $('[data-lesson-id="' + lessonId + '"] .is_complete_lesson');
-                        // if ($lessonIcon.length) {
-                        //     $lessonIcon.removeClass('text-gray-500 hover:text-green-400 is_complete_lesson').addClass('text-green-500');
-                        //     $lessonIcon.attr('title', '✅ Completed - Lesson ID: ' + lessonId);
-                        // }
-                        
-                        // Update the module icon if all lessons in module are completed
-                        // updateModuleCompletionIcon(moduleId);
-                        
-                        // console.log('✅ Main completion button updated');
-                    },
-                    error: function(xhr, status, error) {
-                        console.log('❌ AJAX Error Details:');
-                        console.log('- Status:', xhr.status);
-                        console.log('- Status Text:', xhr.statusText);
-                        console.log('- Response Text:', xhr.responseText);
-                        console.log('- Error:', error);
-                        console.log('- Headers:', xhr.getAllResponseHeaders());
-                        
-                        // Handle 302 redirect (authentication issue)
-                        if (xhr.status === 302) {
-                            console.log('🚫 302 Redirect - Session expired');
-                            alert('আপনার সেশন শেষ হয়ে গেছে। অনুগ্রহ করে পুনরায় লগইন করুন।');
-                            window.location.href = '/login';
-                            return;
-                        }
-                        
-                        // Handle other errors
-                        if (xhr.status === 401) {
-                            console.log('🚫 401 Unauthorized');
-                            alert('অননুমোদিত প্রবেশ। অনুগ্রহ করে পুনরায় লগইন করুন।');
-                            window.location.href = '/login';
-                            return;
-                        }
-                        
-                        // Reset button on error
-                        $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
-                        $element.removeClass('btn-secondary').addClass('btn-success');
-                        $element.prop('disabled', false);
-                    }
-                });
-                */
-            });
+        // END OF SCRIPT
             
         // Simple and Effective Lesson Search Filter
         window.searchLessons = function(searchTerm) {
