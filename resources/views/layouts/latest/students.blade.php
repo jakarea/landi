@@ -168,12 +168,10 @@
         // Define dark mode functions
         function darkFunction() {
             // Dark mode specific functionality
-            console.log('Dark mode activated');
         }
         
         function lightFunction() {
             // Light mode specific functionality  
-            console.log('Light mode activated');
         }
         
         modeBttn.addEventListener('change', toggleMode);

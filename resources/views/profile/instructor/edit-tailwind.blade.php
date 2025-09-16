@@ -1613,7 +1613,6 @@ document.addEventListener('DOMContentLoaded', function() {
             this.querySelector('div').classList.remove('border-transparent');
             this.querySelector('div').classList.add(borderColor);
             
-            console.log('Selected certificate style:', radioValue);
         });
     });
 
@@ -1825,22 +1824,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(this);
             const submitBtn = this.querySelector('button[type="submit"]');
             
-            console.log('Certificate Form action:', this.action);
-            console.log('Certificate Form data:', Object.fromEntries(formData));
             
             // Check required fields
-            console.log('Course ID:', formData.get('course_id'));
-            console.log('Certificate Style:', formData.get('certificate_style'));
-            console.log('Certificate Color:', formData.get('certificate_clr'));
-            console.log('Accent Color:', formData.get('accent_clr'));
-            console.log('Logo file:', formData.get('logo'));
-            console.log('Signature file:', formData.get('signature'));
             
             // Ensure CSRF token is in the form data
             if (!formData.has('_token')) {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 formData.append('_token', csrfToken);
-                console.log('Certificate form - Added CSRF token to form data:', csrfToken);
             }
             
             // Show loading state
@@ -1860,7 +1850,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .then(response => {
-                console.log('Certificate - Response status:', response.status);
                 if (!response.ok) {
                     return response.json().catch(() => {
                         return response.text().then(text => {
@@ -1877,7 +1866,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                console.log('Certificate - Response data:', data);
                 if (data.success) {
                     showSuccessMessage(data.message);
                     // Reload page to show updated certificate
@@ -1887,7 +1875,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     // Handle validation errors (422 status)
                     if (data.errors) {
-                        console.log('Validation errors:', data.errors);
                         let errorMessages = [];
                         Object.keys(data.errors).forEach(field => {
                             const fieldEl = document.querySelector(`[name="${field}"]`);
@@ -1900,7 +1887,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 errorDiv.textContent = errorMessage;
                                 fieldEl.parentNode.appendChild(errorDiv);
                             } else {
-                                console.log(`Field not found: ${field}`);
                             }
                         });
                         
@@ -2130,13 +2116,9 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
     const formData = new FormData(this);
     const submitBtn = this.querySelector('button[type="submit"]');
     
-    console.log('Form action:', this.action);
-    console.log('Form data:', Object.fromEntries(formData));
     
     // Check CSRF token
     const csrfToken = document.querySelector('meta[name="csrf-token"]');
-    console.log('CSRF meta tag:', csrfToken);
-    console.log('CSRF token value:', csrfToken ? csrfToken.getAttribute('content') : 'NOT FOUND');
     
     // Show loading state
     submitBtn.disabled = true;
@@ -2152,7 +2134,6 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
     if (!formData.has('_token')) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         formData.append('_token', csrfToken);
-        console.log('Added CSRF token to form data:', csrfToken);
     }
 
     fetch(this.action, {
@@ -2164,8 +2145,6 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
         }
     })
     .then(response => {
-        console.log('Add Experience - Response status:', response.status);
-        console.log('Add Experience - Response ok:', response.ok);
         if (!response.ok) {
             return response.text().then(text => {
                 console.error('Add Experience - Error response:', text);
@@ -2175,7 +2154,6 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
         return response.json();
     })
     .then(data => {
-        console.log('Add Experience - Response data:', data);
         if (data.success) {
             closeAddExperienceModal();
             showSuccessMessage('অভিজ্ঞতা সফলভাবে যোগ করা হয়েছে!');
@@ -2220,7 +2198,6 @@ document.getElementById('editExperienceForm').addEventListener('submit', functio
     if (!formData.has('_token')) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         formData.append('_token', csrfToken);
-        console.log('Edit form - Added CSRF token to form data:', csrfToken);
     }
     
     // Show loading state

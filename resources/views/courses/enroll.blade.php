@@ -234,7 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
             user_id: {{ auth()->id() ?? 'null' }},
             amount: originalPrice
         };
-        console.log('Sending coupon validation request:', requestData);
         
         // Call our coupon validation API
         fetch('/api/coupon/validate', {
@@ -246,12 +245,9 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(requestData)
         })
         .then(response => {
-            console.log('Response status:', response.status);
-            console.log('Response headers:', response.headers);
             return response.json();
         })
         .then(data => {
-            console.log('Response data:', data);
             if (data.success) {
                 // Apply the coupon
                 promoDiscountAmount = data.discount;
@@ -284,8 +280,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show detailed error message
                 let errorMessage = '❌ ' + data.error;
                 if (data.debug) {
-                    console.log('Validation failed at step:', data.debug.step);
-                    console.log('Debug info:', data.debug);
                     errorMessage += '<br><small class="text-muted">Debug: ' + data.debug.message + '</small>';
                 }
                 showPromoMessage(errorMessage, 'danger');
@@ -293,7 +287,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Fetch error:', error);
-            console.log('Error details:', error.message, error.stack);
             applyPromoBtn.textContent = 'Apply';
             applyPromoBtn.disabled = false;
             showPromoMessage('❌ Error validating coupon. Please try again.', 'danger');

@@ -238,7 +238,6 @@ $(document).ready(function() {
             });
         } else {
             // No files selected, handle this case or do nothing
-            console.log('No file selected');
         }
     });
 });

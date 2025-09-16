@@ -70,7 +70,6 @@
                             }
                         @endphp
 
-                        {{-- @dd( $url); --}}
 
                         <a href="{{ $url }}" class="edit-profile">Login as {{ optional($student)->name }}</a>
                     </div>

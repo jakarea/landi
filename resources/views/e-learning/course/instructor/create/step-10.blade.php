@@ -415,37 +415,37 @@
     <div class="bg-card rounded-xl p-6 shadow-2">
         <div class="step-progress">
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">1</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/facts' }}">তথ্যাবলী</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">2</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/objects' }}">উদ্দেশ্য</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">3</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/price' }}">মূল্য</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">4</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/design' }}">ডিজাইন</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">5</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create', optional(request())->route('id')).'/content' }}">কন্টেন্ট</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">6</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/certificate' }}">সার্টিফিকেট</a>
                 </div>
@@ -600,9 +600,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Form submission
     document.getElementById('visibilityForm').addEventListener('submit', function(e) {
-        console.log('Visibility form submitting...');
-        console.log('Status:', statusSelect.value);
-        console.log('Allow review:', allowReviewSwitch.checked);
         
         // Show loading state for submission
         const originalText = submitBtn.innerHTML;
@@ -655,9 +652,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Initialize page
-    console.log('Visibility step initialized');
-    console.log('Current status:', statusSelect.value);
-    console.log('Allow reviews:', allowReviewSwitch.checked);
 });
 </script>
 @endsection

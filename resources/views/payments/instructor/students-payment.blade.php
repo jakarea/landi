@@ -173,7 +173,6 @@
                             </td>
                             <td>
 
-                            {{-- @dd(encrypt($payment->payment_id)) --}}
                             <a href="{{ route('instructor-export', ['id' => encrypt($payment->payment_id), 'subdomain' => config('app.subdomain') ]) }}" class="btn-view btn-export">Export </a>
 
                             <a href="{{ route('viewPayment', ['payment_id' => encrypt($payment->payment_id), 'subdomain' => config('app.subdomain')]) }}

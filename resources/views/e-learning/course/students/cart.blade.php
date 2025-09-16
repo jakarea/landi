@@ -291,7 +291,6 @@ $totalPrice += $item->courses->offer_price;
                 e.preventDefault();
 
                 function validateField(field, errorField) {
-                    // console.log(field, errorField)
                     var fieldValue = $(field).val();
                     var label = $(field).data('label');
 
@@ -341,7 +340,6 @@ $totalPrice += $item->courses->offer_price;
                     Stripe.createToken(cardData, function(status, response) {
                         if (response.error) {
 
-                            // console.log( response.error)
 
                             if (response.error.param === "number") {
                                 displayErrorMessage('card_number_error', response.error.message);

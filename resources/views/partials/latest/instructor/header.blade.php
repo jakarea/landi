@@ -167,7 +167,6 @@
                    class="bttn {{ Request::is('instructor/notifications') ? ' active' : '' }}" 
                    title="নোটিফিকেশন"
                    style="cursor: pointer; text-decoration: none; position: relative; z-index: 1000;"
-                   onclick="console.log('Notification bell clicked!'); return true;">
                     <i class="fas fa-bell"></i>
                     @if (Auth::check() && function_exists('instructorUnseenNotification') && instructorUnseenNotification() >= 1)
                         <span>{{ instructorUnseenNotification() }}</span>

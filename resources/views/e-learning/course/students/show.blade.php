@@ -1440,12 +1440,6 @@
                 var totalLessons = $allLessonsInModule.length;
                 var completedLessons = $allLessonsInModule.filter('.text-green-500').length;
                 
-                console.log('Module completion check:', {
-                    moduleId: moduleId,
-                    totalLessons: totalLessons,
-                    completedLessons: completedLessons,
-                    moduleHeaderElement: $moduleHeader[0]
-                });
                 
                 if (totalLessons > 0 && completedLessons === totalLessons) {
                     // All lessons completed - make module icon primary color
@@ -1511,15 +1505,8 @@
                     e.preventDefault();
                     
                     // Debug: Check authentication status
-                    console.log('- Auth User ID: {{ Auth::check() ? Auth::user()->id : "NOT AUTHENTICATED" }}');
-                    console.log('- CSRF Token:', $('meta[name="csrf-token"]').attr('content'));
-                    console.log('- Current URL:', window.location.href);
-                    console.log('- Base URL:', baseUrl);
-                    console.log('- Complete URL:', baseUrl + '/student/courses/complete-lesson');
-                    console.log('- Laravel Route URL:', '{{ route("student.complete.lesson") }}');
                     
                     // Test simple auth endpoint first
-                    console.log('🧪 Testing simple auth endpoint...');
                     $.ajax({
                         url: '{{ route("student.test.auth") }}',
                         method: 'POST',
@@ -1528,28 +1515,16 @@
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         success: function(response) {
-                            console.log('✅ Auth test SUCCESS:', response);
                         },
                         error: function(xhr, status, error) {
-                            console.log('❌ Auth test FAILED:', {
-                                status: xhr.status,
-                                statusText: xhr.statusText,
-                                responseText: xhr.responseText
-                            });
                         }
                     });
                     
-                    console.log('🎯 STEP 9: Extracting data attributes...');
                     var lessonId = $(this).data('lesson');
                     var courseId = $(this).data('course');
                     var moduleId = $(this).data('module');
                     var duration = $(this).data('duration') || 0;
                     
-                    console.log('🎯 STEP 10: Data attributes extracted:');
-                    console.log('- lessonId:', lessonId);
-                    console.log('- courseId:', courseId);
-                    console.log('- moduleId:', moduleId);
-                    console.log('- duration:', duration);
                     
                     var data = {
                         courseId: courseId,
@@ -1561,35 +1536,22 @@
                         is_completed: true
                     };
 
-                    console.log('🎯 STEP 11: Final data object:', data);
                     var $element = $(this);
-                    console.log('🎯 STEP 12: Button element stored as $element');
                     
                     // Try fetch instead of jQuery AJAX
-                    console.log('🎯 STEP 13: Starting fetch request...');
                     
                     // Update button state to loading
-                    console.log('🎯 STEP 14: Updating button to loading state...');
                     $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
                     $element.prop('disabled', true);
-                    console.log('🎯 STEP 15: Button updated successfully');
                     
                     // Try with form data instead of JSON
-                    console.log('🎯 STEP 16: Creating FormData...');
                     const formData = new FormData();
                     Object.keys(data).forEach(key => {
-                        console.log(`🎯 STEP 17: Adding to FormData - ${key}:`, data[key]);
                         formData.append(key, data[key]);
                     });
-                    console.log('🎯 STEP 18: FormData created, entries:');
                     for (let [key, value] of formData.entries()) {
-                        console.log(`  - ${key}: ${value}`);
                     }
                     
-                    console.log('🎯 STEP 19: About to call fetch with URL:', '{{ route("student.complete.lesson") }}');
-                    console.log('🎯 STEP 20: Fetch headers will be:');
-                    console.log('  - X-CSRF-TOKEN:', $('meta[name="csrf-token"]').attr('content'));
-                    console.log('  - X-Requested-With: XMLHttpRequest');
                     
                     fetch('{{ route("student.complete.lesson") }}', {
                         method: 'POST',
@@ -1602,16 +1564,8 @@
                         credentials: 'same-origin'
                     })
                     .then(response => {
-                        console.log('🎯 STEP 21: Fetch .then() block reached!');
-                        console.log('📡 Fetch response:', response);
-                        console.log('- Status:', response.status);
-                        console.log('- Status Text:', response.statusText);
-                        console.log('- Redirected:', response.redirected);
-                        console.log('- URL:', response.url);
-                        console.log('- Headers:', [...response.headers.entries()]);
                         
                         if (response.status === 302) {
-                            console.log('🚫 Got 302 redirect');
                             throw new Error('Session expired - 302 redirect');
                         }
                         
@@ -1621,13 +1575,10 @@
                         
                         // Check if response is actually JSON
                         const contentType = response.headers.get('content-type');
-                        console.log('- Content-Type:', contentType);
                         
                         if (!contentType || !contentType.includes('application/json')) {
-                            console.log('⚠️ Response is not JSON, likely redirected to HTML page');
                             // Get the text to see what page we're getting
                             return response.text().then(text => {
-                                console.log('📄 Response text (first 500 chars):', text.substring(0, 500));
                                 throw new Error('Expected JSON response but got HTML page');
                             });
                         }
@@ -1635,15 +1586,11 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log('🎯 STEP 22: Second .then() block reached - JSON parsed successfully!');
-                        console.log('✅ Fetch SUCCESS:', data);
                         $element.html('<i class="fas fa-check-circle me-1 text-green-500"></i><span class="text-green-500">Completed</span>');
                         $element.removeClass('btn-success').addClass('btn-secondary');
                         $element.prop('disabled', true);
                     })
                     .catch(error => {
-                        console.log('🎯 STEP 23: .catch() block reached - An error occurred!');
-                        console.log('❌ Fetch ERROR:', error);
                         
                         // Reset button on error
                         $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
@@ -1656,7 +1603,6 @@
                         }
                     });
                     
-                    console.log('🎯 STEP 24: Fetch request initiated, waiting for response...');
                     return; // Skip the old jQuery AJAX code
             });
             

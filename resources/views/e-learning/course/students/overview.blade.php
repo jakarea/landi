@@ -561,7 +561,6 @@
         likeBttn.addEventListener('click', (e) => {
 
             const course_id = {{ $course->id }};
-            console.log({
                 course_id
             });
             const ins_id = {{ $course->user_id }};

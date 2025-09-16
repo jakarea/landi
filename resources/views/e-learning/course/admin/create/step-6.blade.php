@@ -502,7 +502,6 @@
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    console.log("Module reorder updated successfully");
                 },
                 error: function(xhr, status, error) {
                     console.error("Error updating module order:", error);
@@ -519,7 +518,6 @@
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    console.log("Module lession reorder updated successfully");
                 },
                 error: function(xhr, status, error) {
                     console.error("Error updating module order:", error);

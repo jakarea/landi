@@ -528,14 +528,6 @@ class StudentHomeController extends Controller
                 ->toArray();
             $userCompletedLessons = array_flip($completedLessons);
             
-            // Debug logging for completed lessons
-            Log::info('Show method - Completed lessons loaded', [
-                'user_id' => Auth::id(),
-                'course_id' => $course->id,
-                'completed_lesson_ids' => $completedLessons,
-                'total_completed' => count($completedLessons),
-                'userCompletedLessons_keys' => array_keys($userCompletedLessons)
-            ]);
         }
         
         // Get user's enrolled courses for related courses check
@@ -608,12 +600,6 @@ class StudentHomeController extends Controller
              }
          }
 
-         Log::info('Current lesson from course log', [
-             'course_id' => $course->id,
-             'user_id' => auth()->user()->id,
-             'current_lesson_id' => $currentLesson ? $currentLesson->id : null,
-             'current_module_id' => $currentModule ? $currentModule->id : null
-         ]);
 
 
         if ($course) {
@@ -1280,11 +1266,6 @@ class StudentHomeController extends Controller
         // Log query count for performance monitoring
         if (config('app.debug')) {
             $queries = DB::getQueryLog();
-            Log::info('Dashboard queries executed', [
-                'user_id' => $userId,
-                'query_count' => count($queries),
-                'queries' => $queries
-            ]);
         }
         
         return view('e-learning/course/students/activity', compact(
@@ -1792,11 +1773,6 @@ class StudentHomeController extends Controller
 
                 DB::commit();
 
-                Log::info('Course reset successful', [
-                    'user_id' => $userId,
-                    'course_id' => $courseId,
-                    'timestamp' => now()
-                ]);
 
                 return response()->json([
                     'success' => true,
