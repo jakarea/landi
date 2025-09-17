@@ -2,1282 +2,642 @@
 <html lang="bn">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-  <link href="/src/style.css" rel="stylesheet">
+    <link href="/src/style.css" rel="stylesheet">
 
-  <title>আব্দুর রউফ</title>
+    <title>আব্দুর রউফ</title>
 </head>
 
 <body class="bg-[#0A0A0A]">
 
-  <!-- first section start -->
-  <section class="w-full pt-12 pb-20 first-gradient relative overflow-hidden border-b border-[#fff]/10 xl:py-[188px]">
+    <!-- hero section start -->
+    <section class="w-full pb-1 lg:pb-10 relative min-h-[600px]">
+        <!-- header section start -->
+        <header class="w-full pt-5 lg:pt-10 relative z-[9999]">
+            <div class="container-x">
+                <div
+                    class="w-full grid grid-cols-12 relative bg-[#fff]/10 rounded-md p-2 lg:p-2.5 lg:rounded-[14px] lg:items-center lg:px-5">
+                    <!-- logo -->
+                    <div class="text-start col-span-4">
+                        <a href="#">
+                            <img src="./public/images/logo.svg" alt="logo" class="max-w-24 lg:max-w-[145px]">
+                        </a>
+                    </div>
+                    <!-- logo -->
 
-    <div class="absolute inset-0 grid-background opacity-[7%] z-10"></div> <!-- line elements -->
+                    <div class="navbar flex flex-col gap-y-4 justify-center items-center col-span-8 lg:flex-row">
+                        <!-- menu -->
+                        <div
+                            class="w-full absolute left-0 top-10 min-h-[130px] bg-card z-50 flex justify-center p-4 rounded-md hidden lg:!flex lg:relative lg:bg-transparent lg:min-h-auto lg:left-auto lg:top-auto">
+                            <ul class="flex flex-col lg:flex-row gap-y-3 lg:gap-y-0 lg:gap-x-[30px] text-center">
+                                <li><a href="#"
+                                        class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff]">হোম</a>
+                                </li>
+                                <li><a href="#"
+                                        class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff]">কোর্সসমূহ</a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff]">আমাদের
+                                        সম্পর্কে</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- menu -->
 
-    <img src="/images/section-one-shadow.svg" class="absolute inset-0 left-0 top-0 w-full h-full z-30" alt="shadow">
+                        <!-- actions -->
+                        <div class="w-full">
+                            <ul class="flex gap-x-3 lg:gap-x-[30px] text-center items-center justify-end">
+                                <li><a href="#"
+                                        class="block font-normal text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">লগইন
+                                    </a></li>
+                                <li>
+                                    <a href="#" class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
+               hover:!bg-lime md:text-base px-3 pr-2 lg:text-lg
+                hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5 lg:pr-4">
+                                        সাইন আপ
+                                        <svg class="w-5 lg:w-8" viewBox="0 0 30 30" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="0.5" y="29.5" width="29" height="29" rx="14.5"
+                                                transform="rotate(-90 0.5 29.5)" stroke="white" />
+                                            <path
+                                                d="M18.3154 16.9887L18.3154 11.6854M18.3154 11.6854L13.0121 11.6854M18.3154 11.6854L11.6862 18.3146"
+                                                stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="lg:hidden">
+                                    <button type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="size-6 text-[#fff]">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
+                                        </svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- actions -->
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header section end -->
+        <img src="./public/images/hero-ellipse.svg" alt="ellipse"
+            class="absolute left-0 top-0 lg:h-full lg:object-contain"> <!-- hero ellipse -->
+        <div class="container-x">
+            <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
+                <h1
+                    class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                    <span class="block h-[2px] w-5 bg-line"></span>
+                    আপনার ক্রিয়েটিভিটি আনলক করুন
+                    <span class="block h-[2px] w-5 bg-line-2"></span>
+                </h1>
+                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">সবচেয়ে সহজ ও
+                    দ্রুত উপায়ে শিখুন <span class="text-gradient">এআই ক্রিয়েটিভিটি</span></h2>
+                <p
+                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
+                    মাত্র ৩ দিনে আয়ত্ত করুন AI ইমেজ, ভিডিও ও মিউজিক জেনারেশন। লাইভ হ্যান্ডস-অন বুটক্যাম্প, বাস্তব
+                    প্রজেক্ট ও ইন্ডাস্ট্রি এক্সপার্ট মোঃ আব্দরু রউফ (রাজু) এর গাইডলাইনে।</p>
 
+                <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
+                    <li>
+                        <a href="#" class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
+               hover:!bg-lime md:text-base px-3 lg:text-lg
+                hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5">
+                            এখনই ভর্তি হোন
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block font-normal text-sm lg:text-lg text-[#fff] anim hover:text-[#fff] underline">সার্টিফিকেট
+                            পান
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="w-full mt-8 md:mt-12 lg:mt-[62px] grid grid-cols-12 gap-x-4 lg:gap-x-6">
+                <!-- card small -->
+                <div
+                    class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] col-span-12 lg:col-span-3">
+                    <div class="w-full bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center">
+                        <h6
+                            class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
+                            <svg width="25" height="25" viewBox="0 0 25 25" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="4" cy="4" r="4" transform="matrix(-1 0 0 1 16.5 3.5)"
+                                    stroke="url(#paint0_linear_404_6825)" stroke-width="1.5" />
+                                <path
+                                    d="M5.5 17.4347C5.5 16.5743 6.04085 15.8068 6.85109 15.5175V15.5175C10.504 14.2128 14.496 14.2128 18.1489 15.5175V15.5175C18.9591 15.8068 19.5 16.5743 19.5 17.4347V18.7502C19.5 19.9376 18.4483 20.8498 17.2728 20.6818L16.3184 20.5455C13.7856 20.1837 11.2144 20.1837 8.68162 20.5455L7.72721 20.6818C6.5517 20.8498 5.5 19.9376 5.5 18.7502V17.4347Z"
+                                    stroke="url(#paint1_linear_404_6825)" stroke-width="1.5" />
+                                <defs>
+                                    <linearGradient id="paint0_linear_404_6825" x1="4" y1="0" x2="4" y2="8"
+                                        gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#E850FF" />
+                                        <stop offset="1" stop-color="#4941C8" />
+                                    </linearGradient>
+                                    <linearGradient id="paint1_linear_404_6825" x1="12.5" y1="13.5" x2="12.5" y2="21"
+                                        gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#E850FF" />
+                                        <stop offset="1" stop-color="#4941C8" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+
+                            আপনার কোর্স ইন্সট্রাক্টর</h6>
+                    </div>
+                    <div class="w-full my-2 lg:my-2.5">
+                        <img src="./public/images/speaking-person.png" alt="speking person"
+                            class="w-full h-[208px] rounded-md lg:rounded-[10px] object-cover">
+                    </div>
+                    <div class="w-full bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center">
+                        <h6
+                            class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
+                            মোঃ আব্দরু রউফ (রাজু)</h6>
+                        <ul class="flex items-center justify-center gap-x-2.5 mt-1">
+                            <li>
+                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                    <img src="./public/images/icons/call.svg" alt="call" class="w-full">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                    <img src="./public/images/icons/mail.svg" alt="call" class="w-full">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                    <img src="./public/images/icons/linkedin.svg" alt="call" class="w-full">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                    <img src="./public/images/icons/facebook.svg" alt="call" class="w-full">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- card big -->
+                <div
+                    class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] col-span-12 lg:col-span-8 grid grid-cols-1 lg:grid-cols-11 gap-2 lg:gap-2.5">
+                    <!-- box -->
+                    <div class="w-full lg:col-span-5">
+                        <div class="w-full bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center">
+                            <h6
+                                class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
+                                <img src="./public/images/icons/ai.svg" alt="ai">
+
+                                তার এআই ক্রিয়েশন</h6>
+                        </div>
+                        <div class="w-full mt-2 lg:mt-2.5 grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-2.5">
+                            <img src="./public/images/project-07.png" alt="speking person"
+                                class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover">
+                            <img src="./public/images/project-03.png" alt="speking person"
+                                class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover">
+                            <img src="./public/images/project-02.png" alt="speking person"
+                                class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover lg:col-span-2">
+                        </div>
+                    </div>
+                    <!-- box -->
+                    <div class="w-full lg:col-span-3 relative">
+                        <img src="./public/images/home/robot.png" alt="robot"
+                            class="w-full h-[269px] object-cover rounded-md lg:rounded-[10px]">
+                        <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                            <button type="button"
+                                class="w-12 h-12 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
+                                <img src="/images/icons/play.svg" alt="play" class="w-4">
+                            </button>
+                        </div>
+                    </div>
+                    <!-- box -->
+                    <div class="w-full lg:col-span-3 relative">
+                        <img src="./public/images/home/joker.png" alt="joker"
+                            class="w-full h-[269px] object-cover rounded-md lg:rounded-[10px]">
+                        <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                            <button type="button"
+                                class="w-12 h-12 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
+                                <img src="/images/icons/play.svg" alt="play" class="w-4">
+                            </button>
+                        </div>
+                    </div>
+                    <!-- box -->
+                    <div
+                        class="w-full lg:col-span-8 bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center flex items-center gap-x-3 lg:gap-x-5">
+                        <span
+                            class="flex w-8 h-8 lg:w-11 lg:h-11 bg-[#131620] shrink-0 rounded-full justify-center items-center p-1">
+                            <img src="/images/icons/play.svg" alt="play" class="w-4">
+                        </span>
+                        <div class="w-full">
+                            <img src="./public/images/home/waves.svg" alt="waves"
+                                class="w-full max-h-[65px] object-contain">
+                        </div>
+                    </div>
+                    <!-- box -->
+                    <div
+                        class="w-full lg:col-span-3 bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center flex items-center justify-center">
+                        <h6
+                            class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
+                            <img src="./public/images/icons/ai.svg" alt="ai">
+
+                            তার এআই ক্রিয়েশন</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full relative z-[99] mt-3 lg:mt-5 ">
+                <ul class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 justify-center lg:gap-x-6 w-full">
+                    <li>
+                        <a href="#"
+                            class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
+                            <img src="./public/images/icons/btn-1.svg" alt="btn-1"
+                                class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
+                            ইমেজ জেনারেশন
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
+                            <img src="./public/images/icons/btn-1.svg" alt="btn-1"
+                                class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
+                            ইমেজ জেনারেশন
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
+                            <img src="./public/images/icons/btn-1.svg" alt="btn-1"
+                                class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
+                            ইমেজ জেনারেশন
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- hero section end -->
+
+    <!-- border line -->
     <div class="container-x">
-      <div class="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-x-20 xl:gap-x-[105px] lg:items-center">
-        <div class="w-full">
-          <div class="w-full flex justify-center items-center gap-x-2.5 relative z-40 lg:justify-start">
-            <!-- icon -->
+        <img src="./public/images/line.svg" alt="line" class="w-full mx-auto">
+    </div>
+    <!-- border line -->
+
+    <!-- feature section start -->
+    <section class="w-full py-10 lg:py-20">
+        <div class="container-x">
+            <div class="text-center mb-10 md:mb-16 lg:mb-20">
+                <h6
+                    class="inline-flex items-center gap-x-2 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                    <span class="block h-[2px] w-5 bg-line"></span>
+                    মূল বৈশিষ্ট্য
+                    <span class="block h-[2px] w-5 bg-line-2"></span>
+                </h6>
+                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">আপনার
+                    আইডিয়াকে বদলে দিন <span class="text-gradient">এআই ক্রিয়েশনে</span></h2>
+                <p
+                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[50%] lg:mx-auto">
+                    শিখুন কীভাবে আকর্ষণীয় ইমেজ, এনগেজিং ভিডিও ও প্রফেশনাল মিউজিক/ভয়েসওভার তৈরি করা যায় মুহূর্তেই।</p>
+            </div>
+
+            <!-- feat card -->
+            <div class="w-full grid grid-cols-1 gap-y-5 md:grid-cols-2 gap-5 lg:grid-cols-3 lg:gap-x-6">
+                <div
+                    class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
+                    <img src="./public/images/home/feat-card.svg" alt="feat card"
+                        class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
+
+                    <div
+                        class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
+                        <div
+                            class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
+                            <img src="./public/images/icons/b-camp-01.svg" alt="icons 1" class="w-6 md:w-8 lg:w-10">
+                            <img src="./public/images/icons/curve.svg" alt="curve 1"
+                                class="w-[86%] absolute left-1 top-4">
+                        </div>
+                    </div>
+
+                    <div class="mt-10 lg:mt-[60px]">
+                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">এআই
+                            ইমেজ জেনারেশন ও প্রম্পটিং</h5>
+                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">টেক্সট
+                            প্রম্পট থেকে ভিজ্যুয়াল, পোস্টার, ক্যারেক্টার ডিজাইন ও ফেস এডিট শিখুন।</p>
+                    </div>
+                </div>
+                <div
+                    class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
+                    <img src="./public/images/home/feat-card.svg" alt="feat card"
+                        class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
+
+                    <div
+                        class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
+                        <div
+                            class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
+                            <img src="./public/images/icons/b-camp-02.svg" alt="icons 2" class="w-6 md:w-8 lg:w-10">
+                            <img src="./public/images/icons/curve.svg" alt="curve 2"
+                                class="w-[86%] absolute left-1 top-4">
+                        </div>
+                    </div>
+
+                    <div class="mt-10 lg:mt-[60px]">
+                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">এআই
+                            ভিডিও ক্রিয়েশন</h5>
+                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">
+                            টেক্সট/ইমেজ থেকে ভিডিও, লিপ-সিঙ্ক, ভয়েস ও ইফেক্টসহ বিজ্ঞাপন ও শর্টস তৈরি করুন।</p>
+                    </div>
+                </div>
+                <div
+                    class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
+                    <img src="./public/images/home/feat-card.svg" alt="feat card"
+                        class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
+
+                    <div
+                        class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
+                        <div
+                            class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
+                            <img src="./public/images/icons/b-camp-03.svg" alt="icons 3" class="w-6 md:w-8 lg:w-10">
+                            <img src="./public/images/icons/curve.svg" alt="curve 3"
+                                class="w-[86%] absolute left-1 top-4">
+                        </div>
+                    </div>
+
+                    <div class="mt-10 lg:mt-[60px]">
+                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">এআই
+                            মিউজিক ও ভয়েস জেনারেশন</h5>
+                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">এআই দিয়ে
+                            জিঙ্গেল, ব্যাকগ্রাউন্ড স্কোর, ভয়েসওভার ও সাউন্ড ইফেক্ট তৈরি করুন।</p>
+                    </div>
+
+                </div>
+            </div>
+            <!-- feat card -->
+        </div>
+    </section>
+    <!-- feature section end -->
+
+    <!-- change your idea section start -->
+    <section class="w-full py-10 lg:py-20">
+        <div class="container-x">
+            <div class="text-center mb-10 md:mb-16 lg:mb-20">
+                <h6
+                    class="inline-flex items-center gap-x-2 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                    <span class="block h-[2px] w-5 bg-line"></span>
+                    শেখার ধাপ
+                    <span class="block h-[2px] w-5 bg-line-2"></span>
+                </h6>
+                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">আপনার
+                    আইডিয়াকে বদলে দিন <span class="text-gradient">এআই ক্রিয়েশনে</span></h2>
+                <p
+                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[50%] lg:mx-auto">
+                    এই বুটক্যাম্পে শেখার সঠিক পদ্ধতি, ধাপে ধাপে নির্দেশনা এবং ব্যবহারিক কৌশল যা আপনাকে দ্রুত দক্ষ করে
+                    তুলবে</p>
+            </div>
+
+            <!-- first step -->
+             <div class="w-full grid grid-cols-1 gap-y-10 lg:grid-cols-2 lg:gap-y-[200px] lg:gap-x-12 lg:items-center relative">
+                <!-- line -->
+                 <div class="hidden lg:block bg-[#232323] w-[2px] h-full absolute left-[50%] top-0 translate-x-[-50%]"></div>
+                <!-- line -->
+               
+                 <!-- txt -->
+                 <div class="w-full ">
+                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">প্রথম ধাপ </h4>
+                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">প্রম্পট থেকে প্রফেশনাল ভিজ্যুয়াল</h6>
+
+                    <ul class="flex flex-col gap-y-2 lg:max-w-[70%]">
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">প্রম্পট লিখুন: সঠিক ও ইউনিক প্রম্পট তৈরি করা শিখুন।</p>
+                        </li>
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ইমেজ তৈরি: এআই ব্যবহার করে কাস্টম গ্রাফিক্স, ফেস এডিটিং ও অ্যাড ডিজাইন বানান।</p>
+                        </li>
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ফাইনাল টাচ: রঙ, লেআউট এবং স্টাইল এডজাস্ট করে প্রফেশনাল লুক নিশ্চিত করুন।</p>
+                        </li>
+                    </ul>
+                 </div> 
+
+                  <!-- img -->
+                 <div class="w-full lg:max-w-[80%] lg:ml-auto">
+                    <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
+                        <img src="./public/images/home/step-01.png" alt="step-01" class="w-full rounded-md lg:rouned-[10px] ">
+                    </div>
+                 </div>
+
+                 <!-- img -->
+                 <div class="w-full lg:max-w-[80%] lg:mr-auto">
+                    <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
+                        <img src="./public/images/home/step-02.png" alt="step-02" class="w-full rounded-md lg:rouned-[10px] ">
+                    </div>
+                 </div>
+
+                  <div class="w-full lg:max-w-[80%] lg:ml-auto">
+                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">দ্বিতীয় ধাপ  </h4>
+                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">টেক্সট বা ইমেজ থেকে আকর্ষণীয় ভিডিও তৈরি করুন</h6>
+
+                    <ul class="flex flex-col gap-y-2">
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ভিডিও জেনারেট করুন: টেক্সট বা ইমেজ থেকে ভিডিও তৈরি করা শিখুন।</p>
+                        </li>
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">অডিও ও ভয়েস এড করুন: ভয়েসওভার, লিপ-সিঙ্ক ও ব্যাকগ্রাউন্ড মিউজিক যোগ করুন।</p>
+                        </li>
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">এফেক্ট ও ফাইনাল টাচ: ট্রানজিশন, ফিল্টার ও এফেক্ট দিয়ে ভিডিওকে আরও প্রফেশনাল করুন।</p>
+                        </li>
+                    </ul>
+                 </div> 
+
+                  <!-- txt -->
+                 <div class="w-full ">
+                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">তৃতীয় ধাপ  </h4>
+                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">সাউন্ড দিয়ে ভিডিওকে প্রাণ দিন</h6>
+
+                    <ul class="flex flex-col gap-y-2 lg:max-w-[70%]">
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">মিউজিক জেনারেশন: জিঙ্গেল, ব্যাকগ্রাউন্ড সাউন্ড বা টিউন তৈরি করুন।</p>
+                        </li>
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ভয়েসওভার তৈরি করুন: এআই ভয়েস দিয়ে প্রফেশনাল ভয়েসওভার তৈরি করা শিখুন।</p>
+                        </li>
+                        <li class="flex items-center gap-x-2 lg:gap-x-3">
+                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">সাউন্ড এফেক্ট: মিউজিক ও ভয়েসের সাথে সাউন্ড ইফেক্ট যোগ করুন।</p>
+                        </li>
+                    </ul>
+                 </div> 
+
+                  <!-- img -->
+                 <div class="w-full lg:max-w-[80%] lg:ml-auto">
+                    <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
+                        <img src="./public/images/home/step-03.png" alt="step-03" class="w-full rounded-md lg:rouned-[10px] ">
+                    </div>
+                 </div>
+
+             </div>
+            <!-- first step -->
+        </div>
+    </section>
+    <!-- change your idea section end -->
+
+    <!-- get start section start -->
+    <section class="w-full py-10 lg:py-20">
+        <div class="container-x">
+            <div class="get-bg relative py-12 px-8 lg:py-[94px] lg:px-[220px] rounded-[20px] lg:min-h-[365px]">
+                <div class="absolute left-0 bottom-0 z-20 w-full h-full flex justify-between">
+                    <img src="/images/home/get-start-bottom-left.svg" alt="get left"
+                        class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+                    <img src="/images/home/get-start-top-right.svg" alt="get right"
+                        class="rounded-tr-[20px] rounded-br-[20px] max-w-[50%] lg:object-contain">
+                </div>
+                <div class="text-center relative z-30 w-full">
+                    <h2 class="font-bold text-2xl lg:text-[44px] text-[#fff] leading-[120%] mb-1">ক্রিয়েটিভিটির ভবিষ্যৎ
+                        <span class="text-gradient">এখন আপনার হাতে</span></h2>
+                    <p class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[120%]">যোগ দিন AI
+                        Advertising
+                        Bootcamp – 25 এ, হয়ে উঠুন এআই-চালিত ক্রিয়েটিভ প্রফেশনাল।</p>
+
+                    <div class="flex justify-center items-center gap-x-4  mt-5 lg:mt-10 lg:gap-x-5">
+                        <a href="#"
+                            class="inline-flex font-golos justify-center items-center bg-submit rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-2.5 anim
+               hover:!bg-lime md:text-base px-2 lg:text-lg hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-6">
+                            এখনই এনরোল করুন
+                        </a>
+                        <a href="#"
+                            class="inline-flex font-golos justify-center items-center bg-black rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-2.5 anim
+                 md:text-base lg:text-lg hover:text-orange px-2 group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-6">
+                            সার্টিফিকেট পান
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- get start section end -->
+
+    <!-- border line -->
+    <div class="container-x">
+        <img src="./public/images/line.svg" alt="line" class="w-full mx-auto">
+    </div>
+    <!-- border line -->
+
+    <!-- footer section start -->
+    <footer class="w-full pt-10 lg:pt-20 pb-3 lg:pb-5">
+        <div class="container-x">
+
+            <div class="w-full grid grid-cols-2 lg:grid-cols-12 gap-y-10 gap-x-5 lg:gap-x-16 mb-5 lg:mb-10">
+                <!-- card -->
+                <div class="w-full lg:col-span-4">
+                    <a href="#">
+                        <img src="./public/images/logo.svg" alt="logo white" class="w-full max-w-[108px]">
+                    </a>
+                    <p class="text-[#ABABAB] font-normal text-base mt-5 mb-3 lg:mt-[30px] lg:mb-5">বাংলাদেশের শীর্ষ এআই
+                        ক্রিয়েটিভ ট্রেনিং প্ল্যাটফর্ম</p>
+
+                    <p class="text-[#ABABAB] mt-[20px] lg:mt-7 font-normal text-sm font-golos">আমাদের সাথে যুক্ত হন</p>
+
+                    <ul class="flex items-center justify-center gap-x-2.5 mt-2.5 lg:justify-start">
+                        <li>
+                            <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                <img src="./public/images/icons/call.svg" alt="call" class="w-full">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                <img src="./public/images/icons/mail.svg" alt="call" class="w-full">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                <img src="./public/images/icons/linkedin.svg" alt="call" class="w-full">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                <img src="./public/images/icons/facebook.svg" alt="call" class="w-full">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- card -->
+                <!-- card -->
+                <div class="w-full lg:col-span-2">
+                    <h6 class="font-medium text-base lg:text-lg text-[#ABABAB]">কুইক লিঙ্কস</h6>
+                    <ul class="mt-5 lg:mt-[30px] flex flex-col gap-y-2 lg:gap-y-5">
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">হোম</a>
+                        </li>
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">কোর্স
+                                সমূহ </a></li>
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">আমাদের
+                                সম্পর্কে</a></li>
+                    </ul>
+                </div>
+                <!-- card -->
+                <!-- card -->
+                <div class="w-full lg:col-span-3">
+                    <h6 class="font-medium text-base lg:text-lg text-[#ABABAB]">যোগাযোগ করুন</h6>
+                    <ul class="mt-5 lg:mt-[30px] flex flex-col gap-y-2 lg:gap-y-5">
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">ঢাকা,
+                                বাংলাদেশ</a>
+                        </li>
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">+880
+                                1712-345678</a></li>
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">info@roufai.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- card -->
+                <!-- card -->
+                <div class="w-full lg:col-span-3">
+                    <h6 class="font-medium text-base lg:text-lg text-[#ABABAB]">কোর্স সমূহ </h6>
+                    <ul class="mt-5 lg:mt-[30px] flex flex-col gap-y-2 lg:gap-y-5">
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">AI
+                                Creative Mastery</a>
+                        </li>
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">Prompt
+                                Engineering Pro</a></li>
+                        <li><a href="#"
+                                class="block font-medium text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">AI
+                                Video & Content Lab</a></li>
+                    </ul>
+                </div>
+                <!-- card -->
+            </div>
+
             <div
-              class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-              <img src="/images/icons/b-camp-01.svg" alt="icon 1" class="w-6">
-            </div>
-            <!-- icon -->
-            <!-- icon -->
-            <div
-              class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-              <img src="/images/icons/b-camp-02.svg" alt="icon 2" class="w-6">
-            </div>
-            <!-- icon -->
-            <!-- icon -->
-            <div
-              class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-              <img src="/images/icons/b-camp-03.svg" alt="icon 3" class="w-6">
-            </div>
-            <!-- icon -->
-          </div>
-          <div class="text-center relative z-40 lg:text-start">
-            <h1 class="text-orange font-medium text-sm my-2.5 lg:text-base">বিজ্ঞাপনের জন্য AI বুটক্যাম্প - ২৫</h1>
-            <h2 class="font-bold text-[28px] leading-[110%] text-[#fff] lg:text-[40px]">Ai অ্যাডভার্টাইজিং <span
-                class="text-gradient">বুটক্যাম্প -
-                ২৫</span> </h2>
-            <h3 class="text-[#ABABAB] mt-2 font-medium text-sm lg:text-base">৩ দিনের অনলাইন লাইভ ওয়ার্কশপ |
-              প্রশিক্ষক: আব্দুর
-              রউফ
-            </h3>
-            <p
-              class="text-[#ABABAB] mt-[30px] font-normal text-sm md:text-base lg:text-lg lg:max-w-[80%] xl:max-w-[80%]">
-              এই বুটক্যাম্পে আপনি হাতে-কলমে শিখবেন AI ইমেজ,
-              ভিডিও
-              ও মিউজিক ক্রিয়েশন যা বিজ্ঞাপন, কনটেন্ট ক্রিয়েশন এবং
-              আধুনিক মার্কেটিং জগতে আপনাকে এগিয়ে রাখবে। আন্তর্জাতিক মানের টেকনিক, প্রম্পট ইঞ্জিনিয়ারিং, টুলস এবং
-              প্রজেক্ট-ভিত্তিক শেখানোর মাধ্যমে আপনি হয়ে উঠবেন একজন AI-powered ক্রিয়েটিভ প্রফেশনাল।</p>
-
-            <div class="w-full lg:flex lg:items-center lg:gap-x-[30px] lg:mt-[30px]">
-              <h4 class="mt-[30px] mb-2.5 font-medium text-sm text-secondary-100 underline lg:my-0 lg:order-2 lg:text-lg">কোর্স ফি
-                মাত্র <strong class="text-orange underline">৳৫,৩২০</strong> টাকা</h4>
-              <a href="#" class="inline-flex font-golos justify-center items-center bg-submit rounded-[10px] p-1.5 font-medium text-sm text-[#fff] pl-4 gap-x-2.5 anim
-               hover:!bg-lime md:text-base lg:text-base lg:p-2.5 lg:pl-4.5 hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70">
-                এখনই এনরোল করুন
-                <span
-                  class="w-[30px] h-[30px] rounded-full bg-[#fff]/40 flex items-center justify-center anim group-hover:bg-primary">
-                  <svg width="17" height="10" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M12.3672 8.78662L15.6601 5.49373C16.0506 5.1032 16.0506 4.47004 15.6601 4.07951L12.3672 0.786621M15.3672 4.78662L1.36719 4.78662"
-                      stroke="white" stroke-width="1.5" stroke-linecap="round" />
-                  </svg>
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="text-center relative z-40 mt-7 lg:max-w-[90%] lg:mt-0">
-           <div class="hero-image-wrap p-0 relative">
-              <img src="/images/speaking-person.png" alt="speaking-person"
-                class="rounded-[calc(0.75rem-2px)] w-full hero-img shadow-1">
-              <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                <button type="button"
-                  class="w-[90px] h-[90px] rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
-                  <img src="/images/icons/play.svg" alt="play" class="w-8">
-                </button>
-              </div>
+                class="w-full border-t border-[#232323] flex justify-center flex-col items-center lg:flex-row lg:justify-between lg:items-center gap-y-4 lg:gap-x-4 lg:gap-y-0 mt-3 pt-3 lg:mt-4 lg:pt-4">
+                <p class="font-normal text-sm lg:text-base text-[#ABABAB]">&copy; 2025 Rouf AI - সর্বস্বত্ব সংরক্ষিত।
+                </p>
+                <p class="font-normal text-sm lg:text-base text-[#ABABAB]">Developed with ❤️ by Giopio</p>
             </div>
         </div>
-      </div>
-    </div>
-  </section>
-  <!-- first section end -->
+    </footer>
+    <!-- footer section end -->
 
-  <!-- ai advertising section start -->
-  <section class="w-full pt-20">
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/book.svg" alt="icon book" class="">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">এক নজরে আমাদের Ai অ্যাডভার্টাইজিং <span
-            class="text-gradient">বুটক্যাম্প-২৫</span></h2>
-        <p class="common-para text-secondary-200">এই কোর্সে যা যা থাকছে</p>
-      </div>
-      <!-- common title end -->
-      <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 lg:gap-y-0 xl:gap-x-[45px]">
-        <!-- card -->
-        <div class="rounded-[10px] p-[30px] bg-black ai-card text-center min-h-[318px]">
-          <img src="/images/icons/feat-01.svg" alt="feat icon 01" class="w-10 mx-auto lg:w-[60px]">
-          <h4 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">AI ইমেজ জেনারেশন ও প্রম্পটিং</h4>
-          <p class="common-para text-secondary-200 lg:!text-[15px] lg:leading-[150%]">বাংলাদেশ ও বিশ্বজুড়ে বিজ্ঞাপনে AI এর প্রভাব,
-            প্রম্পট ইঞ্জিনিয়ারিং, শীর্ষ AI টুলস, পারফেক্ট ইমেজ কম্পোজিশন, ক্যারেক্টার ট্রেনিং, ফেস সোয়াপ ও এডিটিং
-            শেখানো হবে।</p>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div class="rounded-[10px] p-[30px] bg-card ai-card ai-card-variant text-center min-h-[318px]">
-          <img src="/images/icons/feat-02.svg" alt="feat icon 02" class="w-10 mx-auto lg:w-[60px]">
-          <h4 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">AI ভিডিও জেনারেশন</h4>
-          <p class="common-para text-secondary-200 lg:!text-[15px] lg:leading-[150%]">ভিডিও প্রম্পট তৈরি, প্রম্পট থেকে ভিডিও, ইমেজ থেকে
-            ভিডিও, অডিও সহ ভিডিও, লিপসিঙ্ক এবং ভয়েস অ্যানিমেশন কৌশল শেখানো হবে।</p>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div class="rounded-[10px] p-[30px] bg-card ai-card text-center min-h-[318px]">
-          <img src="/images/icons/feat-03.svg" alt="feat icon 02" class="w-10 mx-auto lg:w-[60px]">
-          <h4 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">AI মিউজিক ও ভয়েস জেনারেশন</h4>
-          <p class="common-para text-secondary-200 lg:!text-[15px] lg:leading-[150%]">AI দিয়ে জিঙ্গল, ব্যাকগ্রাউন্ড স্কোর, গান, ভয়েসওভার
-            স্ক্রিপ্ট লেখা, ভয়েসওভার জেনারেশন এবং ভিডিওর জন্য সাউন্ড ইফেক্ট তৈরি শেখানো হবে।</p>
-        </div>
-        <!-- card -->
-      </div>
-    </div>
-  </section>
-  <!-- ai advertising section end -->
-
-  <!-- module learning plan start -->
-  <section class="w-full py-20">
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/check-list.svg" alt="icon book" class="">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">স্টেপ–বাই–স্টেপ মডিউল <span
-            class="text-gradient"> লার্নিং প্ল্যান</span></h2>
-        <p class="common-para text-secondary-200">৩ ধাপে সাজানো কোর্স পরিকল্পনা</p>
-      </div>
-      <!-- common title end -->
-
-      <!-- learning steps -->
-      <div class="w-full grid grid-cols-1 lg:grid-cols-11 gap-y-10 lg:gap-y-0 lg:gap-x-[58px] lg:items-center">
-        <div class="img order-2 lg:order-1 lg:col-span-5">
-          <img src="/images/learning-steps.webp" alt="learning-steps" class="w-full rounded-[10px]">
-        </div>
-        <div class="txt order-1 lg:order-2 lg:col-span-5">
-          <div class="flex flex-col gap-y-2.5 lg:gap-y-6">
-            <!-- card -->
-            <div
-              class="item bg-[#010101] rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-center gap-x-2.5 lg:pr-5 border border-[#49484E] lg:rounded-[20px] gradient-border-only">
-              <span
-                class="block bg-[#07101D] rounded-[10px] p-2.5 text-base font-bold text-[#2669D0] col-span-2 text-center lg:text-2xl lg:text-[#fff] lg:max-w-[85%] lg:py-4 shrink-0">Day
-                <br>
-                1</span>
-              <div class="w-full col-span-8 lg:pt-4">
-                <h5 class="text-[#E2E8F0] font-medium text-base lg:text-xl">AI Image Generation &amp; Prompting</h5>
-                <h6 class="text-[#ABABAB] font-normal text-xs lg:text-base mt-2 lg:mt-3">০৭ ধাপে শিখুন – হয়ে উঠুন ইমেজ
-                  জেনারেশনের সম্রাট</h6>
-              </div>
-              <button type="button" class="col-span-2 flex justify-end">
-                <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[30px]">
-              </button>
-            </div>
-            <!-- card -->
-            <!-- card -->
-            <div
-              class="item bg-[#010101] rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-center gap-x-2.5 lg:pr-5 border border-[#49484E] lg:rounded-[20px] gradient-border-only gradient-border-only-variant">
-              <span
-                class="block bg-[#07101D] rounded-[10px] p-2.5 text-base font-bold text-[#2669D0] col-span-2 text-center lg:text-2xl lg:text-[#fff]  lg:max-w-[85%] lg:py-4 shrink-0">Day
-                <br>
-                2</span>
-              <div class="w-full col-span-8 lg:pt-4">
-                <h5 class="text-[#E2E8F0] font-medium text-base lg:text-xl">AI Video Generation</h5>
-                <h6 class="text-[#ABABAB] font-normal text-xs lg:text-base mt-2 lg:mt-3">৫ সহজ ধাপেই আয়ত্ত করুন ভিডিও
-                  কনটেন্ট তৈরির সম্পূর্ণ দক্ষতা</h6>
-              </div>
-              <button type="button" class="col-span-2 flex justify-end">
-                <img src="/images/icons/angle-down-circle.svg" alt="angle 2" class="w-5 lg:w-[30px]">
-              </button>
-            </div>
-            <!-- card -->
-            <!-- card -->
-            <div
-              class="item bg-[#010101] rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-center gap-x-2.5 lg:pr-5 border border-[#49484E] lg:rounded-[20px] gradient-border-only">
-              <span
-                class="block bg-[#07101D] rounded-[10px] p-2.5 text-base font-bold text-[#2669D0] col-span-2 text-center lg:text-2xl lg:text-[#fff]  lg:max-w-[85%] lg:py-4 shrink-0">Day
-                <br>
-                3</span>
-              <div class="w-full col-span-8 lg:pt-4">
-                <h5 class="text-[#E2E8F0] font-medium text-base lg:text-xl">AI Song, Jingle, Voiceover &amp;
-                  SFX</h5>
-                <h6 class="text-[#ABABAB] font-normal text-xs lg:text-base mt-2 lg:mt-3">৫ সহজ ধাপেই আয়ত্ত করুন ভিডিও
-                  কনটেন্ট তৈরির সম্পূর্ণ দক্ষতা</h6>
-              </div>
-              <button type="button" class="col-span-2 flex justify-end">
-                <img src="/images/icons/angle-down-circle.svg" alt="angle 3" class="w-5 lg:w-[30px]">
-              </button>
-            </div>
-            <!-- card -->
-          </div>
-        </div>
-      </div>
-      <!-- learning steps -->
-    </div>
-  </section>
-  <!-- module learning plan end -->
-
-  <!-- tools used start -->
-  <section class="w-full py-20 bg-tools border-y border-[#fff]/20">
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/tools.svg" alt="icon book" class="">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">কোর্সে যেসব AI টুলস সরাসরি <span
-            class="text-gradient"> ব্যবহার করবেন</span>
-          </h2>
-        <p class="common-para text-secondary-200">কোর্সে শিখবেন যে AI টুলস</p>
-      </div>
-      <!-- common title end -->
-
-      <!-- tools -->
-      <div class="w-full grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-6">
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent anim hover:!bg-[#000] rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-01.svg" alt="tools-01" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-02.svg" alt="tools-02" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-03.svg" alt="tools-03" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-04.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-05.svg" alt="tools-05" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-06.svg" alt="tools-06" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-06.svg" alt="tools-06" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-05.svg" alt="tools-05" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-04.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-03.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-02.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-        <!-- tool -->
-        <div
-          class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-          <img src="/images/tools-01.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-        </div>
-        <!-- tool -->
-      </div>
-      <!-- tools -->
-    </div>
-  </section>
-  <!-- tools used end -->
-
-  <!-- projects section start -->
-  <section class="w-full pt-20 lg:pt-[90px]">
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/bulb.svg" alt="icon bulb" class="w-6">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">হাতে-কলমে প্র্যাকটিক্যাল <span
-            class="text-gradient"> প্রজেক্ট থাকবে</span></h2>
-        <p class="common-para text-secondary-200">১৫টি বাস্তব প্রজেক্টের মাধ্যমে শিখবেন কার্যকরী স্কিল</p>
-      </div>
-      <!-- common title end -->
-
-      <div class="w-full grid grid-cols-12 gap-5">
-        <!-- group one -->
-        <div class="w-full col-span-12 md:col-span-6 lg:col-span-4 grid grid-cols-12 gap-5">
-          <!-- item -->
-          <div class="w-full relative col-span-12">
-            <img src="/images/project-01.png" alt="project-01" class="w-full rounded-[10px] project-image">
-            <p
-              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-              Ai
-              video by prompt</p>
-          </div>
-          <!-- item -->
-          <div class="w-full relative col-span-8 lg:col-span-6">
-            <div class="w-full relative mb-5">
-              <img src="/images/project-04.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai Image</p>
-            </div>
-            <div class="w-full relative hidden lg:block">
-              <img src="/images/project-06.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai monalisa</p>
-            </div>
-          </div>
-          <!-- item -->
-          <div class="w-full relative col-span-4 lg:col-span-6">
-            <div class="w-full relative">
-              <img src="/images/project-05.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai Music</p>
-            </div>
-          </div>
-        </div>
-        <!-- group one -->
-        <!-- group two -->
-        <div class="w-full col-span-12 md:col-span-6 lg:col-span-4 grid-cols-12 gap-5 hidden md:grid">
-          <!-- item -->
-          <div class="w-full relative col-span-8 lg:col-span-6">
-            <div class="w-full relative mb-5">
-              <img src="/images/project-04.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai Image</p>
-            </div>
-            <div class="w-full relative hidden lg:block">
-              <img src="/images/project-06.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai monalisa</p>
-            </div>
-          </div>
-          <!-- item -->
-          <div class="w-full relative col-span-4 lg:col-span-6">
-            <div class="w-full relative">
-              <img src="/images/project-05.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai Music</p>
-            </div>
-          </div>
-          <!-- item -->
-          <div class="w-full relative col-span-12">
-            <img src="/images/project-01.png" alt="project-01" class="w-full rounded-[10px] project-image">
-            <p
-              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-              Ai
-              video by prompt</p>
-          </div>
-
-        </div>
-        <!-- group two -->
-        <!-- group three -->
-        <div class="w-full col-span-12 md:col-span-6 lg:col-span-4 grid-cols-12 gap-5 hidden lg:grid">
-          <!-- item -->
-          <div class="w-full relative col-span-12">
-            <img src="/images/project-01.png" alt="project-01" class="w-full rounded-[10px] project-image">
-            <p
-              class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-              Ai
-              video by prompt</p>
-          </div>
-          <!-- item -->
-          <div class="w-full relative col-span-8 lg:col-span-6">
-            <div class="w-full relative mb-5">
-              <img src="/images/project-04.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai Image</p>
-            </div>
-            <div class="w-full relative hidden lg:block">
-              <img src="/images/project-06.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai monalisa</p>
-            </div>
-          </div>
-          <!-- item -->
-          <div class="w-full relative col-span-4 lg:col-span-6">
-            <div class="w-full relative">
-              <img src="/images/project-05.png" alt="project-04" class="w-full rounded-[10px] project-image">
-              <p
-                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
-                Ai Music</p>
-            </div>
-          </div>
-        </div>
-        <!-- group three -->
-      </div>
-    </div>
-  </section>
-  <!-- projects section end -->
-
-  <!-- course achivement start -->
-  <section class="w-full py-20">
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/achivement.svg" alt="achivement bulb" class="w-6">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">কোর্স শেষে আপনার <span
-            class="text-gradient"> অর্জন</span></h2>
-        <p class="common-para text-secondary-200">এই কোর্স শেষ করলে যা যা শিখবেন ও পাবেন আমাদের কাছ থেকে</p>
-      </div>
-      <!-- common title end -->
-
-      <!-- achovement -->
-      <div class="w-full grid grid-cols-1 lg:grid-cols-3 lg:divide-x lg:divide-[#fff]/20 bg-card rounded-[10px] bg-all">
-        <!-- card -->
-        <div
-          class="bg-transparent rounded-t-[10px] text-center p-4 py-14 lg:rounded-none lg:rounded-l-[10px] lg:px-12 lg:py-24">
-          <img src="./public/images/icons/achivement-01.svg" alt="achivement 01" class="mx-auto lg:w-[77px]">
-          <h5 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">Live Hands-on Demos</h5>
-          <p class="common-para text-secondary-200 lg:!text-[15px]">রিয়েল-টাইমে শিখবেন AI ইমেজ, ভিডিও ও মিউজিক তৈরির
-            টুলস এবং টেকনিক প্র্যাকটিক্যাল ওয়ার্কশপ স্টাইল সেশনে।</p>
-          <div class="bg-[#fff]/10 w-full h-px mt-20 lg:hidden"></div>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div class="bg-transparent text-center p-4 pb-14 lg:pb-4 lg:px-12 lg:py-24">
-          <img src="./public/images/icons/achivement-02.svg" alt="achivement 01" class="mx-auto lg:w-[64px]">
-          <h5 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">Certificate of Completion</h5>
-          <p class="common-para text-secondary-200 lg:!text-[15px]">কোর্স শেষে পাবেন অফিসিয়াল সার্টিফিকেট, যা আপনার
-            প্রফেশনাল প্রোফাইল বা পোর্টফোলিওতে যুক্ত করতে পারবেন।</p>
-          <div class="bg-[#fff]/10 w-full h-px mt-20 lg:hidden"></div>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="bg-transparent rounded-b-[10px] text-center p-4 pb-14 lg:rounded-none lg:rounded-r-[10px] lg:px-12 lg:py-24">
-          <img src="./public/images/icons/achivement-02.svg" alt="achivement 01" class="mx-auto lg:w-[57px]">
-          <h5 class="mt-10 text-blue font-semibold text-lg mb-2.5 lg:text-xl">Q&A + Community Access</h5>
-          <p class="common-para text-secondary-200 lg:!text-[15px]">সরাসরি প্রশ্ন করার সুযোগ এবং বিশেষ কমিউনিটিতে
-            অ্যাক্সেস যেখানে থাকছে সহায়তা, নেটওয়ার্কিং ও ভবিষ্যৎ আপডেট।</p>
-        </div>
-        <!-- card -->
-      </div>
-      <!-- achovement -->
-    </div>
-  </section>
-  <!-- course achivement end -->
-
-  <!-- instructor details -->
-  <section class="w-full py-20 relative bg-instructor">
-    <div class="absolute inset-0 grid-background opacity-[13%] z-10"></div> <!-- line elements, animate-pulse -->
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/instructor.svg" alt="achivement bulb" class="w-6">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">আপনার কোর্স <span class="text-gradient">
-            ইন্সট্রাক্টর</span></h2>
-        <p class="common-para text-secondary-200">আপনার সাফল্যের সঙ্গী</p>
-      </div>
-      <!-- common title end -->
-
-      <div class="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-x-20 xl:gap-x-[105px] lg:items-center">
-        <div class="w-full">
-
-          <div class="text-center relative z-40 lg:text-start">
-
-            <h2 class="font-bold text-[28px] leading-[110%] text-blue lg:text-[40px]">Md Abdur Rouf (Razu)</h2>
-            <h3 class="text-secondary-200 mt-2 font-medium text-sm lg:text-base lg:max-w-[80%]"><span
-                class="text-orange">AI Lead at Nagad</span> | Corporate AI Trainer
-              | Founder of Biggapon Biroti | AI Artist (Image, Video & Music)
-            </h3>
-            <p
-              class="text-secondary-100 mt-[30px] font-normal text-sm md:text-base lg:text-lg lg:max-w-[80%] xl:max-w-[85%]">
-              মোঃ আব্দুর রউফ (রাজু) বাংলাদেশের এআই–ভিত্তিক সৃজনশীলতার একজন পথপ্রদর্শক। ডিজাইন ও বিজ্ঞাপনে ১২+ বছরের
-              অভিজ্ঞতা এবং এআই–এ ২.৫+ বছরের কাজের অভিজ্ঞতা নিয়ে তিনি বর্তমানে নগদ-এর ক্রিয়েটিভ লিড - এআই হিসেবে কাজ
-              করছেন। একইসাথে তিনি প্রতিষ্ঠা করেছেন বিজ্ঞাপন বিরতি, দেশের প্রথম এআই-ফার্স্ট বিজ্ঞাপন সংস্থা।
-            </p>
-
-            <p class="text-secondary-100 mt-[20px] lg:mt-7 font-normal text-sm md:text-base lg:text-base">follow by</p>
-
-            <ul class="flex items-center justify-center gap-x-2.5 mt-2.5 lg:justify-start">
-              <li>
-                <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                  <img src="./public/images/icons/call.svg" alt="call" class="w-full">
-                </a>
-              </li>
-              <li>
-                <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                  <img src="./public/images/icons/mail.svg" alt="call" class="w-full">
-                </a>
-              </li>
-              <li>
-                <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                  <img src="./public/images/icons/linkedin.svg" alt="call" class="w-full">
-                </a>
-              </li>
-              <li>
-                <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                  <img src="./public/images/icons/facebook.svg" alt="call" class="w-full">
-                </a>
-              </li>
-            </ul>
-
-          </div>
-        </div>
-        <div class="text-center relative z-40 mt-7 lg:max-w-[90%] xl:max-w-[80%]">
-          <div class="gradient-border">
-            <div class="gradient-border-content p-0 relative">
-              <img src="/images/instructor.png" alt="speaking-person"
-                class="rounded-[calc(0.75rem-2px)] w-full shadow-1">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- instructor details -->
-
-  <!-- clients section start -->
-  <div class="w-full py-10 lg:py-18">
-    <div class="container-x">
-      <div class="w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 lg:gap-x-12">
-        <!-- client -->
-        <div class="text-center">
-          <a href="#" class="flex justify-center">
-            <img src="./public/images/clients/nagad.svg" alt="naagd" class="w-fit mx-auto">
-          </a>
-        </div>
-        <!-- client -->
-        <!-- client -->
-        <div class="text-center">
-          <a href="#" class="flex justify-center">
-            <img src="./public/images/clients/prothomalo.svg" alt="prothomalo" class="w-fit mx-auto">
-          </a>
-        </div>
-        <!-- client -->
-        <!-- client -->
-        <div class="text-center">
-          <a href="#" class="flex justify-center">
-            <img src="./public/images/clients/undp.svg" alt="undp" class="w-fit mx-auto">
-          </a>
-        </div>
-        <!-- client -->
-        <!-- client -->
-        <div class="text-center">
-          <a href="#" class="flex justify-center">
-            <img src="./public/images/clients/square-food.svg" alt="square" class="w-fit mx-auto">
-          </a>
-        </div>
-        <!-- client -->
-        <!-- client -->
-        <div class="text-center">
-          <a href="#" class="flex justify-center">
-            <img src="./public/images/clients/yamaha.svg" alt="yamaha" class="w-fit mx-auto">
-          </a>
-        </div>
-        <!-- client -->
-        <!-- client -->
-        <div class="text-center">
-          <a href="#" class="flex justify-center">
-            <img src="./public/images/clients/ifad.svg" alt="ifad" class="w-fit mx-auto">
-          </a>
-        </div>
-        <!-- client -->
-      </div>
-    </div>
-  </div>
-  <!-- clients section end -->
-
-  <!-- who will attend here -->
-  <section class="w-full py-20">
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-20 xl:mb-28">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/who.svg" alt="who icon" class="w-6">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">কারা অংশ নেবেন <span class="text-gradient">
-            এখানে</span></h2>
-        <p class="common-para text-secondary-200">সৃজনশীলতা ও ক্যারিয়ারের উন্নত ভবিষ্যৎ</p>
-      </div>
-      <!-- common title end -->
-
-      <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-y-2.5 lg:gap-y-5 lg:gap-x-6">
-        <!-- card -->
-        <div
-          class="item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] attend-card-glow">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">ডিজাইনার</h5>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] attend-card-glow attend-card-glow-variant">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কনটেন্ট ক্রিয়েটর</h5>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] attend-card-glow">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">এআই শেখার আগ্রহী যেকোনো ব্যক্তি</h5>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] attend-card-glow attend-card-glow-variant">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">শিক্ষার্থী</h5>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] attend-card-glow">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">বিজ্ঞাপণ নির্মাতা</h5>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] attend-card-glow attend-card-glow-variant">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">মার্কেটার</h5>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] attend-card-glow">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">ভিডিও এডিটর</h5>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] attend-card-glow attend-card-glow-variant">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">মিউজিশিয়ান</h5>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
-          </button>
-        </div>
-        <!-- card -->
-      </div>
-    </div>
-  </section>
-  <!-- who will attend here -->
-
-  <!-- joiner feedback start -->
-  <section class="w-full py-10 lg:py-20">
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/joiner.svg" alt="joiner icon" class="w-6">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">অংশগ্রহণকারীদের <span class="text-gradient">
-            অভিজ্ঞতা</span></h2>
-        <p class="common-para text-secondary-200">যারা শিখেছেন, তাদের মুখে এআই শেখার গল্প</p>
-      </div>
-      <!-- common title end -->
-
-      <div class="relative">
-        <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- group one -->
-          <div class="w-full flex flex-col gap-y-6">
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">আমি একজন ডিজাইনার। আগে ডিজাইন করতে
-                ঘন্টার পর ঘন্টা লাগত, কিন্তু এআই শেখার পর কাজ অনেক সহজ হয়েছে। কালার প্যালেট, লেআউট আর ভিজ্যুয়াল তৈরিতে
-                এখন আর ঝামেলা নেই। প্রতিদিনের কাজের গতি বেড়েছে এবং মানও উন্নত হয়েছে। আমার ক্লায়েন্টরা এখন আগের চেয়ে
-                অনেক বেশি সন্তুষ্ট।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>সাদিয়া রহমান</h5>
-              <h6 class="common-para text-secondary-200 ml-5">গ্রাফিক ডিজাইনার</h6>
-            </div>
-            <!-- card -->
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই দিয়ে মিউজিকে নতুন সাউন্ড
-                এক্সপ্লোর করেছি। গান বানানো অনেক সহজ হয়েছে। শ্রোতারাও ভালো রেসপন্স দিচ্ছে।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>রাহাত খান</h5>
-              <h6 class="common-para text-secondary-200 ml-5">মিউজিশিয়ান</h6>
-            </div>
-            <!-- card -->
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই দিয়ে মিউজিকে নতুন সাউন্ড
-                এক্সপ্লোর করেছি। গান বানানো অনেক সহজ হয়েছে। শ্রোতারাও ভালো রেসপন্স দিচ্ছে।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>রাহাত খান</h5>
-              <h6 class="common-para text-secondary-200 ml-5">মিউজিশিয়ান</h6>
-            </div>
-            <!-- card -->
-          </div>
-          <!-- group one -->
-
-          <!-- group two -->
-          <div class="w-full flex-col gap-y-6 hidden md:flex">
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই আমার মার্কেটিং কাজকে বদলে দিয়েছে।
-                কম সময়ে টার্গেটেড ক্যাম্পেইন বানাতে পারি। রেজাল্টও অনেক ভালো আসছে।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>তানভীর আহমেদ</h5>
-              <h6 class="common-para text-secondary-200 ml-5">মার্কেটার</h6>
-            </div>
-            <!-- card -->
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">কনটেন্ট ক্রিয়েশনে প্রতিদিন নতুন
-                আইডিয়া খুঁজতে হয়। এআই শেখার পর টপিক সাজেশন অনেক সহজে পাই। ট্রেন্ডি কনটেন্ট লেখা আর ভিজ্যুয়াল বানানো
-                দ্রুত হয়। আমার কাজের মান অনেক উন্নত হয়েছে। প্রোডাক্টিভিটিও দ্বিগুণ বেড়েছে। এআই আমাকে কনটেন্টে
-                প্রতিযোগিতায় এগিয়ে রেখেছে।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>নওশীন হোসেন</h5>
-              <h6 class="common-para text-secondary-200 ml-5">কনটেন্ট ক্রিয়েটর</h6>
-            </div>
-            <!-- card -->
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">কনটেন্ট ক্রিয়েশনে প্রতিদিন নতুন
-                আইডিয়া খুঁজতে হয়। এআই শেখার পর টপিক সাজেশন অনেক সহজে পাই। ট্রেন্ডি কনটেন্ট লেখা আর ভিজ্যুয়াল বানানো
-                দ্রুত হয়। আমার কাজের মান অনেক উন্নত হয়েছে। প্রোডাক্টিভিটিও দ্বিগুণ বেড়েছে। এআই আমাকে কনটেন্টে
-                প্রতিযোগিতায় এগিয়ে রেখেছে।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>নওশীন হোসেন</h5>
-              <h6 class="common-para text-secondary-200 ml-5">কনটেন্ট ক্রিয়েটর</h6>
-            </div>
-            <!-- card -->
-          </div>
-          <!-- group two -->
-
-          <!-- group three -->
-          <div class="w-full flex-col gap-y-6 hidden lg:flex">
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">আমি একজন ডিজাইনার। আগে ডিজাইন করতে
-                ঘন্টার পর ঘন্টা লাগত, কিন্তু এআই শেখার পর কাজ অনেক সহজ হয়েছে। কালার প্যালেট, লেআউট আর ভিজ্যুয়াল তৈরিতে
-                এখন আর ঝামেলা নেই। প্রতিদিনের কাজের গতি বেড়েছে এবং মানও উন্নত হয়েছে। আমার ক্লায়েন্টরা এখন আগের চেয়ে
-                অনেক বেশি সন্তুষ্ট।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>সাদিয়া রহমান</h5>
-              <h6 class="common-para text-secondary-200 ml-5">গ্রাফিক ডিজাইনার</h6>
-            </div>
-            <!-- card -->
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই দিয়ে মিউজিকে নতুন সাউন্ড
-                এক্সপ্লোর করেছি। গান বানানো অনেক সহজ হয়েছে। শ্রোতারাও ভালো রেসপন্স দিচ্ছে।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>রাহাত খান</h5>
-              <h6 class="common-para text-secondary-200 ml-5">মিউজিশিয়ান</h6>
-            </div>
-            <!-- card -->
-            <!-- card -->
-            <div class="w-full bg-[#0A0A0A] rounded-[10px] p-5 shadow-2 anim hover:bg-[#141414] group">
-              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1">
-                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-              </span>
-
-              <p class="font-normal text-base text-[#A8A8A8] leading-[140%] mt-7">এআই দিয়ে মিউজিকে নতুন সাউন্ড
-                এক্সপ্লোর করেছি। গান বানানো অনেক সহজ হয়েছে। শ্রোতারাও ভালো রেসপন্স দিচ্ছে।</p>
-
-              <h5 class="font-medium text-lg text-[#E2E8F0] flex items-center gap-x-2 mt-10"><span
-                  class="inline-block w-4 h-[2px] bg-[#D9D9D9]"></span>রাহাত খান</h5>
-              <h6 class="common-para text-secondary-200 ml-5">মিউজিশিয়ান</h6>
-            </div>
-            <!-- card -->
-          </div>
-          <!-- group three -->
-        </div>
-        <div class="over-shaped absolute left-0 -bottom-4 w-full h-[30%] z-30"></div>
-        <div class="text-center relative z-40 mt-10">
-          <a href="#"
-            class="inline-flex bg-[#0F2342] rounded-full py-2.5 px-5 font-medium text-base text-[#fff] md:text-lg lg:text-2xl">আরও
-            <span class="text-blue mx-[3px]"> ২০০+</span> রিভিউ</a>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- joiner feedback end -->
-
-  <!-- faq section start -->
-  <section class="w-full py-10 lg:py-20 bg-faq">
-    <div class="container-x">
-      <!-- common title start -->
-      <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
-        <div
-          class="text-center w-12 h-12 rounded-full bg-[#1870FF33] flex items-center justify-center lg:w-[50px] lg:h-[50px]">
-          <img src="/images/icons/faq.svg" alt="faq icon" class="w-6">
-        </div>
-
-        <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">সচরাচর জানতে চাওয়া <span
-            class="text-gradient">
-            প্রশ্নের উত্তর</span></h2>
-        <p class="common-para text-secondary-200">সবচেয়ে বেশি করা প্রশ্নের উত্তর এক জায়গায়</p>
-      </div>
-      <!-- common title end -->
-
-      <div class="w-full grid grid-cols-1 gap-y-1 lg:gap-y-2">
-        <!-- card -->
-        <div
-          class="faq-item item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow active"
-          onclick="toggleFAQ(this)">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">এই কোর্সে যোগ দেওয়ার জন্য কি কোনো
-              বিশেষ যোগ্যতার প্রয়োজন আছে?</h5>
-
-            <p class="faq-answer text-sm text-secondary-200 lg:text-base active">আমি একজন ডিজাইনার। আগে ডিজাইন করতে ঘন্টার পর ঘন্টা
-              লাগত, কিন্তু এআই শেখার পর কাজ অনেক সহজ হয়েছে। কালার প্যালেট, লেআউট আর ভিজ্যুয়াল তৈরিতে এখন আর ঝামেলা
-              নেই। প্রতিদিনের কাজের গতি বেড়েছে এবং মানও উন্নত হয়েছে। আমার ক্লায়েন্টরা এখন আগের চেয়ে অনেক বেশি
-              সন্তুষ্ট।</p>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end cursor-pointer">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px] faq-icon">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="faq-item item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow faq-card-glow-variant"
-          onclick="toggleFAQ(this)">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কোর্সের সময়কাল কতদিন এবং কীভাবে
-              ক্লাসগুলো পরিচালিত হয়?</h5>
-
-            <p class="faq-answer text-sm text-secondary-200 lg:text-base">এই কোর্সটি ৩ দিনের জন্য ডিজাইন করা হয়েছে। প্রতিদিন ২-৩ ঘন্টা করে লাইভ ক্লাস থাকবে। ক্লাসগুলো জুম প্ল্যাটফর্মে অনুষ্ঠিত হবে এবং সব ক্লাসের রেকর্ডিং পাবেন যাতে পরে আবার দেখতে পারেন।
-            </p>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end cursor-pointer">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px] faq-icon">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="faq-item item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow"
-          onclick="toggleFAQ(this)">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কোর্স ফি কত এবং কি কোনো লুকানো চার্জ
-              আছে?</h5>
-
-            <p class="faq-answer text-sm text-secondary-200 lg:text-base">কোর্স ফি মাত্র ৫,৩২০ টাকা। কোনো লুকানো চার্জ নেই। একবার পেমেন্ট করলেই সমস্ত কন্টেন্ট, লাইভ ক্লাস, রেকর্ডেড ক্লাস, এবং সাপোর্ট পাবেন। তাছাড়া বিকাশ, নগদ অন ডেলিভারি সুবিধাও পাবেন।
-            </p>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end cursor-pointer">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px] faq-icon">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="faq-item item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow faq-card-glow-variant"
-          onclick="toggleFAQ(this)">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কোর্স শেষ করার পর কি কোনো সার্টিফিকেট
-              পাওয়া যাবে?</h5>
-
-            <p class="faq-answer text-sm text-secondary-200 lg:text-base">হ্যাঁ, কোর্স সম্পন্ন করার পর আপনার একটি ভেরিফাইড সার্টিফিকেট পাবেন যা আপনার LinkedIn এ শেয়ার করতে পারবেন অথবা চাকরির ইন্টারভিউতে দেখাতে পারবেন। তাছাড়া প্রজেক্ট পোর্টফোলিও পাবেন।
-            </p>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end cursor-pointer">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px] faq-icon">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="faq-item item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow"
-          onclick="toggleFAQ(this)">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">আমি যদি একেবারে নতুন হই, তাহলে কি
-              কোর্সটি বুঝতে পারব?</h5>
-
-            <p class="faq-answer text-sm text-secondary-200 lg:text-base">বিলকুল! এই কোর্সটি সম্পূর্ণভাবে বিগিনার-ফ্রেন্ডলি। আমরা সমস্ত টুলস এবং প্রক্রিয়া শূন্য থেকে শেখাবো। কোনো পূর্ব অভিজ্ঞতার প্রয়োজন নেই। প্রতিটি লেসন স্টেপ-বাই-স্টেপ সহজ ভাষায় করা হয়েছে।
-            </p>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end cursor-pointer">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px] faq-icon">
-          </button>
-        </div>
-        <!-- card -->
-        <!-- card -->
-        <div
-          class="faq-item item bg-transparent rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow faq-card-glow-variant"
-          onclick="toggleFAQ(this)">
-          <div class="w-full col-span-10">
-            <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কোর্স শেষে আমি বাস্তবে কী কী কাজে
-              লাগাতে পারব?</h5>
-
-            <p class="faq-answer text-sm text-secondary-200 lg:text-base">এই কোর্স শেষে আপনি প্রফেশনাল মানের বিজ্ঞাপন, সোশ্যাল মিডিয়া কন্টেন্ট, প্রডাক্ট ভিজুয়াল, ভিডিও তৈরি, মিউজিক এবং ভয়েসওভার তৈরি করতে পারবেন। ফ্রিল্যান্সার হিসেবে কাজ করতে পারবেন অথবা নিজের বিজনেসের জন্য ব্যবহার করতে পারবেন।
-            </p>
-          </div>
-          <button type="button" class="col-span-2 flex justify-end cursor-pointer">
-            <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px] faq-icon">
-          </button>
-        </div>
-        <!-- card -->
-      </div>
-    </div>
-  </section>
-  <!-- faq section end -->
-
-  <!-- payment section start -->
-  <section class="w-full py-10 lg:py-20 border-t border-[#fff]/20">
-    <div class="container-x">
-      <div class="w-full bg-card/80 rounded-[10px] py-5 px-6 flex flex-col lg:flex-row justify-center items-center text-center lg:justify-between border border-[#49484E]/50">
-        <div class="lg:text-start">
-          <h5 class="font-medium text-lg white-70 lg:text-2xl">Ai অ্যাডভার্টাইজিং <span class="text-gradient">বুটক্যাম্প -
-              ২৫</span></h5>
-          <p class="font-medium text-sm text-[#ABABAB] mt-1 lg:text-base">৩ দিনের অনলাইন লাইভ ওয়ার্কশপ | প্রশিক্ষক: আব্দুর রউফ</p>
-        </div>
-        <h6 class="font-medium text-base text-[#C7C7C7] mt-6 lg:text-2xl lg:mt-0">কোর্স ফি মাত্র <span
-            class="text-orange font-bold lg:text-3xl">৳৫,৩২০</span> টাকা</h6>
-      </div>
-
-      <div class="w-full bg-card/80 rounded-[10px] py-5 px-4 mt-10 divide-y lg:divide-x lg:divide-y-0 divide-[#fff]/10 lg:p-10 lg:mt-12 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10 border border-[#49484E]/50">
-        <div class="left pb-10 lg:pb-0">
-          <h3 class="text-center font-medium text-2xl text-[#fff] lg:text-start lg:text-[32px]">এখনই সহজে পেমেন্ট করুন</h3>
-          <p class="font-medium text-sm text-[#ABABAB] mt-1 text-center lg:text-start lg:text-base lg:max-w-[80%]">আমাদের কোর্সে ভর্তি হতে পেমেন্ট করা একেবারেই
-            সহজ। বিকাশ, নগদ বা রকেট দিয়ে পেমেন্ট করলেই সঙ্গে সঙ্গে কোর্স এক্সেস পাবেন।</p>
-
-          <h4 class="mt-10 font-medium text-base white-70 text-center mb-2.5 lg:mt-[60px] lg:text-xl lg:text-start">এই নম্বরে পেমেন্ট করুন</h4>
-
-          <div class="flex bg-[#011330] justify-between items-center max-w-[80%] rounded-[4px] mx-auto p-1.5 pl-4 lg:mx-0 lg:mr-auto lg:max-w-[46%] lg:rounded-lg">
-            <h5 class="font-bold text-xl text-gradient lg:text-2xl">০১৭১২৩৪৫৬৭৮</h5>
-            <button type="button" class="bg-[#0B2042] rounded-[2px] py-2 px-3 font-normal text-xs text-blue lg:text-sm anim hover:bg-orange hover:text-primary cursor-pointer anim animate-pulse">কপি
-              করুন</button>
-          </div>
-
-          <h6 class="mt-6 font-medium white-70 text-base lg:mt-[30px] lg:text-lg">বিশেষ দ্রষ্টব্য</h6>
-
-          <ul class="mt-2.5 flex flex-col gap-y-1">
-            <li class="flex items-center gap-x-2">
-              <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
-              <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
-                Transaction ID সংরক্ষণ করুন, ভুল নম্বরে পাঠালে দায়ভার আমাদের নয়।
-              </p>
-            </li>
-            <li class="flex items-center gap-x-2">
-              <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
-              <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
-                সফল পেমেন্টে SMS/ইমেইল পাবেন।
-              </p>
-            </li>
-            <li class="flex items-center gap-x-2">
-              <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
-              <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
-                টাকা ফেরতযোগ্য নয়, সমস্যায় <a href="#" class="text-orange underline">সাপোর্টে যোগাযোগ করুন।</a>
-              </p>
-            </li>
-          </ul>
-        </div>
-        <div class="right pt-10 lg:pt-0">
-          <h5 class="font-medium text-base white-70 text-center mb-2.5 lg:text-lg lg:text-start">আপনার পেমেন্ট করা মাধ্যমটি বেছে নিন</h5>
-
-          <form class="block mt-5 lg:mt-3 lg:grid lg:grid-cols-12 lg:gap-x-5">
-            <div class="flex w-full justify-between items-center gap-x-5 lg:justify-start lg:gap-x-6 lg:mb-[60px] lg:col-span-12">
-              <label for="nagad" class="flex items-center  bg-card anim cursor-pointer px-2 gap-x-2 w-28 h-12">
-                <input type="radio" name="payment" id="nagad" checked>
-                <img src="./public/images/icons/nagad.svg" alt="nagad" class="max-w-20"> 
-              </label>
-              <label for="bkash" class="flex items-center  bg-card anim cursor-pointer px-2 gap-x-2 w-28 h-12">
-                <input type="radio" name="payment" id="bkash">
-                <img src="./public/images/icons/bkash.svg" alt="bkash" class="max-w-20"> 
-              </label>
-              <label for="rocket" class="flex items-center  bg-card anim cursor-pointer px-2 gap-x-2 w-24 h-12">
-                <input type="radio" name="payment" id="rocket">
-                <img src="./public/images/icons/rocket.svg" alt="rocket" class="max-w-[50px]"> 
-              </label>
-            </div>
-            <div class="w-full mt-5 lg:col-span-6">
-              <label for="name" class="font-medium text-base white-70 block w-full mb-2.5">আপনার নাম</label>
-              <input type="text" name="name" id="name" placeholder="নাম" class="bg-[#000] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-gray-400">
-            </div>
-            <div class="w-full mt-5 lg:col-span-6">
-              <label for="email" class="font-medium text-base white-70 block w-full mb-2.5">আপনার ইমেইল</label>
-              <input type="email" name="email" id="email" placeholder="ইমেইল" class="bg-[#000] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-gray-400">
-            </div>
-            <div class="w-full mt-5 lg:col-span-6">
-              <label for="number" class="font-medium text-base white-70 block w-full mb-2.5">আপনার নম্বর</label>
-              <input type="text" name="number" id="number" placeholder="নম্বর" class="bg-[#000] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-gray-400">
-            </div>
-            <div class="w-full mt-5 lg:col-span-6">
-              <label for="transaction" class="font-medium text-base white-70 block w-full mb-2.5">পেমেন্ট ট্রানজেকশন ID</label>
-              <input type="text" name="transaction" id="transaction" placeholder="ট্রানজেকশন ID" class="bg-[#000] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-gray-400">
-            </div>
-
-            <div class="w-full flex justify-center lg:col-span-12 lg:justify-end">
-              <button type="submit" class="bg-submit hover:!bg-lime hover:text-primary py-2 px-4 font-medium text-base white-70 mt-5 anim cursor-pointer lg:text-xl lg:py-3.5 lg:px-6 rounded-[10px] ">কনফার্ম করুন</button>
-            </div>
-
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- payment section end -->
-
-  <!-- footer section start -->
-   <footer class="w-full">
-    <div class="container-x">
-      <div class="w-full text-center lg:flex items-center justify-between border-t border-[#fff]/20 py-5 xl:py-10">
-        <h6 class="font-medium text-sm text-[#ABABAB] lg:text-base">কপিরাইট &copy;2025 আব্দুর রউফ। সর্বস্বত্ব সংরক্ষিত।</h6>
-        <p class="font-semibold text-base text-[#ABABAB] lg:text-base">ভবিষ্যতের দৃষ্টিভঙ্গি নিয়ে ডেভেলপ করেছে - <a target="_blank" href="https://giopio.com" class="font-semibold text-base text-[#ABABAB]">Giopio</a></p>
-      </div>
-    </div>
-   </footer>
-  <!-- footer section end -->
-
-  <!-- Lightbox Popup -->
-  <div id="lightbox" class="lightbox">
-    <div class="lightbox-content">
-      <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-      <button class="lightbox-nav lightbox-prev" onclick="previousImage()">&#8249;</button>
-      <button class="lightbox-nav lightbox-next" onclick="nextImage()">&#8250;</button>
-      <img id="lightbox-image" class="lightbox-image" src="" alt="Project Image">
-    </div>
-  </div>
-  <!-- Lightbox End -->
-
-  <script>
-    // Lightbox functionality
-    let currentImageIndex = 0;
-    let projectImages = [];
-
-    // Initialize lightbox
-    document.addEventListener('DOMContentLoaded', function() {
-      // Collect all project images
-      const images = document.querySelectorAll('.project-image');
-      
-      images.forEach((img, index) => {
-        projectImages.push({
-          src: img.src,
-          alt: img.alt
-        });
-        
-        // Add click event to open lightbox
-        img.addEventListener('click', function() {
-          openLightbox(index);
-        });
-      });
-    });
-
-    function openLightbox(imageIndex) {
-      currentImageIndex = imageIndex;
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImage = document.getElementById('lightbox-image');
-      
-      lightboxImage.src = projectImages[currentImageIndex].src;
-      lightboxImage.alt = projectImages[currentImageIndex].alt;
-      
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    }
-
-    function closeLightbox() {
-      const lightbox = document.getElementById('lightbox');
-      lightbox.classList.remove('active');
-      document.body.style.overflow = ''; // Restore scrolling
-    }
-
-    function nextImage() {
-      currentImageIndex = (currentImageIndex + 1) % projectImages.length;
-      const lightboxImage = document.getElementById('lightbox-image');
-      
-      // Add fade transition
-      lightboxImage.style.opacity = '0.5';
-      
-      setTimeout(() => {
-        lightboxImage.src = projectImages[currentImageIndex].src;
-        lightboxImage.alt = projectImages[currentImageIndex].alt;
-        lightboxImage.style.opacity = '1';
-      }, 150);
-    }
-
-    function previousImage() {
-      currentImageIndex = (currentImageIndex - 1 + projectImages.length) % projectImages.length;
-      const lightboxImage = document.getElementById('lightbox-image');
-      
-      // Add fade transition
-      lightboxImage.style.opacity = '0.5';
-      
-      setTimeout(() => {
-        lightboxImage.src = projectImages[currentImageIndex].src;
-        lightboxImage.alt = projectImages[currentImageIndex].alt;
-        lightboxImage.style.opacity = '1';
-      }, 150);
-    }
-
-    // Close lightbox when clicking outside the image
-    document.getElementById('lightbox').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeLightbox();
-      }
-    });
-
-    // Close lightbox with Escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeLightbox();
-      }
-      if (e.key === 'ArrowRight') {
-        nextImage();
-      }
-      if (e.key === 'ArrowLeft') {
-        previousImage();
-      }
-    });
-
-    // FAQ Accordion functionality
-    function toggleFAQ(element) {
-      const faqItems = document.querySelectorAll('.faq-item');
-      const answer = element.querySelector('.faq-answer');
-      const isCurrentlyActive = element.classList.contains('active');
-      
-      // Close all FAQ items first
-      faqItems.forEach(item => {
-        const itemAnswer = item.querySelector('.faq-answer');
-        item.classList.remove('active');
-        itemAnswer.classList.remove('active');
-      });
-      
-      // If the clicked item wasn't active, open it
-      if (!isCurrentlyActive) {
-        element.classList.add('active');
-        answer.classList.add('active');
-      }
-    }
-
-    // Initialize FAQ - Make first item active by default
-    document.addEventListener('DOMContentLoaded', function() {
-      const firstFAQItem = document.querySelector('.faq-item');
-      if (firstFAQItem) {
-        // The first FAQ already has 'active' class in HTML, so no need to set it again
-        // This ensures the first FAQ is open by default
-      }
-    });
-  </script>
 
 </body>
 

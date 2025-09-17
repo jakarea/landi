@@ -1284,8 +1284,8 @@
             @csrf
             <!-- Hidden Fields -->
             <input type="hidden" name="course_id" value="1">
-            <input type="hidden" name="instructor_id" value="1">
-            <input type="hidden" name="amount" value="5320" id="course-amount">
+            <input type="hidden" name="instructor_id" value="2">
+            <input type="hidden" name="amount" value="320" id="course-amount">
             <div class="flex w-full justify-between items-center gap-x-5 lg:justify-start lg:gap-x-6 lg:mb-[60px] lg:col-span-12">
               <label for="nagad" class="flex items-center  bg-card anim cursor-pointer px-2 gap-x-2 w-28 h-12">
                 <input type="radio" name="payment" id="nagad" value="nogod" checked>

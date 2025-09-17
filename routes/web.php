@@ -62,7 +62,7 @@ Route::get('/ai-for-advertising-bootcamp-25', [LandingController::class, 'aiBoot
 Route::get('/AI-for-Advertising-Bootcamp-25/', [LandingController::class, 'aiBootcamp'])->name('ai-bootcamp-25-alt');
 
 // AI Bootcamp Enrollment
-Route::post('/ai-bootcamp-enroll', [LandingController::class, 'enrollBootcamp'])->name('ai-bootcamp.enroll');
+Route::post('/ai-for-advertising-bootcamp-25', [LandingController::class, 'enrollBootcamp'])->name('ai-bootcamp.enroll');
 
 // ========================================
 // ABOUT & INFORMATION PAGES

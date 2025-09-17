@@ -94,9 +94,14 @@
 
         @yield('seo')
 
+        {{-- Marketing Tracking Codes --}}
+        @include('partials.tracking-codes')
     </head>
 
     <body class="bg-body {{ session('darkModePreference') == 'dark-mode' ? 'dark-mode' : '' }}">
+        {{-- Marketing Tracking Codes (Body) --}}
+        @include('partials.tracking-codes-body')
+
         {{-- Main Root Wrapper @S --}}
 
         {{-- header start --}}

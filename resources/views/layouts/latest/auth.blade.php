@@ -272,9 +272,13 @@
     }
   </style>
 
+  {{-- Marketing Tracking Codes --}}
+  @include('partials.tracking-codes')
 </head>
 
 <body>
+  {{-- Marketing Tracking Codes (Body) --}}
+  @include('partials.tracking-codes-body')
 
   {{-- header start --}}
   <header class="auth-header">

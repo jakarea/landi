@@ -84,6 +84,7 @@ class LandingController extends Controller
 
     public function enrollBootcamp(Request $request)
     {
+        return $request->all();
         // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
