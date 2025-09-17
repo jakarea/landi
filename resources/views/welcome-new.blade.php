@@ -6,7 +6,7 @@
 @section('content')
     <!-- hero section start -->
     <section class="w-full pb-1 lg:pb-10 relative min-h-[600px]">
-        <img src="{{ asset('images/hero-ellipse.svg') }}" alt="ellipse"
+        <img src="{{ asset('/images/hero-ellipse.svg') }}" alt="ellipse"
             class="absolute left-0 top-0 lg:h-full lg:object-contain"> <!-- hero ellipse -->
         <div class="container-x">
             <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
@@ -71,7 +71,7 @@
                             আপনার কোর্স ইন্সট্রাক্টর</h6>
                     </div>
                     <div class="w-full my-2 lg:my-2.5">
-                        <img src="{{ asset('images/instructor.png') }}" alt="speking person"
+                        <img src="{{ asset('/images/speaking-person.png') }}" alt="speking person"
                             class="w-full h-[208px] rounded-md lg:rounded-[10px] object-cover">
                     </div>
                     <div class="w-full bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center">
@@ -81,22 +81,22 @@
                         <ul class="flex items-center justify-center gap-x-2.5 mt-1">
                             <li>
                                 <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                                    <img src="{{ asset('images/icons/call.svg') }}" alt="call" class="w-full">
+                                    <img src="{{ asset('/images/icons/call.svg') }}" alt="call" class="w-full">
                                 </a>
                             </li>
                             <li>
                                 <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                                    <img src="{{ asset('images/icons/mail.svg') }}" alt="call" class="w-full">
+                                    <img src="{{ asset('/images/icons/mail.svg') }}" alt="call" class="w-full">
                                 </a>
                             </li>
                             <li>
                                 <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                                    <img src="{{ asset('images/icons/linkedin.svg') }}" alt="call" class="w-full">
+                                    <img src="{{ asset('/images/icons/linkedin.svg') }}" alt="call" class="w-full">
                                 </a>
                             </li>
                             <li>
                                 <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                                    <img src="{{ asset('images/icons/facebook.svg') }}" alt="call" class="w-full">
+                                    <img src="{{ asset('/images/icons/facebook.svg') }}" alt="call" class="w-full">
                                 </a>
                             </li>
                         </ul>
@@ -110,38 +110,38 @@
                         <div class="w-full bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center">
                             <h6
                                 class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
-                                <img src="{{ asset('images/icons/ai.svg') }}" alt="ai">
+                                <img src="{{ asset('/images/icons/ai.svg') }}" alt="ai">
 
                                 তার এআই ক্রিয়েশন</h6>
                         </div>
                         <div class="w-full mt-2 lg:mt-2.5 grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-2.5">
-                            <img src="{{ asset('images/project-07.png') }}" alt="speking person"
+                            <img src="{{ asset('/images/project-07.png') }}" alt="speking person"
                                 class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover">
-                            <img src="{{ asset('images/project-03.png') }}" alt="speking person"
+                            <img src="{{ asset('/images/project-03.png') }}" alt="speking person"
                                 class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover">
-                            <img src="{{ asset('images/project-02.png') }}" alt="speking person"
+                            <img src="{{ asset('/images/project-02.png') }}" alt="speking person"
                                 class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover lg:col-span-2">
                         </div>
                     </div>
                     <!-- box -->
                     <div class="w-full lg:col-span-3 relative">
-                        <img src="{{ asset('images/home/robot.png') }}" alt="robot"
+                        <img src="{{ asset('/images/home/robot.png') }}" alt="robot"
                             class="w-full h-[269px] object-cover rounded-md lg:rounded-[10px]">
                         <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
                             <button type="button"
                                 class="w-12 h-12 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
-                                <img src="{{ asset('images/icons/play.svg') }}" alt="play" class="w-4">
+                                <img src="{{ asset('/images/icons/play.svg') }}" alt="play" class="w-4">
                             </button>
                         </div>
                     </div>
                     <!-- box -->
                     <div class="w-full lg:col-span-3 relative">
-                        <img src="{{ asset('images/home/joker.png') }}" alt="joker"
+                        <img src="{{ asset('/images/home/joker.png') }}" alt="joker"
                             class="w-full h-[269px] object-cover rounded-md lg:rounded-[10px]">
                         <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
                             <button type="button"
                                 class="w-12 h-12 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
-                                <img src="{{ asset('images/icons/play.svg') }}" alt="play" class="w-4">
+                                <img src="{{ asset('/images/icons/play.svg') }}" alt="play" class="w-4">
                             </button>
                         </div>
                     </div>
@@ -150,10 +150,10 @@
                         class="w-full lg:col-span-8 bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center flex items-center gap-x-3 lg:gap-x-5">
                         <span
                             class="flex w-8 h-8 lg:w-11 lg:h-11 bg-[#131620] shrink-0 rounded-full justify-center items-center p-1">
-                            <img src="{{ asset('images/icons/play.svg') }}" alt="play" class="w-4">
+                            <img src="{{ asset('/images/icons/play.svg') }}" alt="play" class="w-4">
                         </span>
                         <div class="w-full">
-                            <img src="{{ asset('images/home/waves.svg') }}" alt="waves"
+                            <img src="{{ asset('/images/home/waves.svg') }}" alt="waves"
                                 class="w-full max-h-[65px] object-contain">
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                         class="w-full lg:col-span-3 bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center flex items-center justify-center">
                         <h6
                             class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
-                            <img src="{{ asset('images/icons/ai.svg') }}" alt="ai">
+                            <img src="{{ asset('/images/icons/ai.svg') }}" alt="ai">
 
                             তার এআই ক্রিয়েশন</h6>
                     </div>
@@ -174,7 +174,7 @@
                     <li>
                         <a href="#"
                             class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
-                            <img src="{{ asset('images/icons/btn-1.svg') }}" alt="btn-1"
+                            <img src="{{ asset('/images/icons/btn-1.svg') }}" alt="btn-1"
                                 class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
                             ইমেজ জেনারেশন
                         </a>
@@ -182,7 +182,7 @@
                     <li>
                         <a href="#"
                             class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
-                            <img src="{{ asset('images/icons/btn-1.svg') }}" alt="btn-1"
+                            <img src="{{ asset('/images/icons/btn-1.svg') }}" alt="btn-1"
                                 class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
                             ভিডিও ক্রিয়েশন
                         </a>
@@ -190,7 +190,7 @@
                     <li>
                         <a href="#"
                             class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
-                            <img src="{{ asset('images/icons/btn-1.svg') }}" alt="btn-1"
+                            <img src="{{ asset('/images/icons/btn-1.svg') }}" alt="btn-1"
                                 class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
                             মিউজিক জেনারেশন
                         </a>
@@ -203,7 +203,7 @@
 
     <!-- border line -->
     <div class="container-x">
-        <img src="{{ asset('images/line.svg') }}" alt="line" class="w-full mx-auto">
+        <img src="{{ asset('/images/line.svg') }}" alt="line" class="w-full mx-auto">
     </div>
     <!-- border line -->
 
@@ -235,8 +235,8 @@
                         class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
                         <div
                             class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-01.svg') }}" alt="icons 1" class="w-6 md:w-8 lg:w-10">
-                            <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 1"
+                            <img src="{{ asset('/images/icons/b-camp-01.svg') }}" alt="icons 1" class="w-6 md:w-8 lg:w-10">
+                            <img src="{{ asset('/images/icons/curve.svg') }}" alt="curve 1"
                                 class="w-[86%] absolute left-1 top-4">
                         </div>
                     </div>
@@ -257,8 +257,8 @@
                         class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
                         <div
                             class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-02.svg') }}" alt="icons 2" class="w-6 md:w-8 lg:w-10">
-                            <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 2"
+                            <img src="{{ asset('/images/icons/b-camp-02.svg') }}" alt="icons 2" class="w-6 md:w-8 lg:w-10">
+                            <img src="{{ asset('/images/icons/curve.svg') }}" alt="curve 2"
                                 class="w-[86%] absolute left-1 top-4">
                         </div>
                     </div>
@@ -279,8 +279,8 @@
                         class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
                         <div
                             class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-03.svg') }}" alt="icons 3" class="w-6 md:w-8 lg:w-10">
-                            <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 3"
+                            <img src="{{ asset('/images/icons/b-camp-03.svg') }}" alt="icons 3" class="w-6 md:w-8 lg:w-10">
+                            <img src="{{ asset('/images/icons/curve.svg') }}" alt="curve 3"
                                 class="w-[86%] absolute left-1 top-4">
                         </div>
                     </div>
@@ -347,14 +347,14 @@
                   <!-- img -->
                  <div class="w-full lg:max-w-[80%] lg:ml-auto">
                     <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-01.png') }}" alt="step-01" class="w-full rounded-md lg:rouned-[10px] ">
+                        <img src="{{ asset('/images/home/step-01.png') }}" alt="step-01" class="w-full rounded-md lg:rouned-[10px] ">
                     </div>
                  </div>
 
                  <!-- img -->
                  <div class="w-full lg:max-w-[80%] lg:mr-auto">
                     <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-02.png') }}" alt="step-02" class="w-full rounded-md lg:rouned-[10px] ">
+                        <img src="{{ asset('/images/home/step-02.png') }}" alt="step-02" class="w-full rounded-md lg:rouned-[10px] ">
                     </div>
                  </div>
 
@@ -402,7 +402,7 @@
                   <!-- img -->
                  <div class="w-full lg:max-w-[80%] lg:ml-auto">
                     <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-03.png') }}" alt="step-03" class="w-full rounded-md lg:rouned-[10px] ">
+                        <img src="{{ asset('/images/home/step-03.png') }}" alt="step-03" class="w-full rounded-md lg:rouned-[10px] ">
                     </div>
                  </div>
 
@@ -417,9 +417,9 @@
         <div class="container-x">
             <div class="get-bg relative py-12 px-8 lg:py-[94px] lg:px-[220px] rounded-[20px] lg:min-h-[365px]">
                 <div class="absolute left-0 bottom-0 z-20 w-full h-full flex justify-between">
-                    <img src="{{ asset('images/home/get-start-bottom-left.svg') }}" alt="get left"
+                    <img src="{{ asset('/images/home/get-start-bottom-left.svg') }}" alt="get left"
                         class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
-                    <img src="{{ asset('images/home/get-start-top-right.svg') }}" alt="get right"
+                    <img src="{{ asset('/images/home/get-start-top-right.svg') }}" alt="get right"
                         class="rounded-tr-[20px] rounded-br-[20px] max-w-[50%] lg:object-contain">
                 </div>
                 <div class="text-center relative z-30 w-full">
@@ -449,7 +449,7 @@
 
     <!-- border line -->
     <div class="container-x">
-        <img src="{{ asset('images/line.svg') }}" alt="line" class="w-full mx-auto">
+        <img src="{{ asset('/images/line.svg') }}" alt="line" class="w-full mx-auto">
     </div>
     <!-- border line -->
 @endsection

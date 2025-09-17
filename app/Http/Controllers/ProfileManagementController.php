@@ -248,28 +248,4 @@ class ProfileManagementController extends Controller
        return redirect()->back()->with('success', ucfirst($paymentType) . ' number updated successfully!');
    }
 
-   /**
-    * Update marketing settings for instructor
-    */
-   public function updateMarketingSettings(Request $request)
-   {
-       $userId = Auth::id();
-
-       $this->validate($request, [
-           'facebook_pixel_id' => 'nullable|string|max:50',
-           'google_analytics_id' => 'nullable|string|max:50',
-           'google_tag_manager_id' => 'nullable|string|max:50',
-       ]);
-
-       $user = User::find($userId);
-
-       $user->facebook_pixel_id = $request->facebook_pixel_id;
-       $user->google_analytics_id = $request->google_analytics_id;
-       $user->google_tag_manager_id = $request->google_tag_manager_id;
-
-       $user->save();
-
-       return redirect()->route('instructor.profile.edit', config('app.subdomain'))
-                       ->with(['success' => 'Marketing settings updated successfully!', 'tab' => 'marketing']);
-   }
 }
