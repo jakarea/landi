@@ -462,7 +462,7 @@ class DashboardController extends Controller
     public function analytics()
     {
 
-        $recentUpdates = Notification::where('instructor_id',Auth::user()->id)->where('type','instructor')->orderBy('id','desc')->get();
+        $recentUpdates = Notification::where('instructor_id',Auth::user()->id)->whereIn('type',['instructor', 'new_enrollment'])->orderBy('id','desc')->get();
         $payments = Checkout::courseEnrolledByInstructor()->where('instructor_id',Auth::user()->id)->paginate(12);
         $courses = Course::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(6);
 
@@ -474,7 +474,7 @@ class DashboardController extends Controller
     {
         // Mark all unseen notifications as seen for this instructor
         $unseens = Notification::where('instructor_id', Auth::user()->id)
-            ->where('type', 'instructor')
+            ->whereIn('type', ['instructor', 'new_enrollment'])
             ->where('status', 'unseen')
             ->get();
             
@@ -487,10 +487,10 @@ class DashboardController extends Controller
 
         $data = Notification::leftJoin('users', 'notifications.user_id', '=', 'users.id')
             ->where('notifications.instructor_id', Auth::user()->id)  // Specify the table for instructor_id
-            ->where('notifications.type', 'instructor')
+            ->whereIn('notifications.type', ['instructor', 'new_enrollment'])
             ->where('notifications.created_at', '>', $currentYear)
             ->join('courses', 'notifications.course_id', '=', 'courses.id')
-            ->select('notifications.id', 'courses.thumbnail AS thumbnail', 'courses.title AS title', 'notifications.type','notifications.user_id','notifications.course_id',  'notifications.message', 'users.avatar', 'notifications.created_at')
+            ->select('notifications.id', 'courses.thumbnail AS thumbnail', 'courses.title AS title', 'notifications.type','notifications.user_id','notifications.course_id', 'notifications.status', 'notifications.message', 'users.avatar', 'notifications.created_at')
             ->orderBy('notifications.created_at', 'DESC')
             ->get();
 
@@ -1129,6 +1129,104 @@ class DashboardController extends Controller
         }
 
         return redirect('/login')->with('error', 'Failed to Login as Student');
+    }
+
+    // Enrollment Management Methods
+    public function pendingEnrollments()
+    {
+        $instructorId = Auth::user()->id;
+
+        $enrollments = CourseEnrollment::where('instructor_id', $instructorId)
+            ->where('status', 'pending')
+            ->with(['student', 'course'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('instructor.enrollments.pending-tailwind', compact('enrollments'));
+    }
+
+    public function showEnrollmentDetails($enrollmentId)
+    {
+        $instructorId = Auth::user()->id;
+
+        $enrollment = CourseEnrollment::where('id', $enrollmentId)
+            ->where('instructor_id', $instructorId)
+            ->with(['student', 'course'])
+            ->firstOrFail();
+
+        return view('instructor.enrollments.details', compact('enrollment'));
+    }
+
+    public function approveEnrollment(Request $request, $enrollmentId)
+    {
+        $instructorId = Auth::user()->id;
+
+        $enrollment = CourseEnrollment::where('id', $enrollmentId)
+            ->where('instructor_id', $instructorId)
+            ->firstOrFail();
+
+        // Update enrollment status
+        $enrollment->update([
+            'status' => 'approved',
+            'paid' => true,
+            'admin_notes' => $request->notes
+        ]);
+
+        // Create notification for student
+        Notification::create([
+            'instructor_id' => $instructorId,
+            'course_id' => $enrollment->course_id,
+            'user_id' => $enrollment->user_id,
+            'type' => 'enrollment_approved',
+            'message' => "আপনার {$enrollment->course->title} কোর্সের এনরোলমেন্ট অনুমোদিত হয়েছে! এখন আপনি কোর্স অ্যাক্সেস করতে পারবেন।",
+            'status' => 'unseen'
+        ]);
+
+        // Mark instructor notification as seen
+        Notification::where('instructor_id', $instructorId)
+            ->where('course_id', $enrollment->course_id)
+            ->where('user_id', $enrollment->user_id)
+            ->where('type', 'new_enrollment')
+            ->update(['status' => 'seen']);
+
+        return redirect()->route('instructor.enrollments.pending')
+            ->with('success', 'এনরোলমেন্ট সফলভাবে অনুমোদিত হয়েছে।');
+    }
+
+    public function declineEnrollment(Request $request, $enrollmentId)
+    {
+        $instructorId = Auth::user()->id;
+
+        $enrollment = CourseEnrollment::where('id', $enrollmentId)
+            ->where('instructor_id', $instructorId)
+            ->firstOrFail();
+
+        // Update enrollment status
+        $enrollment->update([
+            'status' => 'rejected',
+            'rejection_reason' => $request->reason,
+            'admin_notes' => $request->notes
+        ]);
+
+        // Create notification for student
+        Notification::create([
+            'instructor_id' => $instructorId,
+            'course_id' => $enrollment->course_id,
+            'user_id' => $enrollment->user_id,
+            'type' => 'enrollment_declined',
+            'message' => "আপনার {$enrollment->course->title} কোর্সের এনরোলমেন্ট প্রত্যাখ্যান করা হয়েছে। কারণ: {$request->reason}",
+            'status' => 'unseen'
+        ]);
+
+        // Mark instructor notification as seen
+        Notification::where('instructor_id', $instructorId)
+            ->where('course_id', $enrollment->course_id)
+            ->where('user_id', $enrollment->user_id)
+            ->where('type', 'new_enrollment')
+            ->update(['status' => 'seen']);
+
+        return redirect()->route('instructor.enrollments.pending')
+            ->with('success', 'এনরোলমেন্ট প্রত্যাখ্যান করা হয়েছে।');
     }
 
 }

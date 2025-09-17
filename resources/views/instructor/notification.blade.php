@@ -75,12 +75,43 @@
                                             <h5>{{ $user->name }} - Enrolled to <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
                                             @elseif($today->message == 'review')
                                                 <h5>{{ $user->name }} - Post a review to  <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
+                                            @elseif($today->type == 'new_enrollment')
+                                                <div class="alert alert-warning border-start border-warning border-4 bg-warning bg-opacity-10">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <i class="fas fa-exclamation-triangle text-warning fs-4 me-3"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-warning fw-bold mb-2">
+                                                                <i class="fas fa-credit-card me-2"></i>পেমেন্ট যাচাই প্রয়োজন
+                                                            </h5>
+                                                            <div class="text-dark">
+                                                                <p class="mb-2 fw-semibold">নতুন শিক্ষার্থী: {{ $user->name }}</p>
+                                                                <div class="text-muted small" style="white-space: pre-line;">{{ $today->message }}</div>
+                                                            </div>
+                                                            @if($today->status == 'unseen')
+                                                                <div class="mt-3 d-flex gap-2">
+                                                                    <a href="{{ route('instructor.enrollments') }}?status=pending" class="btn btn-warning btn-sm">
+                                                                        <i class="fas fa-check-circle me-1"></i>পেমেন্ট যাচাই করুন
+                                                                    </a>
+                                                                    <a href="{{ route('instructor.enrollments') }}" class="btn btn-outline-secondary btn-sm">
+                                                                        <i class="fas fa-eye me-1"></i>সকল এনরোলমেন্ট দেখুন
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         @else
                                             <h5>{{$today['message']}}</h5>
                                         @endif
 
+                                        @if($today->type != 'new_enrollment')
                                         <p>{{ $today->message }} - <span>{{ $today->created_at->diffForHumans() }}</span></p>
+                                        @else
+                                        <p><span>{{ $today->created_at->diffForHumans() }}</span></p>
+                                        @endif
 
                                     </div>
                                 </div>
@@ -130,12 +161,43 @@
                                             <h5>{{ $user->name }} - Enrolled to <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
                                             @elseif($yestarday->message == 'review')
                                                 <h5>{{ $user->name }} - Post a review to  <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
+                                            @elseif($yestarday->type == 'new_enrollment')
+                                                <div class="alert alert-warning border-start border-warning border-4 bg-warning bg-opacity-10">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <i class="fas fa-exclamation-triangle text-warning fs-4 me-3"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-warning fw-bold mb-2">
+                                                                <i class="fas fa-credit-card me-2"></i>পেমেন্ট যাচাই প্রয়োজন
+                                                            </h5>
+                                                            <div class="text-dark">
+                                                                <p class="mb-2 fw-semibold">নতুন শিক্ষার্থী: {{ $user->name }}</p>
+                                                                <div class="text-muted small" style="white-space: pre-line;">{{ $yestarday->message }}</div>
+                                                            </div>
+                                                            @if($yestarday->status == 'unseen')
+                                                                <div class="mt-3 d-flex gap-2">
+                                                                    <a href="{{ route('instructor.enrollments') }}?status=pending" class="btn btn-warning btn-sm">
+                                                                        <i class="fas fa-check-circle me-1"></i>পেমেন্ট যাচাই করুন
+                                                                    </a>
+                                                                    <a href="{{ route('instructor.enrollments') }}" class="btn btn-outline-secondary btn-sm">
+                                                                        <i class="fas fa-eye me-1"></i>সকল এনরোলমেন্ট দেখুন
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         @else
                                             <h5>{{$yestarday['message']}}</h5>
                                         @endif
 
+                                        @if($yestarday->type != 'new_enrollment')
                                         <p>{{ $yestarday->message }} - <span>{{ $yestarday->created_at->diffForHumans() }}</span></p>
+                                        @else
+                                        <p><span>{{ $yestarday->created_at->diffForHumans() }}</span></p>
+                                        @endif
 
                                     </div>
                                 </div>
@@ -185,12 +247,43 @@
                                             <h5>{{ $user->name }} - Enrolled to <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
                                             @elseif($sevenDay->message == 'review')
                                                 <h5>{{ $user->name }} - Post a review to  <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
+                                            @elseif($sevenDay->type == 'new_enrollment')
+                                                <div class="alert alert-warning border-start border-warning border-4 bg-warning bg-opacity-10">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <i class="fas fa-exclamation-triangle text-warning fs-4 me-3"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-warning fw-bold mb-2">
+                                                                <i class="fas fa-credit-card me-2"></i>পেমেন্ট যাচাই প্রয়োজন
+                                                            </h5>
+                                                            <div class="text-dark">
+                                                                <p class="mb-2 fw-semibold">নতুন শিক্ষার্থী: {{ $user->name }}</p>
+                                                                <div class="text-muted small" style="white-space: pre-line;">{{ $sevenDay->message }}</div>
+                                                            </div>
+                                                            @if($sevenDay->status == 'unseen')
+                                                                <div class="mt-3 d-flex gap-2">
+                                                                    <a href="{{ route('instructor.enrollments') }}?status=pending" class="btn btn-warning btn-sm">
+                                                                        <i class="fas fa-check-circle me-1"></i>পেমেন্ট যাচাই করুন
+                                                                    </a>
+                                                                    <a href="{{ route('instructor.enrollments') }}" class="btn btn-outline-secondary btn-sm">
+                                                                        <i class="fas fa-eye me-1"></i>সকল এনরোলমেন্ট দেখুন
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         @else
                                             <h5>{{$sevenDay['message']}}</h5>
                                         @endif
 
+                                        @if($sevenDay->type != 'new_enrollment')
                                         <p>{{ $sevenDay->message }} - <span>{{ $sevenDay->created_at->diffForHumans() }}</span></p>
+                                        @else
+                                        <p><span>{{ $sevenDay->created_at->diffForHumans() }}</span></p>
+                                        @endif
 
                                     </div>
                                 </div>
@@ -239,12 +332,43 @@
                                             <h5>{{ $user->name }} - Enrolled to <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
                                             @elseif($thirtyDay->message == 'review')
                                                 <h5>{{ $user->name }} - Post a review to  <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
+                                            @elseif($thirtyDay->type == 'new_enrollment')
+                                                <div class="alert alert-warning border-start border-warning border-4 bg-warning bg-opacity-10">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <i class="fas fa-exclamation-triangle text-warning fs-4 me-3"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-warning fw-bold mb-2">
+                                                                <i class="fas fa-credit-card me-2"></i>পেমেন্ট যাচাই প্রয়োজন
+                                                            </h5>
+                                                            <div class="text-dark">
+                                                                <p class="mb-2 fw-semibold">নতুন শিক্ষার্থী: {{ $user->name }}</p>
+                                                                <div class="text-muted small" style="white-space: pre-line;">{{ $thirtyDay->message }}</div>
+                                                            </div>
+                                                            @if($thirtyDay->status == 'unseen')
+                                                                <div class="mt-3 d-flex gap-2">
+                                                                    <a href="{{ route('instructor.enrollments') }}?status=pending" class="btn btn-warning btn-sm">
+                                                                        <i class="fas fa-check-circle me-1"></i>পেমেন্ট যাচাই করুন
+                                                                    </a>
+                                                                    <a href="{{ route('instructor.enrollments') }}" class="btn btn-outline-secondary btn-sm">
+                                                                        <i class="fas fa-eye me-1"></i>সকল এনরোলমেন্ট দেখুন
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         @else
                                             <h5>{{$thirtyDay['message']}}</h5>
                                         @endif
 
+                                        @if($thirtyDay->type != 'new_enrollment')
                                         <p>{{ $thirtyDay->message }} - <span>{{ $thirtyDay->created_at->diffForHumans() }}</span></p>
+                                        @else
+                                        <p><span>{{ $thirtyDay->created_at->diffForHumans() }}</span></p>
+                                        @endif
 
                                     </div>
                                 </div>
@@ -295,12 +419,43 @@
                                             <h5>{{ $user->name }} - Enrolled to <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
                                             @elseif($lastOneYear->message == 'review')
                                                 <h5>{{ $user->name }} - Post a review to  <a href="{{ url('instructor/courses/overview/'.$course->slug) }}">{{ $course->title }}</a></h5>
+                                            @elseif($lastOneYear->type == 'new_enrollment')
+                                                <div class="alert alert-warning border-start border-warning border-4 bg-warning bg-opacity-10">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <i class="fas fa-exclamation-triangle text-warning fs-4 me-3"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-warning fw-bold mb-2">
+                                                                <i class="fas fa-credit-card me-2"></i>পেমেন্ট যাচাই প্রয়োজন
+                                                            </h5>
+                                                            <div class="text-dark">
+                                                                <p class="mb-2 fw-semibold">নতুন শিক্ষার্থী: {{ $user->name }}</p>
+                                                                <div class="text-muted small" style="white-space: pre-line;">{{ $lastOneYear->message }}</div>
+                                                            </div>
+                                                            @if($lastOneYear->status == 'unseen')
+                                                                <div class="mt-3 d-flex gap-2">
+                                                                    <a href="{{ route('instructor.enrollments') }}?status=pending" class="btn btn-warning btn-sm">
+                                                                        <i class="fas fa-check-circle me-1"></i>পেমেন্ট যাচাই করুন
+                                                                    </a>
+                                                                    <a href="{{ route('instructor.enrollments') }}" class="btn btn-outline-secondary btn-sm">
+                                                                        <i class="fas fa-eye me-1"></i>সকল এনরোলমেন্ট দেখুন
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         @else
                                             <h5>{{$lastOneYear['message']}}</h5>
                                         @endif
 
+                                        @if($lastOneYear->type != 'new_enrollment')
                                         <p>{{ $lastOneYear->message }} - <span>{{ $lastOneYear->created_at->diffForHumans() }}</span></p>
+                                        @else
+                                        <p><span>{{ $lastOneYear->created_at->diffForHumans() }}</span></p>
+                                        @endif
 
                                     </div>
                                 </div>

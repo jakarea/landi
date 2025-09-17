@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->group(function () {
         Route::get('/password', [ProfileManagementController::class, 'passwordUpdate'])->name('instructor.profile.password');
         Route::post('/password', [ProfileManagementController::class, 'postChangePassword'])->name('instructor.profile.password.update');
         Route::post('/payment', [ProfileManagementController::class, 'updatePaymentSettings'])->name('instructor.profile.payment');
+        Route::post('/marketing', [ProfileManagementController::class, 'updateMarketingSettings'])->name('instructor.profile.marketing.update');
         
         // Experience Management
         Route::prefix('experiences')->group(function () {

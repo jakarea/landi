@@ -56,12 +56,12 @@
 
             <!-- Error Messages -->
             @if($errors->any())
-                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 p-4 rounded-xl mb-6">
+                <div class="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-6">
                     <div class="flex">
                         <i class="fas fa-exclamation-circle mr-3 mt-0.5"></i>
                         <div>
-                            <p class="font-medium mb-2">নিম্নলিখিত ত্রুটি গুলো ঠিক করুন:</p>
-                            <ul class="list-disc list-inside space-y-1">
+                            <p class="font-medium mb-2 text-red-400">নিম্নলিখিত ত্রুটি গুলো ঠিক করুন:</p>
+                            <ul class="list-disc list-inside space-y-1 text-red-400">
                                 @foreach($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -87,7 +87,7 @@
                     @error('live_start_time')
                         <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
                     @enderror
-                    <p class="text-white/80 text-xs mt-1">ভবিষ্যতের তারিখ ও সময় নির্বাচন করুন</p>
+                    <p class="text-secondary-200 text-xs mt-1">ভবিষ্যতের তারিখ ও সময় নির্বাচন করুন</p>
                 </div>
 
                 <div class="form-group">
@@ -98,14 +98,14 @@
                             id="live_duration_minutes" 
                             class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-blue focus:outline-none transition-colors"
                             required>
-                        <option value="" class="bg-slate-800 text-white">সময়কাল নির্বাচন করুন</option>
-                        <option value="15" class="bg-slate-800 text-white" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '15' ? 'selected' : '' }}>১৫ মিনিট</option>
-                        <option value="30" class="bg-slate-800 text-white" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '30' ? 'selected' : '' }}>৩০ মিনিট</option>
-                        <option value="45" class="bg-slate-800 text-white" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '45' ? 'selected' : '' }}>৪৫ মিনিট</option>
-                        <option value="60" class="bg-slate-800 text-white" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '60' ? 'selected' : '' }}>১ ঘন্টা</option>
-                        <option value="90" class="bg-slate-800 text-white" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '90' ? 'selected' : '' }}>১.৫ ঘন্টা</option>
-                        <option value="120" class="bg-slate-800 text-white" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '120' ? 'selected' : '' }}>২ ঘন্টা</option>
-                        <option value="180" class="bg-slate-800 text-white" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '180' ? 'selected' : '' }}>৩ ঘন্টা</option>
+                        <option value="" class="bg-primary text-secondary-200">সময়কাল নির্বাচন করুন</option>
+                        <option value="15" class="bg-primary text-secondary-200" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '15' ? 'selected' : '' }}>১৫ মিনিট</option>
+                        <option value="30" class="bg-primary text-secondary-200" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '30' ? 'selected' : '' }}>৩০ মিনিট</option>
+                        <option value="45" class="bg-primary text-secondary-200" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '45' ? 'selected' : '' }}>৪৫ মিনিট</option>
+                        <option value="60" class="bg-primary text-secondary-200" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '60' ? 'selected' : '' }}>১ ঘন্টা</option>
+                        <option value="90" class="bg-primary text-secondary-200" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '90' ? 'selected' : '' }}>১.৫ ঘন্টা</option>
+                        <option value="120" class="bg-primary text-secondary-200" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '120' ? 'selected' : '' }}>২ ঘন্টা</option>
+                        <option value="180" class="bg-primary text-secondary-200" {{ old('live_duration_minutes', $lesson->live_duration_minutes) == '180' ? 'selected' : '' }}>৩ ঘন্টা</option>
                     </select>
                     @error('live_duration_minutes')
                         <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
@@ -169,12 +169,12 @@
                     @enderror
                 </div>
 
-                <div class="bg-yellow-900/20 border border-yellow-800 text-yellow-200 p-4 rounded-xl">
+                <div class="bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 p-4 rounded-xl">
                     <div class="flex">
-                        <i class="fas fa-info-circle mr-3 mt-0.5"></i>
+                        <i class="fas fa-info-circle mr-3 mt-0.5 text-yellow-400"></i>
                         <div>
-                            <p class="font-medium mb-2">নির্দেশনা</p>
-                            <ul class="text-sm space-y-1">
+                            <p class="font-medium mb-2 text-yellow-400">নির্দেশনা</p>
+                            <ul class="text-sm space-y-1 text-secondary-200">
                                 <li>• আপনার Zoom অ্যাকাউন্ট থেকে একটি মিটিং তৈরি করুন</li>
                                 <li>• মিটিং ID এবং Join URL এখানে পেস্ট করুন</li>
                                 <li>• পাসওয়ার্ড সেট করা থাকলে তা দিন</li>

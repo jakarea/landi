@@ -29,9 +29,15 @@
     <link href="{{ asset('assets/homepage.css') }}" rel="stylesheet" type="text/css" />
     @yield('style')
     <!-- all css end -->
+
+    {{-- Marketing Tracking Codes --}}
+    @include('partials.tracking-codes')
 </head>
 
 <body>
+
+    {{-- Marketing Tracking Codes (Body) --}}
+    @include('partials.tracking-codes-body')
 
     {{-- landing page wrap @s --}}
     <section class="landing-page-wrapper">

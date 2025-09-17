@@ -2,30 +2,49 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        
-        // Call seeders in order to maintain data integrity
+        // Call seeders in order to maintain data integrity and foreign key constraints
         $this->call([
-            // First create users (admin, instructors, students)
+            // 1. Core user data first (required for foreign keys)
             UsersTableSeeder::class,
-            // Other data
+
+            // 2. Course-related data (depends on users)
+            CourseSeeder::class,
+            ModuleSeeder::class,
+            LessonSeeder::class,
+
+            // 3. Subscription and payment related
+            SubscriptionPlansTableSeeder::class,
+            SubscriptionsTableSeeder::class,
+
+            // 4. Course interaction data (depends on courses and users)
+            CourseActivitiesTableSeeder::class,
+            CourseLikesTableSeeder::class,
+            CourseLogsTableSeeder::class,
+
+            // 5. Coupon and discount system
+            CouponSeeder::class,
+
+            // 6. Live classes (depends on users and courses)
+            LiveClassSeeder::class,
+
+            // 7. User sessions (depends on users)
+            UserSessionSeeder::class,
+
+            // 8. Profile and content data
+            InstructorProfileSeeder::class,
+            StudentProfileSeeder::class,
+            BanglaContentSeeder::class,
+
+            // 9. Common/configuration data (should be last)
             CommonDataSeeder::class,
         ]);
     }

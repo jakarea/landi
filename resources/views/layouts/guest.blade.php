@@ -230,9 +230,15 @@
             }
         }
     </style>
+
+    {{-- Marketing Tracking Codes --}}
+    @include('partials.tracking-codes')
 </head>
 
 <body>
+    {{-- Marketing Tracking Codes (Body) --}}
+    @include('partials.tracking-codes-body')
+
     <!-- Modern Navigation -->
     <nav class="navbar navbar-expand-lg modern-navbar">
         <div class="container">

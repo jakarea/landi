@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\HomepageController;
 use App\Http\Controllers\Instructor\DashboardController;
 use App\Http\Controllers\Student\StudentHomeController;
 use App\Http\Controllers\Builder\LandingPageBuilderController;
+use App\Http\Controllers\LandingController;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -57,13 +58,11 @@ Route::get('/landing/', [LandingPageBuilderController::class, 'index'])->name('l
 Route::get('/landing/{slug}/', [LandingPageBuilderController::class, 'show'])->name('landing.show');
 
 // AI for Advertising Bootcamp Static Landing Page
-Route::get('/ai-for-advertising-bootcamp-25', function () {
-    return view('landing.ai-bootcamp');
-})->name('ai-bootcamp-25');
+Route::get('/ai-for-advertising-bootcamp-25', [LandingController::class, 'aiBootcamp'])->name('ai-bootcamp-25');
+Route::get('/AI-for-Advertising-Bootcamp-25/', [LandingController::class, 'aiBootcamp'])->name('ai-bootcamp-25-alt');
 
-Route::get('/AI-for-Advertising-Bootcamp-25/', function () {
-    return view('landing.ai-bootcamp');
-})->name('ai-bootcamp-25');
+// AI Bootcamp Enrollment
+Route::post('/ai-bootcamp-enroll', [LandingController::class, 'enrollBootcamp'])->name('ai-bootcamp.enroll');
 
 // ========================================
 // ABOUT & INFORMATION PAGES
@@ -162,6 +161,7 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/devices', [App\Http\Controllers\DeviceController::class, 'index'])->name('devices.index');
     Route::delete('/devices/{sessionId}', [App\Http\Controllers\DeviceController::class, 'revoke'])->name('devices.revoke');
     Route::delete('/devices-revoke-all', [App\Http\Controllers\DeviceController::class, 'revokeAll'])->name('devices.revoke.all');
+
 });
 
 // ========================================

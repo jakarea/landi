@@ -31,8 +31,6 @@ use App\Http\Controllers\Student\StudentProfileController;
 // ========================================
 
 // Route::post('/student/stripe-process-payment', [PaymentController::class, 'processPayment'])->name('process-payment');
-Route::get('/student/notifications/', [NotificationController::class, 'notificationDetails'])->name('student.notifications');
-Route::post('/student/notifications/{id}/destroy', [NotificationController::class, 'destroy'])->name('student.notifications.destroy');
 
 // Mark as complete functionality - Removed from auth middleware
 Route::post('/student/courses/complete-lesson', [StudentHomeController::class, 'storeActivity'])->name('student.complete.lesson');
@@ -80,6 +78,10 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::post('/student/profile/cover/', [StudentProfileController::class, 'coverUpload'])->name('student.profile.cover');
     Route::get('/student/profile/password/', [StudentProfileController::class, 'passwordUpdate'])->name('student.profile.password');
     Route::post('/student/profile/password/', [StudentProfileController::class, 'postChangePassword'])->name('student.profile.password.update');
+
+    // Password setup for new users
+    Route::get('/student/setup-password/', [StudentProfileController::class, 'setupPassword'])->name('student.setup-password');
+    Route::post('/student/setup-password/', [StudentProfileController::class, 'storePassword'])->name('student.setup-password.store');
     
     // ========================================
     // CERTIFICATES SECTION
@@ -92,9 +94,17 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     // ========================================
     // ACTIVITIES SECTION
     // ========================================
-    
+
     Route::get('/student/activities/', [StudentHomeController::class, 'activities'])->name('student.activities');
     Route::post('/student/activities/complete/', [StudentHomeController::class, 'completeActivity'])->name('student.activities.complete');
+
+    // ========================================
+    // NOTIFICATIONS SECTION
+    // ========================================
+
+    Route::get('/student/notifications/', [StudentHomeController::class, 'notifications'])->name('student.notifications');
+    Route::post('/student/notifications/{id}/mark-read/', [StudentHomeController::class, 'markNotificationAsRead'])->name('student.notifications.mark-read');
+    Route::post('/student/notifications/mark-all-read/', [StudentHomeController::class, 'markAllNotificationsAsRead'])->name('student.notifications.mark-all-read');
     
     // ========================================
     // CART SECTION (Disabled for now)
