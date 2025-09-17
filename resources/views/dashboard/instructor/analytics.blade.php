@@ -496,7 +496,6 @@ chart.render();
             }
         });
 
-        console.log({ percentages, total })
         // Generate and display the custom legend
         var legendHtml = "<ul>";
         for (var i = 0; i < myDoughnutChart.data.labels.length; i++) {

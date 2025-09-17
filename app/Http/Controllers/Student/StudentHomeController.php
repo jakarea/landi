@@ -27,6 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use RecursiveDirectoryIterator;
@@ -528,14 +529,6 @@ class StudentHomeController extends Controller
                 ->toArray();
             $userCompletedLessons = array_flip($completedLessons);
             
-            // Debug logging for completed lessons
-            Log::info('Show method - Completed lessons loaded', [
-                'user_id' => Auth::id(),
-                'course_id' => $course->id,
-                'completed_lesson_ids' => $completedLessons,
-                'total_completed' => count($completedLessons),
-                'userCompletedLessons_keys' => array_keys($userCompletedLessons)
-            ]);
         }
         
         // Get user's enrolled courses for related courses check
@@ -608,12 +601,6 @@ class StudentHomeController extends Controller
              }
          }
 
-         Log::info('Current lesson from course log', [
-             'course_id' => $course->id,
-             'user_id' => auth()->user()->id,
-             'current_lesson_id' => $currentLesson ? $currentLesson->id : null,
-             'current_module_id' => $currentModule ? $currentModule->id : null
-         ]);
 
 
         if ($course) {
@@ -1280,11 +1267,6 @@ class StudentHomeController extends Controller
         // Log query count for performance monitoring
         if (config('app.debug')) {
             $queries = DB::getQueryLog();
-            Log::info('Dashboard queries executed', [
-                'user_id' => $userId,
-                'query_count' => count($queries),
-                'queries' => $queries
-            ]);
         }
         
         return view('e-learning/course/students/activity', compact(
@@ -1480,25 +1462,84 @@ class StudentHomeController extends Controller
         $title = isset($_GET['title']) ? $_GET['title'] : '';
         $status = isset($_GET['status']) ? $_GET['status'] : '';
 
-        $enrolments = Checkout::with('course.reviews')->where('user_id', Auth::user()->id);
+        // Get checkout enrollments (approved/paid courses)
+        $checkoutEnrollments = Checkout::with('course.reviews')->where('user_id', Auth::user()->id)->get();
 
+        // Get CourseEnrollment entries (including pending AI bootcamp enrollments)
+        $courseEnrollments = CourseEnrollment::with(['course.reviews', 'course.user'])
+            ->where('user_id', Auth::user()->id)
+            ->get();
+
+        // Combine and transform both types of enrollments
+        $allEnrollments = collect();
+
+        // Add checkout enrollments
+        foreach ($checkoutEnrollments as $checkout) {
+            if ($checkout->course) {
+                $allEnrollments->push((object)[
+                    'id' => $checkout->id,
+                    'course' => $checkout->course,
+                    'status' => 'approved', // Checkout entries are always approved
+                    'enrollment_type' => 'checkout',
+                    'payment_method' => $checkout->payment_method ?? 'paid',
+                    'amount' => $checkout->amount,
+                    'created_at' => $checkout->created_at,
+                    'transaction_id' => $checkout->payment_id ?? null,
+                    'instructor_name' => $checkout->course->user->name ?? 'Unknown'
+                ]);
+            }
+        }
+
+        // Add course enrollments (AI bootcamp, etc.)
+        foreach ($courseEnrollments as $enrollment) {
+            if ($enrollment->course) {
+                $allEnrollments->push((object)[
+                    'id' => $enrollment->id,
+                    'course' => $enrollment->course,
+                    'status' => $enrollment->status, // payment_pending, pending, approved, rejected
+                    'enrollment_type' => 'course_enrollment',
+                    'payment_method' => $enrollment->payment_method,
+                    'amount' => $enrollment->amount,
+                    'created_at' => $enrollment->created_at,
+                    'transaction_id' => $enrollment->transaction_id,
+                    'rejection_reason' => $enrollment->rejection_reason,
+                    'instructor_name' => $enrollment->course->user->name ?? 'Unknown'
+                ]);
+            }
+        }
+
+        // Apply filters
         if (!empty($title)) {
-            $enrolments->whereHas('course', function ($query) use ($title) {
-                $query->where('title', 'LIKE', '%' . $title . '%');
+            $allEnrollments = $allEnrollments->filter(function ($enrollment) use ($title) {
+                return stripos($enrollment->course->title, $title) !== false;
             });
         }
 
+        // Apply sorting
         if ($status) {
             if ($status == 'oldest') {
-                $enrolments->orderBy('id', 'asc');
+                $allEnrollments = $allEnrollments->sortBy('created_at');
             } elseif ($status == 'newest') {
-                $enrolments->orderBy('id', 'desc');
+                $allEnrollments = $allEnrollments->sortByDesc('created_at');
             }
         } else {
-            $enrolments->orderBy('id', 'desc');
+            $allEnrollments = $allEnrollments->sortByDesc('created_at');
         }
 
-        $enrolments = $enrolments->paginate(12)->appends($queryParams);
+        // Paginate manually
+        $currentPage = request()->input('page', 1);
+        $perPage = 12;
+        $offset = ($currentPage - 1) * $perPage;
+        $items = $allEnrollments->slice($offset, $perPage)->values();
+
+        $enrolments = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $allEnrollments->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'pageName' => 'page']
+        );
+        $enrolments->withQueryString();
 
         return view('e-learning/course/students/enrolled', compact('enrolments'));
     }
@@ -1530,14 +1571,39 @@ class StudentHomeController extends Controller
         $notifications = Notification::where('user_id', Auth::user()->id)
                                    ->orderBy('created_at', 'desc')
                                    ->paginate(20);
-        
-        // Mark notifications as seen
+
+        return view('student.notifications', compact('notifications'));
+    }
+
+    /**
+     * Mark single notification as read
+     */
+    public function markNotificationAsRead($id)
+    {
+        $notification = Notification::where('id', $id)
+                                  ->where('user_id', Auth::user()->id)
+                                  ->first();
+
+        if ($notification) {
+            $notification->update(['status' => 'seen']);
+            return response()->json(['success' => true, 'message' => 'Notification marked as read']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Notification not found'], 404);
+    }
+
+    /**
+     * Mark all notifications as read
+     */
+    public function markAllNotificationsAsRead()
+    {
         Notification::where('user_id', Auth::user()->id)
                    ->where('status', 'unseen')
                    ->update(['status' => 'seen']);
-        
-        return view('e-learning/course/students/notifications', compact('notifications'));
+
+        return response()->json(['success' => true, 'message' => 'All notifications marked as read']);
     }
+
 
     /**
      * Calculate user achievements based on activity
@@ -1792,11 +1858,6 @@ class StudentHomeController extends Controller
 
                 DB::commit();
 
-                Log::info('Course reset successful', [
-                    'user_id' => $userId,
-                    'course_id' => $courseId,
-                    'timestamp' => now()
-                ]);
 
                 return response()->json([
                     'success' => true,

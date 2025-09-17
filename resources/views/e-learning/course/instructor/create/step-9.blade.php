@@ -502,31 +502,31 @@
     <div class="bg-card rounded-xl p-6 shadow-2">
         <div class="step-progress">
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">1</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/facts' }}">তথ্যাবলী</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">2</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/objects' }}">উদ্দেশ্য</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">3</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/price' }}">মূল্য</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">4</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/design' }}">ডিজাইন</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">5</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create', optional(request())->route('id')).'/content' }}">কন্টেন্ট</a>
                 </div>

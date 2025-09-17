@@ -680,14 +680,8 @@
         }
 
         // Basic check - Is jQuery loaded?
-        console.log('💡 jQuery loaded:', typeof $ !== 'undefined');
-        console.log('💡 Document ready state:', document.readyState);
 
         $(document).ready(function() {
-            console.log('🚀 Student view script loaded');
-            console.log('🔍 Lesson items found:', $('.lesson-item').length);
-            console.log('🔍 Lesson clickable items found:', $('.lesson-item.lesson-clickable').length);
-            console.log('🔍 jQuery version:', $.fn.jquery);
             
             // jQuery is now loaded and working
             
@@ -706,7 +700,6 @@
 
             // Initialize with last lesson from course_logs
             @if($currentLesson)
-                console.log('🎬 Initializing with last lesson from course_logs:', {
                     lessonId: {{ $currentLesson->id }},
                     moduleId: {{ $currentLesson->module_id }},
                     type: '{{ $currentLesson->type }}'
@@ -728,14 +721,12 @@
 
                 // Load the current lesson content
                 @if($currentLesson->type == 'video' && $currentLesson->video_link)
-                    console.log('🎬 Loading current lesson video:', '{{ $currentLesson->video_link }}');
                     document.querySelector('#videoPlayerContainer').style.display = 'block';
                     document.querySelector('.audio-iframe-box').classList.add('hidden');
                     $('#textHideShow').hide();
                     $('#textHideShowSeparator').hide();
                     loadVideo('{{ $currentLesson->video_link }}', {{ $currentLesson->id }});
                 @elseif($currentLesson->type == 'audio' && $currentLesson->audio)
-                    console.log('🎵 Loading current lesson audio');
                     document.querySelector('.audio-iframe-box').classList.remove('hidden');
                     document.querySelector('#videoPlayerContainer').style.display = 'none';
                     $('#textHideShow').hide();
@@ -744,7 +735,6 @@
                     audioSource.src = baseUrl + '/{{ $currentLesson->audio }}';
                     audioPlayer.load();
                 @elseif($currentLesson->type == 'text')
-                    console.log('📖 Loading current lesson text content');
                     $('#textHideShow').show();
                     $('#textHideShowSeparator').show();
                     document.querySelector('.audio-iframe-box').classList.add('hidden');
@@ -758,11 +748,9 @@
             $(document).on('click', '.lesson-item.lesson-clickable', function(e) {
                 // Don't prevent default for completion checkbox clicks
                 if ($(e.target).hasClass('is_complete_lesson')) {
-                    console.log('🚫 Clicked on completion checkbox - returning');
                     return; // Let the completion handler handle this
                 }
                 
-                console.log('🎯 LESSON CLICKED!');
                 e.preventDefault();
                 e.stopPropagation();
                 
@@ -776,7 +764,6 @@
                 let videoUrl = this.getAttribute('data-video-url');
                 let audioUrl = this.getAttribute('data-audio-url');
 
-                console.log('📊 Lesson Data:', {
                     type: type,
                     lessonId: lessonId,
                     courseId: courseId,
@@ -798,7 +785,6 @@
 
                 // Handle different lesson types
                 if (type == 'video' && videoUrl) {
-                    console.log('🎬 Playing video:', videoUrl);
                     
                     // Show video player, hide other media
                     document.querySelector('#videoPlayerContainer').style.display = 'block';
@@ -810,7 +796,6 @@
                     loadVideo(videoUrl, lessonId);
 
                 } else if (type == 'audio' && audioUrl) {
-                    console.log('🎵 Playing audio:', audioUrl);
                     if (audioPlayer) audioPlayer.pause();
                     document.querySelector('.audio-iframe-box').classList.remove('hidden');
                     $('#textHideShow').hide();
@@ -826,7 +811,6 @@
                     }
 
                 } else if (type == 'text') {
-                    console.log('📖 Showing text lesson');
                     if (audioPlayer) audioPlayer.pause();
                     
                     $('#textHideShow').show();
@@ -845,24 +829,20 @@
                     moduleId: moduleId
                 };
                 
-                console.log('📡 Logging course progress:', data);
                 
                 $.ajax({
                     url: '{{ route('student.log.courses') }}',
                     method: 'GET',
                     data: data,
                     success: function(response) {
-                        console.log('✅ Course progress logged successfully');
                     },
                     error: function(xhr, status, error) {
-                        console.log('❌ Course progress logging failed:', error);
                     }
                 });
             });
 
             // Video loading function with YouTube/Vimeo support
             function loadVideo(videoUrl, lessonId) {
-                console.log('Loading video:', videoUrl);
                 const videoContainer = document.getElementById('videoPlayerContainer');
                 if (!videoContainer || !videoUrl) return;
 
@@ -906,15 +886,12 @@
                             disablepictureinpicture>
                         </iframe>
                     `;
-                    console.log('Video loaded successfully');
                 } else {
-                    console.log('Invalid video URL');
                 }
             }
 
             // Function to update the Mark as Complete button based on selected lesson
             function updateMarkAsCompleteButton(lessonId, moduleId, instructorId, duration) {
-                console.log('🔄 Updating Mark as Complete button for lesson:', lessonId);
                 
                 var $button = $('#markCompleteBtn');
                 
@@ -922,7 +899,6 @@
                 var completedLessons = @json(array_keys($userCompletedLessons ?? []));
                 var isCompleted = completedLessons.includes(parseInt(lessonId));
                 
-                console.log('Lesson completion status from server:', {
                     lessonId: lessonId,
                     completedLessons: completedLessons,
                     isCompleted: isCompleted
@@ -933,7 +909,6 @@
                     $button.removeClass('btn-success').addClass('btn-secondary');
                     $button.html('<i class="fas fa-check-circle me-1"></i>Completed');
                     $button.prop('disabled', true);
-                    console.log('✅ Button set to Completed state');
                 } else {
                     // Lesson not completed yet
                     $button.removeClass('btn-secondary').addClass('btn-success');
@@ -948,7 +923,6 @@
                     $button.attr('data-module', moduleId);
                     $button.attr('data-duration', duration);
                     
-                    console.log('🎯 Button set to Mark as Complete state for lesson:', lessonId);
                 }
             }
 
@@ -956,11 +930,9 @@
             $(document).on('click', '#markCompleteBtn', function(e) {
                 e.preventDefault();
                 
-                console.log('🎯 Mark Complete button clicked!');
                 
                 // Check if lesson is already completed - if so, don't proceed
                 if ($(this).hasClass('btn-secondary') && $(this).text().includes('Completed')) {
-                    console.log('🚫 Button is in Completed state - no AJAX call');
                     return false;
                 }
                 
@@ -980,8 +952,6 @@
 
                 var $element = $(this);
                 
-                console.log('🎯 MAIN Mark as Complete button clicked');
-                console.log('Inserting into course_activities table:', data);
 
                 $.ajax({
                     url: '{{ route('student.complete.lesson') }}',
@@ -990,11 +960,8 @@
                     beforeSend: function() {
                         $element.html('<i class="spinner-border spinner-border-sm me-1"></i>Marking...');
                         $element.prop('disabled', true);
-                        console.log('⏳ Processing main completion...');
                     },
                     success: function(response) {
-                        console.log('✅ MAIN completion SUCCESS:', response);
-                        console.log('Data inserted into course_activities:', {
                             course_id: courseId,
                             instructor_id: {{ $course->user_id }},
                             module_id: moduleId,
@@ -1019,13 +986,8 @@
                         // Update the module icon if all lessons in module are completed
                         updateModuleCompletionIcon(moduleId);
                         
-                        console.log('✅ Main completion button updated');
                     },
                     error: function(xhr, status, error) {
-                        console.log('❌ MAIN completion ERROR:', error);
-                        console.log('Response Status:', xhr.status);
-                        console.log('Response Text:', xhr.responseText);
-                        console.log('Error Details:', {status: status, error: error});
                         
                         // Reset button on error
                         $element.html('<i class="fas fa-check-circle me-1"></i>Mark as Complete');
@@ -1057,8 +1019,6 @@
 
                 var $element = $(this);
                 
-                console.log('📝 MANUAL lesson completion clicked');
-                console.log('Inserting into course_activities table:', data);
 
                 $.ajax({
                     url: '{{ route('student.complete.lesson') }}',
@@ -1067,11 +1027,8 @@
                     beforeSend: function() {
                         // Change class to spinner
                         $element.removeClass('fas fa-check-circle').addClass('spinner-border spinner-border-sm');
-                        console.log('⏳ Processing manual completion...');
                     },
                     success: function(response) {
-                        console.log('✅ MANUAL completion SUCCESS:', response);
-                        console.log('Data inserted into course_activities:', {
                             course_id: courseId,
                             instructor_id: {{ $course->user_id }},
                             module_id: moduleId,
@@ -1088,13 +1045,8 @@
                         // Update the module icon if all lessons in module are completed
                         updateModuleCompletionIcon(moduleId);
                         
-                        console.log('✅ Manual completion icon updated');
                     },
                     error: function(xhr, status, error) {
-                        console.log('❌ MANUAL completion ERROR:', error);
-                        console.log('Response Status:', xhr.status);
-                        console.log('Response Text:', xhr.responseText);
-                        console.log('Error Details:', {status: status, error: error});
                         // Reset on error
                         $element.removeClass('spinner-border spinner-border-sm').addClass('fas fa-check-circle');
                     }
@@ -1103,14 +1055,12 @@
 
             // Function to update module completion icon when all lessons are completed
             function updateModuleCompletionIcon(moduleId) {
-                console.log('🔍 Checking module completion for module:', moduleId);
                 
                 var $moduleHeader = $('#moduleCompletion_' + moduleId);
                 var $allLessonsInModule = $('[data-modules-id="' + moduleId + '"] .is_complete_lesson');
                 var totalLessons = $allLessonsInModule.length;
                 var completedLessons = $allLessonsInModule.filter('.text-green-500').length;
                 
-                console.log('Module completion check:', {
                     moduleId: moduleId,
                     totalLessons: totalLessons,
                     completedLessons: completedLessons,
@@ -1120,11 +1070,9 @@
                 if (totalLessons > 0 && completedLessons === totalLessons) {
                     // All lessons completed - make module icon primary color
                     $moduleHeader.removeClass('text-gray-400').addClass('text-primary-500');
-                    console.log('✅ Module ' + moduleId + ' marked as completed');
                 } else {
                     // Not all lessons completed - keep gray color
                     $moduleHeader.removeClass('text-primary-500').addClass('text-gray-400');
-                    console.log('⏳ Module ' + moduleId + ' still in progress');
                 }
             }
 

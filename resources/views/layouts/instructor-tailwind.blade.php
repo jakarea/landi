@@ -128,9 +128,15 @@
             z-index: 2;
         }
     </style>
+
+    {{-- Marketing Tracking Codes --}}
+    @include('partials.tracking-codes')
 </head>
 
 <body class="bg-body antialiased min-h-screen">
+    {{-- Marketing Tracking Codes (Body) --}}
+    @include('partials.tracking-codes-body')
+
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div id="sidebar" class="sidebar-transition flex flex-col w-64 bg-primary shadow-xl fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-0">
@@ -185,10 +191,15 @@
                     <span class="font-medium">আয় বিবরণী</span>
                 </a>
                 
-                <a href="{{ route('instructor.enrollments') }}" 
+                <a href="{{ route('instructor.enrollments') }}"
                    class="flex items-center gap-3 px-4 py-3 text-secondary-100 rounded-lg anim hover:bg-card hover:text-blue ray-hover {{ request()->routeIs('instructor.enrollments*') ? 'bg-card text-blue' : '' }}">
                     <i class="fas fa-user-check text-lg flex-shrink-0"></i>
                     <span class="font-medium">ভর্তির অনুমোদন</span>
+                    @if (Auth::check() && function_exists('instructorPendingEnrollmentsCount') && instructorPendingEnrollmentsCount() > 0)
+                        <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold animate-pulse">
+                            {{ instructorPendingEnrollmentsCount() }}
+                        </span>
+                    @endif
                 </a>
                 
                 <a href="{{ route('instructor.certificates') }}" 
@@ -255,7 +266,7 @@
                             <a href="{{ route('instructor.notifications') }}" class="p-2 text-secondary-100 hover:text-blue anim relative inline-block cursor-pointer ray-hover">
                                 <i class="fas fa-bell text-lg"></i>
                                 @if (Auth::check() && function_exists('instructorUnseenNotification') && instructorUnseenNotification() >= 1)
-                                    <span class="absolute -top-1 -right-1 w-5 h-5 bg-orange rounded-full text-primary text-xs flex items-center justify-center font-semibold">{{ instructorUnseenNotification() }}</span>
+                                    <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-semibold animate-pulse shadow-lg border-2 border-white">{{ instructorUnseenNotification() }}</span>
                                 @endif
                             </a>
                         </div>

@@ -266,8 +266,12 @@
                                             <i class="fas fa-check-circle mr-1"></i> অনুমোদিত
                                         </span>
                                     @elseif($enrolment->status == 'payment_pending')
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400">
+                                            <i class="fas fa-credit-card mr-1"></i> পেমেন্ট ভেরিফিকেশন
+                                        </span>
+                                    @elseif($enrolment->status == 'rejected')
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-                                            <i class="fas fa-credit-card mr-1"></i> পেমেন্ট প্রয়োজন
+                                            <i class="fas fa-times-circle mr-1"></i> প্রত্যাখ্যাত
                                         </span>
                                     @endif
                                 </div>
@@ -346,19 +350,36 @@
                                     </div>
                                 @elseif($enrolment->status == 'payment_pending')
                                     <!-- Payment Pending -->
+                                    <div class="flex items-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-xl">
+                                        <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/40 rounded-lg flex items-center justify-center mr-3">
+                                            <i class="fas fa-credit-card text-orange-600 dark:text-orange-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-orange-800 dark:text-orange-300 text-sm">পেমেন্ট ভেরিফিকেশন</div>
+                                            <div class="text-orange-600 dark:text-orange-400 text-xs">পেমেন্ট যাচাই করা হচ্ছে</div>
+                                        </div>
+                                    </div>
+                                @elseif($enrolment->status == 'rejected')
+                                    <!-- Rejected Status -->
                                     <div class="space-y-3">
                                         <div class="flex items-center p-3 bg-red-50 dark:bg-red-900/20 rounded-xl">
                                             <div class="w-10 h-10 bg-red-100 dark:bg-red-900/40 rounded-lg flex items-center justify-center mr-3">
-                                                <i class="fas fa-credit-card text-red-600 dark:text-red-400"></i>
+                                                <i class="fas fa-times-circle text-red-600 dark:text-red-400"></i>
                                             </div>
-                                            <div>
-                                                <div class="font-semibold text-red-800 dark:text-red-300 text-sm">পেমেন্ট প্রয়োজন</div>
-                                                <div class="text-red-600 dark:text-red-400 text-xs">কোর্স শুরু করতে পেমেন্ট সম্পন্ন করুন</div>
+                                            <div class="flex-1">
+                                                <div class="font-semibold text-red-800 dark:text-red-300 text-sm">আবেদন প্রত্যাখ্যাত</div>
+                                                <div class="text-red-600 dark:text-red-400 text-xs">
+                                                    @if(isset($enrolment->rejection_reason) && $enrolment->rejection_reason)
+                                                        কারণ: {{ $enrolment->rejection_reason }}
+                                                    @else
+                                                        বিস্তারিত জানতে ইনস্ট্রাক্টরের সাথে যোগাযোগ করুন
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
-                                        <a href="{{ url('courses/'.$enrolment->course->slug.'/enroll') }}" 
-                                           class="inline-flex items-center justify-center w-full px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 ray-hover">
-                                            <i class="fas fa-credit-card mr-2"></i>পেমেন্ট করুন
+                                        <a href="{{ url('courses/'.$enrolment->course->slug) }}"
+                                           class="inline-flex items-center justify-center w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 ray-hover">
+                                            <i class="fas fa-eye mr-2"></i>কোর্স বিস্তারিত দেখুন
                                         </a>
                                     </div>
                                 @endif

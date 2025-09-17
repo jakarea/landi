@@ -383,10 +383,139 @@
     font-size: 1.5rem;
 }
 
+/* Custom Confirm Dialog */
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.confirm-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.confirm-dialog {
+    background: linear-gradient(135deg, #091D3D, #0F2342);
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 60px rgba(239, 68, 68, 0.2);
+}
+
+.confirm-overlay.show .confirm-dialog {
+    transform: scale(1);
+}
+
+.confirm-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    animation: pulse-warning 2s infinite;
+}
+
+.confirm-icon i {
+    font-size: 2rem;
+    color: #FFFFFF;
+}
+
+@keyframes pulse-warning {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.confirm-title {
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.confirm-message {
+    color: #C7C7C7;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.confirm-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    min-width: 100px;
+}
+
+.confirm-btn-cancel {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #C7C7C7;
+}
+
+.confirm-btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+.confirm-btn-confirm {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: #FFFFFF;
+    border: 2px solid transparent;
+}
+
+.confirm-btn-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .step-progress {
         padding: 0.5rem;
+    }
+
+    .confirm-dialog {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .confirm-actions {
+        flex-direction: column;
+    }
+
+    .confirm-btn {
+        width: 100%;
     }
     
     .step-item {
@@ -436,7 +565,7 @@
     <div class="bg-card rounded-xl p-6 shadow-2">
         <div class="step-progress">
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">1</div>
                 <div class="step-title">
                     <a href="{{ route('instructor.courses.create.facts', ['id' => $course->id]) }}">তথ্যাবলী</a>
                 </div>
@@ -459,10 +588,10 @@
                     <a href="{{ route('instructor.courses.create.design', ['id' => $course->id]) }}">ডিজাইন</a>
                 </div>
             </div>
-            <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+            <div class="step-item">
+                <div class="step-circle">5</div>
                 <div class="step-title">
-                    <a href="{{ route('instructor.courses.create.content', ['id' => $course->id]) }}">কন্টেন্ট</a>
+                    <a href="#">কন্টেন্ট</a>
                 </div>
             </div>
             <div class="step-item">
@@ -670,6 +799,27 @@
         </a>
     </div>
 </div>
+
+<!-- Custom Confirm Dialog -->
+<div class="confirm-overlay" id="confirmDialog">
+    <div class="confirm-dialog">
+        <div class="confirm-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 class="confirm-title" id="confirmTitle">নিশ্চিত করুন</h3>
+        <p class="confirm-message" id="confirmMessage">আপনি কি নিশ্চিত?</p>
+        <div class="confirm-actions">
+            <button type="button" class="confirm-btn confirm-btn-cancel" id="confirmCancel">
+                <i class="fas fa-times"></i>
+                বাতিল
+            </button>
+            <button type="button" class="confirm-btn confirm-btn-confirm" id="confirmOk">
+                <i class="fas fa-trash"></i>
+                মুছে ফেলুন
+            </button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
@@ -678,13 +828,71 @@ document.addEventListener('DOMContentLoaded', function() {
     const baseUrl = window.location.origin;
     const courseId = @json($course->id);
 
+    // Custom Confirm Dialog Functions
+    function showConfirm(title, message, confirmText = 'মুছে ফেলুন', confirmIcon = 'fas fa-trash') {
+        return new Promise((resolve) => {
+            const overlay = document.getElementById('confirmDialog');
+            const titleElement = document.getElementById('confirmTitle');
+            const messageElement = document.getElementById('confirmMessage');
+            const confirmButton = document.getElementById('confirmOk');
+            const cancelButton = document.getElementById('confirmCancel');
+
+            titleElement.textContent = title;
+            messageElement.textContent = message;
+            confirmButton.innerHTML = `<i class="${confirmIcon}"></i> ${confirmText}`;
+
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            function cleanup() {
+                overlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+                confirmButton.onclick = null;
+                cancelButton.onclick = null;
+            }
+
+            confirmButton.onclick = () => {
+                cleanup();
+                resolve(true);
+            };
+
+            cancelButton.onclick = () => {
+                cleanup();
+                resolve(false);
+            };
+
+            // Close on overlay click
+            overlay.onclick = (e) => {
+                if (e.target === overlay) {
+                    cleanup();
+                    resolve(false);
+                }
+            };
+
+            // Close on Escape key
+            const escapeHandler = (e) => {
+                if (e.key === 'Escape') {
+                    cleanup();
+                    document.removeEventListener('keydown', escapeHandler);
+                    resolve(false);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
+        });
+    }
+
     // Delete objective item
     function setupDeleteHandlers() {
         document.querySelectorAll('.delete-item').forEach(item => {
-            item.addEventListener('click', function(e) {
+            item.addEventListener('click', async function(e) {
                 e.preventDefault();
-                
-                if (!confirm('আপনি কি নিশ্চিত যে এই উদ্দেশ্যটি মুছে ফেলতে চান?')) {
+
+                const confirmed = await showConfirm(
+                    'উদ্দেশ্য মুছে ফেলুন',
+                    'আপনি কি নিশ্চিত যে এই শিক্ষণীয় উদ্দেশ্যটি স্থায়ীভাবে মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফিরিয়ে আনা যাবে না।'
+                );
+
+                if (!confirmed) {
                     return;
                 }
 
@@ -742,13 +950,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Save objective
-    document.getElementById('save-objective-button').addEventListener('click', function(e) {
-        e.preventDefault();
-        
+    // Save objective function
+    function saveObjective(e) {
+        if (e) e.preventDefault();
+
         const objectiveTextArea = document.getElementById('objective');
         const itemIndex = document.getElementById('itemIndex');
-        const saveButton = this;
+        const saveButton = document.getElementById('save-objective-button');
         
         if (!objectiveTextArea.value.trim()) {
             showNotification('অনুগ্রহ করে একটি উদ্দেশ্য লিখুন', 'error');
@@ -806,6 +1014,18 @@ document.addEventListener('DOMContentLoaded', function() {
             saveButton.innerHTML = originalText;
             saveButton.disabled = false;
         });
+    }
+
+    // Save objective button click
+    document.getElementById('save-objective-button').addEventListener('click', saveObjective);
+
+    // Keyboard support for objective textarea
+    document.getElementById('objective').addEventListener('keydown', function(e) {
+        // Save on Enter (any variation) or Tab
+        if (e.key === 'Enter' || e.key === 'Tab') {
+            e.preventDefault();
+            saveObjective();
+        }
     });
 
     // Cancel objective
@@ -820,10 +1040,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Delete who item
     function setupWhoDeleteHandlers() {
         document.querySelectorAll('.delete-who-item').forEach(item => {
-            item.addEventListener('click', function(e) {
+            item.addEventListener('click', async function(e) {
                 e.preventDefault();
-                
-                if (!confirm('আপনি কি নিশ্চিত যে এই টার্গেট অডিয়েন্সটি মুছে ফেলতে চান?')) {
+
+                const confirmed = await showConfirm(
+                    'টার্গেট অডিয়েন্স মুছে ফেলুন',
+                    'আপনি কি নিশ্চিত যে এই টার্গেট অডিয়েন্সটি স্থায়ীভাবে মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফিরিয়ে আনা যাবে না।'
+                );
+
+                if (!confirmed) {
                     return;
                 }
 
@@ -879,13 +1104,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Save who item
-    document.getElementById('save-who-button').addEventListener('click', function(e) {
-        e.preventDefault();
-        
+    // Save who item function
+    function saveWhoItem(e) {
+        if (e) e.preventDefault();
+
         const whoTextArea = document.getElementById('who_should_join');
         const whoItemIndex = document.getElementById('whoItemIndex');
-        const saveButton = this;
+        const saveButton = document.getElementById('save-who-button');
         
         if (!whoTextArea.value.trim()) {
             showNotification('অনুগ্রহ করে টার্গেট অডিয়েন্স লিখুন', 'error');
@@ -943,6 +1168,18 @@ document.addEventListener('DOMContentLoaded', function() {
             saveButton.innerHTML = originalText;
             saveButton.disabled = false;
         });
+    }
+
+    // Save who button click
+    document.getElementById('save-who-button').addEventListener('click', saveWhoItem);
+
+    // Keyboard support for who should join textarea
+    document.getElementById('who_should_join').addEventListener('keydown', function(e) {
+        // Save on Enter (any variation) or Tab
+        if (e.key === 'Enter' || e.key === 'Tab') {
+            e.preventDefault();
+            saveWhoItem();
+        }
     });
 
     // Cancel who
@@ -950,6 +1187,21 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         document.getElementById('who_should_join').value = '';
         document.getElementById('whoItemIndex').value = '';
+    });
+
+    // Cancel forms on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            // Cancel objective form
+            document.getElementById('objective').value = '';
+            document.getElementById('itemIndex').value = '';
+
+            // Cancel who form
+            document.getElementById('who_should_join').value = '';
+            document.getElementById('whoItemIndex').value = '';
+
+            showNotification('ফরম বাতিল করা হয়েছে', 'info');
+        }
     });
 
     // Helper functions

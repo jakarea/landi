@@ -386,6 +386,11 @@
                     <span class="hidden sm:inline">সামাজিক যোগাযোগ</span>
                     <span class="sm:hidden">সামাজিক</span>
                 </button>
+                <button class="tab-item" data-tab="marketing">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    <span class="hidden sm:inline">মার্কেটিং</span>
+                    <span class="sm:hidden">মার্কেটিং</span>
+                </button>
                 <button class="tab-item" data-tab="password">
                     <i class="fas fa-lock mr-2"></i>
                     <span class="hidden sm:inline">নিরাপত্তা</span>
@@ -812,6 +817,100 @@
                             <button type="submit" class="btn-primary">
                                 <i class="fas fa-save"></i>
                                 সামাজিক লিংক সংরক্ষণ করুন
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Marketing Tab -->
+            <div id="tab-marketing" class="tab-content hidden">
+                <form action="{{ route('instructor.profile.marketing.update') }}" method="POST">
+                    @csrf
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-chart-line text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white">মার্কেটিং ট্র্যাকিং</h3>
+                                    <p class="text-sm text-gray-300">Facebook Pixel এবং Google Analytics সেটআপ করুন</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Facebook Pixel -->
+                            <div class="space-y-3">
+                                <label for="facebook_pixel_id" class="block text-sm font-medium text-white">
+                                    <i class="fab fa-facebook mr-2 text-blue-400"></i>
+                                    Facebook Pixel ID
+                                </label>
+                                <input type="text"
+                                       id="facebook_pixel_id"
+                                       name="facebook_pixel_id"
+                                       value="{{ old('facebook_pixel_id', $user->facebook_pixel_id) }}"
+                                       placeholder="123456789012345"
+                                       class="w-full px-4 py-3 bg-gray-700 border border-gray-500 rounded-xl text-white placeholder-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300">
+                                <p class="text-sm text-gray-300">
+                                    আপনার Facebook Ads Manager থেকে Pixel ID পেস্ট করুন
+                                </p>
+                            </div>
+
+                            <!-- Google Analytics -->
+                            <div class="space-y-3">
+                                <label for="google_analytics_id" class="block text-sm font-medium text-white">
+                                    <i class="fab fa-google mr-2 text-red-400"></i>
+                                    Google Analytics Measurement ID
+                                </label>
+                                <input type="text"
+                                       id="google_analytics_id"
+                                       name="google_analytics_id"
+                                       value="{{ old('google_analytics_id', $user->google_analytics_id) }}"
+                                       placeholder="G-XXXXXXXXXX"
+                                       class="w-full px-4 py-3 bg-gray-700 border border-gray-500 rounded-xl text-white placeholder-gray-300 focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all duration-300">
+                                <p class="text-sm text-gray-300">
+                                    আপনার Google Analytics 4 থেকে Measurement ID পেস্ট করুন
+                                </p>
+                            </div>
+
+                            <!-- Google Tag Manager (Optional) -->
+                            <div class="space-y-3">
+                                <label for="google_tag_manager_id" class="block text-sm font-medium text-white">
+                                    <i class="fab fa-google mr-2 text-yellow-400"></i>
+                                    Google Tag Manager ID (ঐচ্ছিক)
+                                </label>
+                                <input type="text"
+                                       id="google_tag_manager_id"
+                                       name="google_tag_manager_id"
+                                       value="{{ old('google_tag_manager_id', $user->google_tag_manager_id) }}"
+                                       placeholder="GTM-XXXXXXX"
+                                       class="w-full px-4 py-3 bg-gray-700 border border-gray-500 rounded-xl text-white placeholder-gray-300 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all duration-300">
+                                <p class="text-sm text-gray-300">
+                                    Google Tag Manager ব্যবহার করলে এই ID যোগ করুন
+                                </p>
+                            </div>
+
+                            <!-- Help Section -->
+                            <div class="bg-cyan-900/20 border border-cyan-400/30 rounded-xl p-4">
+                                <h4 class="text-sm font-semibold text-cyan-300 mb-2">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    সাহায্য
+                                </h4>
+                                <ul class="text-sm text-gray-200 space-y-1">
+                                    <li>• এই কোডগুলি আপনার সকল frontend পেইজে স্বয়ংক্রিয়ভাবে যুক্ত হবে</li>
+                                    <li>• Facebook Pixel দিয়ে আপনি conversion tracking করতে পারবেন</li>
+                                    <li>• Google Analytics দিয়ে visitor এবং traffic analyze করতে পারবেন</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-6">
+                            <button type="submit"
+                                    class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-medium py-3 px-8 rounded-xl transition-all duration-300 focus:ring-2 focus:ring-cyan-400/20 shadow-lg">
+                                <i class="fas fa-save mr-2"></i>
+                                পরিবর্তন সংরক্ষণ করুন
                             </button>
                         </div>
                     </div>
@@ -1613,7 +1712,6 @@ document.addEventListener('DOMContentLoaded', function() {
             this.querySelector('div').classList.remove('border-transparent');
             this.querySelector('div').classList.add(borderColor);
             
-            console.log('Selected certificate style:', radioValue);
         });
     });
 
@@ -1825,22 +1923,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(this);
             const submitBtn = this.querySelector('button[type="submit"]');
             
-            console.log('Certificate Form action:', this.action);
-            console.log('Certificate Form data:', Object.fromEntries(formData));
             
             // Check required fields
-            console.log('Course ID:', formData.get('course_id'));
-            console.log('Certificate Style:', formData.get('certificate_style'));
-            console.log('Certificate Color:', formData.get('certificate_clr'));
-            console.log('Accent Color:', formData.get('accent_clr'));
-            console.log('Logo file:', formData.get('logo'));
-            console.log('Signature file:', formData.get('signature'));
             
             // Ensure CSRF token is in the form data
             if (!formData.has('_token')) {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 formData.append('_token', csrfToken);
-                console.log('Certificate form - Added CSRF token to form data:', csrfToken);
             }
             
             // Show loading state
@@ -1860,7 +1949,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .then(response => {
-                console.log('Certificate - Response status:', response.status);
                 if (!response.ok) {
                     return response.json().catch(() => {
                         return response.text().then(text => {
@@ -1877,7 +1965,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                console.log('Certificate - Response data:', data);
                 if (data.success) {
                     showSuccessMessage(data.message);
                     // Reload page to show updated certificate
@@ -1887,7 +1974,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     // Handle validation errors (422 status)
                     if (data.errors) {
-                        console.log('Validation errors:', data.errors);
                         let errorMessages = [];
                         Object.keys(data.errors).forEach(field => {
                             const fieldEl = document.querySelector(`[name="${field}"]`);
@@ -1900,7 +1986,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 errorDiv.textContent = errorMessage;
                                 fieldEl.parentNode.appendChild(errorDiv);
                             } else {
-                                console.log(`Field not found: ${field}`);
                             }
                         });
                         
@@ -2130,13 +2215,9 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
     const formData = new FormData(this);
     const submitBtn = this.querySelector('button[type="submit"]');
     
-    console.log('Form action:', this.action);
-    console.log('Form data:', Object.fromEntries(formData));
     
     // Check CSRF token
     const csrfToken = document.querySelector('meta[name="csrf-token"]');
-    console.log('CSRF meta tag:', csrfToken);
-    console.log('CSRF token value:', csrfToken ? csrfToken.getAttribute('content') : 'NOT FOUND');
     
     // Show loading state
     submitBtn.disabled = true;
@@ -2152,7 +2233,6 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
     if (!formData.has('_token')) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         formData.append('_token', csrfToken);
-        console.log('Added CSRF token to form data:', csrfToken);
     }
 
     fetch(this.action, {
@@ -2164,8 +2244,6 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
         }
     })
     .then(response => {
-        console.log('Add Experience - Response status:', response.status);
-        console.log('Add Experience - Response ok:', response.ok);
         if (!response.ok) {
             return response.text().then(text => {
                 console.error('Add Experience - Error response:', text);
@@ -2175,7 +2253,6 @@ document.getElementById('addExperienceForm').addEventListener('submit', function
         return response.json();
     })
     .then(data => {
-        console.log('Add Experience - Response data:', data);
         if (data.success) {
             closeAddExperienceModal();
             showSuccessMessage('অভিজ্ঞতা সফলভাবে যোগ করা হয়েছে!');
@@ -2220,7 +2297,6 @@ document.getElementById('editExperienceForm').addEventListener('submit', functio
     if (!formData.has('_token')) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         formData.append('_token', csrfToken);
-        console.log('Edit form - Added CSRF token to form data:', csrfToken);
     }
     
     // Show loading state

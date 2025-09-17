@@ -121,9 +121,8 @@
                                 @if(auth()->user()->user_role === 'student')
                                     @if(isEnrolled($course->id))
                                         <a href="{{ url('courses/' . $course->slug) }}" class="common-bttn"
-                                            style="border-radius: 6.25rem; margin-top: 2rem"><img
-                                                src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="a"
-                                                class="img-fluid me-1">Start Course</a>
+                                            style="border-radius: 6.25rem; margin-top: 2rem">
+                                            <i class="fas fa-play-circle me-2"></i>Start Course</a>
                                     @else
                                         @php
                                             $existingEnrollment = \App\Models\CourseEnrollment::where('course_id', $course->id)
@@ -133,19 +132,16 @@
                                         
                                         @if(!$existingEnrollment)
                                             <a href="{{ route('courses.enroll', $course->slug) }}" class="common-bttn"
-                                                style="border-radius: 6.25rem; margin-top: 2rem"><img
-                                                    src="{{ asset('assets/images/icons/graduation-cap.svg') }}" alt="a"
-                                                    class="img-fluid me-1">Enroll Now</a>
+                                                style="border-radius: 6.25rem; margin-top: 2rem">
+                                                <i class="fas fa-graduation-cap me-2"></i>Enroll Now</a>
                                         @elseif($existingEnrollment->status === 'pending')
                                             <button class="common-bttn" disabled
-                                                style="border-radius: 6.25rem; margin-top: 2rem; background-color: #ffc107; border-color: #ffc107;"><img
-                                                    src="{{ asset('assets/images/icons/clock.svg') }}" alt="a"
-                                                    class="img-fluid me-1">Enrollment Pending</button>
+                                                style="border-radius: 6.25rem; margin-top: 2rem; background-color: #ffc107; border-color: #ffc107;">
+                                                <i class="fas fa-clock me-2"></i>Enrollment Pending</button>
                                         @elseif($existingEnrollment->status === 'rejected')
                                             <button class="common-bttn" disabled
-                                                style="border-radius: 6.25rem; margin-top: 2rem; background-color: #dc3545; border-color: #dc3545;"><img
-                                                    src="{{ asset('assets/images/icons/times.svg') }}" alt="a"
-                                                    class="img-fluid me-1">Enrollment Rejected</button>
+                                                style="border-radius: 6.25rem; margin-top: 2rem; background-color: #dc3545; border-color: #dc3545;">
+                                                <i class="fas fa-times me-2"></i>Enrollment Rejected</button>
                                             @if($existingEnrollment->rejection_reason)
                                                 <small class="text-danger d-block mt-2">Reason: {{ $existingEnrollment->rejection_reason }}</small>
                                             @endif
@@ -153,20 +149,17 @@
                                     @endif
                                 @elseif(auth()->user()->user_role === 'instructor')
                                     <a href="{{ url('instructor/courses/' . $course->id) }}" class="common-bttn"
-                                        style="border-radius: 6.25rem; margin-top: 2rem"><img
-                                            src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="a"
-                                            class="img-fluid me-1">Manage Course</a>
+                                        style="border-radius: 6.25rem; margin-top: 2rem">
+                                        <i class="fas fa-cog me-2"></i>Manage Course</a>
                                 @else
                                     <a href="{{ route('login') }}" class="common-bttn"
-                                        style="border-radius: 6.25rem; margin-top: 2rem"><img
-                                            src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="a"
-                                            class="img-fluid me-1">Login to Access</a>
+                                        style="border-radius: 6.25rem; margin-top: 2rem">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login to Access</a>
                                 @endif
                             @else
                                 <a href="{{ route('login') }}" class="common-bttn"
-                                    style="border-radius: 6.25rem; margin-top: 2rem"><img
-                                        src="{{ asset('assets/images/icons/play-circle.svg') }}" alt="a"
-                                        class="img-fluid me-1">Login to Access</a>
+                                    style="border-radius: 6.25rem; margin-top: 2rem">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Login to Access</a>
                             @endauth
 
                         </div>
@@ -177,11 +170,23 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-8 col-12 order-2 order-lg-1">
-                    <div class="white-block">
-                        <p class="mb-2 fw-semibold">{{ strtoupper($course->user->name) }}</p>
-                        <p>{!! $course->user->description !!}</p>
-                        
+                    @if($course->who_should_join)
+                    <div class="what-you-learn-box">
+                        <h3>Who Should Join This Course</h3>
+                        @php
+                            $whoShouldJoin = explode('[join]', $course->who_should_join);
+                        @endphp
+                        <ul>
+                            @foreach ($whoShouldJoin as $join)
+                                @if (trim($join) !== '')
+                                    <li><i class="fas fa-check"></i> {{ $join }} </li>
+                                @else
+                                    <li>No Target Audience Found!</li>
+                                @endif
+                            @endforeach
+                        </ul>
                     </div>
+                    @endif
 
                     <div class="what-you-learn-box">
                         <h3>What You'll Learn</h3>
@@ -312,47 +317,41 @@
                             @endforeach
                         </div>
                     </div>
-                    {{-- course outline --}}
-                    @if ($course->allow_review)
+                    {{-- course reviews --}}
+                    @if ($course->allow_review && count($course_reviews) > 0)
                     <div class="common-header">
                         <h3 class="mb-0">Student Review's</h3>
                         <span>Total {{ count($course_reviews) }} Reviews</span>
                     </div>
                     <div class="row">
-                        @if (count($course_reviews) > 0)
-                            @foreach ($course_reviews as $course_review)
-                                <div class="col-lg-6">
-                                    <div class="course-rev-box">
-                                        <div class="media">
-                                            @if ($course_review->user)
-                                                @if ($course_review->user->avatar)
-                                                    <img src="{{ asset($course_review->user->avatar) }}" alt="Avatar"
-                                                        class="img-fluid">
-                                                @else
-                                                    <span class="user-name-avatar me-3">{!! strtoupper($course->user->name[0]) !!}</span>
-                                                @endif
+                        @foreach ($course_reviews as $course_review)
+                            <div class="col-lg-6">
+                                <div class="course-rev-box">
+                                    <div class="media">
+                                        @if ($course_review->user)
+                                            @if ($course_review->user->avatar)
+                                                <img src="{{ asset($course_review->user->avatar) }}" alt="Avatar"
+                                                    class="img-fluid">
+                                            @else
+                                                <span class="user-name-avatar me-3">{!! strtoupper($course->user->name[0]) !!}</span>
                                             @endif
+                                        @endif
 
-                                            <div class="media-body">
-                                                <h5>{{ $course_review->user->name }}</h5>
-                                                <h6>{{ \Carbon\Carbon::parse($course_review->created_at)->format('D, M d Y') }}
-                                                </h6>
-                                            </div>
+                                        <div class="media-body">
+                                            <h5>{{ $course_review->user->name }}</h5>
+                                            <h6>{{ \Carbon\Carbon::parse($course_review->created_at)->format('D, M d Y') }}
+                                            </h6>
                                         </div>
-                                        <p>{{ $course_review->comment }}</p>
-                                        <ul>
-                                            @for ($i = 0; $i < $course_review->star; $i++)
-                                                <li><i class="fas fa-star"></i></li>
-                                            @endfor
-                                        </ul>
                                     </div>
+                                    <p>{{ $course_review->comment }}</p>
+                                    <ul>
+                                        @for ($i = 0; $i < $course_review->star; $i++)
+                                            <li><i class="fas fa-star"></i></li>
+                                        @endfor
+                                    </ul>
                                 </div>
-                            @endforeach
-                        @else
-                            <div class="text-center">
-                                <p>No Review Found!</p>
                             </div>
-                        @endif
+                        @endforeach
                     </div>
                     @endif
                     @if (count($related_course) > 0)
@@ -631,24 +630,21 @@
                     <div class="d-flex">
                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('courses/overview-courses', $course->slug) }}"
                             target="_blank">
-                            <img src="{{ asset('assets/images/icons/fb.svg') }}" alt="FB"
-                                class="img-fluid">
+                            <i class="fab fa-facebook-f" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #1877f2;"></i>
                             <span>Facebook</span>
                         </a>
                         <a href="#">
-                            <img src="{{ asset('assets/images/icons/tg.svg') }}" alt="TG"
-                                class="img-fluid">
+                            <i class="fab fa-telegram-plane" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #0088cc;"></i>
                             <span>Telegram</span>
                         </a>
                         <a href="https://www.linkedin.com/shareArticle?url={{ url('courses/overview-courses', $course->slug) }}"
                             target="_blank">
-                            <img src="{{ asset('assets/images/icons/linkedin-ic.svg') }}" alt="FB"
-                                class="img-fluid">
+                            <i class="fab fa-linkedin-in" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #0077b5;"></i>
                             <span>LinkedIn</span>
                         </a>
                         <a href="https://twitter.com/intent/tweet?url={{ url('courses/overview-courses', $course->slug) }}&text={{ $course->title }}"
-                            target="_blank"> <img src="{{ asset('assets/images/icons/twt.svg') }}" alt="FB"
-                                class="img-fluid">
+                            target="_blank">
+                            <i class="fab fa-twitter" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #1da1f2;"></i>
                             <span>Twitter</span>
                         </a>
                     </div>
@@ -656,18 +652,15 @@
                     <div class="d-flex">
                         <a
                             href="https://www.messenger.com/share.php?text={{ url('courses/overview-courses', $course->slug) }}">
-                            <img src="{{ asset('assets/images/icons/messenger.svg') }}" alt="FB"
-                                class="img-fluid">
+                            <i class="fab fa-facebook-messenger" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #006aff;"></i>
                             <span>Messenger</span>
                         </a>
                         <a href="https://api.whatsapp.com/send?text={{ url('courses/overview-courses', $course->slug) }}">
-                            <img src="{{ asset('assets/images/icons/wapp.svg') }}" alt="FB"
-                                class="img-fluid">
+                            <i class="fab fa-whatsapp" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #25d366;"></i>
                             <span>Whatsapp</span>
                         </a>
                         <a href="https://telegram.me/share/url?url={{ url('courses/overview-courses', $course->slug) }}">
-                            <img src="{{ asset('assets/images/icons/teleg.svg') }}" alt="FB"
-                                class="img-fluid">
+                            <i class="fab fa-telegram-plane" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #0088cc;"></i>
                             <span>Telegram</span>
                         </a>
                     </div>
@@ -677,7 +670,7 @@
                     </div>
                     <div class="copy-link">
                         <input autocomplete="off" type="text" placeholder="Link"
-                            value="{{ url('courses/overview-courses', $course->slug) }}" class="form-control"
+                            value="{{ url('courses/', $course->slug) }}" class="form-control"
                             id="linkToCopy">
                         <a href="#" id="copyButton" class="ms-1 px-0">Copy</a>
                     </div>
@@ -696,32 +689,34 @@
         const baseUrl = currentURL.split('/').slice(0, 3).join('/');
         const likeBttn = document.getElementById('likeBttn');
 
-        likeBttn.addEventListener('click', (e) => {
+        if (likeBttn) {
+            likeBttn.addEventListener('click', (e) => {
 
-            const course_id = {{ $course->id }};
-            const ins_id = {{ $course->user_id }};
+                const course_id = {{ $course->id }};
+                const ins_id = {{ $course->user_id }};
 
-            fetch(`${baseUrl}/student/course-like/${course_id}/${ins_id}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === 'liked') {
-                        likeBttn.classList.add('active');
+                fetch(`${baseUrl}/student/course-like/${course_id}/${ins_id}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'liked') {
+                            likeBttn.classList.add('active');
 
-                    } else {
-                        likeBttn.classList.remove('active');
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+                        } else {
+                            likeBttn.classList.remove('active');
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
 
-        });
+            });
+        }
     </script>
 
     <script>
@@ -729,17 +724,19 @@
         const linkToCopy = document.getElementById("linkToCopy");
         const notify = document.getElementById("notify");
 
-        copyButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            linkToCopy.select();
-            document.execCommand("copy");
-            notify.innerText = 'Copied!';
+        if (copyButton && linkToCopy && notify) {
+            copyButton.addEventListener("click", (e) => {
+                e.preventDefault();
+                linkToCopy.select();
+                document.execCommand("copy");
+                notify.innerText = 'Copied!';
 
-            setTimeout(() => {
-                notify.innerText = '';
-            }, 1000);
+                setTimeout(() => {
+                    notify.innerText = '';
+                }, 1000);
 
-        });
+            });
+        }
     </script>
 
     {{-- Public Lesson Video Player Script --}}
@@ -747,9 +744,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Handle public lesson clicks
             const publicLessonItems = document.querySelectorAll('.public-lesson-item');
-            const publicLessonModal = new bootstrap.Modal(document.getElementById('publicLessonModal'));
+            const publicLessonModalElement = document.getElementById('publicLessonModal');
             const videoContainer = document.getElementById('publicLessonVideoContainer');
             const modalTitle = document.getElementById('publicLessonModalLabel');
+
+            if (!publicLessonModalElement || !videoContainer || !modalTitle) {
+                return; // Exit if essential elements are missing
+            }
+
+            const publicLessonModal = new bootstrap.Modal(publicLessonModalElement);
             
             publicLessonItems.forEach(item => {
                 item.addEventListener('click', function() {
@@ -826,7 +829,7 @@
             });
             
             // Clean up video when modal is closed
-            document.getElementById('publicLessonModal').addEventListener('hidden.bs.modal', function() {
+            publicLessonModalElement.addEventListener('hidden.bs.modal', function() {
                 videoContainer.innerHTML = '';
             });
         });

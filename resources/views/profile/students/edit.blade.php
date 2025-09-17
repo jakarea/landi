@@ -436,7 +436,6 @@
 <script>
 // Simple tab switching functionality
 function switchTab(tabName) {
-    console.log('Switching to tab:', tabName);
     
     // Reset all tabs
     document.getElementById('profile-tab').classList.remove('active', 'text-white');
@@ -552,10 +551,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Auto-switch to password tab if there are password validation errors or tab parameter
     if (passwordErrors || tabToOpen === 'password') {
-        console.log('Opening password tab due to:', passwordErrors ? 'validation errors' : 'URL parameter');
         switchTab('password');
     } else {
-        console.log('Opening profile tab (default)');
         switchTab('profile');
     }
     

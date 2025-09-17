@@ -595,7 +595,6 @@
                     vimeoPlayer = new Vimeo.Player(document.querySelector('.vimeo-player'), vimeoOptions);
                     currentPlayerType = 'vimeo';
                 } catch(e) {
-                    console.log('Vimeo player initialization failed:', e);
                 }
             }
 
@@ -744,7 +743,6 @@
                 $(this).find('.actv-hide').hide(); // Hide play icon
                 $(this).find('.actv-show').show(); // Show pause icon
 
-                console.log('Lesson clicked - icon switching should work');
 
                 let type = this.getAttribute('data-lesson-type');
 

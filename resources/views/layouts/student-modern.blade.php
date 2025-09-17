@@ -186,9 +186,15 @@
     
     @yield('style')
     @stack('styles')
+
+    {{-- Marketing Tracking Codes --}}
+    @include('partials.tracking-codes')
 </head>
 
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 dark:from-dark-950 dark:to-dark-900 font-inter antialiased min-h-screen">
+    {{-- Marketing Tracking Codes (Body) --}}
+    @include('partials.tracking-codes-body')
+
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div id="sidebar" class="sidebar-transition flex flex-col w-64 glass-effect shadow-xl fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-0">

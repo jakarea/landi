@@ -117,7 +117,6 @@
     font-size: 0.75rem;
     text-align: center;
     font-weight: 500;
-    transition: all 0.3s ease;
 }
 
 .step-item.current .step-title {
@@ -140,6 +139,15 @@
 .step-title a.disabled {
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+/* Disable ray-hover effect for step-title elements */
+.step-title {
+    overflow: visible !important;
+}
+
+.step-title::before {
+    display: none !important;
 }
 
 /* Connection lines between steps */
@@ -401,7 +409,7 @@
                 </div>
             </div>
             <div class="step-item">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">5</div>
                 <div class="step-title">
                     <a href="{{ $course->id ? route('instructor.courses.create.content', ['id' => $course->id]) : '#' }}" class="{{ !$course->id ? 'disabled' : '' }}">কন্টেন্ট</a>
                 </div>

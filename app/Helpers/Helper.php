@@ -414,7 +414,27 @@ if (!function_exists('instructorUnseenNotification')) {
         try {
             return \App\Models\Notification::where('status', 'unseen')
                 ->where('instructor_id', Auth::user()->id)
-                ->where('type', 'instructor')
+                ->whereIn('type', ['instructor', 'new_enrollment'])
+                ->count();
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+}
+
+/**
+ * Helper function to get pending enrollments count for instructor
+ */
+if (!function_exists('instructorPendingEnrollmentsCount')) {
+    function instructorPendingEnrollmentsCount()
+    {
+        if (!Auth::check()) {
+            return 0;
+        }
+
+        try {
+            return \App\Models\CourseEnrollment::where('instructor_id', Auth::user()->id)
+                ->where('status', 'pending')
                 ->count();
         } catch (\Exception $e) {
             return 0;

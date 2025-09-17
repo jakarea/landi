@@ -263,7 +263,6 @@ setInterval(function() {
             document.getElementById('last-updated').textContent = 'এইমাত্র আপডেট হয়েছে';
         })
         .catch(error => {
-            console.log('Auto-refresh error:', error);
         });
 }, 30000); // Refresh every 30 seconds
 </script>

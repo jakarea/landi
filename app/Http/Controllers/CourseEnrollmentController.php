@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\CourseEnrollment;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -279,6 +280,23 @@ class CourseEnrollmentController extends Controller
             'admin_notes' => $request->admin_notes,
         ]);
 
+        // Create notification for student
+        Notification::create([
+            'instructor_id' => Auth::id(),
+            'course_id' => $enrollment->course_id,
+            'user_id' => $enrollment->user_id,
+            'type' => 'enrollment_approved',
+            'message' => "আপনার {$enrollment->course->title} কোর্সের এনরোলমেন্ট অনুমোদিত হয়েছে! এখন আপনি কোর্স অ্যাক্সেস করতে পারবেন।",
+            'status' => 'unseen'
+        ]);
+
+        // Mark instructor notification as seen
+        Notification::where('instructor_id', Auth::id())
+            ->where('course_id', $enrollment->course_id)
+            ->where('user_id', $enrollment->user_id)
+            ->where('type', 'new_enrollment')
+            ->update(['status' => 'seen']);
+
         return redirect()->back()->with('success', 'Enrollment approved successfully with payment verification.');
     }
 
@@ -321,6 +339,23 @@ class CourseEnrollmentController extends Controller
             'status' => CourseEnrollment::STATUS_REJECTED,
             'rejection_reason' => $request->rejection_reason,
         ]);
+
+        // Create notification for student
+        Notification::create([
+            'instructor_id' => Auth::id(),
+            'course_id' => $enrollment->course_id,
+            'user_id' => $enrollment->user_id,
+            'type' => 'enrollment_declined',
+            'message' => "আপনার {$enrollment->course->title} কোর্সের এনরোলমেন্ট প্রত্যাখ্যান করা হয়েছে। কারণ: {$request->rejection_reason}",
+            'status' => 'unseen'
+        ]);
+
+        // Mark instructor notification as seen
+        Notification::where('instructor_id', Auth::id())
+            ->where('course_id', $enrollment->course_id)
+            ->where('user_id', $enrollment->user_id)
+            ->where('type', 'new_enrollment')
+            ->update(['status' => 'seen']);
 
         return redirect()->back()->with('success', 'Enrollment rejected.');
     }

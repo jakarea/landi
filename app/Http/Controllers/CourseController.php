@@ -520,14 +520,20 @@ class CourseController extends Controller
                 'user:id,name,avatar,user_role,short_bio,description',
                 'modules' => function($query) {
                     $query->select('id', 'course_id', 'title', 'slug', 'status')
+                          ->orderBy('id')
                           ->with(['lessons' => function($lessonQuery) {
-                              $lessonQuery->select('id', 'module_id', 'title', 'duration', 'status');
+                              $lessonQuery->select('id', 'module_id', 'title', 'duration', 'status', 'video_type', 'video_link')
+                                         ->orderBy('id');
                           }]);
                 },
                 'reviews' => function($query) {
-                    $query->with('user:id,name,avatar');
+                    $query->select('id', 'course_id', 'user_id', 'star', 'comment', 'created_at')
+                          ->with('user:id,name,avatar')
+                          ->orderBy('created_at', 'desc')
+                          ->limit(10); // Only load recent reviews
                 }
             ])
+            ->select('id', 'title', 'slug', 'user_id', 'instructor_id', 'promo_video', 'thumbnail', 'price', 'offer_price', 'categories', 'short_description', 'description', 'objective', 'who_should_join', 'status', 'created_at')
             ->firstOrFail();
         
         $promo_video_link = '';
@@ -545,7 +551,7 @@ class CourseController extends Controller
         $course_reviews = $course->reviews;
         
         // Get enrollment count from multiple sources and use the highest count
-        $checkoutCount = Checkout::where('course_id',$course->id)->count();
+        $checkoutCount = Checkout::where('course_id', $course->id)->count();
         $courseUserCount = DB::table('course_user')->where('course_id', $course->id)->count();
         $courseEnrolledNumber = max($checkoutCount, $courseUserCount);
         
@@ -602,7 +608,8 @@ class CourseController extends Controller
         
         if($course->categories){
             $categoryArray = explode(',', $course->categories);
-            $related_course = Course::select('id', 'title', 'slug', 'thumbnail', 'price', 'offer_price', 'instructor_id')
+            $related_course = Course::select('id', 'title', 'slug', 'thumbnail', 'price', 'offer_price', 'instructor_id', 'user_id')
+                ->with('user:id,name,avatar')
                 ->where('instructor_id', $course->instructor_id)
                 ->where('status','published')
                 ->where('id', '!=', $course->id)
@@ -611,7 +618,8 @@ class CourseController extends Controller
                         $query->orWhere('categories', 'like', '%' . trim($category) . '%');
                     }
                 })
-                ->take(4)
+                ->orderBy('created_at', 'desc')
+                ->limit(4)
                 ->get();
         }
         

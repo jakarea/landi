@@ -447,43 +447,43 @@
     <div class="bg-card rounded-xl p-6 shadow-2">
         <div class="step-progress">
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">1</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/facts' }}">তথ্যাবলী</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">2</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/objects' }}">উদ্দেশ্য</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">3</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/price' }}">মূল্য</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">4</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/design' }}">ডিজাইন</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">5</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create', optional(request())->route('id')).'/content' }}">কন্টেন্ট</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">6</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/certificate' }}">সার্টিফিকেট</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">7</div>
                 <div class="step-title">
                     <a href="{{ url('instructor/courses/create',optional(request())->route('id')).'/visibility' }}">দৃশ্যমানতা</a>
                 </div>
@@ -645,7 +645,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showCopySuccess();
             
             // Analytics tracking (if needed)
-            console.log('Course link copied to clipboard');
             
         } catch (err) {
             console.error('Failed to copy text: ', err);
@@ -684,7 +683,6 @@ document.addEventListener('DOMContentLoaded', function() {
                            this.classList.contains('whatsapp-btn') ? 'WhatsApp' :
                            this.classList.contains('telegram-btn') ? 'Telegram' : 'Unknown';
             
-            console.log(`Course shared on ${platform}`);
             
             // Add success animation
             this.classList.add('success-animation');
@@ -761,7 +759,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show completion message
     showNotification('অভিনন্দন! আপনার কোর্স তৈরি সম্পন্ন হয়েছে!', 'success');
     
-    console.log('Share step initialized successfully');
 });
 </script>
 @endsection

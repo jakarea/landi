@@ -468,7 +468,7 @@
         </div>
     @endif
 
-    @php 
+    @php
         $module = \App\Models\Module::find($lesson->module_id);
         $hasContent = $lesson->video_link || $lesson->audio_link || $lesson->text_content;
         $contentStatus = $lesson->status ?? 'pending';
@@ -489,13 +489,8 @@
             <div class="lesson-info">
                 <h1>{{ $lesson->title }}</h1>
                 <p>{{ ucfirst($lesson->type) }} লেসন - {{ $module->title }} মডিউল</p>
-                
+
                 <div class="lesson-meta">
-                    <div class="meta-badge info">
-                        <i class="fas fa-folder"></i>
-                        মডিউল: {{ $module->title }}
-                    </div>
-                    
                     @if($hasContent)
                         @if($contentStatus == 'published' || $contentStatus == 'active')
                             <div class="meta-badge success">
@@ -514,7 +509,7 @@
                             কন্টেন্ট নেই
                         </div>
                     @endif
-                    
+
                     @if($lesson->is_public)
                         <div class="meta-badge info">
                             <i class="fas fa-globe"></i>
@@ -566,52 +561,6 @@
                     </div>
                     <div class="checklist-text {{ $lesson->short_description ? 'complete' : '' }}">লেসন বিবরণ</div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Lesson Details Section -->
-    <div class="details-section">
-        <div class="section-header">
-            <i class="fas fa-info-circle"></i>
-            <h2>লেসনের তথ্য</h2>
-        </div>
-
-        <div class="form-grid">
-            <div class="form-field">
-                <label class="field-label">
-                    <i class="fas fa-tag"></i>
-                    লেসনের নাম
-                </label>
-                <input type="text" class="field-input" value="{{ $lesson->title }}" readonly>
-                <p class="field-help">এটি লেসনের শিরোনাম হিসেবে প্রদর্শিত হবে</p>
-            </div>
-
-            <div class="form-field">
-                <label class="field-label">
-                    <i class="fas fa-link"></i>
-                    URL Slug
-                </label>
-                <input type="text" class="field-input" value="{{ $lesson->slug }}" readonly>
-                <p class="field-help">URL-বান্ধব সংস্করণ</p>
-            </div>
-
-            <div class="form-field">
-                <label class="field-label">
-                    <i class="fas fa-folder"></i>
-                    মডিউলের নাম
-                </label>
-                <input type="text" class="field-input" value="{{ $module->title }}" readonly>
-                <p class="field-help">এই লেসনটি যে মডিউলে রয়েছে</p>
-            </div>
-
-            <div class="form-field">
-                <label class="field-label">
-                    <i class="fas fa-calendar"></i>
-                    তৈরির তারিখ
-                </label>
-                <input type="text" class="field-input" value="{{ $lesson->created_at->format('d M Y, h:i A') }}" readonly>
-                <p class="field-help">লেসন তৈরির সময়</p>
             </div>
         </div>
     </div>
@@ -668,25 +617,25 @@
     <!-- Action Buttons -->
     <div class="action-buttons-grid">
         @if ($lesson->type == 'audio')
-            <a href="{{ url('instructor/courses/create/'.$course->id.'/audio/'.$lesson->module_id.'/content/'.$lesson->id) }}" 
+            <a href="{{ url('instructor/courses/create/'.$course->id.'/audio/'.$lesson->module_id.'/content/'.$lesson->id) }}"
                class="btn-action btn-edit">
                 <i class="fas fa-edit"></i>
                 অডিও কন্টেন্ট সম্পাদনা
             </a>
         @elseif ($lesson->type == 'text')
-            <a href="{{ url('instructor/courses/create/'.$course->id.'/text/'.$lesson->module_id.'/content/'.$lesson->id) }}" 
+            <a href="{{ url('instructor/courses/create/'.$course->id.'/text/'.$lesson->module_id.'/content/'.$lesson->id) }}"
                class="btn-action btn-edit">
                 <i class="fas fa-edit"></i>
                 টেক্সট কন্টেন্ট সম্পাদনা
             </a>
         @elseif ($lesson->type == 'video')
-            <a href="{{ url('instructor/courses/create/'.$course->id.'/video/'.$lesson->module_id.'/content/'.$lesson->id) }}" 
+            <a href="{{ url('instructor/courses/create/'.$course->id.'/video/'.$lesson->module_id.'/content/'.$lesson->id) }}"
                class="btn-action btn-edit">
                 <i class="fas fa-edit"></i>
                 ভিডিও কন্টেন্ট সম্পাদনা
             </a>
         @endif
-         
+
         <a href="{{url('instructor/courses/create/'.$course->id.'/content')}}" class="btn-action btn-next">
             <i class="fas fa-arrow-right"></i>
             পরবর্তী ধাপ
@@ -697,5 +646,19 @@
 @endsection
 {{-- page content @E --}}
 
-@section('script') 
+@section('script')
+<script>
+function toggleTechnicalDetails() {
+    const details = document.getElementById('technicalDetails');
+    const toggle = document.getElementById('technicalToggle');
+
+    if (details.classList.contains('hidden')) {
+        details.classList.remove('hidden');
+        toggle.style.transform = 'rotate(180deg)';
+    } else {
+        details.classList.add('hidden');
+        toggle.style.transform = 'rotate(0deg)';
+    }
+}
+</script>
 @endsection

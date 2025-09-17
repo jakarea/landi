@@ -108,6 +108,39 @@
     </div>
 
     @if($enrollments->count() > 0)
+        <!-- Payment Verification Alert -->
+        <div class="bg-gradient-to-r from-yellow-600/20 to-orange-600/20 border-l-4 border-yellow-500 rounded-xl p-6 mb-6">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                    <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-yellow-400 font-bold text-lg mb-2">
+                        <i class="fas fa-credit-card mr-2"></i>পেমেন্ট যাচাই প্রয়োজন
+                    </h3>
+                    <p class="text-yellow-200 mb-4">
+                        নিচের তালিকায় {{ $enrollments->count() }}টি নতুন এনরোলমেন্ট রয়েছে যার পেমেন্ট যাচাই করা প্রয়োজন। প্রতিটি আবেদনের পেমেন্ট বিস্তারিত পরীক্ষা করে অনুমোদন/প্রত্যাখ্যান করুন।
+                    </p>
+                    <div class="flex flex-wrap gap-4 text-sm">
+                        <div class="flex items-center gap-2 text-yellow-300">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span>পেমেন্ট যাচাই করুন</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-yellow-300">
+                            <i class="fas fa-eye text-blue-400"></i>
+                            <span>ট্রানজেকশন আইডি দেখুন</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-yellow-300">
+                            <i class="fas fa-image text-purple-400"></i>
+                            <span>পেমেন্ট স্ক্রিনশট দেখুন</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Enrollments Table -->
         <div class="bg-card rounded-xl border border-[#fff]/20 overflow-hidden">
             <div class="overflow-x-auto">
@@ -212,12 +245,6 @@
                                             <i class="fas fa-check-circle"></i>
                                             <span class="hidden sm:inline">পেমেন্ট সহ অনুমোদন</span>
                                             <span class="sm:hidden">অনুমোদন</span>
-                                        </button>
-                                        <button onclick="showApproveModal({{ $enrollment->id }}, 'without_payment')"
-                                                class="btn-action flex items-center justify-center gap-2 px-3 py-2 bg-lime hover:bg-lime/80 text-primary rounded-lg text-xs font-semibold anim">
-                                            <i class="fas fa-gift"></i>
-                                            <span class="hidden sm:inline">ফ্রি অ্যাক্সেস</span>
-                                            <span class="sm:hidden">ফ্রি</span>
                                         </button>
                                         <button onclick="showRejectModal({{ $enrollment->id }})"
                                                 class="btn-action flex items-center justify-center gap-2 px-3 py-2 bg-orange hover:bg-orange/80 text-primary rounded-lg text-xs font-semibold anim">
@@ -396,7 +423,7 @@ function showApproveModal(enrollmentId, approveType = 'with_payment') {
     } else {
         form.action = `{{ url('/instructor/enrollments') }}/${enrollmentId}/approve`;
         freeAccessInfo.classList.add('hidden');
-        approveMessage.textContent = 'আপনি কি এই নথিভুক্তি অনুমোদন করতে চান? পেমেন্ট যাচাই করা হবে।';
+        approveMessage.innerHTML = '<div class="bg-blue-600/20 border border-blue-500/30 rounded-lg p-4 mb-4"><div class="flex items-center gap-3"><i class="fas fa-info-circle text-blue-400"></i><div><strong class="text-blue-300">পেমেন্ট যাচাই নিশ্চিত করুন:</strong><br><span class="text-blue-200">অনুমোদনের আগে অবশ্যই ট্রানজেকশন আইডি এবং পেমেন্ট স্ক্রিনশট যাচাই করুন।</span></div></div></div>আপনি কি এই নথিভুক্তি অনুমোদন করতে চান?';
     }
     
     document.getElementById('approveModal').classList.remove('hidden');

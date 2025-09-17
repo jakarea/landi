@@ -218,4 +218,35 @@ class StudentProfileController extends Controller
 
         return response()->json(['error' => 'No cover image uploaded'], 400);
     }
+
+    // Password setup for new users
+    public function setupPassword()
+    {
+        $user = Auth::user();
+
+        // Check if user already has a permanent password (created via normal registration)
+        if (!Str::startsWith($user->password, '$2y$')) {
+            // This means it's a temporary password, show setup form
+            return view('student.setup-password', compact('user'));
+        }
+
+        // If already has permanent password, redirect to dashboard
+        return redirect()->route('student.dashboard');
+    }
+
+    public function storePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|confirmed|min:6|string',
+        ]);
+
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Send welcome email
+        Mail::to($user->email)->send(new PasswordChanged($user));
+
+        return redirect()->route('student.dashboard')->with('success', 'আপনার পাসওয়ার্ড সফলভাবে সেট করা হয়েছে! এখন আপনি আপনার কোর্স অ্যাক্সেস করতে পারবেন।');
+    }
 }

@@ -818,25 +818,25 @@ input:checked + .slider:before {
     <div class="bg-card rounded-xl p-6 shadow-2">
         <div class="step-progress">
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">1</div>
                 <div class="step-title">
                     <a href="{{ route('instructor.courses.create.facts', ['id' => request()->route('id')]) }}">তথ্যাবলী</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">2</div>
                 <div class="step-title">
                     <a href="{{ route('instructor.courses.create.objectives', ['id' => request()->route('id')]) }}">উদ্দেশ্য</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">3</div>
                 <div class="step-title">
                     <a href="{{ route('instructor.courses.create.pricing', ['id' => request()->route('id')]) }}">মূল্য</a>
                 </div>
             </div>
             <div class="step-item completed">
-                <div class="step-circle"><i class="fas fa-check"></i></div>
+                <div class="step-circle">4</div>
                 <div class="step-title">
                     <a href="{{ route('instructor.courses.create.design', ['id' => request()->route('id')]) }}">ডিজাইন</a>
                 </div>
@@ -1361,7 +1361,6 @@ function updateModuleOrder(moduleOrder) {
             _token: "{{ csrf_token() }}"
         },
         success: function(response) {
-            console.log("Module reorder updated successfully");
             // Show success notification
             showNotification('মডিউলের ক্রম সফলভাবে আপডেট হয়েছে', 'success');
         },
@@ -1381,7 +1380,6 @@ function updateModuleLessonOrder(moduleLessonOrder) {
             _token: "{{ csrf_token() }}"
         },
         success: function(response) {
-            console.log("Module lesson reorder updated successfully");
             showNotification('লেসনের ক্রম সফলভাবে আপডেট হয়েছে', 'success');
         },
         error: function(xhr, status, error) {

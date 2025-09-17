@@ -288,7 +288,6 @@ $i = 0;
                 method: 'GET',
                 data: data,
                 success: function(response) {
-                    // console.log('response', response)
                 },
                 error: function(xhr, status, error) {
                     // Handle errors, if any

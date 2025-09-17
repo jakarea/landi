@@ -401,10 +401,8 @@ use Illuminate\Support\Str;
 @endpush
 
 <script>
-console.log('🟢 SCRIPT LOADED: Cover photo script is running!');
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('🔧 DOM loaded, initializing cover photo upload...');
     
     const coverImgOutput = document.getElementById('item-img-output');
     const uploadBtn = document.getElementById('uploadBtn');
@@ -413,13 +411,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const coverImgBase64 = document.getElementById('coverImgBase64');
     const coverImageInput = document.getElementById('coverImage');
     
-    console.log('📋 Element check:');
-    console.log('- coverImgOutput:', coverImgOutput);
-    console.log('- uploadBtn:', uploadBtn);
-    console.log('- cancelBtn:', cancelBtn);
-    console.log('- uploadActions:', uploadActions);
-    console.log('- coverImgBase64:', coverImgBase64);
-    console.log('- coverImageInput:', coverImageInput);
     
     if (!coverImageInput) {
         console.error('❌ CRITICAL: coverImageInput element not found!');
@@ -431,29 +422,20 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
     
-    console.log('✅ All critical elements found, setting up event listeners...');
 
     // Handle file selection
-    console.log('🔗 Adding change event listener to:', coverImageInput);
     coverImageInput.addEventListener('change', function(e) {
-        console.log('🎯 STEP 1: File input change event triggered');
-        console.log('Files selected:', e.target.files);
         
         const file = e.target.files[0];
         if (file) {
-            console.log('✅ STEP 2: File found:', file.name, 'Size:', file.size, 'Type:', file.type);
             
             const reader = new FileReader();
             reader.onload = function(e) {
-                console.log('✅ STEP 3: FileReader loaded successfully');
-                console.log('Base64 length:', e.target.result.length);
                 
                 // Show preview
                 if (coverImgOutput) {
-                    console.log('✅ STEP 4A: Updating existing image element');
                     coverImgOutput.src = e.target.result;
                 } else {
-                    console.log('✅ STEP 4B: Creating new image element');
                     // Create new img element if it doesn't exist
                     const newImg = document.createElement('img');
                     newImg.src = e.target.result;
@@ -464,54 +446,38 @@ document.addEventListener('DOMContentLoaded', function () {
                     
                     // Find the cover photo container and add the image
                     const coverContainer = document.querySelector('input[id="coverImage"]').closest('div');
-                    console.log('Cover container found:', coverContainer);
                     if (coverContainer) {
                         coverContainer.prepend(newImg);
-                        console.log('New image element created and added');
                     } else {
-                        console.log('❌ Could not find cover container');
                     }
                 }
                 
                 // Store base64 data
-                console.log('coverImgBase64 element:', coverImgBase64);
                 if (coverImgBase64) {
                     coverImgBase64.value = e.target.result;
-                    console.log('✅ STEP 5: Base64 data stored in hidden input');
                 } else {
-                    console.log('❌ STEP 5: coverImgBase64 element not found!');
                 }
                 
                 // Show action buttons
-                console.log('uploadActions element:', uploadActions);
                 if (uploadActions) {
                     uploadActions.classList.remove('hidden');
                     uploadActions.style.display = 'block';
-                    console.log('✅ STEP 6: Upload action buttons shown');
                 } else {
-                    console.log('❌ STEP 6: uploadActions element not found!');
                 }
             };
             
-            console.log('📖 Starting FileReader.readAsDataURL...');
             reader.readAsDataURL(file);
         } else {
-            console.log('❌ No file selected');
         }
     });
 
     // Handle upload button click
     uploadBtn.addEventListener('click', function () {
-        console.log('🔴 STEP 7: Upload button clicked');
         const fileBase64 = coverImgBase64.value;
-        console.log('Base64 data available:', fileBase64 ? 'YES' : 'NO');
-        console.log('Base64 length:', fileBase64.length);
         
         if (fileBase64) {
-            console.log('✅ STEP 8: Starting upload process...');
             uploadFile(fileBase64);
         } else {
-            console.log('❌ No base64 data available for upload');
         }
     });
 
@@ -522,29 +488,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to handle file upload
     function uploadFile(fileBase64) {
-        console.log('🚀 STEP 9: Upload function called');
         
         const currentURL = window.location.href;
         const baseUrl = currentURL.split('/').slice(0, 3).join('/');
-        console.log('Current URL:', currentURL);
-        console.log('Base URL:', baseUrl);
 
         const userId = "{{ $user->id }}";
         const requestData = {
             cover_photo: fileBase64,
             userId: userId,
         };
-        console.log('User ID:', userId);
-        console.log('Request data prepared (base64 length):', fileBase64.length);
 
         // Update button state
         uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>আপলোড হচ্ছে...';
         uploadBtn.disabled = true;
         cancelBtn.style.display = 'none';
-        console.log('✅ STEP 10: Button state updated to loading');
 
         const uploadURL = `${baseUrl}/student/profile/cover`;
-        console.log('📡 STEP 11: Making fetch request to:', uploadURL);
 
         fetch(uploadURL, {
             method: 'POST',
@@ -555,19 +514,12 @@ document.addEventListener('DOMContentLoaded', function () {
             },
         })
         .then(response => {
-            console.log('📥 STEP 12: Response received');
-            console.log('Response status:', response.status);
-            console.log('Response ok:', response.ok);
-            console.log('Response headers:', response.headers);
             
             return response.json();
         })
         .then(data => {
-            console.log('📊 STEP 13: Response data parsed');
-            console.log('Response data:', data);
             
             if (data.message === 'UPLOADED') {
-                console.log('✅ STEP 14: Upload successful!');
                 // Success
                 uploadBtn.innerHTML = '<i class="fas fa-check mr-2"></i>সফল হয়েছে';
                 uploadBtn.className = 'px-4 py-2 bg-green-500 text-white rounded-lg font-semibold';
@@ -580,17 +532,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     cancelBtn.style.display = 'block';
                     
                     showAlert('কভার ফটো সফলভাবে আপলোড হয়েছে!', 'success');
-                    console.log('✅ STEP 15: Success message shown, resetting UI');
                 }, 2000);
             } else {
-                console.log('❌ Upload failed - unexpected response:', data);
                 throw new Error('Upload failed - unexpected response: ' + JSON.stringify(data));
             }
         })
         .catch(error => {
-            console.log('❌ STEP ERROR: Upload failed');
-            console.log('Error:', error);
-            console.log('Error message:', error.message);
             
             uploadBtn.innerHTML = '<i class="fas fa-times mr-2"></i>ব্যর্থ';
             uploadBtn.className = 'px-4 py-2 bg-red-500 text-white rounded-lg font-semibold';

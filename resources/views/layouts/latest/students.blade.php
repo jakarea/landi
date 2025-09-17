@@ -77,9 +77,15 @@
     </style>
 
     @yield('seo')
+
+    {{-- Marketing Tracking Codes --}}
+    @include('partials.tracking-codes')
 </head>
 
 <body class="bg-body {{ session('darkModePreference') == 'dark-mode' ? 'dark-mode' : '' }}">
+
+    {{-- Marketing Tracking Codes (Body) --}}
+    @include('partials.tracking-codes-body')
 
     {{-- Main Root Wrapper @S --}}
 
@@ -168,12 +174,10 @@
         // Define dark mode functions
         function darkFunction() {
             // Dark mode specific functionality
-            console.log('Dark mode activated');
         }
         
         function lightFunction() {
             // Light mode specific functionality  
-            console.log('Light mode activated');
         }
         
         modeBttn.addEventListener('change', toggleMode);

@@ -665,18 +665,15 @@ $(document).ready(function () {
     // // Presence channel events
     // channel.bind('pusher:subscription_succeeded', function(members) {
     //     members.each(function(member) {
-    //         console.log('User online:', member.id);
     //         // Update your UI to show online users
     //     });
     // });
 
     // channel.bind('pusher:member_added', function(member) {
-    //     console.log('User online:', member.id);
     //     // Update your UI to show online users
     // });
 
     // channel.bind('pusher:member_removed', function(member) {
-    //     console.log('User offline:', member.id);
     //     // Update your UI to show offline users
     // });
 
@@ -865,10 +862,8 @@ $(document).ready(function () {
 
             receiver_id = data.from;
 
-            console.log(my_id +"="+ data.from)
 
 
-            console.log(my_id +"="+ data.to)
 
 
             if (my_id == data.from) {
@@ -896,7 +891,6 @@ $(document).ready(function () {
 // Send one to one chate
 
 $(document).on('keydown', '#chat-message-input', function (e) {
-    console.log(e)
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         insertData();
@@ -1124,7 +1118,6 @@ function createGroup(formSelector) {
             $("#chat-user-load").load(location.href + " #chat-user-load>*", "");
             fetchGroupData(data.groupId);
 
-            console.log( existsUsers )
         },
         error: function (jqXHR, status, err) {
             toastr.error('Something went wrong!', 'Error');
@@ -1192,7 +1185,6 @@ $(document).ready(function() {
         // userList.classList.remove('active');
         headerFilter.classList.remove('active');
         collapseExamples.classList.remove('show');
-        console.log(collapseExamples.classList);
     }
 
     groupCancelBttn.addEventListener('click', function (e) {
