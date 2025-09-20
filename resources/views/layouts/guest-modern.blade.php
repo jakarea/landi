@@ -47,13 +47,8 @@
     {{-- Marketing Tracking Codes (Body) --}}
     @include('partials.tracking-codes-body')
 
-    {{-- Header --}}
-    @include('partials.guest.header-modern')
-
-    {{-- Main Content --}}
-    <main>
-        @yield('content')
-    </main>
+    {{-- Main Content --}} 
+        @yield('content') 
 
     {{-- Footer --}}
     @include('partials.guest.footer')
