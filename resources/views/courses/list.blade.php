@@ -176,8 +176,8 @@
 
                                     @if ($course->short_description)
                                         <div
-                                            class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[90%] mt-4">
-                                            {!! \Illuminate\Support\Str::limit($course->short_description, 110) !!}
+                                            class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[90%] mt-2">
+                                            {!! \Illuminate\Support\Str::limit($course->short_description, 100) !!}
                                         </div>
                                     @endif
                                 </div>
