@@ -170,6 +170,33 @@
         .animate-pulse {
             animation: pulse 2s ease-in-out infinite;
         }
+
+        .scroll-button {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
+        }
+
+        /* Hidden state */
+        .scroll-button.opacity-0 {
+            opacity: 0;
+            transform: translateY(16px);
+            pointer-events: none;
+        }
+
+        /* Visible state */
+        .scroll-button.opacity-100 {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Enhanced hover effect when visible */
+        .scroll-button.opacity-100:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow:
+                0 8px 25px rgba(232, 80, 255, 0.3),
+                0 4px 15px rgba(73, 65, 200, 0.2);
+        }
     </style>
 
     <title>আব্দুর রউফ</title>
@@ -182,12 +209,12 @@
 
     {{-- cta sticky --}}
     <div class="fixed right-6 bottom-10 z-50 hidden lg:inline-block">
-        <a href="#"
-            class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-primary gap-x-3 anim
+        <button id="scroll-button" type="button" onclick="scrollToEnrollmentForm(); return false;"
+            class="inline-flex font-golos justify-center items-center bg-cta rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-primary gap-x-3 anim opacity-0
                !bg-lime md:text-base px-3 lg:text-lg
                 hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5">
             এখনই ভর্তি হোন
-        </a>
+        </button>
     </div>
 
     {{-- Marketing Tracking Codes (Body) --}}
@@ -230,7 +257,8 @@
                             ২৫</h1>
                         <h2 class="font-bold text-[28px] leading-[110%] text-[#fff] lg:text-[40px]">Ai অ্যাডভার্টাইজিং
                             <span class="text-gradient">বুটক্যাম্প -
-                                ২৫</span> </h2>
+                                ২৫</span>
+                        </h2>
                         <h3 class="text-[#ABABAB] mt-2 font-medium text-sm lg:text-base">৩ দিনের অনলাইন লাইভ ওয়ার্কশপ |
                             প্রশিক্ষক: আব্দুর
                             রউফ
@@ -300,7 +328,8 @@
                 </div>
 
                 <h2 class="font-bold text-2xl text-[#fff] mt-3 mb-3 lg:text-[32px]">এক নজরে আমাদের Ai অ্যাডভার্টাইজিং
-                    <span class="text-gradient">বুটক্যাম্প-২৫</span></h2>
+                    <span class="text-gradient">বুটক্যাম্প-২৫</span>
+                </h2>
                 <p class="common-para text-secondary-200">এই কোর্সে যা যা থাকছে</p>
             </div>
             <!-- common title end -->
@@ -1955,6 +1984,48 @@
                 field.style.borderColor = '';
             }
         }
+    </script>
+
+    {{-- cta button show/hide --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollButton = document.getElementById('scroll-button');
+
+            if (scrollButton) {
+                // Initial state - hidden
+                scrollButton.classList.add('opacity-0', 'translate-y-4');
+
+                let ticking = false;
+
+                function updateButtonVisibility() {
+                    const scrollY = window.scrollY;
+                    const triggerPoint = 500; // Trigger at 200px
+
+                    if (scrollY > triggerPoint) {
+                        // Show button with fade in
+                        scrollButton.classList.remove('opacity-0', 'translate-y-4');
+                        scrollButton.classList.add('opacity-100', 'translate-y-0');
+                    } else {
+                        // Hide button with fade out
+                        scrollButton.classList.remove('opacity-100', 'translate-y-0');
+                        scrollButton.classList.add('opacity-0', 'translate-y-4');
+                    }
+
+                    ticking = false;
+                }
+
+                // Throttle scroll events for better performance
+                window.addEventListener('scroll', function() {
+                    if (!ticking) {
+                        requestAnimationFrame(updateButtonVisibility);
+                        ticking = true;
+                    }
+                });
+
+                // Initial check
+                updateButtonVisibility();
+            }
+        });
     </script>
 
     <!-- Video Modal -->

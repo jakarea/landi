@@ -570,6 +570,70 @@ border: 1px solid #4a41c87a;
 
 }
 
+.bg-cta{
+  /* Base gradient */
+    background: linear-gradient(99.12deg, 
+        rgba(232, 80, 255, 0.6) 2.73%, 
+        rgba(0, 0, 0, 0) 47.04%, 
+        rgba(0, 0, 0, 0) 47.04%, 
+        rgba(73, 65, 200, 0.6) 91.34%);
+    
+    /* Fallback background color */
+    background-color: #CBFB90;
+    
+    /* Animation properties */
+    background-size: 400% 400%;
+    animation: gradientShimmer 3s ease-in-out infinite;
+    
+    /* Smooth transition for hover */
+    transition: all 0.3s ease;
+}
+
+/* Shimmer/Shaking Animation - Left to Right */
+@keyframes gradientShimmer {
+    0% {
+        background-position: 0% 50%;
+        filter: hue-rotate(0deg) brightness(1);
+    }
+    25% {
+        background-position: 100% 50%;
+        filter: hue-rotate(10deg) brightness(1.05);
+    }
+    50% {
+        background-position: 100% 100%;
+        filter: hue-rotate(20deg) brightness(1.1);
+    }
+    75% {
+        background-position: 0% 100%;
+        filter: hue-rotate(10deg) brightness(1.05);
+    }
+    100% {
+        background-position: 0% 50%;
+        filter: hue-rotate(0deg) brightness(1);
+    }
+}
+
+/* Hover state - Enhanced shimmer */
+.bg-cta:hover {
+    background-size: 500% 500%;
+    animation-duration: 1.5s;
+    filter: brightness(1.1) saturate(1.2);
+    transform: translateX(2px);
+    box-shadow: 
+        0 4px 15px rgba(232, 80, 255, 0.4),
+        0 8px 25px rgba(73, 65, 200, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Active state */
+.bg-cta:active {
+    animation-duration: 0.5s;
+    transform: translateX(1px) scale(0.98);
+    box-shadow: 
+        0 2px 8px rgba(232, 80, 255, 0.3),
+        0 4px 12px rgba(73, 65, 200, 0.2);
+}
+
 @layer components {
   .white-70{
     @apply text-[#fff]/70;
