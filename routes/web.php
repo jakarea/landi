@@ -42,6 +42,7 @@ Route::get('/', [HomepageController::class, 'homepage'])->name('home');
 // ========================================
 
 Route::get('/courses/', [CourseController::class, 'publicIndex'])->name('courses');
+Route::get('/fun-app/', [CourseController::class, 'funApp'])->name('fun.app');
 Route::get('/courses/{slug}/', [CourseController::class, 'publicOverview'])->name('courses.overview');
 
 // Course enrollment routes

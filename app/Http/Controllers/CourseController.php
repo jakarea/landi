@@ -484,6 +484,11 @@ class CourseController extends Controller
         return view('courses.list', compact('title', 'courses', 'categories', 'levels', 'search', 'category', 'level', 'sort'));
     }
 
+    public function funApp()
+    {
+        return view('fun.app');
+    }
+
 
     public function publicOverview($slug)
     {
