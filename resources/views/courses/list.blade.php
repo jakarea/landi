@@ -10,10 +10,7 @@
     <section class="w-full pb-1 lg:pb-10 relative">
 
         {{-- Header --}}
-        @include('partials.guest.header-modern')
-
-        <img src="{{ asset('images/hero-ellipse.svg') }}" alt="ellipse"
-            class="absolute left-0 top-0 lg:h-full lg:object-contain"> <!-- hero ellipse -->
+        @include('partials.guest.header-modern') 
         <div class="container-x">
             <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
                 <h1
@@ -47,6 +44,77 @@
             </div>
 
         </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section pt-10 lg:pt-20">
+            <div class="container-x">
+                <div class="w-full">
+                    <form method="GET" action="{{ route('courses') }}" class="filter-form relative z-40">
+                        <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-y-4">
+                            <div class="w-full flex gap-x-5 items-center lg:col-span-4">
+                                <label for="search" class="text-[#fff] text-sm lg:text-base font-normal min-w-[15%]">কোর্স
+                                    খুঁজুন</label>
+                                <input type="text"
+                                    class="text-[#fff] border border-[#fff]/20 rounded-md px-3 py-2 font-normal text-sm min-w-[72%] lg:min-w-[68%]"
+                                    id="search" name="search" value="{{ $search }}"
+                                    placeholder="কোর্সের নাম লিখুন...">
+                            </div>
+
+                            <div class="w-full flex gap-x-5 items-center lg:col-span-3">
+                                <label for="category"
+                                    class="text-[#fff] text-sm lg:text-base font-normal min-w-[15%]">বিভাগ</label>
+                                <select
+                                    class="text-[#fff] border border-[#fff]/20 rounded-md px-3 py-2 font-normal text-sm min-w-[72%] lg:min-w-[70%]"
+                                    id="category" name="category">
+                                    <option value="">সকল বিভাগ</option>
+                                    @foreach ($categories as $cat)
+                                        <option value="{{ $cat }}" {{ $category == $cat ? 'selected' : '' }}>
+                                            {{ $cat }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="w-full flex gap-x-5 items-center lg:col-span-3">
+                                <label for="sort"
+                                    class="text-[#fff] text-sm lg:text-base font-normal min-w-[15%]">সাজান</label>
+                                <select
+                                    class="text-[#fff] border border-[#fff]/20 rounded-md px-3 py-2 font-normal text-sm min-w-[72%] lg:min-w-[80%]"
+                                    id="sort" name="sort">
+                                    <option value="latest" {{ $sort == 'latest' ? 'selected' : '' }}>নতুন</option>
+                                    <option value="popular" {{ $sort == 'popular' ? 'selected' : '' }}>জনপ্রিয়</option>
+                                    <option value="price_asc" {{ $sort == 'price_asc' ? 'selected' : '' }}>দাম (কম-বেশি)
+                                    </option>
+                                    <option value="price_desc" {{ $sort == 'price_desc' ? 'selected' : '' }}>দাম (বেশি-কম)
+                                    </option>
+                                    <option value="title_asc" {{ $sort == 'title_asc' ? 'selected' : '' }}>নাম (ক-য)
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="w-full lg:col-span-2">
+                                <div class="flex gap-x-3 items-center justify-center lg:justify-end">
+                                    <button type="submit"
+                                        class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
+               hover:!bg-lime md:text-base px-3 lg:text-lg cursor-pointer
+                hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-2 lg:px-4">
+                                        <i class="fas fa-search"></i>
+                                        খুঁজুন
+                                    </button>
+                                    @if ($search || $category || $sort != 'latest')
+                                        <a href="{{ route('courses') }}"
+                                            class="block font-normal text-sm lg:text-lg text-[#fff] anim hover:text-[#fff] underline">
+                                            Clear
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </section>
     <!-- hero section end -->
 
@@ -56,74 +124,7 @@
     </div>
     <!-- border line -->
 
-    <!-- Filter Section -->
-    <section class="filter-section pt-10 lg:pt-20">
-        <div class="container-x">
-            <div class="w-full">
-                <form method="GET" action="{{ route('courses') }}" class="filter-form relative z-40">
-                    <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-y-4">
-                        <div class="w-full flex gap-x-5 items-center lg:col-span-4">
-                            <label for="search" class="text-[#fff] text-sm lg:text-base font-normal min-w-[15%]">কোর্স
-                                খুঁজুন</label>
-                            <input type="text"
-                                class="text-[#fff] border border-[#fff]/20 rounded-md px-3 py-2 font-normal text-sm min-w-[72%] lg:min-w-[68%]"
-                                id="search" name="search" value="{{ $search }}"
-                                placeholder="কোর্সের নাম লিখুন...">
-                        </div>
 
-                        <div class="w-full flex gap-x-5 items-center lg:col-span-3">
-                            <label for="category"
-                                class="text-[#fff] text-sm lg:text-base font-normal min-w-[15%]">বিভাগ</label>
-                            <select
-                                class="text-[#fff] border border-[#fff]/20 rounded-md px-3 py-2 font-normal text-sm min-w-[72%] lg:min-w-[70%]"
-                                id="category" name="category">
-                                <option value="">সকল বিভাগ</option>
-                                @foreach ($categories as $cat)
-                                    <option value="{{ $cat }}" {{ $category == $cat ? 'selected' : '' }}>
-                                        {{ $cat }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="w-full flex gap-x-5 items-center lg:col-span-3">
-                            <label for="sort"
-                                class="text-[#fff] text-sm lg:text-base font-normal min-w-[15%]">সাজান</label>
-                            <select
-                                class="text-[#fff] border border-[#fff]/20 rounded-md px-3 py-2 font-normal text-sm min-w-[72%] lg:min-w-[80%]"
-                                id="sort" name="sort">
-                                <option value="latest" {{ $sort == 'latest' ? 'selected' : '' }}>নতুন</option>
-                                <option value="popular" {{ $sort == 'popular' ? 'selected' : '' }}>জনপ্রিয়</option>
-                                <option value="price_asc" {{ $sort == 'price_asc' ? 'selected' : '' }}>দাম (কম-বেশি)
-                                </option>
-                                <option value="price_desc" {{ $sort == 'price_desc' ? 'selected' : '' }}>দাম (বেশি-কম)
-                                </option>
-                                <option value="title_asc" {{ $sort == 'title_asc' ? 'selected' : '' }}>নাম (ক-য)</option>
-                            </select>
-                        </div>
-
-                        <div class="w-full lg:col-span-2">
-                            <div class="flex gap-x-3 items-center justify-center lg:justify-end">
-                                <button type="submit"
-                                    class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
-               hover:!bg-lime md:text-base px-3 lg:text-lg cursor-pointer
-                hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-2 lg:px-4">
-                                    <i class="fas fa-search"></i>
-                                    খুঁজুন
-                                </button>
-                                @if ($search || $category || $sort != 'latest')
-                                    <a href="{{ route('courses') }}"
-                                        class="block font-normal text-sm lg:text-lg text-[#fff] anim hover:text-[#fff] underline">
-                                        Clear
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
 
     <!-- our courses section start -->
     <section class="w-full py-10 lg:py-20">
@@ -145,11 +146,11 @@
                                     @endif
 
                                     @if ($course->enrolled_count > 0)
-                                    <p
-                                        class="rounded-full py-1 px-2 text-[#000] bg-lime text-xs font-normal h-5 flex justify-center items-center">
-                                        {{ $course->enrolled_count ?? 0 }} এনরোল
-                                    </p>
-                                     @endif
+                                        <p
+                                            class="rounded-full py-1 px-2 text-[#000] bg-lime text-xs font-normal h-5 flex justify-center items-center">
+                                            {{ $course->enrolled_count ?? 0 }} এনরোল
+                                        </p>
+                                    @endif
                                     {{-- offer badge --}}
                                     @if ($course->offer_price && $course->price > $course->offer_price)
                                         @php

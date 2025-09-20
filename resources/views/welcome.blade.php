@@ -12,8 +12,7 @@
         {{-- Header --}}
         @include('partials.guest.header-modern')
 
-        <img src="{{ asset('images/hero-ellipse.svg') }}" alt="ellipse"
-            class="absolute left-0 top-0 lg:h-full lg:object-contain"> <!-- hero ellipse -->
+        
         <div class="container-x">
             <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
                 <h1
@@ -333,7 +332,7 @@
                 <!-- line -->
                 <div class="hidden lg:block bg-[#232323] w-[2px] h-full absolute left-[50%] top-0 translate-x-[-50%]">
                 </div>
-                <div id="scrolling-line" class="hidden lg:block bg-gradient-to-b from-transparent via-[#E850FF] to-[#4941C8] w-[2px] absolute left-[50%] top-0 translate-x-[-50%]" style="height: 0;">
+                <div id="scrolling-line" class="hidden lg:block bg-gradient-to-b from-transparent via-[#E850FF] to-[#4941C8] w-[2px] absolute left-[50%] top-0 translate-x-[-50%] shadow-2xl" style="height: 0;">
                 </div>
                 <!-- line -->
 
