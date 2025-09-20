@@ -122,9 +122,7 @@
     <div class="container-x">
         <img src="{{ asset('images/line.svg') }}" alt="line" class="w-full mx-auto">
     </div>
-    <!-- border line -->
-
-
+    <!-- border line --> 
 
     <!-- our courses section start -->
     <section class="w-full py-10 lg:py-20">

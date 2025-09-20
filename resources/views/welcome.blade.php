@@ -333,6 +333,7 @@
                 <div class="hidden lg:block bg-[#232323] w-[2px] h-full absolute left-[50%] top-0 translate-x-[-50%]">
                 </div>
                 <div id="scrolling-line" class="hidden lg:block bg-gradient-to-b from-transparent via-[#E850FF] to-[#4941C8] w-[2px] absolute left-[50%] top-0 translate-x-[-50%] shadow-2xl" style="height: 0;">
+ 
                 </div>
                 <!-- line -->
 
@@ -469,94 +470,108 @@
                     </a>
                 </div>
             </div>
-            <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-5 lg: gap-x-6 items-center">
-                {{-- card --}}
-                <div class="w-full p-5 lg:p-[30px] rounded-lg lg:rounded-[20px] bg-[#131620] anim hover:mt-10">
-                    <div class="w-full">
-                        <img src="{{ asset('images/home/course-01.png') }}" alt="course"
-                            class="w-full rounded-[10px] h-[160px] object-cover">
-                    </div>
+            @if ($latestCourses->count() > 0)
+                <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-5 lg: gap-x-6">
+                    @foreach ($latestCourses->slice(0,3) as $course)
+                        {{-- card --}}
+                        <div
+                            class="w-full p-5 lg:p-[30px] border-[2px] !border-primary rounded-lg lg:rounded-[20px] bg-[#131620] anim effect-card relative flex flex-col justify-between">
+                            <div class="w-full">
 
-                    <div class="mt-10 lg:mt-[60px]">
-                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">AI
-                            Bootcamp - 2025</h5>
-                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">এআই ব্যবহার
-                            করে ইউনিক ভিজ্যুয়াল, ফেস এডিটিং, অ্যাড ডিজাইন ও প্রফেশনাল গ্রাফিক্স তৈরি করা শেখুন।</p>
+                                <div class="absolute right-3 top-1.5 lg:top-2.5 z-30 flex items-center gap-x-2">
+                                    @if ($course->review_count > 0)
+                                        <p
+                                            class="rounded-full py-1 px-2 text-[#000] bg-orange text-xs font-normal h-5 flex justify-center items-center">
+                                            {{ $course->review_count ?? 0 }} রিভিউ
+                                        </p>
+                                    @endif
 
-                        <div class="flex mt-5 lg:mt-[30px] justify-between items-center">
-                            <a href="#"
-                                class="block font-medium text-[#ABABAB] text-sm anim hover:text-[#E2E8F0] hover:underline">এখনই
-                                এনরোল করুন</a>
-                            <a href="#" class="group block">
-                                <svg class="w-5 text-[#ABABAB] group-hover:text-[#E850FF]" viewBox="0 0 25 16"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M18 14L22.9393 9.06066C23.5251 8.47487 23.5251 7.52513 22.9393 6.93934L18 2M22.5 8L1.5 8"
-                                        stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
-                                </svg>
-                            </a>
+                                    @if ($course->enrolled_count > 0)
+                                        <p
+                                            class="rounded-full py-1 px-2 text-[#000] bg-lime text-xs font-normal h-5 flex justify-center items-center">
+                                            {{ $course->enrolled_count ?? 0 }} এনরোল
+                                        </p>
+                                    @endif
+                                    {{-- offer badge --}}
+                                    @if ($course->offer_price && $course->price > $course->offer_price)
+                                        @php
+                                            $discount = round(
+                                                (($course->price - $course->offer_price) / $course->price) * 100,
+                                            );
+                                        @endphp
+                                        <p
+                                            class="rounded-full py-1 px-2 text-[#fff] bg-line text-xs font-normal h-5 flex justify-center items-center">
+                                            {{ $discount }}% ছাড়</p>
+                                    @endif
+                                    {{-- offer badge --}}
+                                </div>
+                                <div class="w-full h-[220px] relative pt-3">
+                                    <img src="{{ $course->thumbnail ? asset($course->thumbnail) : asset('assets/images/default-course.jpg') }}"
+                                        alt="{{ $course->title }}" class="w-full rounded-[10px] h-full object-cover">
+
+                                </div>
+
+                                <div class="mt-5 lg:mt-10 relative z-40">
+                                    <a href="{{ route('courses.overview', $course->slug) }}"
+                                        class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">
+                                        {{ $course->title }}</a>
+
+                                    @if ($course->short_description)
+                                        <div
+                                            class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[90%] mt-2">
+                                            {!! \Illuminate\Support\Str::limit($course->short_description, 100) !!}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
+
+                            <div class="mt-5 w-full relative z-40">
+
+                                @if ($course->offer_price && $course->price > $course->offer_price)
+                                    <div class="flex items-center gap-x-2">
+                                        <span
+                                            class="price-current text-orange text-base lg:text-lg">৳{{ number_format($course->offer_price) }}</span>
+                                        <span class=" text-[#fff]/50 line-through">৳{{ number_format($course->price) }}</s>
+                                    </div>
+                                @else
+                                    <span class="price-current text-[#fff]">
+                                        {{ $course->price > 0 ? '৳' . number_format($course->price) : 'ফ্রি' }}
+                                    </span>
+                                @endif
+
+                                <div class="flex lg:mt-[10px] justify-between items-center">
+                                    <a href="#"
+                                        class="block font-medium text-[#ABABAB] text-sm anim hover:text-[#E2E8F0] hover:underline">এখনই
+                                        এনরোল করুন
+                                    </a>
+                                    <a href="{{ route('courses.overview', $course->slug) }}" class="group block">
+                                        <svg class="w-5 text-[#ABABAB] group-hover:text-[#E850FF]" viewBox="0 0 25 16"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M18 14L22.9393 9.06066C23.5251 8.47487 23.5251 7.52513 22.9393 6.93934L18 2M22.5 8L1.5 8"
+                                                stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
+                    @endforeach
+                </div> 
+            @else
+                <div class="flex justify-center items-center flex-col">
+                    <i class="fas fa-search"></i>
+                    <h3 class="text-[#fff] font-semibold text-2xl">কোনো কোর্স পাওয়া যায়নি!</h3>
+                    <p class="text-[#fff]/40">আপনার অনুসন্ধানের সাথে মিল রয়েছে এমন কোনো কোর্স খুঁজে পাওয়া যায়নি।</p>
+                    @if ($search || $category)
+                        <a href="{{ route('courses') }}" class="text-[#fff] mt-3 lg:mt-5 font-medium underline">
+                            <i class="fas fa-refresh"></i>
+                            সব কোর্স দেখুন
+                        </a>
+                    @endif
                 </div>
-
-                {{-- card --}}
-                <div class="w-full p-5 lg:p-[30px] rounded-lg lg:rounded-[20px] bg-[#131620] anim hover:mt-10">
-                    <div class="w-full">
-                        <img src="{{ asset('images/home/course-02.png') }}" alt="course 2"
-                            class="w-full rounded-[10px] h-[160px] object-cover">
-                    </div>
-
-                    <div class="mt-10 lg:mt-[60px]">
-                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">Social
-                            Media Content with AI</h5>
-                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">এআই টুলস
-                            ব্যবহার করে ফেসবুক, ইনস্টাগ্রাম, ইউটিউবের জন্য ক্রিয়েটিভ কনটেন্ট তৈরি এবং অপটিমাইজ করুন।</p>
-
-                        <div class="flex mt-5 lg:mt-[30px] justify-between items-center">
-                            <a href="#"
-                                class="block font-medium text-[#ABABAB] text-sm anim hover:text-[#E2E8F0] hover:underline">এখনই
-                                এনরোল করুন</a>
-                            <a href="#" class="group block">
-                                <svg class="w-5 text-[#ABABAB] group-hover:text-[#E850FF]" viewBox="0 0 25 16"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M18 14L22.9393 9.06066C23.5251 8.47487 23.5251 7.52513 22.9393 6.93934L18 2M22.5 8L1.5 8"
-                                        stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- card --}}
-                <div class="w-full p-5 lg:p-[30px] rounded-lg lg:rounded-[20px] bg-[#131620] anim hover:mt-10">
-                    <div class="w-full">
-                        <img src="{{ asset('images/home/course-03.png') }}" alt="course 3"
-                            class="w-full rounded-[10px] h-[160px] object-cover">
-                    </div>
-
-                    <div class="mt-10 lg:mt-[60px]">
-                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">Hands-on
-                            AI Projects</h5>
-                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">১৫+ বাস্তব
-                            প্রজেক্টে কাজ করে প্রফেশনাল অভিজ্ঞতা অর্জন এবং পোর্টফোলিও তৈরি করা।</p>
-
-                        <div class="flex mt-5 lg:mt-[30px] justify-between items-center">
-                            <a href="#"
-                                class="block font-medium text-[#ABABAB] text-sm anim hover:text-[#E2E8F0] hover:underline">এখনই
-                                এনরোল করুন</a>
-                            <a href="#" class="group block">
-                                <svg class="w-5 text-[#ABABAB] group-hover:text-[#E850FF]" viewBox="0 0 25 16"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M18 14L22.9393 9.06066C23.5251 8.47487 23.5251 7.52513 22.9393 6.93934L18 2M22.5 8L1.5 8"
-                                        stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
     </section>
     <!-- our courses section end -->
