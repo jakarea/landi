@@ -1,11 +1,17 @@
-@extends('layouts.guest-modern')
+<!-- @extends('layouts.guest-modern') -->
 
 @section('title', 'আব্দুর রউফ - AI Creative Training Platform')
-@section('description', 'বাংলাদেশের শীর্ষ এআই ক্রিয়েটিভ ট্রেনিং প্ল্যাটফর্ম। মাত্র ৩ দিনে আয়ত্ত করুন AI ইমেজ, ভিডিও ও মিউজিক জেনারেশন।')
+@section('description',
+    'বাংলাদেশের শীর্ষ এআই ক্রিয়েটিভ ট্রেনিং প্ল্যাটফর্ম। মাত্র ৩ দিনে আয়ত্ত করুন AI ইমেজ, ভিডিও ও
+    মিউজিক জেনারেশন।')
 
 @section('content')
     <!-- hero section start -->
     <section class="w-full pb-1 lg:pb-10 relative min-h-[600px]">
+
+        {{-- Header --}}
+        @include('partials.guest.header-modern')
+
         <img src="{{ asset('images/hero-ellipse.svg') }}" alt="ellipse"
             class="absolute left-0 top-0 lg:h-full lg:object-contain"> <!-- hero ellipse -->
         <div class="container-x">
@@ -25,7 +31,8 @@
 
                 <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
                     <li>
-                        <a href="#" class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
+                        <a href="#"
+                            class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
                hover:!bg-lime md:text-base px-3 lg:text-lg
                 hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5">
                             এখনই ভর্তি হোন
@@ -55,20 +62,21 @@
                                     d="M5.5 17.4347C5.5 16.5743 6.04085 15.8068 6.85109 15.5175V15.5175C10.504 14.2128 14.496 14.2128 18.1489 15.5175V15.5175C18.9591 15.8068 19.5 16.5743 19.5 17.4347V18.7502C19.5 19.9376 18.4483 20.8498 17.2728 20.6818L16.3184 20.5455C13.7856 20.1837 11.2144 20.1837 8.68162 20.5455L7.72721 20.6818C6.5517 20.8498 5.5 19.9376 5.5 18.7502V17.4347Z"
                                     stroke="url(#paint1_linear_404_6825)" stroke-width="1.5" />
                                 <defs>
-                                    <linearGradient id="paint0_linear_404_6825" x1="4" y1="0" x2="4" y2="8"
-                                        gradientUnits="userSpaceOnUse">
+                                    <linearGradient id="paint0_linear_404_6825" x1="4" y1="0" x2="4"
+                                        y2="8" gradientUnits="userSpaceOnUse">
                                         <stop stop-color="#E850FF" />
                                         <stop offset="1" stop-color="#4941C8" />
                                     </linearGradient>
-                                    <linearGradient id="paint1_linear_404_6825" x1="12.5" y1="13.5" x2="12.5" y2="21"
-                                        gradientUnits="userSpaceOnUse">
+                                    <linearGradient id="paint1_linear_404_6825" x1="12.5" y1="13.5" x2="12.5"
+                                        y2="21" gradientUnits="userSpaceOnUse">
                                         <stop stop-color="#E850FF" />
                                         <stop offset="1" stop-color="#4941C8" />
                                     </linearGradient>
                                 </defs>
                             </svg>
 
-                            আপনার কোর্স ইন্সট্রাক্টর</h6>
+                            আপনার কোর্স ইন্সট্রাক্টর
+                        </h6>
                     </div>
                     <div class="w-full my-2 lg:my-2.5">
                         <img src="{{ asset('images/instructor.png') }}" alt="speking person"
@@ -112,7 +120,8 @@
                                 class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
                                 <img src="{{ asset('images/icons/ai.svg') }}" alt="ai">
 
-                                তার এআই ক্রিয়েশন</h6>
+                                তার এআই ক্রিয়েশন
+                            </h6>
                         </div>
                         <div class="w-full mt-2 lg:mt-2.5 grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-2.5">
                             <img src="{{ asset('images/project-07.png') }}" alt="speking person"
@@ -164,13 +173,14 @@
                             class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
                             <img src="{{ asset('images/icons/ai.svg') }}" alt="ai">
 
-                            তার এআই ক্রিয়েশন</h6>
+                            তার এআই ক্রিয়েশন
+                        </h6>
                     </div>
                 </div>
             </div>
 
             <div class="w-full relative z-[99] mt-3 lg:mt-5 ">
-                <ul class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 justify-center lg:gap-x-6 w-full">
+                <ul class="flex flex-col items-center lg:flex-row gap-y-4 lg:gap-y-0 justify-center lg:gap-x-6 w-full">
                     <li>
                         <a href="#"
                             class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
@@ -226,8 +236,7 @@
 
             <!-- feat card -->
             <div class="w-full grid grid-cols-1 gap-y-5 md:grid-cols-2 gap-5 lg:grid-cols-3 lg:gap-x-6">
-                <div
-                    class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
+                <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
                     <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
                         class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
 
@@ -235,7 +244,8 @@
                         class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
                         <div
                             class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-01.svg') }}" alt="icons 1" class="w-6 md:w-8 lg:w-10">
+                            <img src="{{ asset('images/icons/b-camp-01.svg') }}" alt="icons 1"
+                                class="w-6 md:w-8 lg:w-10">
                             <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 1"
                                 class="w-[86%] absolute left-1 top-4">
                         </div>
@@ -248,8 +258,7 @@
                             প্রম্পট থেকে ভিজ্যুয়াল, পোস্টার, ক্যারেক্টার ডিজাইন ও ফেস এডিট শিখুন।</p>
                     </div>
                 </div>
-                <div
-                    class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
+                <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
                     <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
                         class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
 
@@ -257,7 +266,8 @@
                         class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
                         <div
                             class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-02.svg') }}" alt="icons 2" class="w-6 md:w-8 lg:w-10">
+                            <img src="{{ asset('images/icons/b-camp-02.svg') }}" alt="icons 2"
+                                class="w-6 md:w-8 lg:w-10">
                             <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 2"
                                 class="w-[86%] absolute left-1 top-4">
                         </div>
@@ -270,8 +280,7 @@
                             টেক্সট/ইমেজ থেকে ভিডিও, লিপ-সিঙ্ক, ভয়েস ও ইফেক্টসহ বিজ্ঞাপন ও শর্টস তৈরি করুন।</p>
                     </div>
                 </div>
-                <div
-                    class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
+                <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
                     <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
                         class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
 
@@ -279,7 +288,8 @@
                         class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
                         <div
                             class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-03.svg') }}" alt="icons 3" class="w-6 md:w-8 lg:w-10">
+                            <img src="{{ asset('images/icons/b-camp-03.svg') }}" alt="icons 3"
+                                class="w-6 md:w-8 lg:w-10">
                             <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 3"
                                 class="w-[86%] absolute left-1 top-4">
                         </div>
@@ -318,99 +328,421 @@
             </div>
 
             <!-- first step -->
-             <div class="w-full grid grid-cols-1 gap-y-10 lg:grid-cols-2 lg:gap-y-[200px] lg:gap-x-12 lg:items-center relative">
+            <div
+                class="w-full grid grid-cols-1 gap-y-10 lg:grid-cols-2 lg:gap-y-[200px] lg:gap-x-12 lg:items-center relative" id="mainScrol">
                 <!-- line -->
-                 <div class="hidden lg:block bg-[#232323] w-[2px] h-full absolute left-[50%] top-0 translate-x-[-50%]"></div>
+                <div class="hidden lg:block bg-[#232323] w-[2px] h-full absolute left-[50%] top-0 translate-x-[-50%]">
+                </div>
+                <div id="scrolling-line" class="hidden lg:block bg-gradient-to-b from-transparent via-[#E850FF] to-[#4941C8] w-[2px] absolute left-[50%] top-0 translate-x-[-50%]" style="height: 0;">
+                </div>
                 <!-- line -->
 
-                 <!-- txt -->
-                 <div class="w-full ">
+                <!-- txt -->
+                <div class="w-full ">
                     <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">প্রথম ধাপ </h4>
-                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">প্রম্পট থেকে প্রফেশনাল ভিজ্যুয়াল</h6>
+                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">প্রম্পট থেকে প্রফেশনাল
+                        ভিজ্যুয়াল</h6>
 
                     <ul class="flex flex-col gap-y-2 lg:max-w-[70%]">
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">প্রম্পট লিখুন: সঠিক ও ইউনিক প্রম্পট তৈরি করা শিখুন।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">প্রম্পট লিখুন: সঠিক ও ইউনিক প্রম্পট
+                                তৈরি করা শিখুন।</p>
                         </li>
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ইমেজ তৈরি: এআই ব্যবহার করে কাস্টম গ্রাফিক্স, ফেস এডিটিং ও অ্যাড ডিজাইন বানান।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ইমেজ তৈরি: এআই ব্যবহার করে কাস্টম
+                                গ্রাফিক্স, ফেস এডিটিং ও অ্যাড ডিজাইন বানান।</p>
                         </li>
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ফাইনাল টাচ: রঙ, লেআউট এবং স্টাইল এডজাস্ট করে প্রফেশনাল লুক নিশ্চিত করুন।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ফাইনাল টাচ: রঙ, লেআউট এবং স্টাইল
+                                এডজাস্ট করে প্রফেশনাল লুক নিশ্চিত করুন।</p>
                         </li>
                     </ul>
-                 </div>
+                </div>
 
-                  <!-- img -->
-                 <div class="w-full lg:max-w-[80%] lg:ml-auto">
+                <!-- img -->
+                <div class="w-full lg:max-w-[80%] lg:ml-auto">
                     <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-01.png') }}" alt="step-01" class="w-full rounded-md lg:rouned-[10px] ">
+                        <img src="{{ asset('images/home/step-01.png') }}" alt="step-01"
+                            class="w-full rounded-md lg:rouned-[10px] ">
                     </div>
-                 </div>
+                </div>
 
-                 <!-- img -->
-                 <div class="w-full lg:max-w-[80%] lg:mr-auto">
+                <!-- img -->
+                <div class="w-full lg:max-w-[80%] lg:mr-auto">
                     <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-02.png') }}" alt="step-02" class="w-full rounded-md lg:rouned-[10px] ">
+                        <img src="{{ asset('images/home/step-02.png') }}" alt="step-02"
+                            class="w-full rounded-md lg:rouned-[10px] ">
                     </div>
-                 </div>
+                </div>
 
-                  <div class="w-full lg:max-w-[80%] lg:ml-auto">
-                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">দ্বিতীয় ধাপ  </h4>
-                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">টেক্সট বা ইমেজ থেকে আকর্ষণীয় ভিডিও তৈরি করুন</h6>
+                <div class="w-full lg:max-w-[80%] lg:ml-auto">
+                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">দ্বিতীয় ধাপ </h4>
+                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">টেক্সট বা ইমেজ থেকে আকর্ষণীয়
+                        ভিডিও তৈরি করুন</h6>
 
                     <ul class="flex flex-col gap-y-2">
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ভিডিও জেনারেট করুন: টেক্সট বা ইমেজ থেকে ভিডিও তৈরি করা শিখুন।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ভিডিও জেনারেট করুন: টেক্সট বা ইমেজ
+                                থেকে ভিডিও তৈরি করা শিখুন।</p>
                         </li>
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">অডিও ও ভয়েস এড করুন: ভয়েসওভার, লিপ-সিঙ্ক ও ব্যাকগ্রাউন্ড মিউজিক যোগ করুন।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">অডিও ও ভয়েস এড করুন: ভয়েসওভার,
+                                লিপ-সিঙ্ক ও ব্যাকগ্রাউন্ড মিউজিক যোগ করুন।</p>
                         </li>
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">এফেক্ট ও ফাইনাল টাচ: ট্রানজিশন, ফিল্টার ও এফেক্ট দিয়ে ভিডিওকে আরও প্রফেশনাল করুন।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">এফেক্ট ও ফাইনাল টাচ: ট্রানজিশন,
+                                ফিল্টার ও এফেক্ট দিয়ে ভিডিওকে আরও প্রফেশনাল করুন।</p>
                         </li>
                     </ul>
-                 </div>
+                </div>
 
-                  <!-- txt -->
-                 <div class="w-full ">
-                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">তৃতীয় ধাপ  </h4>
-                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">সাউন্ড দিয়ে ভিডিওকে প্রাণ দিন</h6>
+                <!-- txt -->
+                <div class="w-full ">
+                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">তৃতীয় ধাপ </h4>
+                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">সাউন্ড দিয়ে ভিডিওকে প্রাণ দিন
+                    </h6>
 
                     <ul class="flex flex-col gap-y-2 lg:max-w-[70%]">
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">মিউজিক জেনারেশন: জিঙ্গেল, ব্যাকগ্রাউন্ড সাউন্ড বা টিউন তৈরি করুন।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">মিউজিক জেনারেশন: জিঙ্গেল,
+                                ব্যাকগ্রাউন্ড সাউন্ড বা টিউন তৈরি করুন।</p>
                         </li>
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ভয়েসওভার তৈরি করুন: এআই ভয়েস দিয়ে প্রফেশনাল ভয়েসওভার তৈরি করা শিখুন।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ভয়েসওভার তৈরি করুন: এআই ভয়েস দিয়ে
+                                প্রফেশনাল ভয়েসওভার তৈরি করা শিখুন।</p>
                         </li>
                         <li class="flex items-center gap-x-2 lg:gap-x-3">
                             <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">সাউন্ড এফেক্ট: মিউজিক ও ভয়েসের সাথে সাউন্ড ইফেক্ট যোগ করুন।</p>
+                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">সাউন্ড এফেক্ট: মিউজিক ও ভয়েসের সাথে
+                                সাউন্ড ইফেক্ট যোগ করুন।</p>
                         </li>
                     </ul>
-                 </div>
+                </div>
 
-                  <!-- img -->
-                 <div class="w-full lg:max-w-[80%] lg:ml-auto">
+                <!-- img -->
+                <div class="w-full lg:max-w-[80%] lg:ml-auto">
                     <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-03.png') }}" alt="step-03" class="w-full rounded-md lg:rouned-[10px] ">
+                        <img src="{{ asset('images/home/step-03.png') }}" alt="step-03"
+                            class="w-full rounded-md lg:rouned-[10px] ">
                     </div>
-                 </div>
+                </div>
 
-             </div>
+            </div>
             <!-- first step -->
         </div>
     </section>
     <!-- change your idea section end -->
+
+    <!-- our courses section start -->
+    <section class="w-full py-10 lg:py-20">
+        <div class="container-x">
+            <div class="text-start mb-10 md:mb-16 lg:mb-20">
+                <h6
+                    class="inline-flex items-center gap-x-2 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                    <span class="block h-[2px] w-5 bg-line"></span>
+                    আমাদের কোর্স সমূহ
+                    <span class="block h-[2px] w-5 bg-line-2"></span>
+                </h6>
+                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">আপনার
+                    ক্রিয়েটিভিটির ভবিষ্যৎ <span class="text-gradient">এখন আপনার হাতে</span></h2>
+                <p
+                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[50%] lg:mr-auto">
+                    AI Advertising Bootcamp-এ যোগ দিয়ে ডিজিটাল ক্রিয়েটিভিতে দক্ষ হয়ে উঠুন।</p>
+
+                <div class="flex justify-start items-center gap-x-4  mt-5 lg:mt-10 lg:gap-x-5">
+                    <a href="#"
+                        class="inline-flex font-golos justify-center items-center bg-submit rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-2.5 anim
+               hover:!bg-lime md:text-base px-2 lg:text-lg hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-6">
+                        এখনই এনরোল করুন
+                    </a>
+                    <a href="#"
+                        class="inline-flex font-golos justify-center items-center bg-black rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-2.5 anim
+                 md:text-base lg:text-lg hover:text-orange px-2 group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-6">
+                        সার্টিফিকেট পান
+                    </a>
+                </div>
+            </div>
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-5 lg: gap-x-6 items-center">
+                {{-- card --}}
+                <div class="w-full p-5 lg:p-[30px] rounded-lg lg:rounded-[20px] bg-[#131620] anim hover:mt-10">
+                    <div class="w-full">
+                        <img src="{{ asset('images/home/course-01.png') }}" alt="course"
+                            class="w-full rounded-[10px] h-[160px] object-cover">
+                    </div>
+
+                    <div class="mt-10 lg:mt-[60px]">
+                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">AI
+                            Bootcamp - 2025</h5>
+                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">এআই ব্যবহার
+                            করে ইউনিক ভিজ্যুয়াল, ফেস এডিটিং, অ্যাড ডিজাইন ও প্রফেশনাল গ্রাফিক্স তৈরি করা শেখুন।</p>
+
+                        <div class="flex mt-5 lg:mt-[30px] justify-between items-center">
+                            <a href="#"
+                                class="block font-medium text-[#ABABAB] text-sm anim hover:text-[#E2E8F0] hover:underline">এখনই
+                                এনরোল করুন</a>
+                            <a href="#" class="group block">
+                                <svg class="w-5 text-[#ABABAB] group-hover:text-[#E850FF]" viewBox="0 0 25 16"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M18 14L22.9393 9.06066C23.5251 8.47487 23.5251 7.52513 22.9393 6.93934L18 2M22.5 8L1.5 8"
+                                        stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- card --}}
+                <div class="w-full p-5 lg:p-[30px] rounded-lg lg:rounded-[20px] bg-[#131620] anim hover:mt-10">
+                    <div class="w-full">
+                        <img src="{{ asset('images/home/course-02.png') }}" alt="course 2"
+                            class="w-full rounded-[10px] h-[160px] object-cover">
+                    </div>
+
+                    <div class="mt-10 lg:mt-[60px]">
+                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">Social
+                            Media Content with AI</h5>
+                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">এআই টুলস
+                            ব্যবহার করে ফেসবুক, ইনস্টাগ্রাম, ইউটিউবের জন্য ক্রিয়েটিভ কনটেন্ট তৈরি এবং অপটিমাইজ করুন।</p>
+
+                        <div class="flex mt-5 lg:mt-[30px] justify-between items-center">
+                            <a href="#"
+                                class="block font-medium text-[#ABABAB] text-sm anim hover:text-[#E2E8F0] hover:underline">এখনই
+                                এনরোল করুন</a>
+                            <a href="#" class="group block">
+                                <svg class="w-5 text-[#ABABAB] group-hover:text-[#E850FF]" viewBox="0 0 25 16"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M18 14L22.9393 9.06066C23.5251 8.47487 23.5251 7.52513 22.9393 6.93934L18 2M22.5 8L1.5 8"
+                                        stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- card --}}
+                <div class="w-full p-5 lg:p-[30px] rounded-lg lg:rounded-[20px] bg-[#131620] anim hover:mt-10">
+                    <div class="w-full">
+                        <img src="{{ asset('images/home/course-03.png') }}" alt="course 3"
+                            class="w-full rounded-[10px] h-[160px] object-cover">
+                    </div>
+
+                    <div class="mt-10 lg:mt-[60px]">
+                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">Hands-on
+                            AI Projects</h5>
+                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">১৫+ বাস্তব
+                            প্রজেক্টে কাজ করে প্রফেশনাল অভিজ্ঞতা অর্জন এবং পোর্টফোলিও তৈরি করা।</p>
+
+                        <div class="flex mt-5 lg:mt-[30px] justify-between items-center">
+                            <a href="#"
+                                class="block font-medium text-[#ABABAB] text-sm anim hover:text-[#E2E8F0] hover:underline">এখনই
+                                এনরোল করুন</a>
+                            <a href="#" class="group block">
+                                <svg class="w-5 text-[#ABABAB] group-hover:text-[#E850FF]" viewBox="0 0 25 16"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M18 14L22.9393 9.06066C23.5251 8.47487 23.5251 7.52513 22.9393 6.93934L18 2M22.5 8L1.5 8"
+                                        stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- our courses section end -->
+
+    <!-- review section start -->
+    <section class="w-full py-10 lg:py-20">
+        <div class="container-x">
+            <div class="text-center mb-10 md:mb-16 lg:mb-20">
+                <h6
+                    class="inline-flex items-center gap-x-2 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                    <span class="block h-[2px] w-5 bg-line"></span>
+                    অভিজ্ঞতা সমূহ
+                    <span class="block h-[2px] w-5 bg-line-2"></span>
+                </h6>
+                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">যারা শিখেছেন,
+                    <span class="text-gradient">তারাই বলছেন</span>
+                </h2>
+                <p
+                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[50%] lg:mx-auto">
+                    আমাদের বুটক্যাম্প থেকে শেখা শিক্ষার্থীদের রিয়েল রিভিউ – যা আপনাকেও এগিয়ে যেতে উৎসাহ দেবে।</p>
+            </div>
+
+            <div class="w-full grid grid-cols-12 gap-y-5 gap-5 lg:gap-6">
+                <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
+                        পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
+                        ক্লায়েন্টও অনেক বেশি খুশি।</p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
+                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                সাদিয়া রহমান</h5>
+                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+                   <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
+                        পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
+                        ক্লায়েন্টও অনেক বেশি খুশি।</p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
+                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                সাদিয়া রহমান</h5>
+                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+                   <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
+                        পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
+                        ক্লায়েন্টও অনেক বেশি খুশি।</p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
+                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                সাদিয়া রহমান</h5>
+                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+                   <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-3">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক আর ইফেক্ট কয়েক মিনিটেই করা যায়। এখন আগের চেয়ে দ্বিগুণ প্রজেক্ট ডেলিভার করছি। এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক </p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
+                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                সাদিয়া রহমান</h5>
+                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+                         <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-5">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আমি মূলত একজন শিক্ষার্থী, কিন্তু সবসময় কিছু ক্রিয়েটিভ স্কিল শিখতে চেয়েছি যা ভবিষ্যতে কাজে লাগবে। এআই বুটক্যাম্পে যোগ দিয়ে শিখলাম ইমেজ, ভিডিও আর মিউজিক জেনারেশন – সবকিছু একসাথে। কোর্স শেষে ছোট ছোট ফ্রিল্যান্স প্রজেক্ট নেওয়া শুরু করেছি, আর এআই টুলস দিয়ে দ্রুত কাজ শেষ করতে পারছি। এটা শুধু শেখা নয়, ভবিষ্যতের জন্য এক অসাধারণ ইনভেস্টমেন্ট মনে হচ্ছে। আমি বিশ্বাস করি এই স্কিল আমাকে ক্যারিয়ারে অনেক দূর এগিয়ে দেবে।</p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
+                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                সাদিয়া রহমান</h5>
+                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+                <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
+                        পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
+                        ক্লায়েন্টও অনেক বেশি খুশি। এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক আর ইফেক্ট কয়েক মিনিটেই করা যায়। এখন আগের চেয়ে দ্বিগুণ প্রজেক্ট ডেলিভার করছি।</p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
+                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                সাদিয়া রহমান</h5>
+                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+            </div>
+        </div>
+    </section>
+    <!-- review section end -->
 
     <!-- get start section start -->
     <section class="w-full py-10 lg:py-20">
@@ -424,7 +756,8 @@
                 </div>
                 <div class="text-center relative z-30 w-full">
                     <h2 class="font-bold text-2xl lg:text-[44px] text-[#fff] leading-[120%] mb-1">ক্রিয়েটিভিটির ভবিষ্যৎ
-                        <span class="text-gradient">এখন আপনার হাতে</span></h2>
+                        <span class="text-gradient">এখন আপনার হাতে</span>
+                    </h2>
                     <p class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[120%]">যোগ দিন AI
                         Advertising
                         Bootcamp – 25 এ, হয়ে উঠুন এআই-চালিত ক্রিয়েটিভ প্রফেশনাল।</p>
@@ -452,4 +785,26 @@
         <img src="{{ asset('images/line.svg') }}" alt="line" class="w-full mx-auto">
     </div>
     <!-- border line -->
-@endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const section = document.querySelector('#mainScrol');
+        const scrollingLine = document.getElementById('scrolling-line');
+
+        if (section && scrollingLine) {
+            window.addEventListener('scroll', function () {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+
+                if (scrollPosition > sectionTop - windowHeight / 2 && scrollPosition < sectionTop + sectionHeight - windowHeight / 2) {
+                    const scrolled = scrollPosition - (sectionTop - windowHeight / 2);
+                    const totalScrollable = sectionHeight;
+                    const scrollPercentage = (scrolled / totalScrollable) * 100;
+                    scrollingLine.style.height = scrollPercentage + '%';
+                }
+            });
+        }
+    });
+</script>
+

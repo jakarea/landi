@@ -5,7 +5,7 @@
             <!-- logo -->
             <div class="text-start col-span-4">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('images/logo.svg') }}" alt="logo" class="max-w-24 lg:max-w-[145px]">
+                    <img src="{{ asset('images/logo.svg') }}" alt="logo" class="max-w-24 md:max-w-[145px] lg:max-w-[160px]">
                 </a>
             </div>
             <!-- logo -->
