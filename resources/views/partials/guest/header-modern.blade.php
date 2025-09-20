@@ -28,12 +28,7 @@
                             <a href="{{ route('fun.app') }}" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('fun.app') ? 'text-[#fff]' : '' }}">
                                  ফান অ্যাপ 
                             </a>
-                        </li>
-                        {{-- <li>
-                            <a href="{{ route('home') }}" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('home') ? 'text-[#fff]' : '' }}">
-                                আমাদের সম্পর্কে
-                            </a>
-                        </li> --}}
+                        </li> 
                     </ul>
                 </div>
                 <!-- menu -->
