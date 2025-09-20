@@ -481,7 +481,7 @@ class CourseController extends Controller
         // Levels array is empty since level field doesn't exist in courses table
         $levels = collect();
 
-        return view('courses.index', compact('title', 'courses', 'categories', 'levels', 'search', 'category', 'level', 'sort'));
+        return view('courses.list', compact('title', 'courses', 'categories', 'levels', 'search', 'category', 'level', 'sort'));
     }
 
     public function publicOverview($slug)

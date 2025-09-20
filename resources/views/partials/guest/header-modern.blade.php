@@ -20,12 +20,12 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff]">
+                            <a href="{{ route('courses') }}" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff]">
                                 কোর্সসমূহ
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff]">
+                            <a href="{{ route('home') }}" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff]">
                                 আমাদের সম্পর্কে
                             </a>
                         </li>
