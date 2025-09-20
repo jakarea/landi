@@ -484,6 +484,7 @@ class CourseController extends Controller
         return view('courses.list', compact('title', 'courses', 'categories', 'levels', 'search', 'category', 'level', 'sort'));
     }
 
+
     public function publicOverview($slug)
     {
         $title = 'Course Overview';
