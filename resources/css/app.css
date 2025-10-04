@@ -546,11 +546,11 @@ border: 1px solid #4a41c87a;
 }
 
 .bg-quote {
-  background: linear-gradient(126.06deg, #E850FF -7.23%, rgba(0, 0, 0, 0) 49.77%, rgba(0, 0, 0, 0) 49.77%, #4941C8 106.77%);
+  background: #0A0C19;
 }
 
-.bg-qute-hvr {
-  background: linear-gradient(126.06deg, #E850FF -7.23%, #4941C8 106.77%);
+.review-card:hover .bg-quote {
+  background: linear-gradient(126.06deg, #E850FF -7.23%, rgba(0, 0, 0, 0) 49.77%, rgba(0, 0, 0, 0) 49.77%, #4941C8 106.77%)!important;
 }
 
 .bg-faq {
@@ -1217,10 +1217,7 @@ border: 1px solid #4a41c87a;
 .bg-instructor {
   background: linear-gradient(180deg, #011A1D 0%, #010E10 100%);
 }
-
-.bg-quote {
-  background: linear-gradient(126.06deg, #E850FF -7.23%, rgba(0, 0, 0, 0) 49.77%, rgba(0, 0, 0, 0) 49.77%, #4941C8 106.77%);
-}
+ 
 
 .bg-qute-hvr {
   background: linear-gradient(126.06deg, #E850FF -7.23%, #4941C8 106.77%);

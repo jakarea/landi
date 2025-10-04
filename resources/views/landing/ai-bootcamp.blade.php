@@ -514,43 +514,7 @@
                     class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
                     <img src="/images/tools-06.svg" alt="tools-06" class="max-w-fit smooth-bounce">
                 </div>
-                <!-- tool -->
-                <!-- tool -->
-                <div
-                    class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-                    <img src="/images/tools-06.svg" alt="tools-06" class="max-w-fit smooth-bounce">
-                </div>
-                <!-- tool -->
-                <!-- tool -->
-                <div
-                    class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-                    <img src="/images/tools-05.svg" alt="tools-05" class="max-w-fit smooth-bounce">
-                </div>
-                <!-- tool -->
-                <!-- tool -->
-                <div
-                    class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-                    <img src="/images/tools-04.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-                </div>
-                <!-- tool -->
-                <!-- tool -->
-                <div
-                    class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-                    <img src="/images/tools-03.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-                </div>
-                <!-- tool -->
-                <!-- tool -->
-                <div
-                    class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-                    <img src="/images/tools-02.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-                </div>
-                <!-- tool -->
-                <!-- tool -->
-                <div
-                    class="text-center bg-transparent rounded-[10px] flex justify-center items-center px-2 py-4 anim group w-[111px] h-[111px] lg:w-[170px] lg:h-[170px] cursor-pointer border border-[#909090] tool-hover-glow">
-                    <img src="/images/tools-01.svg" alt="tools-04" class="max-w-fit smooth-bounce">
-                </div>
-                <!-- tool -->
+                <!-- tool --> 
             </div>
             <!-- tools -->
         </div>

@@ -12,7 +12,7 @@
         {{-- Header --}}
         @include('partials.guest.header-modern')
 
-        
+
         <div class="container-x">
             <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
                 <h1
@@ -268,7 +268,7 @@
                             <img src="{{ asset('images/icons/b-camp-02.svg') }}" alt="icons 2"
                                 class="w-6 md:w-8 lg:w-10">
                             <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 2"
-                                class="w-[86%] absolute left-1 top-4">
+                                class="w-[86%] absolute left-0 top-1 rotate-90">
                         </div>
                     </div>
 
@@ -290,7 +290,7 @@
                             <img src="{{ asset('images/icons/b-camp-03.svg') }}" alt="icons 3"
                                 class="w-6 md:w-8 lg:w-10">
                             <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 3"
-                                class="w-[86%] absolute left-1 top-4">
+                                class="w-[86%] absolute right-1 top-1 rotate-180">
                         </div>
                     </div>
 
@@ -327,13 +327,15 @@
             </div>
 
             <!-- first step -->
-            <div
-                class="w-full grid grid-cols-1 gap-y-10 lg:grid-cols-2 lg:gap-y-[200px] lg:gap-x-12 lg:items-center relative" id="mainScrol">
+            <div class="w-full grid grid-cols-1 gap-y-10 lg:grid-cols-2 lg:gap-y-[200px] lg:gap-x-12 lg:items-center relative"
+                id="mainScrol">
                 <!-- line -->
                 <div class="hidden lg:block bg-[#232323] w-[2px] h-full absolute left-[50%] top-0 translate-x-[-50%]">
                 </div>
-                <div id="scrolling-line" class="hidden lg:block bg-gradient-to-b from-transparent via-[#E850FF] to-[#4941C8] w-[2px] absolute left-[50%] top-0 translate-x-[-50%] shadow-2xl" style="height: 0;">
- 
+                <div id="scrolling-line"
+                    class="hidden lg:block bg-gradient-to-b from-transparent via-[#E850FF] to-[#4941C8] w-[2px] absolute left-[50%] top-0 translate-x-[-50%] shadow-2xl"
+                    style="height: 0;">
+
                 </div>
                 <!-- line -->
 
@@ -472,7 +474,7 @@
             </div>
             @if ($latestCourses->count() > 0)
                 <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-5 lg: gap-x-6">
-                    @foreach ($latestCourses->slice(0,3) as $course)
+                    @foreach ($latestCourses->slice(0, 3) as $course)
                         {{-- card --}}
                         <div
                             class="w-full p-5 lg:p-[30px] border-[2px] !border-primary rounded-lg lg:rounded-[20px] bg-[#131620] anim effect-card relative flex flex-col justify-between">
@@ -532,7 +534,8 @@
                                     <div class="flex items-center gap-x-2">
                                         <span
                                             class="price-current text-orange text-base lg:text-lg">৳{{ number_format($course->offer_price) }}</span>
-                                        <span class=" text-[#fff]/50 line-through">৳{{ number_format($course->price) }}</s>
+                                        <span
+                                            class=" text-[#fff]/50 line-through">৳{{ number_format($course->price) }}</s>
                                     </div>
                                 @else
                                     <span class="price-current text-[#fff]">
@@ -558,7 +561,7 @@
 
                         </div>
                     @endforeach
-                </div> 
+                </div>
             @else
                 <div class="flex justify-center items-center flex-col">
                     <i class="fas fa-search"></i>
@@ -597,7 +600,7 @@
             <div class="w-full grid grid-cols-12 gap-y-5 gap-5 lg:gap-6">
                 <!-- review card -->
                 <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4">
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4 review-card">
                     <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
                         পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
                         ক্লায়েন্টও অনেক বেশি খুশি।</p>
@@ -607,24 +610,51 @@
                     <div class="w-full flex items-center justify-between">
                         <div class="flex items-center gap-x-3">
                             <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
-                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+                                class="w-10 h-10 rounded-full object-contain">
 
                             <div>
                                 <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                সাদিয়া রহমান</h5>
-                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                                    সাদিয়া রহমান</h5>
+                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
                             </div>
                         </div>
                         <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
                             <img src="/images/icons/quote.svg" alt="quote" class="w-5">
                         </span>
                     </div>
                 </div>
                 <!-- review card -->
-                   <!-- review card -->
+                <!-- review card -->
                 <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4">
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4 review-card">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আমি শিক্ষার্থী হলেও এআই শিখে
+                        এখন ছোট প্রজেক্ট করছি। কাজ দ্রুত হয় আর এটা ভবিষ্যতের জন্য দারুণ ইনভেস্টমেন্ট মনে হচ্ছে।</p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/icons/avatar-2.png') }}" alt="get left"
+                                class="w-10 h-10 rounded-full object-contain">
+
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                    মাহিন ইসলাম
+                                </h5>
+                                <h6 class="common-para !text-xs text-secondary-200">ভিডিও এডিটর</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+                <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4 review-card">
                     <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
                         পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
                         ক্লায়েন্টও অনেক বেশি খুশি।</p>
@@ -633,121 +663,100 @@
 
                     <div class="w-full flex items-center justify-between">
                         <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
-                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+                            <img src="{{ asset('images/avatar.webp') }}" alt="get left"
+                                class="w-10 h-10 rounded-full object-contain">
 
                             <div>
                                 <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                সাদিয়া রহমান</h5>
-                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                                    রাহাত খান</h5>
+                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
                             </div>
                         </div>
                         <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
                             <img src="/images/icons/quote.svg" alt="quote" class="w-5">
                         </span>
                     </div>
                 </div>
                 <!-- review card -->
-                   <!-- review card -->
+                <!-- review card -->
                 <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4">
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-3 review-card">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">এআই শেখার পর ভিডিও বানানো অনেক
+                        সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক আর ইফেক্ট কয়েক মিনিটেই করা যায়। এখন আগের চেয়ে দ্বিগুণ
+                        প্রজেক্ট ডেলিভার করছি। এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক </p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/avatar.webp') }}" alt="get left"
+                                class="w-10 h-10 rounded-full object-contain">
+
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                   নয়ন খান </h5>
+                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+                <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-5 review-card">
+                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আমি মূলত একজন শিক্ষার্থী,
+                        কিন্তু সবসময় কিছু ক্রিয়েটিভ স্কিল শিখতে চেয়েছি যা ভবিষ্যতে কাজে লাগবে। এআই বুটক্যাম্পে যোগ দিয়ে
+                        শিখলাম ইমেজ, ভিডিও আর মিউজিক জেনারেশন – সবকিছু একসাথে। কোর্স শেষে ছোট ছোট ফ্রিল্যান্স প্রজেক্ট
+                        নেওয়া শুরু করেছি, আর এআই টুলস দিয়ে দ্রুত কাজ শেষ করতে পারছি। এটা শুধু শেখা নয়, ভবিষ্যতের জন্য এক
+                        অসাধারণ ইনভেস্টমেন্ট মনে হচ্ছে। আমি বিশ্বাস করি এই স্কিল আমাকে ক্যারিয়ারে অনেক দূর এগিয়ে দেবে।</p>
+
+                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <img src="{{ asset('images/avatar.webp') }}" alt="get left"
+                                class="w-10 h-10 rounded-full object-contain"> 
+                            <div>
+                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                   সাইফুল ইসলাম </h5>
+                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                            </div>
+                        </div>
+                        <span
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
+                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                        </span>
+                    </div>
+                </div>
+                <!-- review card -->
+                <!-- review card -->
+                <div
+                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4 review-card">
                     <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
                         পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
-                        ক্লায়েন্টও অনেক বেশি খুশি।</p>
+                        ক্লায়েন্টও অনেক বেশি খুশি। এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক
+                        আর ইফেক্ট কয়েক মিনিটেই করা যায়। এখন আগের চেয়ে দ্বিগুণ প্রজেক্ট ডেলিভার করছি।</p>
 
                     <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
 
                     <div class="w-full flex items-center justify-between">
                         <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
-                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
+                            <img src="{{ asset('images/avatar.webp') }}" alt="get left"
+                                class="w-10 h-10 rounded-full object-contain">
 
                             <div>
                                 <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                সাদিয়া রহমান</h5>
-                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                                    তুহিন </h5>
+                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
                             </div>
                         </div>
                         <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
-                    </div>
-                </div>
-                <!-- review card -->
-                   <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-3">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক আর ইফেক্ট কয়েক মিনিটেই করা যায়। এখন আগের চেয়ে দ্বিগুণ প্রজেক্ট ডেলিভার করছি। এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক </p>
-
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
-
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
-                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
-
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                সাদিয়া রহমান</h5>
-                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
-                            </div>
-                        </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
-                    </div>
-                </div>
-                <!-- review card -->
-                         <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-5">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আমি মূলত একজন শিক্ষার্থী, কিন্তু সবসময় কিছু ক্রিয়েটিভ স্কিল শিখতে চেয়েছি যা ভবিষ্যতে কাজে লাগবে। এআই বুটক্যাম্পে যোগ দিয়ে শিখলাম ইমেজ, ভিডিও আর মিউজিক জেনারেশন – সবকিছু একসাথে। কোর্স শেষে ছোট ছোট ফ্রিল্যান্স প্রজেক্ট নেওয়া শুরু করেছি, আর এআই টুলস দিয়ে দ্রুত কাজ শেষ করতে পারছি। এটা শুধু শেখা নয়, ভবিষ্যতের জন্য এক অসাধারণ ইনভেস্টমেন্ট মনে হচ্ছে। আমি বিশ্বাস করি এই স্কিল আমাকে ক্যারিয়ারে অনেক দূর এগিয়ে দেবে।</p>
-
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
-
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
-                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
-
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                সাদিয়া রহমান</h5>
-                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
-                            </div>
-                        </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
-                    </div>
-                </div>
-                <!-- review card -->
-                <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
-                        পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
-                        ক্লায়েন্টও অনেক বেশি খুশি। এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক আর ইফেক্ট কয়েক মিনিটেই করা যায়। এখন আগের চেয়ে দ্বিগুণ প্রজেক্ট ডেলিভার করছি।</p>
-
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
-
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
-                                class="rounded-bl-[20px] lg:object-contain rounded-tl-[20px] max-w-[50%]">
-
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                সাদিয়া রহমান</h5>
-                            <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
-                            </div>
-                        </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim group-hover:bg-qute-hvr">
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
                             <img src="/images/icons/quote.svg" alt="quote" class="w-5">
                         </span>
                     </div>
@@ -799,26 +808,26 @@
         <img src="{{ asset('images/line.svg') }}" alt="line" class="w-full mx-auto">
     </div>
     <!-- border line -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const section = document.querySelector('#mainScrol');
-        const scrollingLine = document.getElementById('scrolling-line');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const section = document.querySelector('#mainScrol');
+            const scrollingLine = document.getElementById('scrolling-line');
 
-        if (section && scrollingLine) {
-            window.addEventListener('scroll', function () {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                const scrollPosition = window.scrollY;
-                const windowHeight = window.innerHeight;
+            if (section && scrollingLine) {
+                window.addEventListener('scroll', function() {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const scrollPosition = window.scrollY;
+                    const windowHeight = window.innerHeight;
 
-                if (scrollPosition > sectionTop - windowHeight / 2 && scrollPosition < sectionTop + sectionHeight - windowHeight / 2) {
-                    const scrolled = scrollPosition - (sectionTop - windowHeight / 2);
-                    const totalScrollable = sectionHeight;
-                    const scrollPercentage = (scrolled / totalScrollable) * 100;
-                    scrollingLine.style.height = scrollPercentage + '%';
-                }
-            });
-        }
-    });
-</script>
-
+                    if (scrollPosition > sectionTop - windowHeight / 2 && scrollPosition < sectionTop +
+                        sectionHeight - windowHeight / 2) {
+                        const scrolled = scrollPosition - (sectionTop - windowHeight / 2);
+                        const totalScrollable = sectionHeight;
+                        const scrollPercentage = (scrolled / totalScrollable) * 100;
+                        scrollingLine.style.height = scrollPercentage + '%';
+                    }
+                });
+            }
+        });
+    </script>
