@@ -219,6 +219,14 @@
                     <i class="fas fa-user-cog text-lg flex-shrink-0"></i>
                     <span class="font-medium">প্রোফাইল সেটিংস</span>
                 </a>
+
+                {{-- page section manage --}}
+
+                <a href="{{ route('cms.list') }}" 
+                   class="flex items-center gap-3 px-4 py-3 text-secondary-100 rounded-lg anim hover:bg-card hover:text-blue ray-hover {{ request()->routeIs('cms.list*') ? 'bg-card text-blue' : '' }}">
+                    <i class="fas fa-user-cog text-lg flex-shrink-0"></i>
+                    <span class="font-medium">সি এম এস</span>
+                </a>
                 
             </nav>
             

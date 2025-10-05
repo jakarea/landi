@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\HomepageController;
 use App\Http\Controllers\Instructor\DashboardController;
 use App\Http\Controllers\Student\StudentHomeController;
 use App\Http\Controllers\Builder\LandingPageBuilderController;
+use App\Http\Controllers\Admin\CMSManageController;
 use App\Http\Controllers\LandingController;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
@@ -35,7 +36,7 @@ use Illuminate\Support\Facades\Route;
 // MAIN HOMEPAGE
 // ========================================
 
-Route::get('/', [HomepageController::class, 'homepage'])->name('home');
+Route::get('/', [HomepageController::class, 'homepage'])->name('home'); 
 
 // ========================================
 // COURSES SECTION
@@ -147,6 +148,8 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
     })->name('admin.dashboard');
 });
 
+// Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard'); 
+
 // ========================================
 // LIVE CLASSES ROUTES (STUDENT ONLY)
 // ========================================
@@ -174,6 +177,14 @@ Route::prefix('system')->middleware('auth')->group(function () {
     Route::get('/switch/login-as-student/{session}/{user}/{student}/', [HomepageController::class, 'loginAsStudent'])->name('system.login.student');
     Route::get('/switch/instructor-login-as-student/{session}/{user}/{student}/', [DashboardController::class, 'loginAsStudent'])->name('system.instructor.login.student');
     Route::get('/switch/back-to-pavilion/{user}/', [StudentHomeController::class, 'backToPavilion'])->name('system.back.pavilion');
+});
+
+// ========================================
+// CMS Manage System
+// ========================================
+
+Route::prefix('cms/')->middleware('auth')->group(function () { 
+    Route::get('/list', [CMSManageController::class, 'index'])->name('cms.list');
 });
 
 // ========================================

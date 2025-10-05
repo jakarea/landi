@@ -1,4 +1,4 @@
-<!-- @extends('layouts.guest-modern') -->
+@extends('layouts.guest-modern')
 
 @section('title', 'আব্দুর রউফ - AI Creative Training Platform')
 @section('description',
