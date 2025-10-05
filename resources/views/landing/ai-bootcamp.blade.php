@@ -14,190 +14,7 @@
 
     <!-- Custom Styles -->
     @yield('style')
-
-    <style>
-        /* Video Modal Styles */
-        #videoModal {
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            pointer-events: none !important;
-        }
-
-        #videoModal.show {
-            opacity: 1 !important;
-            visibility: visible !important;
-            display: flex !important;
-            pointer-events: auto !important;
-        }
-
-        #videoModal .relative {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform: scale(0.95);
-            opacity: 0.9;
-        }
-
-        #videoModal.show .relative {
-            transform: scale(1) !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            display: block !important;
-        }
-
-        /* Fix any potential blocking overlays */
-        .absolute.inset-0,
-        .fixed.inset-0 {
-            pointer-events: none !important;
-        }
-
-        .absolute.inset-0>*,
-        .fixed.inset-0>* {
-            pointer-events: auto;
-        }
-
-        /* AGGRESSIVE CLICK FIX - Force all potential blocking elements to allow clicks */
-        * {
-            pointer-events: auto !important;
-        }
-
-        /* Only specific elements should block clicks */
-        #videoModal:not(.show) {
-            pointer-events: none !important;
-            display: none !important;
-        }
-
-        /* Ensure clickable elements remain clickable */
-        button,
-        a,
-        .cursor-pointer,
-        .hero-image-wrap {
-            pointer-events: auto !important;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Play button hover effect */
-        .hero-image-wrap .animate-pulse:hover {
-            transform: scale(1.1);
-            transition: transform 0.2s ease;
-        }
-
-        /* Ensure all buttons are clickable */
-        button,
-        a {
-            pointer-events: auto !important;
-            position: relative;
-            z-index: 10;
-        }
-
-        button:hover,
-        a:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-            transition: all 0.2s ease;
-        }
-
-        /* Fix for enrollment button */
-        .bg-submit {
-            pointer-events: auto !important;
-            cursor: pointer !important;
-            z-index: 50 !important;
-        }
-
-        /* Animation classes for messages */
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            10%,
-            30%,
-            50%,
-            70%,
-            90% {
-                transform: translateX(-5px);
-            }
-
-            20%,
-            40%,
-            60%,
-            80% {
-                transform: translateX(5px);
-            }
-        }
-
-        .animate-shake {
-            animation: shake 0.6s ease-in-out;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(-10px);
-            }
-
-            60% {
-                transform: translateY(-5px);
-            }
-        }
-
-        .animate-bounce {
-            animation: bounce 1s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.8;
-            }
-        }
-
-        .animate-pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .scroll-button {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, opacity;
-        }
-
-        /* Hidden state */
-        .scroll-button.opacity-0 {
-            opacity: 0;
-            transform: translateY(16px);
-            pointer-events: none;
-        }
-
-        /* Visible state */
-        .scroll-button.opacity-100 {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-
-        /* Enhanced hover effect when visible */
-        .scroll-button.opacity-100:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow:
-                0 8px 25px rgba(232, 80, 255, 0.3),
-                0 4px 15px rgba(73, 65, 200, 0.2);
-        }
-    </style>
+ 
 
     <title>আব্দুর রউফ</title>
 
@@ -297,20 +114,36 @@
                     </div>
                 </div>
                 <div class="text-center relative z-40 mt-7 lg:max-w-[90%] lg:mt-0">
-                    <div class="hero-image-wrap p-0 relative cursor-pointer"
-                        onclick="openVideoModal('https://www.youtube.com/embed/tA0hYGfKSRc?autoplay=1'); return false;"
-                        style="pointer-events: auto !important; z-index: 100 !important;">
-                        <img src="/images/speaking-person.png" alt="speaking-person"
-                            class="rounded-[calc(0.75rem-2px)] w-full hero-img shadow-1">
-                        <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                            <button type="button"
-                                onclick="openVideoModal('https://www.youtube.com/embed/tA0hYGfKSRc?autoplay=1'); return false;"
-                                class="w-[90px] h-[90px] rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim hover:bg-[#fff]/60 transition-all duration-200"
-                                style="pointer-events: auto !important; z-index: 101 !important;">
-                                <img src="/images/icons/play.svg" alt="play" class="w-8">
-                            </button>
+                    {{-- work here --}}
+                     <div class="w-full col-span-12 md:col-span-6 lg:col-span-4 grid grid-cols-12 gap-5">
+ 
+                    <div class="w-full relative col-span-8 lg:col-span-6">
+                        <div class="w-full relative mb-5">
+                            <img src="/images/project-09.png" alt="project-04"
+                                class="w-full rounded-[10px] project-image">
+                            <p
+                                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+                                Ai Image</p>
+                        </div>
+                        <div class="w-full relative hidden lg:block">
+                            <img src="/images/project-06.png" alt="project-04"
+                                class="w-full rounded-[10px] project-image">
+                            <p
+                                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+                                Ai monalisa</p>
                         </div>
                     </div>
+                    <!-- item -->
+                    <div class="w-full relative col-span-4 lg:col-span-6">
+                        <div class="w-full relative">
+                            <img src="/images/project-05.png" alt="project-04"
+                                class="w-full rounded-[10px] project-image">
+                            <p
+                                class="rounded-full py-1 px-2 lg:py-2 lg:px-4 bg-[#fff]/20 text-[#fff] text-xs md:textbase lg:text-xl absolute bottom-2 left-2 lg:bottom-6 lg:left-6">
+                                Ai Music</p>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -406,10 +239,10 @@
                                     – হয়ে উঠুন ইমেজ
                                     জেনারেশনের সম্রাট</h6>
                             </div>
-                            <button type="button" class="col-span-2 flex justify-end">
+                            {{-- <button type="button" class="col-span-2 flex justify-end">
                                 <img src="/images/icons/angle-down-circle.svg" alt="angle 1"
                                     class="w-5 lg:w-[30px]">
-                            </button>
+                            </button> --}}
                         </div>
                         <!-- card -->
                         <!-- card -->
@@ -425,10 +258,10 @@
                                     আয়ত্ত করুন ভিডিও
                                     কনটেন্ট তৈরির সম্পূর্ণ দক্ষতা</h6>
                             </div>
-                            <button type="button" class="col-span-2 flex justify-end">
+                            {{-- <button type="button" class="col-span-2 flex justify-end">
                                 <img src="/images/icons/angle-down-circle.svg" alt="angle 2"
                                     class="w-5 lg:w-[30px]">
-                            </button>
+                            </button> --}}
                         </div>
                         <!-- card -->
                         <!-- card -->
@@ -446,10 +279,10 @@
                                     আয়ত্ত করুন ভিডিও
                                     কনটেন্ট তৈরির সম্পূর্ণ দক্ষতা</h6>
                             </div>
-                            <button type="button" class="col-span-2 flex justify-end">
+                            {{-- <button type="button" class="col-span-2 flex justify-end">
                                 <img src="/images/icons/angle-down-circle.svg" alt="angle 3"
                                     class="w-5 lg:w-[30px]">
-                            </button>
+                            </button> --}}
                         </div>
                         <!-- card -->
                     </div>
@@ -522,7 +355,7 @@
     <!-- tools used end -->
 
     <!-- projects section start -->
-    <section class="w-full pt-20 lg:pt-[90px]">
+    {{-- <section class="w-full pt-20 lg:pt-[90px]">
         <div class="container-x">
             <!-- common title start -->
             <div class="text-center flex justify-center items-center flex-col mb-8 lg:mb-16 xl:mb-20">
@@ -661,8 +494,28 @@
                 <!-- group three -->
             </div>
         </div>
-    </section>
+    </section> --}}
     <!-- projects section end -->
+
+    {{-- big video section start --}}
+    <section class="w-full py-20">
+        <div class="container-x">
+            <div class="hero-image-wrap p-0 relative cursor-pointer"
+                        onclick="openVideoModal('https://www.youtube.com/embed/tA0hYGfKSRc?autoplay=1'); return false;"
+                        style="pointer-events: auto !important; z-index: 100 !important;">
+                        <img src="/images/speaking-person.png" alt="speaking-person"
+                            class="rounded-[calc(0.75rem-2px)] w-full hero-img shadow-1">
+                        <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center z-0">
+                            <button type="button"
+                                onclick="openVideoModal('https://www.youtube.com/embed/tA0hYGfKSRc?autoplay=1'); return false;"
+                                class="w-[90px] h-[90px] rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim hover:bg-[#fff]/60 transition-all duration-200"
+                                style="pointer-events: auto !important; z-index: 101 !important;">
+                                <img src="/images/icons/play.svg" alt="play" class="w-8">
+                            </button>
+                        </div>
+                    </div>
+        </div>
+    </section>
 
     <!-- course achivement start -->
     <section class="w-full py-20">
@@ -765,22 +618,22 @@
 
                         <ul class="flex items-center justify-center gap-x-2.5 mt-2.5 lg:justify-start">
                             <li>
-                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                <a href="#" class="block w-[30px] h-[30px] rounded-full" title="Call">
                                     <img src="./images/icons/call.svg" alt="call" class="w-full">
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                <a href="#" class="block w-[30px] h-[30px] rounded-full" title="E-mail">
                                     <img src="./images/icons/mail.svg" alt="call" class="w-full">
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                <a href="#" class="block w-[30px] h-[30px] rounded-full" title="Linkedin">
                                     <img src="./images/icons/linkedin.svg" alt="call" class="w-full">
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
+                                <a href="#" class="block w-[30px] h-[30px] rounded-full" title="Facebook">
                                     <img src="./images/icons/facebook.svg" alt="call" class="w-full">
                                 </a>
                             </li>
@@ -877,7 +730,7 @@
                         <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">ডিজাইনার</h5>
                     </div>
                     <button type="button" class="col-span-2 flex justify-end">
-                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
+                        <img src="/images/icons/user.svg" alt="angle 1" class="w-5 lg:w-[26px] !text-[#fff]">
                     </button>
                 </div>
                 <!-- card -->
@@ -888,7 +741,7 @@
                         <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">কনটেন্ট ক্রিয়েটর</h5>
                     </div>
                     <button type="button" class="col-span-2 flex justify-end">
-                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
+                        <img src="/images/icons/user.svg" alt="angle 1" class="w-5 lg:w-[26px] !text-[#fff]">
                     </button>
                 </div>
                 <!-- card -->
@@ -900,7 +753,7 @@
                             ব্যক্তি</h5>
                     </div>
                     <button type="button" class="col-span-2 flex justify-end">
-                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
+                        <img src="/images/icons/user.svg" alt="angle 1" class="w-5 lg:w-[26px] !text-[#fff]">
                     </button>
                 </div>
                 <!-- card -->
@@ -911,7 +764,7 @@
                         <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">শিক্ষার্থী</h5>
                     </div>
                     <button type="button" class="col-span-2 flex justify-end">
-                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
+                        <img src="/images/icons/user.svg" alt="angle 1" class="w-5 lg:w-[26px] !text-[#fff]">
                     </button>
                 </div>
                 <!-- card -->
@@ -922,7 +775,7 @@
                         <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">বিজ্ঞাপণ নির্মাতা</h5>
                     </div>
                     <button type="button" class="col-span-2 flex justify-end">
-                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
+                        <img src="/images/icons/user.svg" alt="angle 1" class="w-5 lg:w-[26px] !text-[#fff]">
                     </button>
                 </div>
                 <!-- card -->
@@ -933,7 +786,7 @@
                         <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">মার্কেটার</h5>
                     </div>
                     <button type="button" class="col-span-2 flex justify-end">
-                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
+                        <img src="/images/icons/user.svg" alt="angle 1" class="w-5 lg:w-[26px] !text-[#fff]">
                     </button>
                 </div>
                 <!-- card -->
@@ -944,7 +797,7 @@
                         <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">ভিডিও এডিটর</h5>
                     </div>
                     <button type="button" class="col-span-2 flex justify-end">
-                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
+                        <img src="/images/icons/user.svg" alt="angle 1" class="w-5 lg:w-[26px] !text-[#fff]">
                     </button>
                 </div>
                 <!-- card -->
@@ -955,7 +808,7 @@
                         <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl">মিউজিশিয়ান</h5>
                     </div>
                     <button type="button" class="col-span-2 flex justify-end">
-                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1" class="w-5 lg:w-[26px]">
+                        <img src="/images/icons/user.svg" alt="angle 1" class="w-5 lg:w-[26px] !text-[#fff]">
                     </button>
                 </div>
                 <!-- card -->
@@ -1990,56 +1843,7 @@
                 updateButtonVisibility();
             }
         });
-    </script>
-
-    <!-- Video Modal -->
-    <div id="videoModal"
-        class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 opacity-0 invisible transition-all duration-300 ease-in-out"
-        style="display: none !important;">
-        <div
-            class="relative max-w-4xl w-full mx-4 md:mx-8 transform scale-95 transition-transform duration-300 ease-in-out">
-
-            <!-- Close button -->
-            <button id="closeModal"
-                class="absolute -top-16 right-0 text-white hover:text-red-400 transition-colors duration-200 z-10 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
-                </svg>
-            </button>
-
-            <!-- Video container with enhanced design -->
-            <div class="bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden shadow-2xl">
-                <!-- Video wrapper with fixed height -->
-                <div class="relative bg-gray-800" style="height: 450px; width: 100%;">
-                    <iframe id="videoIframe" class="absolute top-0 left-0 w-full h-full" src=""
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                        style="width: 100%; height: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
-                    </iframe>
-
-                    <!-- Loading indicator -->
-                    <div id="videoLoading"
-                        class="absolute inset-0 flex items-center justify-center bg-gray-900 rounded-2xl">
-                        <div class="text-center">
-                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4">
-                            </div>
-                            <p class="text-white text-lg">Loading video...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Video title bar -->
-                <div class="bg-gradient-to-r from-blue-600 to-cyan-500 p-4 text-white">
-                    <h3 class="text-xl font-semibold">AI for Advertising Bootcamp - Preview</h3>
-                    <p class="text-blue-100 text-sm mt-1">Discover how AI can revolutionize your advertising strategy
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    </script> 
 
 </body>
 

@@ -567,12 +567,12 @@
                     <i class="fas fa-search"></i>
                     <h3 class="text-[#fff] font-semibold text-2xl">কোনো কোর্স পাওয়া যায়নি!</h3>
                     <p class="text-[#fff]/40">আপনার অনুসন্ধানের সাথে মিল রয়েছে এমন কোনো কোর্স খুঁজে পাওয়া যায়নি।</p>
-                    @if ($search || $category)
+                    {{-- <!-- @if ($search || $category) --> --}}
                         <a href="{{ route('courses') }}" class="text-[#fff] mt-3 lg:mt-5 font-medium underline">
                             <i class="fas fa-refresh"></i>
                             সব কোর্স দেখুন
                         </a>
-                    @endif
+                    {{-- <!-- @endif --> --}}
                 </div>
             @endif
         </div>
