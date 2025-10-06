@@ -15,37 +15,76 @@
 
         <div class="container-x">
             
-            <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
-                <h1
-                    class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
-                    <span class="block h-[2px] w-5 bg-line"></span>
-                    আপনার ক্রিয়েটিভিটি আনলক করুন
-                    <span class="block h-[2px] w-5 bg-line-2"></span>
-                </h1>
-                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">সবচেয়ে সহজ ও
-                    দ্রুত উপায়ে শিখুন <span class="text-gradient">এআই ক্রিয়েটিভিটি</span></h2>
-                <p
-                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
-                    মাত্র ৩ দিনে আয়ত্ত করুন AI ইমেজ, ভিডিও ও মিউজিক জেনারেশন। লাইভ হ্যান্ডস-অন বুটক্যাম্প, বাস্তব
-                    প্রজেক্ট ও ইন্ডাস্ট্রি এক্সপার্ট মোঃ আব্দরু রউফ (রাজু) এর গাইডলাইনে।</p>
+            @php
+                $heroSection = $sections->where('sectionName', 'hero')->first();
+            @endphp
+            @if ($heroSection)
+                <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
+                    <h1
+                        class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                        <span class="block h-[2px] w-5 bg-line"></span>
+                        {{ data_get($heroSection, 'content.title', 'আপনার ক্রিয়েটিভিটি আনলক করুন') }}
+                        <span class="block h-[2px] w-5 bg-line-2"></span>
+                    </h1>
+                    <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
+                        {{ data_get($heroSection, 'content.heading', 'সবচেয়ে সহজ ও দ্রুত উপায়ে শিখুন') }} <span
+                            class="text-gradient">{{ data_get($heroSection, 'content.gradient_heading', 'এআই ক্রিয়েটিভিটি') }}</span>
+                    </h2>
+                    <p
+                        class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
+                        {{ data_get($heroSection, 'content.description', 'মাত্র ৩ দিনে আয়ত্ত করুন AI ইমেজ, ভিডিও ও মিউজিক জেনারেশন। লাইভ হ্যান্ডস-অন বুটক্যাম্প, বাস্তব প্রজেক্ট ও ইন্ডাস্ট্রি এক্সপার্ট মোঃ আব্দরু রউফ (রাজু) এর গাইডলাইনে।') }}
+                    </p>
 
-                <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
-                    <li>
-                        <a href="#"
-                            class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
+                    <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
+                        <li>
+                            <a href="{{ data_get($heroSection, 'content.button_1_url', '#') }}"
+                                class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
                hover:!bg-lime md:text-base px-3 lg:text-lg
                 hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5">
-                            এখনই ভর্তি হোন
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="block font-normal text-sm lg:text-lg text-[#fff] anim hover:text-[#fff] underline">সার্টিফিকেট
-                            পান
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                                {{ data_get($heroSection, 'content.button_1_text', 'এখনই ভর্তি হোন') }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ data_get($heroSection, 'content.button_2_url', '#') }}"
+                                class="block font-normal text-sm lg:text-lg text-[#fff] anim hover:text-[#fff] underline">
+                                {{ data_get($heroSection, 'content.button_2_text', 'সার্টিফিকেট পান') }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
+                    <h1
+                        class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                        <span class="block h-[2px] w-5 bg-line"></span>
+                        আপনার ক্রিয়েটিভিটি আনলক করুন
+                        <span class="block h-[2px] w-5 bg-line-2"></span>
+                    </h1>
+                    <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">সবচেয়ে সহজ ও
+                        দ্রুত উপায়ে শিখুন <span class="text-gradient">এআই ক্রিয়েটিভিটি</span></h2>
+                    <p
+                        class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
+                        মাত্র ৩ দিনে আয়ত্ত করুন AI ইমেজ, ভিডিও ও মিউজিক জেনারেশন। লাইভ হ্যান্ডস-অন বুটক্যাম্প, বাস্তব
+                        প্রজেক্ট ও ইন্ডাস্ট্রি এক্সপার্ট মোঃ আব্দরু রউফ (রাজু) এর গাইডলাইনে।</p>
+
+                    <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
+                        <li>
+                            <a href="#"
+                                class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
+               hover:!bg-lime md:text-base px-3 lg:text-lg
+                hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5">
+                                এখনই ভর্তি হোন
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block font-normal text-sm lg:text-lg text-[#fff] anim hover:text-[#fff] underline">সার্টিফিকেট
+                                পান
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            @endif
 
             <div class="w-full mt-8 md:mt-12 lg:mt-[62px] grid grid-cols-12 gap-x-4 lg:gap-x-6">
                 <!-- card small -->
