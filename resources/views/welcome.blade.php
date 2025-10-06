@@ -14,6 +14,7 @@
 
 
         <div class="container-x">
+            
             <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
                 <h1
                     class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">

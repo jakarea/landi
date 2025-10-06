@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use Auth;
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\PageSection;
 use App\Models\Course;
 use App\Models\BundleCourse;
 use App\Models\Checkout;
@@ -67,7 +68,9 @@ class HomepageController extends Controller
             $course->review_count = $reviews->count();
         }
 
-        return view('welcome', compact('latestCourses'));
+        $sections = PageSection::where('pageName','home')->get();
+
+        return view('welcome', compact('latestCourses','sections'));
     }
 
     /**
