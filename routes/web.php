@@ -185,6 +185,8 @@ Route::prefix('system')->middleware('auth')->group(function () {
 
 Route::prefix('cms/')->middleware('auth')->group(function () { 
     Route::get('/list', [CMSManageController::class, 'index'])->name('cms.list');
+    Route::get('/page-section/edit/{id}', [CMSManageController::class, 'edit'])->name('cms.page-section.edit');
+    Route::put('/page-section/update/{id}', [CMSManageController::class, 'update'])->name('cms.page-section.update');
 });
 
 // ========================================
