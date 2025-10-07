@@ -6,211 +6,71 @@
     মিউজিক জেনারেশন।')
 
 @section('content')
-    <!-- hero section start -->
+
+
+  <!-- hero section start -->
     <section class="w-full pb-1 lg:pb-10 relative min-h-[600px]">
 
         {{-- Header --}}
         @include('partials.guest.header-modern') 
 
-        <div class="container-x">
+        @php
+            $heroSection = $sections->where('sectionName', 'hero')->first();
+        @endphp
+
+        @if ($heroSection && $heroSection['is_active'])  
+            <div class="container-x"> 
             
-            @php
-                $heroSection = $sections->where('sectionName', 'hero')->first();
-            @endphp
-            @if ($heroSection && $heroSection['is_active'])
-                <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
-                    <h1
-                        class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
-                        <span class="block h-[2px] w-5 bg-line"></span>
-                        {{ data_get($heroSection, 'content.title') }}
-                        <span class="block h-[2px] w-5 bg-line-2"></span>
-                    </h1>
-                    <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
-                        {{ data_get($heroSection, 'content.title') }} <span
-                            class="text-gradient">{{ data_get($heroSection, 'content.gradient_title') }}</span>
-                    </h2>
-                    <p
-                        class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
-                        {{ data_get($heroSection, 'content.description') }}
-                    </p>
+                    <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
+                        <h1
+                            class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                            <span class="block h-[2px] w-5 bg-line"></span>
+                            {{ data_get($heroSection, 'content.title') }}
+                            <span class="block h-[2px] w-5 bg-line-2"></span>
+                        </h1>
+                        <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
+                            {{ data_get($heroSection, 'content.title') }} <span
+                                class="text-gradient">{{ data_get($heroSection, 'content.gradient_title') }}</span>
+                        </h2>
+                        <p
+                            class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
+                            {{ data_get($heroSection, 'content.description') }}
+                        </p>
 
-                    <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
-                        @foreach(data_get($heroSection, 'content.buttons', []) as $index => $button)
-                            <a href="{{ $button['url'] }}"
-                                class="inline-flex font-golos justify-center items-center {{ $index == 0 ? 'bg-submit border border-[#9F93A7]/70 hover:!bg-lime' : '!bg-transparent underline hover:!bg-blue' }} rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim  md:text-base px-3 lg:text-lg
-                hover:text-primary group lg:my-0 lg:order-1  lg:py-3 lg:px-5">
-                                {{ $button['label'] }}
-                            </a>
-                        @endforeach
-                        <li> 
-                    </ul>
-                </div> 
-            @endif
- 
-
-            <div class="w-full mt-8 md:mt-12 lg:mt-[62px] grid grid-cols-12 gap-x-4 lg:gap-x-6">
-                <!-- card small -->
-                <div
-                    class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] col-span-12 lg:col-span-3">
-                    <div class="w-full bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center">
-                        <h6
-                            class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
-                            <svg width="25" height="25" viewBox="0 0 25 25" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="4" cy="4" r="4" transform="matrix(-1 0 0 1 16.5 3.5)"
-                                    stroke="url(#paint0_linear_404_6825)" stroke-width="1.5" />
-                                <path
-                                    d="M5.5 17.4347C5.5 16.5743 6.04085 15.8068 6.85109 15.5175V15.5175C10.504 14.2128 14.496 14.2128 18.1489 15.5175V15.5175C18.9591 15.8068 19.5 16.5743 19.5 17.4347V18.7502C19.5 19.9376 18.4483 20.8498 17.2728 20.6818L16.3184 20.5455C13.7856 20.1837 11.2144 20.1837 8.68162 20.5455L7.72721 20.6818C6.5517 20.8498 5.5 19.9376 5.5 18.7502V17.4347Z"
-                                    stroke="url(#paint1_linear_404_6825)" stroke-width="1.5" />
-                                <defs>
-                                    <linearGradient id="paint0_linear_404_6825" x1="4" y1="0" x2="4"
-                                        y2="8" gradientUnits="userSpaceOnUse">
-                                        <stop stop-color="#E850FF" />
-                                        <stop offset="1" stop-color="#4941C8" />
-                                    </linearGradient>
-                                    <linearGradient id="paint1_linear_404_6825" x1="12.5" y1="13.5" x2="12.5"
-                                        y2="21" gradientUnits="userSpaceOnUse">
-                                        <stop stop-color="#E850FF" />
-                                        <stop offset="1" stop-color="#4941C8" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-
-                            আপনার কোর্স ইন্সট্রাক্টর
-                        </h6>
-                    </div>
-                    <div class="w-full my-2 lg:my-2.5">
-                        <img src="{{ asset('images/instructor.png') }}" alt="speking person"
-                            class="w-full h-[208px] rounded-md lg:rounded-[10px] object-cover">
-                    </div>
-                    <div class="w-full bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center">
-                        <h6
-                            class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
-                            মোঃ আব্দরু রউফ (রাজু)</h6>
-                        <ul class="flex items-center justify-center gap-x-2.5 mt-1">
-                            <li>
-                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                                    <img src="{{ asset('images/icons/call.svg') }}" alt="call" class="w-full">
+                        <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
+                            @foreach(data_get($heroSection, 'content.buttons', []) as $index => $button)
+                                <a href="{{ $button['url'] }}"
+                                    class="inline-flex font-golos justify-center items-center {{ $index == 0 ? 'bg-submit border border-[#9F93A7]/70 hover:!bg-lime' : '!bg-transparent underline hover:!bg-blue' }} rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim  md:text-base px-3 lg:text-lg
+                    hover:text-primary group lg:my-0 lg:order-1  lg:py-3 lg:px-5">
+                                    {{ $button['label'] }}
                                 </a>
-                            </li>
-                            <li>
-                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                                    <img src="{{ asset('images/icons/mail.svg') }}" alt="call" class="w-full">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                                    <img src="{{ asset('images/icons/linkedin.svg') }}" alt="call" class="w-full">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="block w-[30px] h-[30px] rounded-full">
-                                    <img src="{{ asset('images/icons/facebook.svg') }}" alt="call" class="w-full">
-                                </a>
-                            </li>
+                            @endforeach
+                            <li> 
                         </ul>
+                    </div>   
+                <div class="w-full mt-8 md:mt-12 lg:mt-[62px]"> 
+                    <!-- video url -->
+                    <div
+                        class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] grid grid-cols-1 gap-2 lg:gap-2.5"> 
+                        <div class="w-full relative">
+                            <img src="{{ asset('images/project-02.png') }}" alt="robot"
+                                class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[400px]">
+                            <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                                <button type="button"
+                                    class="w-12 h-12 lg:w-20 lg:h-20 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
+                                    <img src="{{ asset('images/icons/play.svg') }}" alt="play" class="w-4 lg:w-6">
+                                </button>
+                            </div>
+                        </div>
+                        <!-- box --> 
                     </div>
                 </div>
-                <!-- card big -->
-                <div
-                    class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] col-span-12 lg:col-span-8 grid grid-cols-1 lg:grid-cols-11 gap-2 lg:gap-2.5">
-                    <!-- box -->
-                    <div class="w-full lg:col-span-5">
-                        <div class="w-full bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center">
-                            <h6
-                                class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
-                                <img src="{{ asset('images/icons/ai.svg') }}" alt="ai">
-
-                                তার এআই ক্রিয়েশন
-                            </h6>
-                        </div>
-                        <div class="w-full mt-2 lg:mt-2.5 grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-2.5">
-                            <img src="{{ asset('images/project-07.png') }}" alt="speking person"
-                                class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover">
-                            <img src="{{ asset('images/project-03.png') }}" alt="speking person"
-                                class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover">
-                            <img src="{{ asset('images/project-02.png') }}" alt="speking person"
-                                class="w-full h-[100px] rounded-md lg:rounded-[10px] object-cover lg:col-span-2">
-                        </div>
-                    </div>
-                    <!-- box -->
-                    <div class="w-full lg:col-span-3 relative">
-                        <img src="{{ asset('images/home/robot.png') }}" alt="robot"
-                            class="w-full h-[269px] object-cover rounded-md lg:rounded-[10px]">
-                        <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                            <button type="button"
-                                class="w-12 h-12 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
-                                <img src="{{ asset('images/icons/play.svg') }}" alt="play" class="w-4">
-                            </button>
-                        </div>
-                    </div>
-                    <!-- box -->
-                    <div class="w-full lg:col-span-3 relative">
-                        <img src="{{ asset('images/home/joker.png') }}" alt="joker"
-                            class="w-full h-[269px] object-cover rounded-md lg:rounded-[10px]">
-                        <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                            <button type="button"
-                                class="w-12 h-12 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
-                                <img src="{{ asset('images/icons/play.svg') }}" alt="play" class="w-4">
-                            </button>
-                        </div>
-                    </div>
-                    <!-- box -->
-                    <div
-                        class="w-full lg:col-span-8 bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center flex items-center gap-x-3 lg:gap-x-5">
-                        <span
-                            class="flex w-8 h-8 lg:w-11 lg:h-11 bg-[#131620] shrink-0 rounded-full justify-center items-center p-1">
-                            <img src="{{ asset('images/icons/play.svg') }}" alt="play" class="w-4">
-                        </span>
-                        <div class="w-full">
-                            <img src="{{ asset('images/home/waves.svg') }}" alt="waves"
-                                class="w-full max-h-[65px] object-contain">
-                        </div>
-                    </div>
-                    <!-- box -->
-                    <div
-                        class="w-full lg:col-span-3 bg-[#fff]/10 rounded-sm p-2 lg:p-2.5 lg:rounded-[10px] text-center flex items-center justify-center">
-                        <h6
-                            class="font-normal text-sm lg:text-lg text-[#7E76FF] flex items-center gap-x-2.5 justify-center">
-                            <img src="{{ asset('images/icons/ai.svg') }}" alt="ai">
-
-                            তার এআই ক্রিয়েশন
-                        </h6>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w-full relative z-[99] mt-3 lg:mt-5 ">
-                <ul class="flex flex-col items-center lg:flex-row gap-y-4 lg:gap-y-0 justify-center lg:gap-x-6 w-full">
-                    <li>
-                        <a href="#"
-                            class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
-                            <img src="{{ asset('images/icons/btn-1.svg') }}" alt="btn-1"
-                                class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
-                            ইমেজ জেনারেশন
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
-                            <img src="{{ asset('images/icons/btn-1.svg') }}" alt="btn-1"
-                                class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
-                            ভিডিও ক্রিয়েশন
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="inline-flex items-center p-2 lg:p-2.5 rounded-md lg:rounded-[10px] border border-[#232323] bg-[#0A0C19] py-2 lg:py-2.5 px-4 lg:px-5 font-normal text-sm md:text-base lg:text-lg text-[#7E76FF] gap-x-2 lg:gap-x-2.5 anim hover:bg-blue hover:text-[#fff] group">
-                            <img src="{{ asset('images/icons/btn-1.svg') }}" alt="btn-1"
-                                class="w-5 lg:w-6 anim group-hover:text-[#fff]" />
-                            মিউজিক জেনারেশন
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    
+            </div> 
+         @endif
     </section>
     <!-- hero section end -->
+    
 
     <!-- border line -->
     <div class="container-x">
