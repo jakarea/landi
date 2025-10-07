@@ -277,6 +277,11 @@
     <!-- feature section end -->
     @endif
 
+    @php
+        $learningStepsSection = $sections->where('sectionName', 'learning_steps')->first();
+    @endphp
+
+    @if ($learningStepsSection && $learningStepsSection['is_active'])
     <!-- change your idea section start -->
     <section class="w-full py-10 lg:py-20">
         <div class="container-x">
@@ -284,133 +289,76 @@
                 <h6
                     class="inline-flex items-center gap-x-2 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
                     <span class="block h-[2px] w-5 bg-line"></span>
-                    শেখার ধাপ
+                    {{ data_get($learningStepsSection, 'content.subtitle', 'শেখার ধাপ') }}
                     <span class="block h-[2px] w-5 bg-line-2"></span>
                 </h6>
-                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">আপনার
-                    আইডিয়াকে বদলে দিন <span class="text-gradient">এআই ক্রিয়েশনে</span></h2>
+                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
+                    {{ data_get($learningStepsSection, 'content.title', 'আপনার আইডিয়াকে বদলে দিন') }} <span class="text-gradient">{{ data_get($learningStepsSection, 'content.gradient_title', 'এআই ক্রিয়েশনে') }}</span>
+                </h2>
                 <p
                     class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[50%] lg:mx-auto">
-                    এই বুটক্যাম্পে শেখার সঠিক পদ্ধতি, ধাপে ধাপে নির্দেশনা এবং ব্যবহারিক কৌশল যা আপনাকে দ্রুত দক্ষ করে
-                    তুলবে</p>
+                    {{ data_get($learningStepsSection, 'content.description', 'এই বুটক্যাম্পে শেখার সঠিক পদ্ধতি, ধাপে ধাপে নির্দেশনা এবং ব্যবহারিক কৌশল যা আপনাকে দ্রুত দক্ষ করে তুলবে') }}
+                </p>
             </div>
 
-            <!-- first step -->
-            <div class="w-full grid grid-cols-1 gap-y-10 lg:grid-cols-2 lg:gap-y-[200px] lg:gap-x-12 lg:items-center relative"
-                id="mainScrol">
+            <div class="w-full grid grid-cols-1 gap-y-10 lg:grid-cols-2 lg:gap-y-[200px] lg:gap-x-12 lg:items-center relative" id="mainScrol">
                 <!-- line -->
-                <div class="hidden lg:block bg-[#232323] w-[2px] h-full absolute left-[50%] top-0 translate-x-[-50%]">
-                </div>
-                <div id="scrolling-line"
-                    class="hidden lg:block bg-gradient-to-b from-transparent via-[#E850FF] to-[#4941C8] w-[2px] absolute left-[50%] top-0 translate-x-[-50%] shadow-2xl"
-                    style="height: 0;">
-
-                </div>
+                <div class="hidden lg:block bg-[#232323] w-[2px] h-full absolute left-[50%] top-0 translate-x-[-50%]"></div>
+                <div id="scrolling-line" class="hidden lg:block bg-gradient-to-b from-transparent via-[#E850FF] to-[#4941C8] w-[2px] absolute left-[50%] top-0 translate-x-[-50%] shadow-2xl" style="height: 0;"></div>
                 <!-- line -->
 
-                <!-- txt -->
-                <div class="w-full ">
-                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">প্রথম ধাপ </h4>
-                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">প্রম্পট থেকে প্রফেশনাল
-                        ভিজ্যুয়াল</h6>
+                @foreach(data_get($learningStepsSection, 'content.steps', []) as $index => $step)
+                    @php
+                        $isEven = $index % 2 == 0;
+                    @endphp
 
-                    <ul class="flex flex-col gap-y-2 lg:max-w-[70%]">
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">প্রম্পট লিখুন: সঠিক ও ইউনিক প্রম্পট
-                                তৈরি করা শিখুন।</p>
-                        </li>
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ইমেজ তৈরি: এআই ব্যবহার করে কাস্টম
-                                গ্রাফিক্স, ফেস এডিটিং ও অ্যাড ডিজাইন বানান।</p>
-                        </li>
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ফাইনাল টাচ: রঙ, লেআউট এবং স্টাইল
-                                এডজাস্ট করে প্রফেশনাল লুক নিশ্চিত করুন।</p>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- img -->
-                <div class="w-full lg:max-w-[80%] lg:ml-auto">
-                    <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-01.png') }}" alt="step-01"
-                            class="w-full rounded-md lg:rouned-[10px] ">
-                    </div>
-                </div>
-
-                <!-- img -->
-                <div class="w-full lg:max-w-[80%] lg:mr-auto">
-                    <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-02.png') }}" alt="step-02"
-                            class="w-full rounded-md lg:rouned-[10px] ">
-                    </div>
-                </div>
-
-                <div class="w-full lg:max-w-[80%] lg:ml-auto">
-                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">দ্বিতীয় ধাপ </h4>
-                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">টেক্সট বা ইমেজ থেকে আকর্ষণীয়
-                        ভিডিও তৈরি করুন</h6>
-
-                    <ul class="flex flex-col gap-y-2">
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ভিডিও জেনারেট করুন: টেক্সট বা ইমেজ
-                                থেকে ভিডিও তৈরি করা শিখুন।</p>
-                        </li>
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">অডিও ও ভয়েস এড করুন: ভয়েসওভার,
-                                লিপ-সিঙ্ক ও ব্যাকগ্রাউন্ড মিউজিক যোগ করুন।</p>
-                        </li>
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">এফেক্ট ও ফাইনাল টাচ: ট্রানজিশন,
-                                ফিল্টার ও এফেক্ট দিয়ে ভিডিওকে আরও প্রফেশনাল করুন।</p>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- txt -->
-                <div class="w-full ">
-                    <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">তৃতীয় ধাপ </h4>
-                    <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">সাউন্ড দিয়ে ভিডিওকে প্রাণ দিন
-                    </h6>
-
-                    <ul class="flex flex-col gap-y-2 lg:max-w-[70%]">
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">মিউজিক জেনারেশন: জিঙ্গেল,
-                                ব্যাকগ্রাউন্ড সাউন্ড বা টিউন তৈরি করুন।</p>
-                        </li>
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">ভয়েসওভার তৈরি করুন: এআই ভয়েস দিয়ে
-                                প্রফেশনাল ভয়েসওভার তৈরি করা শিখুন।</p>
-                        </li>
-                        <li class="flex items-center gap-x-2 lg:gap-x-3">
-                            <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
-                            <p class="text-[#ABABAB] font-normal text-sm lg:text-base">সাউন্ড এফেক্ট: মিউজিক ও ভয়েসের সাথে
-                                সাউন্ড ইফেক্ট যোগ করুন।</p>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- img -->
-                <div class="w-full lg:max-w-[80%] lg:ml-auto">
-                    <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
-                        <img src="{{ asset('images/home/step-03.png') }}" alt="step-03"
-                            class="w-full rounded-md lg:rouned-[10px] ">
-                    </div>
-                </div>
-
+                    @if ($isEven)
+                        <!-- Text Content -->
+                        <div class="w-full">
+                            <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">{{ data_get($step, 'title') }}</h4>
+                            <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">{{ data_get($step, 'heading') }}</h6>
+                            <ul class="flex flex-col gap-y-2 lg:max-w-[70%]">
+                                @foreach(data_get($step, 'items', []) as $item)
+                                <li class="flex items-center gap-x-2 lg:gap-x-3">
+                                    <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                                    <p class="text-[#ABABAB] font-normal text-sm lg:text-base">{{ $item }}</p>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <!-- Image -->
+                        <div class="w-full lg:max-w-[80%] lg:ml-auto">
+                            <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
+                                <img src="{{ asset(data_get($step, 'image')) }}" alt="{{ data_get($step, 'title') }}" class="w-full rounded-md lg:rouned-[10px]">
+                            </div>
+                        </div>
+                    @else
+                        <!-- Image -->
+                        <div class="w-full lg:max-w-[80%] lg:mr-auto">
+                            <div class="bg-step-img rounded-lg lg:rounded-[30px] p-4 lg:p-5 border border-[#232323]">
+                                <img src="{{ asset(data_get($step, 'image')) }}" alt="{{ data_get($step, 'title') }}" class="w-full rounded-md lg:rouned-[10px]">
+                            </div>
+                        </div>
+                        <!-- Text Content -->
+                        <div class="w-full lg:max-w-[80%] lg:ml-auto">
+                            <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">{{ data_get($step, 'title') }}</h4>
+                            <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">{{ data_get($step, 'heading') }}</h6>
+                            <ul class="flex flex-col gap-y-2">
+                                @foreach(data_get($step, 'items', []) as $item)
+                                <li class="flex items-center gap-x-2 lg:gap-x-3">
+                                    <span class="block w-1 h-1 bg-[#ABABAB] rounded-full"></span>
+                                    <p class="text-[#ABABAB] font-normal text-sm lg:text-base">{{ $item }}</p>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                @endforeach
             </div>
-            <!-- first step -->
         </div>
     </section>
     <!-- change your idea section end -->
+    @endif
 
     <!-- our courses section start -->
     <section class="w-full py-10 lg:py-20">
