@@ -20,7 +20,7 @@
                         @foreach($pageSections as $key => $section)
                             <tr class="odd:bg-[#f1f1f1] even:bg-[#fff]">
                                 <td width="20%" class="py-3 px-4">
-                                     <img src="{{ asset($section->sectionImage) }}" alt="{{ $section->sectionName }}" class="w-[270px] h-[70px] mr-auto object-contain rounded-xl overflow-hidden">
+                                     <img src="{{ asset($section->sectionImage) }}" alt="{{ $section->sectionName }}" class="w-[270px] h-[70px] mr-auto object-cover rounded-xl overflow-hidden">
                                 </td>
                                 <td class="py-3 px-4">{{ $section->pageName }}</td>
                                 <td class="py-3 px-4">{{ $section->sectionName }}</td>

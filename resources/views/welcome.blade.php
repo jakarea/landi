@@ -51,21 +51,20 @@
                 <div class="w-full mt-8 md:mt-12 lg:mt-[62px]"> 
                     <!-- video url -->
                     <div
-                        class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] grid grid-cols-1 gap-2 lg:gap-2.5"> 
-                        <div class="w-full relative">
-                            <img src="{{ asset('images/project-02.png') }}" alt="robot"
+                        class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] grid grid-cols-1 gap-2 lg:gap-2.5">
+                        <div class="w-full relative" id="video-player" data-video-url="{{ data_get($heroSection, 'content.video_url') }}">   
+                            <img src="{{ asset(data_get($heroSection, 'content.video_thumbnail')) }}" alt="robot"
                                 class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[400px]">
                             <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                                <button type="button"
+                                <button type="button" id="play-video-button"
                                     class="w-12 h-12 lg:w-20 lg:h-20 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
                                     <img src="{{ asset('images/icons/play.svg') }}" alt="play" class="w-4 lg:w-6">
                                 </button>
                             </div>
                         </div>
-                        <!-- box --> 
+                        <!-- video box -->
                     </div>
-                </div>
-    
+                </div> 
             </div> 
          @endif
     </section>
@@ -606,5 +605,12 @@
                     }
                 });
             }
+        });
+    </script>
+    <script>
+        document.getElementById('play-video-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            let videoPlayer = document.getElementById('video-player');
+            videoPlayer.innerHTML = `<iframe class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[400px]" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         });
     </script>
