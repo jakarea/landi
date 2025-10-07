@@ -79,7 +79,7 @@
 
     @php
         $featureSection = $sections->where('sectionName', 'feature')->first();
-    @endphp
+    @endphp 
 
     @if ($featureSection && $featureSection['is_active']) 
     <!-- feature section start -->
