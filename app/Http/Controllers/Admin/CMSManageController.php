@@ -28,8 +28,8 @@ class CMSManageController extends Controller
     {
         $pageSection = PageSection::findOrFail($id);
 
-        $pageSection->page_name = $request->input('pageName');
-        $pageSection->section_name = $request->input('sectionName');
+        $pageSection->pageName = $request->input('pageName');
+        $pageSection->sectionName = $request->input('sectionName');
         $pageSection->content = $request->input('content');
 
         $pageSection->save();
