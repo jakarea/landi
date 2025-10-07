@@ -48,7 +48,7 @@
                             <li> 
                         </ul>
                     </div>   
-                <div class="w-full mt-8 md:mt-12 lg:mt-[62px]"> 
+                <div class="w-full mt-8 md:mt-12 lg:mt-[62px] lg:max-w-[60%] mx-auto"> 
                     <!-- video url -->
                     <div
                         class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] grid grid-cols-1 gap-2 lg:gap-2.5">
@@ -86,8 +86,7 @@
     <section class="w-full py-10 lg:py-20">
         <div class="container-x">
             <div class="text-center mb-10 md:mb-16 lg:mb-20">
-                <h6
-                        class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                <h6 class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
                         <span class="block h-[2px] w-5 bg-line"></span>
                         {{ data_get($featureSection, 'content.title') }}
                         <span class="block h-[2px] w-5 bg-line-2"></span>
@@ -103,7 +102,7 @@
             </div>
 
             <!-- feat card -->
-            <div class="w-full grid grid-cols-1 gap-y-5 md:grid-cols-2 gap-5 lg:grid-cols-3 lg:gap-x-6">
+            <div class="w-full grid grid-cols-1 gap-y-5 md:grid-cols-2 gap-5 lg:grid-cols-3 lg:gap-x-6 ">
 
                  @foreach(data_get($featureSection, 'content.cards', []) as $index => $feat)
                     <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
@@ -608,9 +607,44 @@
         });
     </script>
     <script>
-        document.getElementById('play-video-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            let videoPlayer = document.getElementById('video-player');
-            videoPlayer.innerHTML = `<iframe class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[400px]" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        });
-    </script>
+    document.getElementById('play-video-button').addEventListener('click', function(e) {
+        e.preventDefault();
+        let videoPlayer = document.getElementById('video-player');
+        let videoUrl = videoPlayer.getAttribute('data-video-url');
+
+        if (videoUrl) {
+            let videoId = '';
+            // Check for youtube.com/watch?v=...
+            if (videoUrl.includes('youtube.com/watch?v=')) {
+                videoId = videoUrl.split('v=')[1];
+                const ampersandPosition = videoId.indexOf('&');
+                if (ampersandPosition !== -1) {
+                    videoId = videoId.substring(0, ampersandPosition);
+                }
+            }
+            // Check for youtu.be/...
+            else if (videoUrl.includes('youtu.be/')) {
+                videoId = videoUrl.split('youtu.be/')[1];
+                const ampersandPosition = videoId.indexOf('&');
+                if (ampersandPosition !== -1) {
+                    videoId = videoId.substring(0, ampersandPosition);
+                }
+            }
+            // Check for youtube.com/embed/...
+            else if (videoUrl.includes('youtube.com/embed/')) {
+                videoId = videoUrl.split('embed/')[1];
+                const questionMarkPosition = videoId.indexOf('?');
+                if (questionMarkPosition !== -1) {
+                    videoId = videoId.substring(0, questionMarkPosition);
+                }
+            }
+
+            if (videoId) {
+                videoPlayer.innerHTML = `<iframe class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[400px]" src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                // Fallback or error message if the URL is not a valid YouTube URL
+                console.error('Invalid YouTube URL provided.');
+            }
+        }
+    });
+</script>
