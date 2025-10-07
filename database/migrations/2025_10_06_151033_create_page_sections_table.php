@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('pageName')->nullable(); 
             $table->string('sectionName')->nullable();
+            $table->string('sectionImage')->nullable(); 
             $table->json('content')->nullable(); 
             $table->boolean('is_active')->default(true);
             $table->timestamps();

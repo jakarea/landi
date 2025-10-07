@@ -14,6 +14,7 @@ class PageSection extends Model
     protected $fillable = [
         'pageName',
         'sectionName',
+        'sectionImage',
         'content',
         'is_active', 
     ];

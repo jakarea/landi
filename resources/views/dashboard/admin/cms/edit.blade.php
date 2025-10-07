@@ -12,6 +12,11 @@
                 </a>
             </div>
 
+            {{-- section image --}}
+            <div class="my-4">
+                <img src="{{ asset($pageSection->sectionImage) }}" alt="{{ $pageSection->sectionName }}" class="w-full h-[360px] object-cover rounded-xl">
+            </div>
+
             <form action="{{ route('cms.page-section.update', $pageSection->id) }}" method="POST">
                 @csrf
                 @method('PUT')
