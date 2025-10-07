@@ -18,12 +18,12 @@
 
                 <div class="mb-4">
                     <label for="pageName" class="block text-gray-700 font-bold mb-2">Page Name</label>
-                    <input type="text" id="pageName" name="pageName" value="{{ $pageSection->pageName }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <input type="text" id="pageName" name="pageName" value="{{ $pageSection->pageName }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100" readonly>
                 </div>
 
                 <div class="mb-4">
                     <label for="sectionName" class="block text-gray-700 font-bold mb-2">Section Name</label>
-                    <input type="text" id="sectionName" name="sectionName" value="{{ $pageSection->sectionName }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <input type="text" id="sectionName" name="sectionName" value="{{ $pageSection->sectionName }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100" readonly>
                 </div>
 
                 <h3 class="text-xl font-bold mb-2">Content</h3>
