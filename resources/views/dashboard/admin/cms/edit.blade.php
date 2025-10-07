@@ -36,7 +36,13 @@
                                     @foreach($item as $subKey => $subValue)
                                         <div class="ml-4 mb-2">
                                             <label for="content_{{ $key }}_{{ $index }}_{{ $subKey }}" class="block text-gray-600 mb-1">{{ ucfirst(str_replace('_', ' ', $subKey)) }} [{{$index}}]</label>
-                                            <input type="text" id="content_{{ $key }}_{{ $index }}_{{ $subKey }}" name="content[{{ $key }}][{{ $index }}][{{ $subKey }}]" value="{{ $subValue }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                            @if(is_array($subValue))
+                                                @foreach($subValue as $ssKey => $ssValue)
+                                                <input type="text" id="content_{{ $key }}_{{ $index }}_{{ $subKey }}_{{ $ssKey }}" name="content[{{ $key }}][{{ $index }}][{{ $subKey }}][{{ $ssKey }}]" value="{{ $ssValue }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-1">
+                                                @endforeach
+                                            @else
+                                                <input type="text" id="content_{{ $key }}_{{ $index }}_{{ $subKey }}" name="content[{{ $key }}][{{ $index }}][{{ $subKey }}]" value="{{ $subValue }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                            @endif
                                         </div>
                                     @endforeach
                                 @else
