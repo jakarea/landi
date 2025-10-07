@@ -10,81 +10,43 @@
     <section class="w-full pb-1 lg:pb-10 relative min-h-[600px]">
 
         {{-- Header --}}
-        @include('partials.guest.header-modern')
-
+        @include('partials.guest.header-modern') 
 
         <div class="container-x">
             
             @php
                 $heroSection = $sections->where('sectionName', 'hero')->first();
             @endphp
-            @if ($heroSection)
+            @if ($heroSection && $heroSection['is_active'])
                 <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
                     <h1
                         class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
                         <span class="block h-[2px] w-5 bg-line"></span>
-                        {{ data_get($heroSection, 'content.title', 'আপনার ক্রিয়েটিভিটি আনলক করুন') }}
+                        {{ data_get($heroSection, 'content.title') }}
                         <span class="block h-[2px] w-5 bg-line-2"></span>
                     </h1>
                     <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
-                        {{ data_get($heroSection, 'content.heading', 'সবচেয়ে সহজ ও দ্রুত উপায়ে শিখুন') }} <span
-                            class="text-gradient">{{ data_get($heroSection, 'content.gradient_heading', 'এআই ক্রিয়েটিভিটি') }}</span>
+                        {{ data_get($heroSection, 'content.title') }} <span
+                            class="text-gradient">{{ data_get($heroSection, 'content.gradient_title') }}</span>
                     </h2>
                     <p
                         class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
-                        {{ data_get($heroSection, 'content.description', 'মাত্র ৩ দিনে আয়ত্ত করুন AI ইমেজ, ভিডিও ও মিউজিক জেনারেশন। লাইভ হ্যান্ডস-অন বুটক্যাম্প, বাস্তব প্রজেক্ট ও ইন্ডাস্ট্রি এক্সপার্ট মোঃ আব্দরু রউফ (রাজু) এর গাইডলাইনে।') }}
+                        {{ data_get($heroSection, 'content.description') }}
                     </p>
 
                     <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
-                        <li>
-                            <a href="{{ data_get($heroSection, 'content.button_1_url', '#') }}"
-                                class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
-               hover:!bg-lime md:text-base px-3 lg:text-lg
-                hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5">
-                                {{ data_get($heroSection, 'content.button_1_text', 'এখনই ভর্তি হোন') }}
+                        @foreach(data_get($heroSection, 'content.buttons', []) as $index => $button)
+                            <a href="{{ $button['url'] }}"
+                                class="inline-flex font-golos justify-center items-center {{ $index == 0 ? 'bg-submit border border-[#9F93A7]/70 hover:!bg-lime' : '!bg-transparent underline hover:!bg-blue' }} rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim  md:text-base px-3 lg:text-lg
+                hover:text-primary group lg:my-0 lg:order-1  lg:py-3 lg:px-5">
+                                {{ $button['label'] }}
                             </a>
-                        </li>
-                        <li>
-                            <a href="{{ data_get($heroSection, 'content.button_2_url', '#') }}"
-                                class="block font-normal text-sm lg:text-lg text-[#fff] anim hover:text-[#fff] underline">
-                                {{ data_get($heroSection, 'content.button_2_text', 'সার্টিফিকেট পান') }}
-                            </a>
-                        </li>
+                        @endforeach
+                        <li> 
                     </ul>
-                </div>
-            @else
-                <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
-                    <h1
-                        class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
-                        <span class="block h-[2px] w-5 bg-line"></span>
-                        আপনার ক্রিয়েটিভিটি আনলক করুন
-                        <span class="block h-[2px] w-5 bg-line-2"></span>
-                    </h1>
-                    <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">সবচেয়ে সহজ ও
-                        দ্রুত উপায়ে শিখুন <span class="text-gradient">এআই ক্রিয়েটিভিটি</span></h2>
-                    <p
-                        class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
-                        মাত্র ৩ দিনে আয়ত্ত করুন AI ইমেজ, ভিডিও ও মিউজিক জেনারেশন। লাইভ হ্যান্ডস-অন বুটক্যাম্প, বাস্তব
-                        প্রজেক্ট ও ইন্ডাস্ট্রি এক্সপার্ট মোঃ আব্দরু রউফ (রাজু) এর গাইডলাইনে।</p>
-
-                    <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
-                        <li>
-                            <a href="#"
-                                class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim
-               hover:!bg-lime md:text-base px-3 lg:text-lg
-                hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5">
-                                এখনই ভর্তি হোন
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block font-normal text-sm lg:text-lg text-[#fff] anim hover:text-[#fff] underline">সার্টিফিকেট
-                                পান
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                </div> 
             @endif
+ 
 
             <div class="w-full mt-8 md:mt-12 lg:mt-[62px] grid grid-cols-12 gap-x-4 lg:gap-x-6">
                 <!-- card small -->
@@ -256,97 +218,64 @@
     </div>
     <!-- border line -->
 
+    @php
+        $featureSection = $sections->where('sectionName', 'feature')->first();
+    @endphp
+
+    @if ($featureSection && $featureSection['is_active']) 
     <!-- feature section start -->
     <section class="w-full py-10 lg:py-20">
         <div class="container-x">
             <div class="text-center mb-10 md:mb-16 lg:mb-20">
                 <h6
-                    class="inline-flex items-center gap-x-2 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
-                    <span class="block h-[2px] w-5 bg-line"></span>
-                    মূল বৈশিষ্ট্য
-                    <span class="block h-[2px] w-5 bg-line-2"></span>
-                </h6>
-                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">আপনার
-                    আইডিয়াকে বদলে দিন <span class="text-gradient">এআই ক্রিয়েশনে</span></h2>
-                <p
-                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[50%] lg:mx-auto">
-                    শিখুন কীভাবে আকর্ষণীয় ইমেজ, এনগেজিং ভিডিও ও প্রফেশনাল মিউজিক/ভয়েসওভার তৈরি করা যায় মুহূর্তেই।</p>
+                        class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                        <span class="block h-[2px] w-5 bg-line"></span>
+                        {{ data_get($featureSection, 'content.title') }}
+                        <span class="block h-[2px] w-5 bg-line-2"></span>
+                    </h6>
+                    <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
+                        {{ data_get($featureSection, 'content.title') }} <span
+                            class="text-gradient">{{ data_get($heroSection, 'content.gradient_title') }}</span>
+                    </h2>
+                    <p
+                        class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
+                        {{ data_get($featureSection, 'content.description') }}
+                    </p>
             </div>
 
             <!-- feat card -->
             <div class="w-full grid grid-cols-1 gap-y-5 md:grid-cols-2 gap-5 lg:grid-cols-3 lg:gap-x-6">
-                <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
-                    <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
-                        class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
 
-                    <div
-                        class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
+                 @foreach(data_get($featureSection, 'content.cards', []) as $index => $feat)
+                    <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
+                        <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
+                            class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
+
                         <div
-                            class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-01.svg') }}" alt="icons 1"
-                                class="w-6 md:w-8 lg:w-10">
-                            <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 1"
-                                class="w-[86%] absolute left-1 top-4">
+                            class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
+                            <div
+                                class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
+                            <img src="{{ asset('images/icons/b-camp-0' . ($index + 1) . '.svg') }}" alt="icons {{ $index + 1 }}"
+        class="w-6 md:w-8 lg:w-10">
+                                <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 1"
+                                    class="w-[86%] absolute {{ $index == 0 ? 'left-1 top-4' : ($index == 1 ? '!left-0 !top-1 !rotate-90' : 'left-inherit right-1 top-1 rotate-180') }}">
+                            </div>
+                        </div>
+
+                        <div class="mt-10 lg:mt-[60px]">
+                            <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">
+                            {{ $feat['title'] }}    
+                            </h5>
+                            <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">{{ $feat['description'] }} </p>
                         </div>
                     </div>
-
-                    <div class="mt-10 lg:mt-[60px]">
-                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">এআই
-                            ইমেজ জেনারেশন ও প্রম্পটিং</h5>
-                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">টেক্সট
-                            প্রম্পট থেকে ভিজ্যুয়াল, পোস্টার, ক্যারেক্টার ডিজাইন ও ফেস এডিট শিখুন।</p>
-                    </div>
-                </div>
-                <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
-                    <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
-                        class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
-
-                    <div
-                        class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
-                        <div
-                            class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-02.svg') }}" alt="icons 2"
-                                class="w-6 md:w-8 lg:w-10">
-                            <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 2"
-                                class="w-[86%] absolute left-0 top-1 rotate-90">
-                        </div>
-                    </div>
-
-                    <div class="mt-10 lg:mt-[60px]">
-                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">এআই
-                            ভিডিও ক্রিয়েশন</h5>
-                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">
-                            টেক্সট/ইমেজ থেকে ভিডিও, লিপ-সিঙ্ক, ভয়েস ও ইফেক্টসহ বিজ্ঞাপন ও শর্টস তৈরি করুন।</p>
-                    </div>
-                </div>
-                <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
-                    <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
-                        class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
-
-                    <div
-                        class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
-                        <div
-                            class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-03.svg') }}" alt="icons 3"
-                                class="w-6 md:w-8 lg:w-10">
-                            <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 3"
-                                class="w-[86%] absolute right-1 top-1 rotate-180">
-                        </div>
-                    </div>
-
-                    <div class="mt-10 lg:mt-[60px]">
-                        <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">এআই
-                            মিউজিক ও ভয়েস জেনারেশন</h5>
-                        <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">এআই দিয়ে
-                            জিঙ্গেল, ব্যাকগ্রাউন্ড স্কোর, ভয়েসওভার ও সাউন্ড ইফেক্ট তৈরি করুন।</p>
-                    </div>
-
-                </div>
+                @endforeach 
             </div>
             <!-- feat card -->
         </div>
     </section>
     <!-- feature section end -->
+    @endif
 
     <!-- change your idea section start -->
     <section class="w-full py-10 lg:py-20">
