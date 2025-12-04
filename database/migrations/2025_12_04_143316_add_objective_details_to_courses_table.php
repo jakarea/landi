@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subscription_packages', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
+        Schema::table('courses', function (Blueprint $table) {
+            //
+            $table->text('objective_details')->nullable();
         });
     }
 
@@ -23,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscription_packages');
+        Schema::table('courses', function (Blueprint $table) {
+            //
+             $table->dropColumn('objective_details');
+        });
     }
 };

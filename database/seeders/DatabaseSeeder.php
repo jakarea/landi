@@ -22,30 +22,30 @@ class DatabaseSeeder extends Seeder
             LessonSeeder::class,
 
             // 3. Subscription and payment related
-            SubscriptionPlansTableSeeder::class,
-            SubscriptionsTableSeeder::class,
+            // SubscriptionPlansTableSeeder::class,
+            // SubscriptionsTableSeeder::class,
 
             // 4. Course interaction data (depends on courses and users)
-            CourseActivitiesTableSeeder::class,
-            CourseLikesTableSeeder::class,
-            CourseLogsTableSeeder::class,
+            // CourseActivitiesTableSeeder::class,
+            // CourseLikesTableSeeder::class,
+            // CourseLogsTableSeeder::class,
 
             // 5. Coupon and discount system
-            CouponSeeder::class,
+            // CouponSeeder::class,
 
             // 6. Live classes (depends on users and courses)
-            LiveClassSeeder::class,
+            // LiveClassSeeder::class,
 
             // 7. User sessions (depends on users)
-            UserSessionSeeder::class,
+            // UserSessionSeeder::class,
 
             // 8. Profile and content data
-            InstructorProfileSeeder::class,
-            StudentProfileSeeder::class,
-            BanglaContentSeeder::class,
+            // InstructorProfileSeeder::class,
+            // StudentProfileSeeder::class,
+            // BanglaContentSeeder::class,
 
             // 9. Common/configuration data (should be last)
-            CommonDataSeeder::class,
+            // CommonDataSeeder::class,
         ]);
     }
 }

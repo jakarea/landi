@@ -1,4 +1,4 @@
-@import "tailwindcss"; 
+@import "tailwindcss";
 
 @theme {
   --color-body: #091D3D;
@@ -23,7 +23,7 @@
 }
 
 body {
-  font-family: "Hind Siliguri", sans-serif;
+  font-family: "Noto Sans Bengali", sans-serif;
 }
 
 @layer components {
@@ -32,9 +32,9 @@ body {
       linear-gradient(to right, rgba(20, 206, 244, 0.3) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(20, 206, 244, 0.3) 1px, transparent 1px);
     background-size: 11px 11px;
-  } 
-  
-  .container-x{
+  }
+
+  .container-x {
     max-width: 1340px;
     margin: 0 auto;
     padding: 0 24px;
@@ -42,15 +42,15 @@ body {
   }
 }
 
-.anim{
- transition: all 0.3s ease-in-out;
- -webkit-transition: all 0.3s ease-in-out;
- -moz-transition: all 0.3s ease-in-out;
- -ms-transition: all 0.3s ease-in-out;
- -o-transition: all 0.3s ease-in-out;
+.anim {
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
 }
 
-.over-shaped{
+.over-shaped {
   background: linear-gradient(0deg, #091D3D 34.13%, rgba(9, 29, 61, 0.1) 100%);
 }
 
@@ -58,16 +58,16 @@ body {
   .gradient-border {
     @apply relative bg-gradient-to-b from-[#E7FFCA] to-[#14CEF4] p-0.5 rounded-xl;
   }
-  
+
   .gradient-border-content {
     @apply bg-transparent rounded-[calc(0.75rem-2px)] relative z-10;
   }
 
-  .shadow-1{
+  .shadow-1 {
     box-shadow: 0px 0px 30px 0px #36DEFF99;
   }
 
-  .shadow-2{
+  .shadow-2 {
     box-shadow: 0px 0px 20px 0px #00000040;
   }
 
@@ -78,9 +78,9 @@ body {
     background-clip: text;
   }
 
-  .common-para{
+  .common-para {
     font-weight: 400;
-    font-size: 14px; 
+    font-size: 14px;
     line-height: 140%;
   }
 
@@ -88,7 +88,7 @@ body {
     transform: translateY(0);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   .smooth-bounce:hover {
     transform: translateY(-8px);
   }
@@ -96,7 +96,7 @@ body {
 
 /* media query */
 @media only screen and (min-width: 1200px) {
-  .common-para{ 
-    font-size: 18px;  
+  .common-para {
+    font-size: 18px;
   }
 }

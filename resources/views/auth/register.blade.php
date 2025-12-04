@@ -45,32 +45,6 @@
                     </div>
                     @enderror
                 </div>
-
-                <div class="form-group">
-                    <label for="company_name">কোম্পানি (ঐচ্ছিক)</label>
-                    <input type="text" 
-                           id="company_name"
-                           placeholder="আপনার কোম্পানির নাম"
-                           class="form-control" 
-                           name="company_name"
-                           value="{{ old('company_name') }}">
-                </div>
-
-                <div class="form-group">
-                    <label for="user_role">আমি যে হিসেবে যোগ দিতে চাই</label>
-                    <select id="user_role" 
-                            name="user_role" 
-                            class="form-control @error('user_role') is-invalid @enderror">
-                        <option value="">আপনার ভূমিকা নির্বাচন করুন</option>
-                        <option value="student" {{ old('user_role') == 'student' ? 'selected' : '' }}>শিক্ষার্থী</option>
-                        <option value="instructor" {{ old('user_role') == 'instructor' ? 'selected' : '' }}>প্রশিক্ষক</option>
-                    </select>
-                    @error('user_role')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </div>
                 
                 <div class="form-group">
                     <label for="password">পাসওয়ার্ড</label>
@@ -101,22 +75,6 @@
                                autocomplete="new-password">
                         <i class="fas fa-eye password-toggle" onclick="togglePassword('password_confirmation', 'confirm-eye')" id="confirm-eye"></i>
                     </div>
-                </div>
-                
-                <div class="form-check mb-4">
-                    <input class="form-check-input" 
-                           type="checkbox" 
-                           name="terms" 
-                           id="terms"
-                           {{ old('terms') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="terms">
-                        আমি <a href="#" class="auth-links">সেবার শর্তাবলী</a> এবং <a href="#" class="auth-links">গোপনীয়তা নীতিমালাতে</a> সম্মত
-                    </label>
-                    @error('terms')
-                    <div class="invalid-feedback d-block">
-                        {{ $message }}
-                    </div>
-                    @enderror
                 </div>
                 
                 <button class="btn btn-submit" type="submit">

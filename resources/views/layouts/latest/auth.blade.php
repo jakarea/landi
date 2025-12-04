@@ -21,8 +21,8 @@
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@100..900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -35,32 +35,53 @@
   <style>
     /* AI for Advertising Bootcamp '25 Auth Styles */
     :root {
+        --dark-bg: #0f0f23;
         --primary-navy: #0F172A;
         --primary-text: #FFFFFF;
-        --accent-cyan: #00D4FF;
-        --accent-teal: #2DD4BF;
-        --secondary-bg: #F1F5F9;
-        --gradient-primary: linear-gradient(90deg, #00D4FF, #2DD4BF);
-        --glass-bg: rgba(255, 255, 255, 0.15);
-        --glass-border: rgba(255, 255, 255, 0.2);
+        --accent-purple: #E850FF;
+        --accent-blue: #4941C8;
+        --accent-lime: #CBFB90;
+        --secondary-bg: rgba(15, 15, 35, 0.8);
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --gradient-primary: linear-gradient(99.12deg, rgba(232, 80, 255, 0.6) 2.73%, rgba(0, 0, 0, 0) 47.04%, rgba(0, 0, 0, 0) 47.04%, rgba(73, 65, 200, 0.6) 91.34%);
+        --gradient-border: linear-gradient(45deg, #E850FF, #4941C8, #E850FF, #4941C8);
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(232, 80, 255, 0.2);
     }
 
-    * {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    * { 
+         font-family: "Noto Sans Bengali", sans-serif;
     }
 
     body {
-        background: var(--primary-navy);
+        background: var(--dark-bg);
         color: var(--primary-text);
         margin: 0;
         padding: 0;
         min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(232, 80, 255, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(73, 65, 200, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
     }
 
     .auth-header {
-        background: var(--primary-navy);
-        border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        background: var(--dark-bg);
+        border-bottom: 1px solid rgba(232, 80, 255, 0.2);
         padding: 1rem 0;
+        position: relative;
+        z-index: 10;
     }
 
     .auth-brand {
@@ -71,11 +92,16 @@
         display: flex;
         align-items: center;
         gap: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .auth-brand:hover {
+        color: var(--accent-lime);
     }
 
     .ai-logo {
         background: var(--gradient-primary);
-        color: var(--primary-navy);
+        color: var(--primary-text);
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -84,37 +110,73 @@
         justify-content: center;
         font-weight: 700;
         font-size: 1rem;
+        box-shadow: 0 0 20px rgba(232, 80, 255, 0.3);
     }
 
     .auth-container {
-        min-height: calc(100vh - 80px);
+        min-height: 100vh;
         display: flex;
         align-items: center;
         padding: 2rem 0;
+        position: relative;
+        z-index: 1;
     }
 
     .auth-card {
-        background: var(--secondary-bg);
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
         border-radius: 16px;
         padding: 3rem;
-        box-shadow: 0 20px 60px rgba(0, 212, 255, 0.1);
-        border: 1px solid rgba(0, 212, 255, 0.1);
+        box-shadow: 0 20px 60px rgba(232, 80, 255, 0.2);
+        border: 1px solid rgba(232, 80, 255, 0.2);
         max-width: 450px;
         width: 100%;
         margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        padding: 2px;
+        background: var(--gradient-border);
+        background-size: 300% 300%;
+        border-radius: inherit;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        -webkit-mask-composite: xor;
+        animation: gradient-border 3s ease infinite;
+        opacity: 0.5;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    @keyframes gradient-border {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .auth-card > * {
+        position: relative;
+        z-index: 1;
     }
 
     .auth-title {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--primary-navy);
+        color: var(--primary-text);
         margin-bottom: 0.5rem;
         text-align: center;
     }
 
     .auth-subtitle {
-        color: var(--primary-navy);
-        opacity: 0.8;
+        color: #ABABAB;
         text-align: center;
         margin-bottom: 2rem;
     }
@@ -125,47 +187,50 @@
 
     .form-group label {
         font-weight: 600;
-        color: var(--primary-navy);
+        color: var(--primary-text);
         margin-bottom: 0.5rem;
         display: block;
     }
 
     .form-control {
-        background: white;
-        border: 2px solid #e2e8f0;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(232, 80, 255, 0.2);
         border-radius: 8px;
         padding: 12px 16px;
         font-size: 1rem;
-        color: var(--primary-navy);
+        color: var(--primary-text);
         transition: all 0.3s ease;
     }
 
     .form-control:focus {
-        border-color: var(--accent-cyan);
-        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
-        background: white;
-        color: var(--primary-navy);
+        border-color: var(--accent-purple);
+        box-shadow: 0 0 0 3px rgba(232, 80, 255, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--primary-text);
+        outline: none;
     }
 
     .form-control::placeholder {
-        color: #94a3b8;
+        color: #ABABAB;
     }
 
     .btn-submit {
-        background: var(--accent-cyan);
+        background: var(--gradient-primary);
         border: none;
-        color: var(--primary-navy);
+        color: var(--primary-text);
         padding: 14px 28px;
         border-radius: 8px;
         font-weight: 600;
         font-size: 1rem;
         width: 100%;
         transition: all 0.3s ease;
+        cursor: pointer;
     }
 
     .btn-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+        box-shadow: 0 8px 25px rgba(232, 80, 255, 0.4), 0 0 40px rgba(73, 65, 200, 0.2);
+        background: var(--accent-lime);
         color: var(--primary-navy);
     }
 
@@ -173,39 +238,52 @@
         text-align: center;
         margin-top: 2rem;
         padding-top: 2rem;
-        border-top: 1px solid #e2e8f0;
+        border-top: 1px solid rgba(232, 80, 255, 0.2);
+    }
+
+    .auth-links p {
+        color: #ABABAB;
     }
 
     .auth-links a {
-        color: var(--accent-cyan);
+        color: var(--accent-lime);
         text-decoration: none;
         font-weight: 600;
         transition: color 0.3s ease;
     }
 
     .auth-links a:hover {
-        color: var(--accent-teal);
+        color: var(--accent-purple);
     }
 
     .form-check-label {
-        color: var(--primary-navy);
-        opacity: 0.8;
+        color: #ABABAB;
+    }
+
+    .form-check-input {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(232, 80, 255, 0.2);
     }
 
     .form-check-input:checked {
-        background-color: var(--accent-cyan);
-        border-color: var(--accent-cyan);
+        background-color: var(--accent-purple);
+        border-color: var(--accent-purple);
+    }
+
+    .form-check-input:focus {
+        box-shadow: 0 0 0 3px rgba(232, 80, 255, 0.1);
+        border-color: var(--accent-purple);
     }
 
     .forgot-password {
-        color: var(--accent-cyan);
+        color: var(--accent-lime);
         text-decoration: none;
         font-size: 0.9rem;
         transition: color 0.3s ease;
     }
 
     .forgot-password:hover {
-        color: var(--accent-teal);
+        color: var(--accent-purple);
     }
 
     .alert {
@@ -215,13 +293,15 @@
     }
 
     .alert-success {
-        background: rgba(34, 197, 94, 0.1);
-        color: #059669;
+        background: rgba(203, 251, 144, 0.1);
+        color: var(--accent-lime);
+        border: 1px solid rgba(203, 251, 144, 0.2);
     }
 
     .alert-danger {
-        background: rgba(239, 68, 68, 0.1);
-        color: #dc2626;
+        background: rgba(232, 80, 255, 0.1);
+        color: var(--accent-purple);
+        border: 1px solid rgba(232, 80, 255, 0.2);
     }
 
     .password-field-wrapper {
@@ -234,30 +314,37 @@
         top: 50%;
         transform: translateY(-50%);
         cursor: pointer;
-        color: #94a3b8;
+        color: #ABABAB;
         transition: color 0.3s ease;
     }
 
     .password-toggle:hover {
-        color: var(--primary-navy);
+        color: var(--accent-purple);
     }
 
     .social-login {
         margin-top: 1.5rem;
         padding-top: 1.5rem;
-        border-top: 1px solid #e2e8f0;
+        border-top: 1px solid rgba(232, 80, 255, 0.2);
         text-align: center;
     }
 
     .social-login a {
-        color: var(--accent-teal);
+        color: var(--accent-lime);
         text-decoration: none;
         margin: 0 0.5rem;
         font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-block;
+        padding: 10px 20px;
+        border: 1px solid rgba(203, 251, 144, 0.3);
+        border-radius: 8px;
     }
 
     .social-login a:hover {
-        color: var(--accent-cyan);
+        color: var(--primary-navy);
+        background: var(--accent-lime);
+        border-color: var(--accent-lime);
     }
 
     @media (max-width: 768px) {
@@ -280,20 +367,7 @@
   {{-- Marketing Tracking Codes (Body) --}}
   @include('partials.tracking-codes-body')
 
-  {{-- header start --}}
-  <header class="auth-header">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-12">
-          <a href="{{url('/')}}" class="auth-brand">
-            <div class="ai-logo">AI</div>
-            AI for Advertising Bootcamp '25
-          </a>
-        </div>
-      </div>
-    </div>
-  </header>
-  {{-- header end --}}
+
 
   {{-- auth content --}}
   <div class="auth-container">

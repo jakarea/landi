@@ -23,8 +23,7 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Inter', 'Hind Siliguri', 'Kalpurush', sans-serif;
+body { 
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     line-height: 1.6;

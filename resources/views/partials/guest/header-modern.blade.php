@@ -3,16 +3,16 @@
     <div class="container-x">
         <div class="w-full grid grid-cols-12 relative bg-[#fff]/10 rounded-md p-2 lg:p-2.5 lg:rounded-[14px] lg:items-center lg:px-5">
             <!-- logo -->
-            <div class="text-start col-span-4">
+            <div class="text-start col-span-2">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('images/logo.svg') }}" alt="logo" class="max-w-24 md:max-w-[145px] lg:max-w-[160px]">
+                    <img src="{{ asset('images/logo.png') }}" alt="logo" class="max-w-20 md:max-w-[95px] lg:max-w-[110px]">
                 </a>
             </div>
             <!-- logo -->
 
-            <div class="navbar flex flex-col gap-y-4 justify-center items-center col-span-8 lg:flex-row">
+            <div class="navbar flex flex-col gap-y-4 justify-center items-center col-span-10 lg:flex-row">
                 <!-- menu -->
-                <div class="w-full absolute left-0 top-10 min-h-[130px] bg-card z-50 flex justify-center p-4 rounded-md hidden lg:!flex lg:relative lg:bg-transparent lg:min-h-auto lg:left-auto lg:top-auto" id="mobile-menu">
+                <div class="w-full absolute left-0 top-10 min-h-[130px] bg-card z-50 flex justify-center p-4 rounded-md hidden lg:!flex lg:relative lg:bg-transparent lg:min-h-auto lg:left-auto lg:top-auto min-w-[75%]" id="mobile-menu">
                     <ul class="flex flex-col lg:flex-row gap-y-3 lg:gap-y-0 lg:gap-x-[30px] text-center">
                         <li>
                             <a href="{{ route('home') }}" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('home') ? 'text-[#fff]' : '' }}">
@@ -24,9 +24,14 @@
                                 কোর্সসমূহ
                             </a>
                         </li>
-                         <li>
-                            <a href="{{ route('fun.app') }}" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('fun.app') ? 'text-[#fff]' : '' }}">
-                                 ফান অ্যাপ 
+                        <li>
+                            <a href="#" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('courses') ? 'text-[#fff]' : '' }}">
+                                এক্সপার্ট কানেকশন
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('courses') ? 'text-[#fff]' : '' }}">
+                                AI আপডেট
                             </a>
                         </li> 
                     </ul>
@@ -34,7 +39,7 @@
                 <!-- menu -->
 
                 <!-- actions -->
-                <div class="w-full">
+                <div class="w-full lg:min-w-[25%]">
                     <ul class="flex gap-x-3 lg:gap-x-[30px] text-center items-center justify-end">
                         @if (auth()->user() && auth()->user()->user_role == 'instructor')
                             <li>
@@ -56,7 +61,7 @@
                             </li>
                             <li>
                                 <a href="{{ route('register') }}" class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim hover:!bg-lime md:text-base px-3 pr-2 lg:text-lg hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5 lg:pr-4">
-                                    সাইন আপ
+                                    ফ্রি টুলস
                                     <svg class="w-5 lg:w-8" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="0.5" y="29.5" width="29" height="29" rx="14.5" transform="rotate(-90 0.5 29.5)" stroke="white" />
                                         <path d="M18.3154 16.9887L18.3154 11.6854M18.3154 11.6854L13.0121 11.6854M18.3154 11.6854L11.6862 18.3146" stroke="white" stroke-linecap="round" stroke-linejoin="round" />

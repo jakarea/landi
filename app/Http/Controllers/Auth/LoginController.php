@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Cookie;
 use App\Models\InstructorModuleSetting;
 use App\Providers\RouteServiceProvider;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -26,8 +25,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
      */
-
-    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -44,6 +41,20 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
     }
 
     /*
