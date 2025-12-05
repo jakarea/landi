@@ -63,11 +63,11 @@
                                 </a>
                             </li>
                         @else
-                            <li>
+                            <!-- <li>
                                 <a href="{{ route('login') }}" class="block font-normal text-sm lg:text-base text-[#ABABAB] anim hover:text-[#fff]">
                                     লগইন
                                 </a>
-                            </li>
+                            </li> -->
                             <li>
                                 <a href="{{ route('register') }}" class="inline-flex font-golos justify-center items-center bg-submit rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim hover:!bg-lime md:text-base px-3 pr-2 lg:text-lg hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-5 lg:pr-4">
                                     ফ্রি টুলস

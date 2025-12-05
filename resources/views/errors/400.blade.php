@@ -1,11 +1,11 @@
 @extends('layouts.guest-modern')
 
-@section('title', '404 - পেজ পাওয়া যায়নি')
-@section('description', 'দুঃখিত, আপনি যে পেজটি খুঁজছেন তা পাওয়া যায়নি।')
+@section('title', '400 - ভুল রিকোয়েস্ট')
+@section('description', 'দুঃখিত, আপনার রিকোয়েস্টটি সঠিক নয়।')
 
 @section('content')
 
-<!-- 404 Error Page -->
+<!-- 400 Error Page -->
 <section class="w-full relative overflow-hidden min-h-screen flex items-center justify-center bg-gradient-to-b from-[#000] to-[#0a0a0a]">
     <!-- Header -->
     <div class="absolute inset-0 w-full h-full bg-[#000]/50">
@@ -20,10 +20,10 @@
 
     <div class="container-x relative z-10 py-20 lg:py-32">
         <div class="max-w-3xl mx-auto text-center">
-            <!-- 404 Number -->
+            <!-- 400 Number -->
             <div class="mb-8 lg:mb-12">
                 <h1 class="font-bold text-[120px] md:text-[180px] lg:text-[240px] leading-none text-gradient opacity-20">
-                    404
+                    400
                 </h1>
             </div>
 
@@ -32,7 +32,7 @@
                 <div class="inline-flex items-center justify-center w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-gradient-to-br from-[#E850FF] to-[#4941C8] p-1">
                     <div class="w-full h-full rounded-full bg-[#0a0a0a] flex items-center justify-center">
                         <svg class="w-12 h-12 lg:w-16 lg:h-16 text-[#E850FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                 </div>
@@ -40,43 +40,46 @@
 
             <!-- Title -->
             <h2 class="font-bold text-2xl md:text-3xl lg:text-4xl text-[#E2E8F0] leading-[120%] mb-4">
-                পেজ পাওয়া যায়নি!
+                ভুল রিকোয়েস্ট!
             </h2>
 
             <!-- Description -->
             <p class="font-normal text-base md:text-lg text-[#ABABAB] leading-[160%] mb-8 lg:mb-12 max-w-xl mx-auto">
-                দুঃখিত, আপনি যে পেজটি খুঁজছেন তা বিদ্যমান নেই অথবা সরানো হয়েছে। হোমপেজে ফিরে যান বা অন্য কোনো পেজ দেখুন।
+                দুঃখিত, আপনার রিকোয়েস্টটি সঠিক নয় বা সার্ভার বুঝতে পারছে না। অনুগ্রহ করে আপনার ইনপুট চেক করুন এবং আবার চেষ্টা করুন।
             </p>
 
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="{{ route('home') }}" class="inline-flex font-golos justify-center items-center bg-submit border border-[#9F93A7]/70 hover:!bg-lime rounded-lg px-8 py-3 font-medium text-base lg:text-lg text-[#fff] anim hover:text-primary group">
+                <button onclick="window.history.back()" class="inline-flex font-golos justify-center items-center bg-submit border border-[#9F93A7]/70 hover:!bg-lime rounded-lg px-8 py-3 font-medium text-base lg:text-lg text-[#fff] anim hover:text-primary group">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
+                    পেছনে যান
+                </button>
+                <a href="{{ route('home') }}" class="inline-flex font-golos justify-center items-center bg-[#fff]/10 hover:bg-[#fff]/20 border border-[#fff]/20 rounded-lg px-8 py-3 font-medium text-base lg:text-lg text-[#fff] anim group">
                     হোমপেজে যান
-                </a>
-                <a href="{{ route('courses') }}" class="inline-flex font-golos justify-center items-center bg-[#fff]/10 hover:bg-[#fff]/20 border border-[#fff]/20 rounded-lg px-8 py-3 font-medium text-base lg:text-lg text-[#fff] anim group">
-                    কোর্স দেখুন
                     <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </a>
             </div>
 
-            <!-- Quick Links -->
+            <!-- Common Issues -->
             <div class="mt-12 lg:mt-16 pt-8 border-t border-[#232323]">
-                <p class="text-[#ABABAB] text-sm mb-4">জনপ্রিয় পেজ:</p>
-                <div class="flex flex-wrap gap-3 justify-center">
-                    <a href="{{ route('courses') }}" class="px-4 py-2 bg-[#fff]/5 hover:bg-[#E850FF]/20 border border-[#fff]/10 hover:border-[#E850FF]/50 rounded-full text-[#fff] text-sm transition-all duration-300">
-                        কোর্সসমূহ
-                    </a>
-                    <a href="{{ route('blog.index') }}" class="px-4 py-2 bg-[#fff]/5 hover:bg-[#4941C8]/20 border border-[#fff]/10 hover:border-[#4941C8]/50 rounded-full text-[#fff] text-sm transition-all duration-300">
-                        AI আপডেট
-                    </a>
-                    <a href="{{ route('expert.connection') }}" class="px-4 py-2 bg-[#fff]/5 hover:bg-[#CDFF5C]/20 border border-[#fff]/10 hover:border-[#CDFF5C]/50 rounded-full text-[#fff] text-sm transition-all duration-300">
-                        এক্সপার্ট কানেকশন
-                    </a>
+                <p class="text-[#ABABAB] text-sm mb-4">সাধারণ সমস্যা:</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                    <div class="p-4 bg-[#fff]/5 rounded-lg border border-[#fff]/10">
+                        <h4 class="text-[#E2E8F0] font-medium text-sm mb-1">ভুল ডেটা</h4>
+                        <p class="text-[#ABABAB] text-xs">ফর্মে ভুল তথ্য দেওয়া হয়েছে</p>
+                    </div>
+                    <div class="p-4 bg-[#fff]/5 rounded-lg border border-[#fff]/10">
+                        <h4 class="text-[#E2E8F0] font-medium text-sm mb-1">ভুল ফরম্যাট</h4>
+                        <p class="text-[#ABABAB] text-xs">ডেটা ফরম্যাট সঠিক নয়</p>
+                    </div>
+                    <div class="p-4 bg-[#fff]/5 rounded-lg border border-[#fff]/10">
+                        <h4 class="text-[#E2E8F0] font-medium text-sm mb-1">মিসিং ফিল্ড</h4>
+                        <p class="text-[#ABABAB] text-xs">প্রয়োজনীয় ফিল্ড খালি রয়েছে</p>
+                    </div>
                 </div>
             </div>
         </div>
