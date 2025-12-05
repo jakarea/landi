@@ -53,6 +53,14 @@ Route::middleware('auth')->group(function () {
 });
 
 // ========================================
+// BLOG SECTION (AI আপডেট)
+// ========================================
+
+Route::get('/ai-update/', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/ai-update/{slug}/', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
+
+
+// ========================================
 // LANDING PAGES SECTION
 // ========================================
 
@@ -183,10 +191,20 @@ Route::prefix('system')->middleware('auth')->group(function () {
 // CMS Manage System
 // ========================================
 
-Route::prefix('cms/')->middleware('auth')->group(function () { 
+Route::prefix('cms/')->middleware(['auth', 'role:admin,instructor'])->group(function () { 
     Route::get('/list', [CMSManageController::class, 'index'])->name('cms.list');
     Route::get('/page-section/edit/{id}', [CMSManageController::class, 'edit'])->name('cms.page-section.edit');
     Route::put('/page-section/update/{id}', [CMSManageController::class, 'update'])->name('cms.page-section.update');
+    
+    // Review Management Routes
+    Route::resource('reviews', \App\Http\Controllers\Admin\ReviewController::class, [
+        'as' => 'cms'
+    ]);
+
+    // Blog Management Routes
+    Route::resource('ai-update', \App\Http\Controllers\Admin\BlogManageController::class, [
+        'as' => 'cms'
+    ]);
 });
 
 // ========================================

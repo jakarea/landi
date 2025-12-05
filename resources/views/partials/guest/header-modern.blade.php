@@ -30,7 +30,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('courses') ? 'text-[#fff]' : '' }}">
+                            <a href="{{ route('blog.index') }}" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('blog.*') ? 'text-[#fff]' : '' }}">
                                 AI আপডেট
                             </a>
                         </li> 
@@ -43,7 +43,7 @@
                     <ul class="flex gap-x-3 lg:gap-x-[30px] text-center items-center justify-end">
                         {{-- Search Icon --}}
                         <li>
-                            <button type="button" id="search-toggle" class="block text-[#ABABAB] hover:text-[#fff] anim">
+                            <button type="button" id="search-toggle" class="block text-[#ABABAB] hover:text-[#fff] anim cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 lg:w-6 lg:h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                 </svg>
@@ -120,7 +120,7 @@
                     >
                     <button 
                         type="submit" 
-                        class="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 bg-[#E850FF] hover:bg-[#4941C8] text-[#fff] rounded-lg px-6 lg:px-8 py-2 lg:py-3 font-medium text-base lg:text-lg transition-all duration-300"
+                        class="absolute cursor-pointer right-4 lg:right-6 top-1/2 -translate-y-1/2 bg-[#E850FF] hover:bg-[#4941C8] text-[#fff] rounded-lg px-6 lg:px-8 py-2 lg:py-3 font-medium text-base lg:text-lg transition-all duration-300"
                     >
                         খুঁজুন
                     </button>

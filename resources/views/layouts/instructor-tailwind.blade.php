@@ -227,6 +227,18 @@
                     <i class="fas fa-user-cog text-lg flex-shrink-0"></i>
                     <span class="font-medium">সি এম এস</span>
                 </a>
+
+                <a href="{{ url('cms/reviews') }}" 
+                   class="flex items-center gap-3 px-4 py-3 text-secondary-100 rounded-lg anim hover:bg-card hover:text-blue ray-hover {{ request()->routeIs('cms.reviews*') ? 'bg-card text-blue' : '' }}">
+                    <i class="fas fa-star text-lg flex-shrink-0"></i>
+                    <span class="font-medium">রিভিউ </span>
+                </a>
+
+                <a href="{{ route('cms.ai-update.index') }}" 
+                   class="flex items-center gap-3 px-4 py-3 text-secondary-100 rounded-lg anim hover:bg-card hover:text-blue ray-hover {{ request()->routeIs('cms.ai-update*') ? 'bg-card text-blue' : '' }}">
+                    <i class="fas fa-blog text-lg flex-shrink-0"></i>
+                    <span class="font-medium">AI আপডেট</span>
+                </a>
                 
             </nav>
             

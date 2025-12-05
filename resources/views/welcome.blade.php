@@ -63,12 +63,12 @@
                         
                         <!-- Arrow Navigation -->
                         <div class="flex gap-3">
-                            <button class="slider-prev w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-[#fff]/10 hover:bg-[#E850FF] border border-[#fff]/20 flex items-center justify-center transition-all duration-300 group">
+                            <button class="slider-prev cursor-pointer w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-[#fff]/10 hover:bg-[#E850FF] border border-[#fff]/20 flex items-center justify-center transition-all duration-300 group">
                                 <svg class="w-5 h-5 text-[#fff] transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </button>
-                            <button class="slider-next w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-[#fff]/10 hover:bg-[#E850FF] border border-[#fff]/20 flex items-center justify-center transition-all duration-300 group">
+                            <button class="slider-next cursor-pointer w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-[#fff]/10 hover:bg-[#E850FF] border border-[#fff]/20 flex items-center justify-center transition-all duration-300 group">
                                 <svg class="w-5 h-5 text-[#fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
@@ -359,13 +359,23 @@
 
                                 <div class="mt-5 lg:mt-10 relative z-40">
                                     <a href="{{ route('courses.overview', $course->slug) }}"
-                                        class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">
+                                        class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5 block">
                                         {{ $course->title }}</a>
 
-                                    @if ($course->short_description)
-                                        <div
-                                            class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[90%] mt-2">
-                                            {!! \Illuminate\Support\Str::limit($course->short_description, 100) !!}
+                                    {{-- Instructor Info Section --}}
+                                    @if ($course->user)
+                                        <div class="flex items-center gap-x-2 mt-2 lg:mt-3">
+                                            <span class="font-normal text-xs lg:text-sm text-[#ABABAB]">
+                                                {{ $course->user->name }}
+                                            </span>
+                                            <span class="flex items-center gap-x-1">
+                                                <svg class="w-3 h-3 lg:w-4 lg:h-4 text-[#FFA500]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                </svg>
+                                                <span class="font-medium text-xs lg:text-sm text-[#E2E8F0]">
+                                                    {{ number_format($course->average_rating ?? 0, 1) }}
+                                                </span>
+                                            </span>
                                         </div>
                                     @endif
                                 </div>
@@ -375,32 +385,27 @@
                             <div class="mt-5 w-full relative z-40">
 
                                 @if ($course->offer_price && $course->price > $course->offer_price)
-                                    <div class="flex items-center gap-x-2">
+                                    <div class="flex items-center gap-x-2 mb-3 lg:mb-4">
                                         <span
-                                            class="price-current text-orange text-base lg:text-lg">৳{{ number_format($course->offer_price) }}</span>
+                                            class="price-current text-orange font-bold text-lg lg:text-xl">৳{{ number_format($course->offer_price) }}</span>
                                         <span
-                                            class=" text-[#fff]/50 line-through">৳{{ number_format($course->price) }}</s>
+                                            class="text-[#fff]/50 line-through text-sm lg:text-base">৳{{ number_format($course->price) }}</span>
                                     </div>
                                 @else
-                                    <span class="price-current text-[#fff]">
-                                        {{ $course->price > 0 ? '৳' . number_format($course->price) : 'ফ্রি' }}
-                                    </span>
+                                    <div class="mb-3 lg:mb-4">
+                                        <span class="price-current text-[#E2E8F0] font-bold text-lg lg:text-xl">
+                                            {{ $course->price > 0 ? '৳' . number_format($course->price) : 'ফ্রি' }}
+                                        </span>
+                                    </div>
                                 @endif
 
-                                <div class="flex lg:mt-[10px] justify-between items-center">
-                                    <a href="#"
-                                        class="block font-medium text-[#ABABAB] text-sm anim hover:text-[#E2E8F0] hover:underline">এখনই
-                                        এনরোল করুন
-                                    </a>
-                                    <a href="{{ route('courses.overview', $course->slug) }}" class="group block">
-                                        <svg class="w-5 text-[#ABABAB] group-hover:text-[#E850FF]" viewBox="0 0 25 16"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M18 14L22.9393 9.06066C23.5251 8.47487 23.5251 7.52513 22.9393 6.93934L18 2M22.5 8L1.5 8"
-                                                stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
-                                        </svg>
-                                    </a>
-                                </div>
+                                <a href="{{ route('courses.overview', $course->slug) }}"
+                                    class="w-full inline-flex font-golos justify-center items-center bg-submit border border-[#9F93A7]/70 hover:!bg-lime rounded-md lg:rounded-[10px] p-2 lg:p-3 font-medium text-sm lg:text-base text-[#fff] anim hover:text-primary group">
+                                    বিস্তারিত দেখুন
+                                    <svg class="w-4 h-4 lg:w-5 lg:h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
                             </div>
 
                         </div>
