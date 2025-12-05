@@ -94,39 +94,39 @@ Route::get('/help/', [HomepageController::class, 'help'])->name('help');
 // AUTHENTICATION SECTION
 // ========================================
 
-Route::prefix('auth')->group(function () {
+// Route::prefix('auth')->group(function () {
     
-    Route::middleware('guest')->group(function () {
-        // Login Routes
-        Route::get('/login/', function () {
-            if (request()->has('signature')) {
-                $user = User::where('session_id', request()->signature)->first();
-                if ($user) {
-                    Auth::login($user);
-                    $user->update(['session_id' => null]);
-                    return redirect()->intended($user->user_role . '/dashboard');
-                }
-            }
-            return view('auth.login');
-        })->name('login');
-        Route::post('/login/', [LoginController::class, 'login'])->name('login.post');
+//     Route::middleware('guest')->group(function () {
+//         // Login Routes
+//         Route::get('/login/', function () {
+//             if (request()->has('signature')) {
+//                 $user = User::where('session_id', request()->signature)->first();
+//                 if ($user) {
+//                     Auth::login($user);
+//                     $user->update(['session_id' => null]);
+//                     return redirect()->intended($user->user_role . '/dashboard');
+//                 }
+//             }
+//             return view('auth.login');
+//         })->name('login');
+//         Route::post('/login/', [LoginController::class, 'login'])->name('login.post');
 
-        // Registration Routes
-        Route::get('/register/', [RegisterController::class, 'showRegistrationForm'])->name('register');
-        Route::post('/register/', [RegisterController::class, 'register'])->name('register.store');
+//         // Registration Routes
+//         Route::get('/register/', [RegisterController::class, 'showRegistrationForm'])->name('register');
+//         Route::post('/register/', [RegisterController::class, 'register'])->name('register.store');
 
-        // Social Login Routes
-        Route::get('/login/{provider}/', [LoginController::class, 'socialLogin'])->whereIn('provider', ['facebook', 'google', 'apple'])->name('social.login');
-        Route::get('/login/{provider}/callback/', [LoginController::class, 'handleProviderCallback'])->whereIn('provider', ['facebook', 'google', 'apple'])->name('social.callback');
-    });
+//         // Social Login Routes
+//         Route::get('/login/{provider}/', [LoginController::class, 'socialLogin'])->whereIn('provider', ['facebook', 'google', 'apple'])->name('social.login');
+//         Route::get('/login/{provider}/callback/', [LoginController::class, 'handleProviderCallback'])->whereIn('provider', ['facebook', 'google', 'apple'])->name('social.callback');
+//     });
 
-    // Email verification routes (authenticated users)
-    Route::middleware('auth')->group(function () {
-        Route::get('/verify/', [VerificationController::class, 'show'])->name('verification.notice');
-        Route::get('/verify/{id}/{hash}/', [VerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
-        Route::post('/verify/resend/', [VerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.resend');
-    });
-});
+//     // Email verification routes (authenticated users)
+//     Route::middleware('auth')->group(function () {
+//         Route::get('/verify/', [VerificationController::class, 'show'])->name('verification.notice');
+//         Route::get('/verify/{id}/{hash}/', [VerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
+//         Route::post('/verify/resend/', [VerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.resend');
+//     });
+// });
 
 // Logout Routes (Authenticated users only)
 Route::match(['get', 'post'], '/auth/logout/', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
