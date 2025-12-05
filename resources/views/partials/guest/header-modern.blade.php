@@ -25,7 +25,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('courses') ? 'text-[#fff]' : '' }}">
+                            <a href="{{ route('expert.connection') }}" class="block font-normal text-base lg:text-xl text-[#ABABAB] anim hover:text-[#fff] {{ request()->routeIs('expert.connection') ? 'text-[#fff]' : '' }}">
                                 এক্সপার্ট কানেকশন
                             </a>
                         </li>

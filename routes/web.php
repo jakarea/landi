@@ -59,6 +59,14 @@ Route::middleware('auth')->group(function () {
 Route::get('/ai-update/', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/ai-update/{slug}/', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
+// ========================================
+// COMING SOON PAGES
+// ========================================
+
+Route::get('/expert-connection/', function () {
+    return view('coming-soon');
+})->name('expert.connection');
+
 
 // ========================================
 // LANDING PAGES SECTION
