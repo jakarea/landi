@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\BundleCourse;
 use App\Models\Checkout;
 use App\Models\CourseReview;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
@@ -69,8 +70,13 @@ class HomepageController extends Controller
         }
 
         $sections = PageSection::where('pageName','home')->get();
+        
+        // Get active reviews ordered by display_order
+        $reviews = Review::where('is_active', true)
+                        ->orderBy('display_order', 'asc')
+                        ->get();
 
-        return view('welcome', compact('latestCourses','sections'));
+        return view('welcome', compact('latestCourses','sections', 'reviews'));
     }
 
     /**

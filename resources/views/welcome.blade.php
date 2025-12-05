@@ -442,170 +442,35 @@
             </div>
 
             <div class="w-full grid grid-cols-12 gap-y-5 gap-5 lg:gap-6">
-                <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4 review-card">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
-                        পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
-                        ক্লায়েন্টও অনেক বেশি খুশি।</p>
+                @foreach($reviews as $index => $review)
+                    <!-- review card -->
+                    <div class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] 
+                        {{ $index == 0 ? 'col-span-12 md:col-span-6 lg:col-span-4' : ($index == 1 ? 'col-span-12 md:col-span-6 lg:col-span-3' : ($index == 2 ? 'col-span-12 md:col-span-6 lg:col-span-5' : 'col-span-12 md:col-span-6 lg:col-span-4')) }} review-card">
+                        <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">
+                            {{ $review->review_text }}
+                        </p>
 
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
+                        <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
 
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/icons/avatar.png') }}" alt="get left"
-                                class="w-10 h-10 rounded-full object-contain">
+                        <div class="w-full flex items-center justify-between">
+                            <div class="flex items-center gap-x-3">
+                                <img src="{{ asset($review->reviewer_avatar ?? 'images/avatar.webp') }}" alt="{{ $review->reviewer_name }}"
+                                    class="w-10 h-10 rounded-full object-contain">
 
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                    সাদিয়া রহমান</h5>
-                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
+                                <div>
+                                    <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
+                                        {{ $review->reviewer_name }}
+                                    </h5>
+                                    <h6 class="common-para !text-xs text-secondary-200">{{ $review->reviewer_designation }}</h6>
+                                </div>
                             </div>
+                            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
+                                <img src="/images/icons/quote.svg" alt="quote" class="w-5">
+                            </span>
                         </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
                     </div>
-                </div>
-                <!-- review card -->
-                <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4 review-card">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আমি শিক্ষার্থী হলেও এআই শিখে
-                        এখন ছোট প্রজেক্ট করছি। কাজ দ্রুত হয় আর এটা ভবিষ্যতের জন্য দারুণ ইনভেস্টমেন্ট মনে হচ্ছে।</p>
-
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
-
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/icons/avatar-2.png') }}" alt="get left"
-                                class="w-10 h-10 rounded-full object-contain">
-
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                    মাহিন ইসলাম
-                                </h5>
-                                <h6 class="common-para !text-xs text-secondary-200">ভিডিও এডিটর</h6>
-                            </div>
-                        </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
-                    </div>
-                </div>
-                <!-- review card -->
-                <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4 review-card">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
-                        পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
-                        ক্লায়েন্টও অনেক বেশি খুশি।</p>
-
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
-
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/avatar.webp') }}" alt="get left"
-                                class="w-10 h-10 rounded-full object-contain">
-
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                    রাহাত খান</h5>
-                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
-                            </div>
-                        </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
-                    </div>
-                </div>
-                <!-- review card -->
-                <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-3 review-card">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">এআই শেখার পর ভিডিও বানানো অনেক
-                        সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক আর ইফেক্ট কয়েক মিনিটেই করা যায়। এখন আগের চেয়ে দ্বিগুণ
-                        প্রজেক্ট ডেলিভার করছি। এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক </p>
-
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
-
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/avatar.webp') }}" alt="get left"
-                                class="w-10 h-10 rounded-full object-contain">
-
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                   নয়ন খান </h5>
-                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
-                            </div>
-                        </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
-                    </div>
-                </div>
-                <!-- review card -->
-                <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-5 review-card">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আমি মূলত একজন শিক্ষার্থী,
-                        কিন্তু সবসময় কিছু ক্রিয়েটিভ স্কিল শিখতে চেয়েছি যা ভবিষ্যতে কাজে লাগবে। এআই বুটক্যাম্পে যোগ দিয়ে
-                        শিখলাম ইমেজ, ভিডিও আর মিউজিক জেনারেশন – সবকিছু একসাথে। কোর্স শেষে ছোট ছোট ফ্রিল্যান্স প্রজেক্ট
-                        নেওয়া শুরু করেছি, আর এআই টুলস দিয়ে দ্রুত কাজ শেষ করতে পারছি। এটা শুধু শেখা নয়, ভবিষ্যতের জন্য এক
-                        অসাধারণ ইনভেস্টমেন্ট মনে হচ্ছে। আমি বিশ্বাস করি এই স্কিল আমাকে ক্যারিয়ারে অনেক দূর এগিয়ে দেবে।</p>
-
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
-
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/avatar.webp') }}" alt="get left"
-                                class="w-10 h-10 rounded-full object-contain"> 
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                   সাইফুল ইসলাম </h5>
-                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
-                            </div>
-                        </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
-                    </div>
-                </div>
-                <!-- review card -->
-                <!-- review card -->
-                <div
-                    class="w-full rounded-md lg:rounded-[10px] p-5 md:p-7 lg:p-[30px] border border-[#232323] relative bg-[#131620] col-span-12 md:col-span-6 lg:col-span-4 review-card">
-                    <p class="font-normal text-[#ABABAB] text-xs lg:text-sm leading-[140%]">আগে একটা পোস্টার বানাতে ঘন্টার
-                        পর ঘন্টা লাগত। এখন এআই প্রম্পট দিয়ে মিনিটেই ভিজ্যুয়াল তৈরি করতে পারি। কাজের মান বেড়েছে আর
-                        ক্লায়েন্টও অনেক বেশি খুশি। এআই শেখার পর ভিডিও বানানো অনেক সহজ হয়েছে। টেক্সট থেকে ভিডিও, লিপ-সিঙ্ক
-                        আর ইফেক্ট কয়েক মিনিটেই করা যায়। এখন আগের চেয়ে দ্বিগুণ প্রজেক্ট ডেলিভার করছি।</p>
-
-                    <hr class="border-0 w-full h-[1px] bg-[#232323] block my-5 lg:my-[30px]">
-
-                    <div class="w-full flex items-center justify-between">
-                        <div class="flex items-center gap-x-3">
-                            <img src="{{ asset('images/avatar.webp') }}" alt="get left"
-                                class="w-10 h-10 rounded-full object-contain">
-
-                            <div>
-                                <h5 class="font-medium text-sm text-[#E2E8F0] flex items-center gap-x-2">
-                                    তুহিন </h5>
-                                <h6 class="common-para !text-xs text-secondary-200">গ্রাফিক ডিজাইনার</h6>
-                            </div>
-                        </div>
-                        <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-quote p-1 anim">
-                            <img src="/images/icons/quote.svg" alt="quote" class="w-5">
-                        </span>
-                    </div>
-                </div>
-                <!-- review card -->
+                    <!-- review card -->
+                @endforeach
             </div>
         </div>
     </section>
@@ -798,6 +663,12 @@
     </section>
     <!-- feature section end -->
     @endif
+
+    <!-- border line -->
+    <div class="container-x">
+        <img src="{{ asset('images/line.svg') }}" alt="line" class="w-full mx-auto">
+    </div>
+    <!-- border line -->
 
     <!-- get start section start -->
     <section class="w-full py-10 lg:py-20">
