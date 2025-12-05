@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class CourseEnrollmentController extends Controller
 {
-    public function __construct()
+    public function __construct() 
     {
         // Auth middleware is applied at route level
     }
