@@ -50,8 +50,11 @@
     {{-- Marketing Tracking Codes (Body) --}}
     @include('partials.tracking-codes-body')
 
+    
+
      <img src="{{ asset('images/hero-ellipse.svg') }}" alt="ellipse"
-            class="absolute left-0 top-0 lg:object-contain lg:h-auto"> <!-- hero ellipse -->
+            class="absolute left-0 top-0 lg:object-contain lg:h-auto"> 
+            <!-- hero ellipse -->
 
     {{-- Main Content --}} 
         @yield('content') 
