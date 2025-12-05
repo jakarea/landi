@@ -60,7 +60,6 @@
                             <button class="slider-dot {{ $index === 0 ? 'active' : '' }} w-3 h-3 rounded-full {{ $index === 0 ? 'bg-[#E850FF]' : 'bg-[#fff]/30 hover:bg-[#fff]/50' }} transition-all duration-300" data-slide="{{ $index }}"></button>
                             @endforeach
                         </div>
-                        
                         <!-- Arrow Navigation -->
                         <div class="flex gap-3">
                             <button class="slider-prev cursor-pointer w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-[#fff]/10 hover:bg-[#E850FF] border border-[#fff]/20 flex items-center justify-center transition-all duration-300 group">
