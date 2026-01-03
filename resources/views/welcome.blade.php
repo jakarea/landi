@@ -84,118 +84,63 @@
     <!-- hero slider section end -->
 @endif
 
-    <!-- why we're the best section start -->
+@php
+        $featureSection = $sections->where('sectionName', 'feature')->first();
+    @endphp 
+
+     @if ($featureSection && $featureSection['is_active']) 
+    <!-- feature section start -->
     <section class="w-full py-10 lg:py-20">
         <div class="container-x">
             <div class="text-center mb-10 md:mb-16 lg:mb-20">
                 <h6 class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
-                    <span class="block h-[2px] w-5 bg-line"></span>
-                    আমাদের বিশেষত্ব
-                    <span class="block h-[2px] w-5 bg-line-2"></span>
-                </h6>
-                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
-                    কেন <span class="text-gradient">আমরাই সেরা?</span>
-                </h2>
-                <p class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
-                    আমাদের প্ল্যাটফর্মে পাবেন সম্পূর্ণ প্র্যাক্টিক্যাল এবং ইন্ডাস্ট্রি-ফোকাসড লার্নিং এক্সপেরিয়েন্স
-                </p>
+                        <span class="block h-[2px] w-5 bg-line"></span>
+                        {{ data_get($featureSection, 'content.title') }}
+                        <span class="block h-[2px] w-5 bg-line-2"></span>
+                    </h6>
+                    <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
+                        {{ data_get($featureSection, 'content.title') }} <span
+                            class="text-gradient">{{ data_get($featureSection, 'content.gradient_title') }}</span>
+                    </h2>
+                    <p
+                        class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
+                        {{ data_get($featureSection, 'content.description') }}
+                    </p>
             </div>
 
-            <!-- feature cards with unique design -->
-            <div class="w-full grid grid-cols-1 gap-5 lg:gap-6">
-                
-                <!-- Card 1: Live Mentorship -->
-                <div class="w-full rounded-lg lg:rounded-[20px] p-6 lg:p-8 border border-[#E850FF]/20 bg-gradient-to-br from-[#E850FF]/10 to-transparent hover:border-[#E850FF]/40 transition-all duration-300 group">
-                    <div class="flex flex-col md:flex-row items-start md:items-center gap-5 lg:gap-8">
-                        <!-- Icon -->
-                        <div class="flex-shrink-0">
-                            <div class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-gradient-to-br from-[#E850FF] to-[#E850FF]/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 lg:w-10 text-[#fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                </svg>
+            <!-- feat card -->
+            <div class="w-full grid grid-cols-1 gap-y-5 md:grid-cols-2 gap-5 lg:grid-cols-3 lg:gap-x-6 ">
+
+                 @foreach(data_get($featureSection, 'content.cards', []) as $index => $feat)
+                    <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
+                        <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
+                            class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
+
+                        <div
+                            class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
+                            <div
+                                class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
+                            <img src="{{ asset('images/icons/b-camp-0' . ($index + 1) . '.svg') }}" alt="icons {{ $index + 1 }}"
+        class="w-6 md:w-8 lg:w-10">
+                                <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 1"
+                                    class="w-[86%] absolute {{ $index == 0 ? 'left-1 top-4' : ($index == 1 ? '!left-0 !top-1 !rotate-90' : 'left-inherit right-1 top-1 rotate-180') }}">
                             </div>
                         </div>
-                        <!-- Content -->
-                        <div class="flex-1">
-                            <h5 class="font-bold text-lg lg:text-2xl text-[#E2E8F0] mb-2 lg:mb-3">
-                                লাইভ মেন্টরশিপ সাপোর্ট
+
+                        <div class="mt-10 lg:mt-[60px]">
+                            <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">
+                            {{ $feat['title'] }}    
                             </h5>
-                            <p class="font-normal text-sm lg:text-base text-[#ABABAB] leading-[160%]">
-                                রেকর্ডেড ক্লাসের পাশাপাশি পাচ্ছেন মেন্টরের সাথে সরাসরি কথা বলার সুযোগ এবং মিট/জুম সেশন।
-                            </p>
-                        </div>
-                        <!-- Arrow -->
-                        <div class="hidden lg:block flex-shrink-0">
-                            <svg class="w-6 h-6 text-[#E850FF] group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                            <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">{{ $feat['description'] }} </p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Card 2: Project-Based Learning -->
-                <div class="w-full rounded-lg lg:rounded-[20px] p-6 lg:p-8 border border-[#4941C8]/20 bg-gradient-to-br from-[#4941C8]/10 to-transparent hover:border-[#4941C8]/40 transition-all duration-300 group">
-                    <div class="flex flex-col md:flex-row items-start md:items-center gap-5 lg:gap-8">
-                        <!-- Icon -->
-                        <div class="flex-shrink-0">
-                            <div class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-gradient-to-br from-[#4941C8] to-[#4941C8]/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 lg:w-10 text-[#fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <!-- Content -->
-                        <div class="flex-1">
-                            <h5 class="font-bold text-lg lg:text-2xl text-[#E2E8F0] mb-2 lg:mb-3">
-                                প্রজেক্ট-ভিত্তিক লার্নিং
-                            </h5>
-                            <p class="font-normal text-sm lg:text-base text-[#ABABAB] leading-[160%]">
-                                শুধু থিওরি নয়, রিয়েল ক্লায়েন্ট বা মার্কেটের চাহিদা অনুযায়ী লাইভ প্রজেক্ট।
-                            </p>
-                        </div>
-                        <!-- Arrow -->
-                        <div class="hidden lg:block flex-shrink-0">
-                            <svg class="w-6 h-6 text-[#4941C8] group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3: Career & Portfolio Guideline -->
-                <div class="w-full rounded-lg lg:rounded-[20px] p-6 lg:p-8 border border-[#CDFF5C]/20 bg-gradient-to-br from-[#CDFF5C]/10 to-transparent hover:border-[#CDFF5C]/40 transition-all duration-300 group">
-                    <div class="flex flex-col md:flex-row items-start md:items-center gap-5 lg:gap-8">
-                        <!-- Icon -->
-                        <div class="flex-shrink-0">
-                            <div class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-gradient-to-br from-[#CDFF5C] to-[#CDFF5C]/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-8 lg:w-10 text-[#000]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <!-- Content -->
-                        <div class="flex-1">
-                            <h5 class="font-bold text-lg lg:text-2xl text-[#E2E8F0] mb-2 lg:mb-3">
-                                ক্যারিয়ার ও পোর্টফোলিও গাইডলাইন
-                            </h5>
-                            <p class="font-normal text-sm lg:text-base text-[#ABABAB] leading-[160%]">
-                                কোর্স শেষে আপনার সিভি এবং পোর্টফোলিও সাজিয়ে দেওয়া হবে যাতে জব পেতে সুবিধা হয়।
-                            </p>
-                        </div>
-                        <!-- Arrow -->
-                        <div class="hidden lg:block flex-shrink-0">
-                            <svg class="w-6 h-6 text-[#CDFF5C] group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
+                @endforeach 
             </div>
-            <!-- feature cards -->
+            <!-- feat card -->
         </div>
     </section>
-    <!-- why we're the best section end -->
+    <!-- feature section end -->
+    @endif
 
     <!-- border line -->
     <div class="container-x">
@@ -209,7 +154,7 @@
 
     @if ($learningStepsSection && $learningStepsSection['is_active'])
     <!-- change your idea section start -->
-    <section class="w-full py-10 lg:py-20">
+    {{-- <section class="w-full py-10 lg:py-20">
         <div class="container-x">
             <div class="text-center mb-10 md:mb-16 lg:mb-20">
                 <h6
@@ -241,7 +186,7 @@
                     @if ($isEven)
                         <!-- Text Content -->
                         <div class="w-full">
-                            <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">{{ data_get($step, 'title') }}</h4>
+                            <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl lg:pl-5 mb-3 lg:mb-5">{{ data_get($step, 'title') }}</h4>
                             <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">{{ data_get($step, 'heading') }}</h6>
                             <ul class="flex flex-col gap-y-2 lg:max-w-[70%]">
                                 @foreach(data_get($step, 'items', []) as $item)
@@ -267,7 +212,7 @@
                         </div>
                         <!-- Text Content -->
                         <div class="w-full lg:max-w-[80%] lg:ml-auto">
-                            <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl mb-3 lg:mb-5">{{ data_get($step, 'title') }}</h4>
+                            <h4 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl lg:pl-5 mb-3 lg:mb-5">{{ data_get($step, 'title') }}</h4>
                             <h6 class="font-medium text-base lg:text-lg text-[#E2E8F0] mb-3 lg:mb-5">{{ data_get($step, 'heading') }}</h6>
                             <ul class="flex flex-col gap-y-2">
                                 @foreach(data_get($step, 'items', []) as $item)
@@ -282,14 +227,14 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
     <!-- change your idea section end -->
     @endif
 
     <!-- our courses section start -->
     <section class="w-full py-10 lg:py-20">
         <div class="container-x">
-            <div class="text-start mb-10 md:mb-16 lg:mb-20">
+            <div class="text-center mb-10 md:mb-16 lg:mb-20">
                 <h6
                     class="inline-flex items-center gap-x-2 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
                     <span class="block h-[2px] w-5 bg-line"></span>
@@ -297,12 +242,12 @@
                     <span class="block h-[2px] w-5 bg-line-2"></span>
                 </h6>
                 <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
-                    ফিউচার রেডি হতে বেছে নিন আপনার  <span class="text-gradient">পছন্দের স্কিল </span></h2>
+                    ফিউচার রেডি হতে বেছে নিন   <span class="text-gradient">আপনার পছন্দের স্কিল </span></h2>
                 <p
-                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[65%] lg:mr-auto">
+                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[65%] lg:mx-auto">
                     বিগিনার থেকে অ্যাডভান্সড, প্রতিটি কোর্স সাজানো হয়েছে বর্তমান মার্কেটের চাহিদা অনুযায়ী।</p>
 
-                <div class="flex justify-start items-center gap-x-4  mt-5 lg:mt-10 lg:gap-x-5">
+                {{-- <div class="flex justify-center items-center gap-x-4  mt-5 lg:mt-10 lg:gap-x-5">
                     <a href="#"
                         class="inline-flex font-golos justify-center items-center bg-submit rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-2.5 anim
                hover:!bg-lime md:text-base px-2 lg:text-lg hover:text-primary group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-6">
@@ -313,27 +258,26 @@
                  md:text-base lg:text-lg hover:text-orange px-2 group lg:my-0 lg:order-1 border border-[#9F93A7]/70 lg:py-3 lg:px-6">
                         সার্টিফিকেট পান
                     </a>
-                </div>
+                </div> --}}
             </div>
             @if ($latestCourses->count() > 0)
                 <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-5 lg: gap-x-6">
                     @foreach ($latestCourses->slice(0, 3) as $course)
                         {{-- card --}}
                         <div
-                            class="w-full p-5 lg:p-[30px] border-[2px] !border-primary rounded-lg lg:rounded-[20px] bg-[#131620] anim effect-card relative flex flex-col justify-between">
-                            <div class="w-full">
-
-                                <div class="absolute right-3 top-1.5 lg:top-2.5 z-30 flex items-center gap-x-2">
+                            class="w-full border-[1px] border-[#fff] rounded-lg lg:rounded-[21px] bg-[#232323] anim effect-card relative flex flex-col justify-between">
+                            <div class="w-full"> 
+                                <div class="absolute right-3 top-4 z-30 flex items-center gap-x-2">
                                     @if ($course->review_count > 0)
                                         <p
-                                            class="rounded-full py-1 px-2 text-[#000] bg-orange text-xs font-normal h-5 flex justify-center items-center">
+                                            class="rounded-lg py-1 px-2 text-[#000] bg-orange text-xs font-normal h-5 flex justify-center items-center">
                                             {{ $course->review_count ?? 0 }} রিভিউ
                                         </p>
                                     @endif
 
                                     @if ($course->enrolled_count > 0)
                                         <p
-                                            class="rounded-full py-1 px-2 text-[#000] bg-lime text-xs font-normal h-5 flex justify-center items-center">
+                                            class="rounded-lg py-1 px-2 text-[#000] bg-lime text-xs font-normal h-5 flex justify-center items-center">
                                             {{ $course->enrolled_count ?? 0 }} এনরোল
                                         </p>
                                     @endif
@@ -345,68 +289,98 @@
                                             );
                                         @endphp
                                         <p
-                                            class="rounded-full py-1 px-2 text-[#fff] bg-line text-xs font-normal h-5 flex justify-center items-center">
+                                            class="rounded-lg py-1 px-2 text-[#fff] bg-line text-xs font-normal h-5 flex justify-center items-center border border-[#9F93A7]">
                                             {{ $discount }}% ছাড়</p>
                                     @endif
                                     {{-- offer badge --}}
                                 </div>
-                                <div class="w-full h-[220px] relative pt-3">
+                                <div class="w-full h-[220px] lg:h-[297px] relative">
                                     <img src="{{ $course->thumbnail ? asset($course->thumbnail) : asset('assets/images/default-course.jpg') }}"
-                                        alt="{{ $course->title }}" class="w-full rounded-[10px] h-full object-cover">
+                                        alt="{{ $course->title }}" class="w-full rounded-t-lg lg:rounded-t-[21px] h-full object-cover"> 
+                                </div> 
+                            </div> 
 
-                                </div>
-
-                                <div class="mt-5 lg:mt-10 relative z-40">
+                            <div class="p-5 lg:p-7">
+                                 <div class="relative z-40">
                                     <a href="{{ route('courses.overview', $course->slug) }}"
                                         class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5 block">
                                         {{ $course->title }}</a>
+                                       <p class="text-xs font-normal text-[#ababab]">
+                                            {{ \Illuminate\Support\Str::limit($course->short_description, 50) }}
 
-                                    {{-- Instructor Info Section --}}
-                                    @if ($course->user)
-                                        <div class="flex items-center gap-x-2 mt-2 lg:mt-3">
-                                            <span class="font-normal text-xs lg:text-sm text-[#ABABAB]">
-                                                {{ $course->user->name }}
-                                            </span>
-                                            <span class="flex items-center gap-x-1">
-                                                <svg class="w-3 h-3 lg:w-4 lg:h-4 text-[#FFA500]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                                </svg>
-                                                <span class="font-medium text-xs lg:text-sm text-[#E2E8F0]">
-                                                    {{ number_format($course->average_rating ?? 0, 1) }}
-                                                </span>
+                                            <ul class="flex items-center gap-x-2 mt-2 lg:mt-2.5">
+                                                <li>
+                                                    <span class="text-xs font-normal text-[#ababab] block">
+                                                        🎥 ২০টি ভিডিও  
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="text-xs font-normal text-[#ababab] block">
+                                                        |
+                                                    </span>
+                                                </li>
+                                                 <li>
+                                                    <span class="text-xs font-normal text-[#ababab] block">
+                                                        📁 ১০টি প্রজেক্ট  
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="text-xs font-normal text-[#ababab] block">
+                                                        |
+                                                    </span>
+                                                </li>
+                                                 <li>
+                                                    <span class="text-xs font-normal text-[#ababab] block">
+                                                        ⏰ লাইফটাইম এক্সেস
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </p>
+
+                                         @if ($course->user)
+                                        <div class="flex items-center justify-between mt-3 lg:mt-5">
+                                            <div class="w-full flex items-center gap-x-2 lg:gap-x-3">
+                                                <img src="http://127.0.0.1:8000/storage/uploads/courses/kylie-solomon-68c94ad38da75.jpg" alt="avatar" class="w-8 h-8 lg:w-[42px] lg:h-[42px] rounded-full object-fill border border-[#fff]">
+                                                <p class="text-xs font-normal text-[#ababab]">
+                                                    {{ $course->user->name }} <br>
+                                                     {{ $course->user->short_bio ? $course->user->short_bio : $course->user->user_role  }}
+                                                </p> 
+                                            </div>
+                                            <p class="text-xs font-normal text-[#ababab] shrink-0"> 
+                                                ⭐ {{ number_format($course->average_rating ?? 0, 1) }}
+                                            </p>
+                                        </div>
+                                        @endif 
+                                </div>
+
+                                <div class="w-full relative z-40 mt-5 flex items-center justify-between">
+
+                                    @if ($course->offer_price && $course->price > $course->offer_price)
+                                        <div class="flex items-center gap-x-2">
+                                            <span
+                                                class="price-current text-[#fff] font-semibold text-base lg:text-lg">৳{{ number_format($course->offer_price) }}</span>
+                                            <span
+                                                class="text-[#E2E8F0]/50 text-xs font-normal">৳{{ number_format($course->price) }}</span>
+                                        </div>
+                                    @else
+                                        <div class="mb-3 lg:mb-4">
+                                            <span class="price-current text-[#E2E8F0] font-bold text-lg lg:text-xl">
+                                                {{ $course->price > 0 ? '৳' . number_format($course->price) : 'ফ্রি' }}
                                             </span>
                                         </div>
                                     @endif
+
+                                    <div class="flex items-center gap-x-3">
+                                        <a href="{{ route('courses.overview', $course->slug) }}" class="text-[#fff] font-normal text-xs">
+                                            বিস্তারিত দেখুন
+                                        </a>
+                                        <a href="{{ route('courses.overview', $course->slug) }}"
+                                        class="inline-flex font-golos justify-center items-center bg-submit border border-[#9F93A7]/70 hover:!bg-lime rounded-md lg:rounded-[10px] p-1 lg:p-1.5 px-2 lg:px-4 font-medium text-xs text-[#fff] anim hover:text-primary group">
+                                        এনরোল করুন
+                                    </a>
+                                    </div> 
                                 </div>
-                            </div>
-
-
-                            <div class="mt-5 w-full relative z-40">
-
-                                @if ($course->offer_price && $course->price > $course->offer_price)
-                                    <div class="flex items-center gap-x-2 mb-3 lg:mb-4">
-                                        <span
-                                            class="price-current text-orange font-bold text-lg lg:text-xl">৳{{ number_format($course->offer_price) }}</span>
-                                        <span
-                                            class="text-[#fff]/50 line-through text-sm lg:text-base">৳{{ number_format($course->price) }}</span>
-                                    </div>
-                                @else
-                                    <div class="mb-3 lg:mb-4">
-                                        <span class="price-current text-[#E2E8F0] font-bold text-lg lg:text-xl">
-                                            {{ $course->price > 0 ? '৳' . number_format($course->price) : 'ফ্রি' }}
-                                        </span>
-                                    </div>
-                                @endif
-
-                                <a href="{{ route('courses.overview', $course->slug) }}"
-                                    class="w-full inline-flex font-golos justify-center items-center bg-submit border border-[#9F93A7]/70 hover:!bg-lime rounded-md lg:rounded-[10px] p-2 lg:p-3 font-medium text-sm lg:text-base text-[#fff] anim hover:text-primary group">
-                                    বিস্তারিত দেখুন
-                                    <svg class="w-4 h-4 lg:w-5 lg:h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </a>
-                            </div>
-
+                            </div> 
                         </div>
                     @endforeach
                 </div>
@@ -426,6 +400,150 @@
         </div>
     </section>
     <!-- our courses section end -->
+
+    {{-- faq section start --}}
+    <section class="w-full py-10 lg:py-20">
+        <div class="container-x">
+            <!-- common title start -->
+           <div class="text-center mb-10 md:mb-16 lg:mb-20">
+                <h6
+                    class="inline-flex items-center gap-x-2 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
+                    <span class="block h-[2px] w-5 bg-line"></span>
+                    প্রশ্ন উত্তর
+                    <span class="block h-[2px] w-5 bg-line-2"></span>
+                </h6>
+                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
+                    সচরাচর জানতে চাওয়া <span class="text-gradient"> প্রশ্নের উত্তর </span></h2>
+                <p
+                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[65%] lg:mx-auto">
+                    আমাদের বুটক্যাম্প থেকে শেখা শিক্ষার্থীদের রিয়েল রিভিউ – যা আপনাকেও এগিয়ে যেতে উৎসাহ দেবে।
+                </p>
+            </div>
+            <!-- common title end -->
+
+            <div class="w-full grid grid-cols-1 gap-y-1 lg:gap-y-4">
+                <!-- card -->
+                <div class="faq-item item bg-submit rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow active"
+                    onclick="toggleFAQ(this)">
+                    <div class="w-full col-span-10">
+                        <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl lg:pl-5">এই কোর্সে যোগ দেওয়ার
+                            জন্য কি কোনো
+                            বিশেষ যোগ্যতার প্রয়োজন আছে?</h5>
+
+                        <p class="faq-answer text-sm text-secondary-200 lg:text-base active">আমি একজন ডিজাইনার। আগে
+                            ডিজাইন করতে ঘন্টার পর ঘন্টা
+                            লাগত, কিন্তু এআই শেখার পর কাজ অনেক সহজ হয়েছে। কালার প্যালেট, লেআউট আর ভিজ্যুয়াল তৈরিতে এখন
+                            আর ঝামেলা
+                            নেই। প্রতিদিনের কাজের গতি বেড়েছে এবং মানও উন্নত হয়েছে। আমার ক্লায়েন্টরা এখন আগের চেয়ে
+                            অনেক বেশি
+                            সন্তুষ্ট।</p>
+                    </div>
+                    <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1"
+                            class="w-5 lg:w-[26px] faq-icon">
+                    </button>
+                </div>
+                <!-- card -->
+                <!-- card -->
+                <div class="faq-item item bg-submit rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow faq-card-glow-variant"
+                    onclick="toggleFAQ(this)">
+                    <div class="w-full col-span-10">
+                        <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl lg:pl-5">কোর্সের সময়কাল কতদিন এবং
+                            কীভাবে
+                            ক্লাসগুলো পরিচালিত হয়?</h5>
+
+                        <p class="faq-answer text-sm text-secondary-200 lg:text-base">এই কোর্সটি ৩ দিনের জন্য ডিজাইন
+                            করা হয়েছে। প্রতিদিন ২-৩ ঘন্টা করে লাইভ ক্লাস থাকবে। ক্লাসগুলো জুম প্ল্যাটফর্মে অনুষ্ঠিত হবে
+                            এবং সব ক্লাসের রেকর্ডিং পাবেন যাতে পরে আবার দেখতে পারেন।
+                        </p>
+                    </div>
+                    <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1"
+                            class="w-5 lg:w-[26px] faq-icon">
+                    </button>
+                </div>
+                <!-- card -->
+                <!-- card -->
+                <div class="faq-item item bg-submit rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow"
+                    onclick="toggleFAQ(this)">
+                    <div class="w-full col-span-10">
+                        <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl lg:pl-5">কোর্স ফি কত এবং কি কোনো
+                            লুকানো চার্জ
+                            আছে?</h5>
+
+                        <p class="faq-answer text-sm text-secondary-200 lg:text-base">কোর্স ফি মাত্র ৫,৩২০ টাকা। কোনো
+                            লুকানো চার্জ নেই। একবার পেমেন্ট করলেই সমস্ত কন্টেন্ট, লাইভ ক্লাস, রেকর্ডেড ক্লাস, এবং
+                            সাপোর্ট পাবেন। তাছাড়া বিকাশ, নগদ অন ডেলিভারি সুবিধাও পাবেন।
+                        </p>
+                    </div>
+                    <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1"
+                            class="w-5 lg:w-[26px] faq-icon">
+                    </button>
+                </div>
+                <!-- card -->
+                <!-- card -->
+                <div class="faq-item item bg-submit rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow faq-card-glow-variant"
+                    onclick="toggleFAQ(this)">
+                    <div class="w-full col-span-10">
+                        <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl lg:pl-5">কোর্স শেষ করার পর কি কোনো
+                            সার্টিফিকেট
+                            পাওয়া যাবে?</h5>
+
+                        <p class="faq-answer text-sm text-secondary-200 lg:text-base">হ্যাঁ, কোর্স সম্পন্ন করার পর
+                            আপনার একটি ভেরিফাইড সার্টিফিকেট পাবেন যা আপনার LinkedIn এ শেয়ার করতে পারবেন অথবা চাকরির
+                            ইন্টারভিউতে দেখাতে পারবেন। তাছাড়া প্রজেক্ট পোর্টফোলিও পাবেন।
+                        </p>
+                    </div>
+                    <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1"
+                            class="w-5 lg:w-[26px] faq-icon">
+                    </button>
+                </div>
+                <!-- card -->
+                <!-- card -->
+                <div class="faq-item item bg-submit rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow"
+                    onclick="toggleFAQ(this)">
+                    <div class="w-full col-span-10">
+                        <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl lg:pl-5">আমি যদি একেবারে নতুন হই,
+                            তাহলে কি
+                            কোর্সটি বুঝতে পারব?</h5>
+
+                        <p class="faq-answer text-sm text-secondary-200 lg:text-base">বিলকুল! এই কোর্সটি সম্পূর্ণভাবে
+                            বিগিনার-ফ্রেন্ডলি। আমরা সমস্ত টুলস এবং প্রক্রিয়া শূন্য থেকে শেখাবো। কোনো পূর্ব অভিজ্ঞতার
+                            প্রয়োজন নেই। প্রতিটি লেসন স্টেপ-বাই-স্টেপ সহজ ভাষায় করা হয়েছে।
+                        </p>
+                    </div>
+                    <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1"
+                            class="w-5 lg:w-[26px] faq-icon">
+                    </button>
+                </div>
+                <!-- card -->
+                <!-- card -->
+                <div class="faq-item item bg-submit rounded-[10px] p-2.5 grid grid-cols-12 items-center lg:items-start gap-x-2.5 md:p-3.5 lg:p-5 border border-[#49484E] faq-card-glow faq-card-glow-variant"
+                    onclick="toggleFAQ(this)">
+                    <div class="w-full col-span-10">
+                        <h5 class="text-[#E2E8F0] font-medium text-lg md:text-xl lg:text-2xl lg:pl-5">কোর্স শেষে আমি বাস্তবে কী
+                            কী কাজে
+                            লাগাতে পারব?</h5>
+
+                        <p class="faq-answer text-sm text-secondary-200 lg:text-base">এই কোর্স শেষে আপনি প্রফেশনাল
+                            মানের বিজ্ঞাপন, সোশ্যাল মিডিয়া কন্টেন্ট, প্রডাক্ট ভিজুয়াল, ভিডিও তৈরি, মিউজিক এবং ভয়েসওভার
+                            তৈরি করতে পারবেন। ফ্রিল্যান্সার হিসেবে কাজ করতে পারবেন অথবা নিজের বিজনেসের জন্য ব্যবহার করতে
+                            পারবেন।
+                        </p>
+                    </div>
+                    <button type="button" class="col-span-2 flex justify-end cursor-pointer">
+                        <img src="/images/icons/angle-down-circle.svg" alt="angle 1"
+                            class="w-5 lg:w-[26px] faq-icon">
+                    </button>
+                </div>
+                <!-- card -->
+            </div>
+        </div>
+    </section>
+    {{-- ?faq section end  --}}
 
     <!-- review section start -->
     <section class="w-full py-10 lg:py-20">
@@ -480,10 +598,10 @@
     </section>
     <!-- review section end -->
 
-        @php
-            $heroSection = $sections->where('sectionName', 'upcomming')->first();
-        @endphp
-         @if ($heroSection && $heroSection['is_active'])  
+    @php
+        $heroSection = $sections->where('sectionName', 'upcomming')->first();
+    @endphp
+        @if ($heroSection && $heroSection['is_active'])  
 
     <!-- border line -->
     <div class="container-x">
@@ -493,22 +611,23 @@
 
     <!-- upcommin course section -->
     <section class="w-full pb-1 lg:pb-10 relative">   
-        <div class="container-x"> 
-        
+        <div class="container-x">  
                 <div class="w-full text-center mt-10 md:mt-14 lg:mt-[90px] relative z-[99]">
                     <h1
                         class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
                         <span class="block h-[2px] w-5 bg-line"></span>
-                        {{ data_get($heroSection, 'content.title') }}
+                       আপকামিং লাইভ বুটক্যাম্প 
                         <span class="block h-[2px] w-5 bg-line-2"></span>
                     </h1>
                     <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
-                        {{ data_get($heroSection, 'content.title') }} <span
-                            class="text-gradient">{{ data_get($heroSection, 'content.gradient_title') }}</span>
+                       মাত্র ৩ দিনে শিখুন AI ক্রিয়েটিভ -  <span
+                            class="text-gradient">ক্যারিয়ারে আনুন গতির ঝড়</span>
                     </h2>
                     <p
                         class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
-                        {{ data_get($heroSection, 'content.description') }}
+                       ৩ দিনের এই ইনটেনসিভ বুটক্যাম্পে মেন্টর আব্দুর রউফ এর সাথে শিখুন প্রফেশনাল কন্টেন্ট ক্রিয়েশন।
+বুটক্যাম্পে চলবে আগামী ১লা জানুয়ারি ২০২৬ থেকে ৪ঠা জানুয়ারি পর্যন্ত।
+
                     </p>
 
                      <!-- Countdown Timer -->
@@ -572,13 +691,13 @@
 
 
                 </div>   
-            <div class="w-full mt-8 md:mt-12 lg:mt-[62px] lg:max-w-[60%] mx-auto"> 
+            <div class="w-full mt-8 md:mt-12 lg:mt-[62px] lg:max-w-[80%] mx-auto"> 
                 <!-- video url -->
                 <div
                     class="w-full bg-[#131620] border border-[#232323] p-3 lg:p-5 rounded-md lg:rounded-[20px] grid grid-cols-1 gap-2 lg:gap-2.5">
                     <div class="w-full relative" id="video-player" data-video-url="{{ data_get($heroSection, 'content.video_url') }}">   
-                        <img src="{{ asset(data_get($heroSection, 'content.video_thumbnail')) }}" alt="robot"
-                            class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[400px]">
+                        <img src="{{asset('/images/speaking-person.png')}}" alt="robot"
+                            class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[700px]">
                         <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center">
                             <button type="button" id="play-video-button"
                                 class="w-12 h-12 lg:w-20 lg:h-20 rounded-full bg-[#fff]/40 flex items-center justify-center p-1 cursor-pointer animate-pulse anim">
@@ -587,96 +706,224 @@
                         </div>
                     </div>
                     <!-- video box --> 
-                </div>
-
-                <ul class="flex justify-center gap-x-5 items-center mt-5 md:mt-10 lg:mt-11">
-                        @foreach(data_get($heroSection, 'content.buttons', []) as $index => $button)
-                            <a href="{{ $button['url'] }}"
-                                class="inline-flex font-golos justify-center items-center {{ $index == 0 ? 'bg-submit border border-[#9F93A7]/70 hover:!bg-lime' : '!bg-transparent underline hover:!bg-blue' }} rounded-md lg:rounded-[10px] p-1.5 font-medium text-sm text-[#fff] gap-x-3 anim  md:text-base px-3 lg:text-lg
-                hover:text-primary group lg:my-0 lg:order-1  lg:py-3 lg:px-5">
-                                {{ $button['label'] }}
-                            </a>
-                        @endforeach
-                        <li> 
-                    </ul>
+                </div> 
             </div> 
         </div>  
     </section>
      @endif
 
-    <!-- border line -->
-    <div class="container-x">
-        <img src="{{ asset('images/line.svg') }}" alt="line" class="w-full mx-auto">
-    </div>
-    <!-- border line -->
-
-    @php
-        $featureSection = $sections->where('sectionName', 'feature')->first();
-    @endphp 
-
-    @if ($featureSection && $featureSection['is_active']) 
-    <!-- feature section start -->
+     <!-- payment section start -->
     <section class="w-full py-10 lg:py-20">
         <div class="container-x">
-            <div class="text-center mb-10 md:mb-16 lg:mb-20">
-                <h6 class="inline-flex items-center gap-x-3 bg-[#fff]/10 rounded-md lg:rounded-[10px] py-2 px-3 lg:py-2.5 lg:px-4 font-normal text-sm lg:text-lg text-[#E2E8F0]">
-                        <span class="block h-[2px] w-5 bg-line"></span>
-                        {{ data_get($featureSection, 'content.title') }}
-                        <span class="block h-[2px] w-5 bg-line-2"></span>
-                    </h6>
-                    <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
-                        {{ data_get($featureSection, 'content.title') }} <span
-                            class="text-gradient">{{ data_get($featureSection, 'content.gradient_title') }}</span>
-                    </h2>
-                    <p
-                        class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[60%] lg:mx-auto">
-                        {{ data_get($featureSection, 'content.description') }}
-                    </p>
+            <div
+                class="w-full bg-submit rounded-[10px] py-5 px-6 flex flex-col lg:flex-row justify-center items-center text-center lg:justify-between border border-[#49484E]/50">
+                <div class="lg:text-start">
+                    <h5 class="font-medium text-lg white-70 lg:text-2xl">Ai অ্যাডভার্টাইজিং <span
+                            class="text-gradient">বুটক্যাম্প -
+                            ২৫</span></h5>
+                    <p class="font-medium text-sm text-[#ABABAB] mt-1 lg:text-base">৩ দিনের অনলাইন লাইভ ওয়ার্কশপ |
+                        প্রশিক্ষক: আব্দুর রউফ</p>
+                </div>
+                <h6 class="font-medium text-base text-[#C7C7C7] mt-6 lg:text-2xl lg:mt-0">কোর্স ফি মাত্র <span
+                        class="text-orange font-bold lg:text-3xl">৳৫,৩২০</span> টাকা</h6>
             </div>
 
-            <!-- feat card -->
-            <div class="w-full grid grid-cols-1 gap-y-5 md:grid-cols-2 gap-5 lg:grid-cols-3 lg:gap-x-6 ">
+            <div
+                class="w-full bg-card/80 rounded-[10px] py-5 px-4 mt-10 divide-y lg:divide-x lg:divide-y-0 divide-[#fff]/10 lg:p-10 lg:mt-12 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10 border border-[#49484E]/50">
+                <div class="left pb-10 lg:pb-0">
+                    <h3 class="text-center font-medium text-2xl text-[#fff] lg:text-start lg:text-[32px]">এখনই সহজে
+                        পেমেন্ট করুন</h3>
+                    <p
+                        class="font-medium text-sm text-[#ABABAB] mt-1 text-center lg:text-start lg:text-base lg:max-w-[80%]">
+                        আমাদের কোর্সে ভর্তি হতে পেমেন্ট করা একেবারেই
+                        সহজ। বিকাশ, নগদ বা রকেট দিয়ে পেমেন্ট করলেই সঙ্গে সঙ্গে কোর্স এক্সেস পাবেন।</p>
 
-                 @foreach(data_get($featureSection, 'content.cards', []) as $index => $feat)
-                    <div class="w-full rounded-md lg:rounded-[20px] p-5 md:p-7 lg:p-[34px] border border-[#232323] relative">
-                        <img src="{{ asset('/images/home/feat-card.svg') }}" alt="feat card"
-                            class="w-full h-full absolute left-0 top-0 rounded-md lg:rounded-[20px] object-cover">
+                    <h4
+                        class="mt-10 font-medium text-base white-70 text-center mb-2.5 lg:mt-[60px] lg:text-xl lg:text-start">
+                        এই নম্বরে পেমেন্ট করুন</h4>
 
+                    <div
+                        class="flex bg-[#011330] justify-between items-center max-w-[80%] rounded-[4px] mx-auto p-1.5 pl-4 lg:mx-0 lg:mr-auto lg:max-w-[46%] lg:rounded-lg">
+                        <h5 class="font-bold text-xl text-gradient lg:text-2xl">০১৭১২৩৪৫৬৭৮</h5>
+                        <button type="button" onclick="copyPhoneNumber(); return false;"
+                            class="bg-[#0B2042] rounded-[2px] py-2 px-3 font-normal text-xs text-blue lg:text-sm anim hover:bg-orange hover:text-primary cursor-pointer anim animate-pulse z-50 pointer-events-auto"
+                            style="position: relative; z-index: 1000 !important; pointer-events: auto !important;">কপি
+                            করুন</button>
+                    </div>
+
+                    <h6 class="mt-6 font-medium white-70 text-base lg:mt-[30px] lg:text-lg">বিশেষ দ্রষ্টব্য</h6>
+
+                    <ul class="mt-2.5 flex flex-col gap-y-1">
+                        <li class="flex items-center gap-x-2">
+                            <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
+                            <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
+                                Transaction ID সংরক্ষণ করুন, ভুল নম্বরে পাঠালে দায়ভার আমাদের নয়।
+                            </p>
+                        </li>
+                        <li class="flex items-center gap-x-2">
+                            <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
+                            <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
+                                সফল পেমেন্টে SMS/ইমেইল পাবেন।
+                            </p>
+                        </li>
+                        <li class="flex items-center gap-x-2">
+                            <span class="w-[2px] h-[2px] block bg-[#D9D9D9] lg:w-[3px] lg:h-[3px]"></span>
+                            <p class="text-sm font-normal text-[#ABABAB] lg:text-base">
+                                টাকা ফেরতযোগ্য নয়, সমস্যায় <a href="#" class="text-orange underline">সাপোর্টে
+                                    যোগাযোগ করুন।</a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="right pt-10 lg:pt-0">
+                    <h5 class="font-medium text-base white-70 text-center mb-2.5 lg:text-lg lg:text-start">আপনার
+                        পেমেন্ট করা মাধ্যমটি বেছে নিন</h5>
+
+                    <!-- Error and Success Messages -->
+                    @if (session('success'))
                         <div
-                            class="w-[100px] h-[100px] lg:w-[166px] lg:h-[160px] border-2 lg:border-[20px] border-[#21253B] rounded-full mx-auto bg-[#0A0C19] flex justify-center relative items-center">
-                            <div
-                                class="bg-[#000] w-20 h-20 lg:w-[100px] lg:h-[100px] rounded-full border-3 border-[#171A2C] lg:border-[12px] flex justify-center items-center">
-                            <img src="{{ asset('images/icons/b-camp-0' . ($index + 1) . '.svg') }}" alt="icons {{ $index + 1 }}"
-        class="w-6 md:w-8 lg:w-10">
-                                <img src="{{ asset('images/icons/curve.svg') }}" alt="curve 1"
-                                    class="w-[86%] absolute {{ $index == 0 ? 'left-1 top-4' : ($index == 1 ? '!left-0 !top-1 !rotate-90' : 'left-inherit right-1 top-1 rotate-180') }}">
+                            class="bg-green-600/30 border-2 border-green-400 text-green-300 p-5 rounded-xl mb-6 animate-pulse shadow-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-400 mr-3 mt-1 text-xl"></i>
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-lg text-green-200 mb-2">🎉 নিবন্ধন সফল হয়েছে!</h4>
+                                    <p class="text-green-300 mb-4">{{ session('success') }}</p>
+                                    <div class="bg-green-800/40 border border-green-500/50 rounded-lg p-4">
+                                        <p class="text-sm text-green-200 font-semibold mb-2">
+                                            <i class="fas fa-arrow-right mr-2"></i>পরবর্তী পদক্ষেপ:
+                                        </p>
+                                        <ul class="text-sm text-green-300 space-y-1">
+                                            <li><i class="fas fa-key mr-2"></i>লগিন করে পাসওয়ার্ড আপডেট করুন</li>
+                                            <li><i class="fas fa-graduation-cap mr-2"></i>কোর্সে অ্যাক্সেস পান</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    @endif
 
-                        <div class="mt-10 lg:mt-[60px]">
-                            <h5 class="font-semibold text-sm lg:text-lg leading-[140%] text-[#E2E8F0] mb-2 lg:mb-2.5">
-                            {{ $feat['title'] }}    
-                            </h5>
-                            <p class="font-normal text-xs lg:text-sm leading-[140%] text-[#ABABAB] lg:max-w-[85%]">{{ $feat['description'] }} </p>
+                    @if (session('error'))
+                        <div
+                            class="bg-red-600/30 border-2 border-red-400 text-red-300 p-5 rounded-xl mb-6 animate-bounce shadow-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-circle text-red-400 mr-3 text-xl"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg text-red-200 mb-1">ত্রুটি!</h4>
+                                    <p class="text-red-300">{{ session('error') }}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                @endforeach 
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="bg-red-600/30 border-2 border-red-400 text-red-300 p-5 rounded-xl mb-6 shadow-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-red-400 mr-3 mt-1 text-xl"></i>
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-lg text-red-200 mb-3">নিবন্ধনে সমস্যা হয়েছে</h4>
+                                    <div class="space-y-2">
+                                        @foreach ($errors->all() as $error)
+                                            <div
+                                                class="flex items-start bg-red-800/30 border border-red-500/50 rounded-lg p-3">
+                                                <i class="fas fa-times-circle text-red-400 mr-2 mt-0.5"></i>
+                                                <p class="text-red-200 text-sm">
+                                                    @if (str_contains(strtolower($error), 'email'))
+                                                        <strong>ইমেইল সমস্যা:</strong> এই ইমেইল ঠিকানা দিয়ে ইতিমধ্যে
+                                                        একটি অ্যাকাউন্ট রয়েছে! অন্য ইমেইল ব্যবহার করুন।
+                                                    @else
+                                                        {{ $error }}
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <form id="enrollment-form" action="{{ route('ai-bootcamp.enroll') }}" method="POST"
+                        class="block mt-5 lg:mt-3 lg:grid lg:grid-cols-12 lg:gap-x-5">
+                        @csrf
+                        <!-- Hidden Fields -->
+                        <input type="hidden" name="course_id" value="1">
+                        <input type="hidden" name="instructor_id" value="2">
+                        <input type="hidden" name="amount" value="320" id="course-amount">
+                        <div
+                            class="flex w-full justify-between items-center gap-x-5 lg:justify-start lg:gap-x-6 lg:mb-[60px] lg:col-span-12">
+                            <label for="nagad"
+                                class="flex items-center  bg-card anim cursor-pointer px-2 gap-x-2 w-28 h-12">
+                                <input type="radio" name="payment" id="nagad" value="nogod" checked>
+                                <img src="./images/icons/nagad.svg" alt="nagad" class="max-w-20">
+                            </label>
+                            <label for="bkash"
+                                class="flex items-center  bg-card anim cursor-pointer px-2 gap-x-2 w-28 h-12">
+                                <input type="radio" name="payment" id="bkash" value="bkash">
+                                <img src="./images/icons/bkash.svg" alt="bkash" class="max-w-20">
+                            </label>
+                            <label for="rocket"
+                                class="flex items-center  bg-card anim cursor-pointer px-2 gap-x-2 w-24 h-12">
+                                <input type="radio" name="payment" id="rocket" value="rocket">
+                                <img src="./images/icons/rocket.svg" alt="rocket" class="max-w-[50px]">
+                            </label>
+                        </div>
+                        <div class="w-full mt-5 lg:col-span-6">
+                            <label for="name" class="font-medium text-base white-70 block w-full mb-2.5">আপনার
+                                নাম</label>
+                            <input type="text" name="name" id="name" placeholder="নাম"
+                                class="bg-[#000] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-gray-400"
+                                required>
+                        </div>
+                        <div class="w-full mt-5 lg:col-span-6">
+                            <label for="email" class="font-medium text-base white-70 block w-full mb-2.5">আপনার
+                                ইমেইল</label>
+                            <input type="email" name="email" id="email" placeholder="ইমেইল"
+                                class="bg-[#000] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-gray-400"
+                                required>
+                        </div>
+                        <div class="w-full mt-5 lg:col-span-6">
+                            <label for="phone" class="font-medium text-base white-70 block w-full mb-2.5">আপনার
+                                নম্বর</label>
+                            <input type="text" name="phone" id="phone" placeholder="নম্বর"
+                                class="bg-[#000] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-gray-400"
+                                required>
+                        </div>
+                        <div class="w-full mt-5 lg:col-span-6">
+                            <label for="transaction_id"
+                                class="font-medium text-base white-70 block w-full mb-2.5">পেমেন্ট ট্রানজেকশন
+                                ID</label>
+                            <input type="text" name="transaction_id" id="transaction_id"
+                                placeholder="ট্রানজেকশন ID"
+                                class="bg-[#000] h-[38px] rounded-sm px-4 w-full text-[#fff] font-medium text-base placeholder:text-gray-400">
+                        </div>
+
+                        <div class="w-full flex justify-center lg:col-span-12 lg:justify-end">
+                            <button type="submit"
+                                class="bg-submit hover:!bg-lime hover:text-primary py-2 px-4 font-medium text-base white-70 mt-5 anim cursor-pointer lg:text-xl lg:py-3.5 lg:px-6 rounded-[10px] ">কনফার্ম
+                                করুন</button>
+                        </div>
+
+                    </form>
+                </div>
             </div>
-            <!-- feat card -->
         </div>
     </section>
-    <!-- feature section end -->
-    @endif
-
-    <!-- border line -->
-    <div class="container-x">
-        <img src="{{ asset('images/line.svg') }}" alt="line" class="w-full mx-auto">
-    </div>
-    <!-- border line -->
+    <!-- payment section end -->  
 
     <!-- get start section start -->
     <section class="w-full py-10 lg:py-20">
         <div class="container-x">
+
+             <div class="text-center mb-10 md:mb-16 lg:mb-20">
+                
+                <h2 class="font-bold text-2xl md:text-4xl lg:text-[44px] text-[#E2E8F0] mt-5 lg:mt-[30px]">
+                   আপনার আইডিয়াকে বদলে দিন <span class="text-gradient"> এআই ক্রিয়েশনে </span></h2>
+                <p
+                    class="font-normal text-sm md:text-base lg:text-xl text-[#ABABAB] leading-[140%] mt-2 lg:mt-3.5 lg:max-w-[65%] lg:mx-auto">
+                   সঠিক পদ্ধতিতে, ধাপে ধাপে এবং কৌশল ব্যবহার করে আপনার স্কিলকে দ্রুত দক্ষ করে তুলুন
+                </p>
+            </div>
+
             <div class="get-bg relative py-12 px-8 lg:py-[94px] lg:px-[220px] rounded-[20px] lg:min-h-[365px]">
                 <div class="absolute left-0 bottom-0 z-20 w-full h-full flex justify-between">
                     <img src="{{ asset('images/home/get-start-bottom-left.svg') }}" alt="get left"
@@ -772,7 +1019,7 @@
             }
 
             if (videoId) {
-                videoPlayer.innerHTML = `<iframe class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[400px]" src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                videoPlayer.innerHTML = `<iframe class="w-full h-[349px] object-cover rounded-md lg:rounded-[10px] lg:h-[700px]" src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             } else {
                 // Fallback or error message if the URL is not a valid YouTube URL
                 console.error('Invalid YouTube URL provided.');
@@ -870,4 +1117,33 @@
         showSlide(0);
         startAutoPlay();
     });
+
+     // FAQ Accordion functionality
+        function toggleFAQ(element) {
+            const faqItems = document.querySelectorAll('.faq-item');
+            const answer = element.querySelector('.faq-answer');
+            const isCurrentlyActive = element.classList.contains('active');
+
+            // Close all FAQ items first
+            faqItems.forEach(item => {
+                const itemAnswer = item.querySelector('.faq-answer');
+                item.classList.remove('active');
+                itemAnswer.classList.remove('active');
+            });
+
+            // If the clicked item wasn't active, open it
+            if (!isCurrentlyActive) {
+                element.classList.add('active');
+                answer.classList.add('active');
+            }
+        }
+
+        // Initialize FAQ - Make first item active by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstFAQItem = document.querySelector('.faq-item');
+            if (firstFAQItem) {
+                // The first FAQ already has 'active' class in HTML, so no need to set it again
+                // This ensures the first FAQ is open by default
+            }
+        });
 </script>

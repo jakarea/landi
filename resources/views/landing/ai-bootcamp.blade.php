@@ -512,7 +512,7 @@
                                 <img src="/images/icons/play.svg" alt="play" class="w-8">
                             </button>
                         </div>
-                    </div>
+            </div>
         </div>
     </section>
 
