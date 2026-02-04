@@ -48,7 +48,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -66,7 +66,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -84,7 +84,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -102,7 +102,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -120,7 +120,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -138,7 +138,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -156,7 +156,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                          <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -174,7 +174,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                          <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -192,7 +192,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -210,7 +210,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                          <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -228,7 +228,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
@@ -246,7 +246,7 @@
                         <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
                     </div>
                     <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h5 class="font-medium text-base lg:text-xl text-[#fff]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                          <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
