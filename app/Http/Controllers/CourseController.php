@@ -1103,5 +1103,10 @@ class CourseController extends Controller
         return view('instructor.courses.logs', compact('courses', 'overallStats', 'logs'));
     }
 
+    public function expertConnection()
+    {
+        return view('expert.connection');
+    }
+
 
 }
