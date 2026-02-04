@@ -41,7 +41,7 @@
     <!-- expert list section start -->
      <section class="w-full py-10 lg:py-20">
         <div class="container-x">
-            <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-x-10 lg:gap-y-[64px]">
+            <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-x-10 lg:gap-y-[64px]">
                 <!-- card -->
                  <div class="w-full">
                     <div class="img">
@@ -52,10 +52,10 @@
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -70,10 +70,10 @@
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -88,10 +88,10 @@
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -106,10 +106,10 @@
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -124,10 +124,10 @@
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -142,10 +142,10 @@
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -159,11 +159,11 @@
                         <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
-                        <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -177,11 +177,11 @@
                         <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
-                        <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -196,10 +196,28 @@
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
+                        </div>
+                    </div>
+                 </div>
+                <!-- card -->
+                                 <!-- card -->
+                 <div class="w-full">
+                    <div class="img">
+                        <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
+                    </div>
+                    <div class="txt mt-4 lg:mt-8 text-center">
+                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
+                        <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
+                        <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
+                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -214,10 +232,10 @@
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
@@ -231,29 +249,11 @@
                         <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
                         <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
                         <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
-                        <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
-                        </div>
-                    </div>
-                 </div>
-                <!-- card -->
-                                 <!-- card -->
-                 <div class="w-full">
-                    <div class="img">
-                        <img src="{{ asset('assets/landing/images/expert-image.png') }}" alt="expert image" class="w-full lg:w-[90%] mx-auto">
-                    </div>
-                    <div class="txt mt-4 lg:mt-8 text-center">
-                        <h5 class="font-medium text-base lg:text-xl text-[#F2F2F7]">Swdeep Billah</h5>
-                        <h6 class="font-normal text-xs lg:text-sm text-[#fff]">Visual Artist | Senior Visualizer</h6>
-                        <p class="mt-2 lg:mt-3 font-normal text-xs lg:text-sm text-[#fff]">Branding • Motion • AI-Driven Visual Storytelling A visionary with a passion for aesthetics and storytelling. </p>
-                        <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
-                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin"></a>
-                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter"></a>
+                         <div class="social mt-4 lg:mt-5 flex items-center justify-center gap-x-2">
+                            <a href="#"><img src="{{ asset('assets/landing/images/facebook.svg') }}" alt="facebook" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/instagram.svg') }}" alt="instagram" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/linkedin.svg') }}" alt="linkedin" class="w-5 lg:w-10"></a>
+                            <a href="#"><img src="{{ asset('assets/landing/images/twitter.svg') }}" alt="twitter" class="w-5 lg:w-10"></a>
                         </div>
                     </div>
                  </div>
